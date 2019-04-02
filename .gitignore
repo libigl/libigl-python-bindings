@@ -1,0 +1,8 @@
+external
+
+*.sublime-*
+
+bin
+bin_rel
+
+tutorial/
