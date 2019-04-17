@@ -169,10 +169,10 @@ class TestBasic(unittest.TestCase):
         k = igl.arap_rhs(self.v1, self.f1, d=2, energy=0)
         self.assertTrue(k.shape[0] > 0)
 
-    def test_average_onto_vertices(self):
-        s = np.random.rand(self.f1.shape[0])
-        sf = igl.average_onto_faces(self.f1, s)
-        self.assertEqual(sf.shape[0], self.f1.shape[0])
+    # def test_average_onto_faces(self):
+    #     s = np.random.rand(self.f1.shape[0])
+    #     sf = igl.average_onto_faces(self.f1, s)
+    #     self.assertEqual(sf.shape[0], self.f1.shape[0])
 
     def test_average_onto_vertices(self):
         s = np.random.rand(self.f1.shape[0])

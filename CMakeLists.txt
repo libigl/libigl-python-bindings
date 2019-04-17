@@ -78,12 +78,12 @@ target_link_libraries(pyigl PRIVATE igl::core igl::triangle)
 target_include_directories(pyigl PRIVATE "src/include")
 
 
-#set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)
-#find_package(PythonLibs REQUIRED)
-#find_package(PythonInterp REQUIRED)
-#target_link_libraries(pyigl PRIVATE ${PYTHON_LIBRARIES})
-#set_target_properties(pyigl PROPERTIES LINK_FLAGS "-Wl,--no-undefined")
-set_target_properties(pyigl PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -msse2")
+# set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)
+# find_package(PythonLibs REQUIRED)
+# find_package(PythonInterp REQUIRED)
+# target_link_libraries(pyigl PRIVATE ${PYTHON_LIBRARIES})
+# set_target_properties(pyigl PROPERTIES LINK_FLAGS "-Wl,-undefined,error")
+# set_target_properties(pyigl PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -msse2")
 set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../igl")
 
 
