@@ -7,6 +7,7 @@ branches:
   only:
     - master
 environment:
+  APPVEYOR_RDP_PASSWORD: pypass126
   matrix:
   - config: Release
     PYTHON: "C:\\Python36-x64"
@@ -29,6 +30,10 @@ install:
   - "python -m pip install numpy"
   - "python -m pip install scipy"
   - "python -c \"import numpy as np;import sys;print(np.get_include())\""
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 build:
   parallel: true
 build_script:
