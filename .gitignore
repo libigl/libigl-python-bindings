@@ -4,9 +4,12 @@ external
 
 bin
 bin_rel
+build
 
 tutorial/
 
 test.obj
 pyigl.cpython*
 __pycache__
+
+igl.egg-info

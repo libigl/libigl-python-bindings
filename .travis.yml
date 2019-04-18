@@ -1,0 +1,33 @@
+language: python
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
+os:
+  - linux
+  # - osx
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    # - libc++-dev
+    - gcc-7
+    - g++-7
+    # - libsuitesparse-dev
+env:
+  - CC=gcc-7 && CXX=g++-7
+  # - CC=clang CXX=clang++ CXXFLAGS="-stdlib=libc++"
+install:
+  - pip install numpy
+  - pip install scipy
+script:
+  - python setup.py build --debug install
+  - python setup.py test
+# deploy:
+#   provider: pypi
+#   user: "teseoch"
+#   password:
+#     secure: SBFTnlltZ+CsskcX+qILNOnEIQzK9fwnQKkZGKsxWuKn4VBA/M6olmTl/wOEzfYnrTdY3A9LrCX7b9D+/3CDCOhGkdFw6x1VRYySqkHtxk4UjdzXBnIPi9bf5GFDjIg/lOcKhR6bIhcRjEAu2bAYQTegyi936jHJuSglaLiK9S3/gWSH/fGbS22PFL0Nuh5o4o82MKeR9simNA9uXxTWdMr4SATEm/oOs2Itpmg9cKolizWPzRBT7WMMe9I61ULPkxFjMLtU1C+kXBB0ctE4FBIndZbEUnwYsceXw+gRrWTA+auc3ZvNbF7ilaAIYYXPPlWEewjt1Ib0vPZP1g/jpeLT0uDfpDuin5bJjDbdrjkD9mReBnpinbQU0o0KXX3IJWwcN+LW1r8NUB8K6T6iEiWQmy7D/9vX5jPRXe2zt7O63JWY61cD1VzPrKIeKY/CC0X4TP0PyujbsSpBI6O/5UE8VRZX1hp0YJOEywLqj3YRJ0HcSSanHccUI+sJlbZEGZaH/dJCbWqS25IGN6sXoXD1sfyS2d5XtD1758Sg7+5SLZoXa9fSGLntVhZ72kZjvRgJULirVEqbUqXjdtf3TMO6EtAQMWKgVVguqF9gqO/44R3omQa03bhnZNm9WDIft8ZyIRGk5On2OwVWvFb2ud/5PgmuOdw+auEat9oziNM=
+#   on:
+#     tags: true

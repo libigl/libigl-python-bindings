@@ -1,0 +1,42 @@
+version: 1.0.{build}
+os: Visual Studio 2017
+platform: x64
+clone_folder: C:\projects\igl
+shallow_clone: true
+branches:
+  only:
+    - master
+environment:
+  matrix:
+  - config: Release
+    PYTHON: "C:\\Python36-x64"
+    PYTHON_VERSION: "3.6.x" # currently 3.6.8
+    PYTHON_ARCH: "64"
+
+  - config: Release
+    PYTHON: "C:\\Python35-x64"
+    PYTHON_VERSION: "3.5.x" # currently 3.5.8
+    PYTHON_ARCH: "64"
+
+  - config: Release
+    PYTHON: "C:\\Python27-x64"
+    PYTHON_VERSION: "2.7.x" # currently 2.7.15
+    PYTHON_ARCH: "64"
+install:
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "python --version"
+  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+  - "python -m pip install numpy"
+  - "python -m pip install scipy"
+  - "python -c \"import numpy as np;import sys;print(np.get_include())\""
+build:
+  parallel: true
+build_script:
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - cd c:\projects\igl
+  - "python --version"
+  - python setup.py build --debug install
+
+test_script:
+  - cd c:\projects\igl
+  - python setup.py test
