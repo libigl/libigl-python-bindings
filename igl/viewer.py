@@ -1,6 +1,7 @@
 from pythreejs import *
 from IPython.display import display
 
+#probably drop me
 class Viewer():
     def __init__(self):
         #print("Viewer initialization")

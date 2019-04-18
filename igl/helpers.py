@@ -8,7 +8,8 @@
 import os
 
 # Constant definitions
-TUTORIAL_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../")
+#Clean me up
+TUTORIAL_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data/")
 DOUBLE_EPS = 1.0e-14
 DOUBLE_EPS_SQ = 1.0e-28
 FLOAT_EPS = 1.0e-7

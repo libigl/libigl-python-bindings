@@ -197,7 +197,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(c.shape[0], self.v1.shape[0])
 
         c = igl.vertex_components(self.f1)
-        self.assertEqual(c.shape[0], self.f1.shape[0])
+        self.assertEqual(c.shape[0], self.v1.shape[0])
 
     def test_face_components(self):
         c = igl.face_components(self.f1)

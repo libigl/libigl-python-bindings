@@ -6,3 +6,7 @@ bin
 bin_rel
 
 tutorial/
+
+test.obj
+pyigl.cpython*
+__pycache__
