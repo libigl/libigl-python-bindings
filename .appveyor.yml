@@ -36,7 +36,9 @@ build_script:
   - cd c:\projects\igl
   - "python --version"
   - python setup.py build --debug install
+  - type C:\projects\igl\build\temp.win-amd64-3.6\Debug\average_onto_vertices.out.cpp
 
 test_script:
+  - type C:\projects\igl\build\temp.win-amd64-3.6\Debug\average_onto_vertices.out.cpp
   - cd c:\projects\igl
   - python setup.py test
