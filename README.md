@@ -1,9 +1,11 @@
+[![Build Status](https://travis-ci.com/geometryprocessing/libigl-python-bindings.svg?branch=master)](https://travis-ci.com/geometryprocessing/libigl-python-bindings)
+
 To compile the libigl python bindings run from the main directory:
-mkdir build && cd build
-cmake ..
-make -j <cores>
+`
+python setup.py install
+`
 
-To run the tests execute:
-make test (not verbose)
-make CTEST_OUTPUT_ON_FAILURE=1 test (verbose)
-
+to run the tests:
+`
+python setup.py test
+`
