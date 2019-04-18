@@ -7,7 +7,7 @@ branches:
   only:
     - master
 environment:
-  APPVEYOR_RDP_PASSWORD: pypass126
+  APPVEYOR_RDP_PASSWORD: pypAss126.
   matrix:
   - config: Release
     PYTHON: "C:\\Python36-x64"
