@@ -9,27 +9,25 @@ branches:
 environment:
   APPVEYOR_RDP_PASSWORD: pypAss126.
   matrix:
-  - config: Debug
+  - configuration: Debug
     PYTHON: "C:\\Python36-x64"
     PYTHON_VERSION: "3.6.x" # currently 3.6.8
     PYTHON_VERSION_SMALL: "36"
     PYTHON_ARCH: "64"
 
-  - config: Debug
+  - configuration: Debug
     PYTHON: "C:\\Python35-x64"
     PYTHON_VERSION: "3.5.x" # currently 3.5.8
     PYTHON_VERSION_SMALL: "35"
     PYTHON_ARCH: "64"
 
-  - config: Debug
+  - configuration: Debug
     PYTHON: "C:\\Python27-x64"
     PYTHON_VERSION: "2.7.x" # currently 2.7.15
     PYTHON_VERSION_SMALL: "27"
     PYTHON_ARCH: "64"
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "echo %PYTHON%"
-  - "copy %PYTHON%\\libs\\python%PYTHON_VERSION_SMALL%.lib %PYTHON%\\libs\\python%PYTHON_VERSION_SMALL%_d.lib"
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
   - "python -m pip install numpy"
