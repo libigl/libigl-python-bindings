@@ -40,13 +40,6 @@ build_script:
 
 test_script:
   - cd c:\projects\igl
-  - python setup.py test
+  - %PYTHON_NAME% setup.py test
 
 
-
-
-
-
-
-  vcpkg.exe install python3:x64-windows
-  vcpkg.exe install python2:x64-windows
