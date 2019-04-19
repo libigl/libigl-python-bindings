@@ -33,6 +33,7 @@ on_finish:
 build:
   parallel: true
 build_script:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - "SET PYTHON_LIB_DIR=C:\\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - cd c:\projects\igl
@@ -41,4 +42,4 @@ build_script:
 
 test_script:
   - cd c:\projects\igl
-  - python setup.py test
+  - "python setup.py test --python-lib %PYTHON_LIB_DIR%\\lib\\%PYTHON_NAME_LONG%.lib --python-lib-debug %PYTHON_LIB_DIR%\\debug\\lib\\%PYTHON_NAME_LONG%_d.lib"
