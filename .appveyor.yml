@@ -18,7 +18,7 @@ environment:
     PYTHON_NAME_LONG: python27
 install:
   - "vcpkg.exe install %PYTHON_NAME%:x64-windows"
-  - "SET PYTHON=C:\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
+  - "SET PYTHON=C:\\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
   - "SET PATH=%PYTHON%;%PYTHON%\\share;%PATH%"
   - "%PYTHON_NAME% --version"
   - "%PYTHON_NAME% -c \"import struct; print(struct.calcsize('P') * 8)\""
