@@ -51,7 +51,7 @@ class CMakeBuild(build_ext):
             if sys.maxsize > 2**32:
                 cmake_args += ['-A', 'x64']
             build_args += ['--', '/m']
-            build_args += ['Tllvm']
+            build_args += ['-Tllvm']
         else:
             build_args += ['--', '-j2']
 
