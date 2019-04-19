@@ -65,7 +65,7 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
             if sys.maxsize > 2**32:
                 cmake_args += ['-A', 'x64']
-            cmake_args += ['-T', 'llvm']
+            # cmake_args += ['-T', 'llvm']
             build_args += ['--', '/m']
         else:
             build_args += ['--', '-j2']
@@ -73,10 +73,6 @@ class CMakeBuild(build_ext):
 
         if python_libs:
                 cmake_args += ['-D', 'PYTHON_LIBRARY={}'.format(python_libs)]
-
-        print("Cmake----------------")
-        print(cmake_args)
-        print("Cmake----------------")
 
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get('CXXFLAGS', ''),self.distribution.get_version())
