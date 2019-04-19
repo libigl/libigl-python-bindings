@@ -37,9 +37,5 @@ build_script:
   - cd c:\projects\igl
   - "%PYTHON_NAME% --version"
   - "python setup.py build --debug install --python-lib %PYTHON%\\lib\\%PYTHON_NAME_LONG%.lib --python-lib-debug %PYTHON%\\debug\\lib\\%PYTHON_NAME_LONG%_d.lib"
-
-test_script:
   - cd c:\projects\igl
   - "%PYTHON_NAME% setup.py test"
-
-
