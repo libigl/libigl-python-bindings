@@ -32,7 +32,7 @@ on_finish:
 build:
   parallel: true
 build_script:
-  - "SET PYTHON=C:\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
+  - "SET PYTHON=C:\\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
   - "SET PATH=%PYTHON%;%PYTHON%\\share;%PATH%"
   - cd c:\projects\igl
   - "%PYTHON_NAME% --version"
