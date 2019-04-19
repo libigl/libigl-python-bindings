@@ -53,7 +53,10 @@ class CMakeBuild(build_ext):
             if sys.maxsize > 2**32:
                 cmake_args += ['-A', 'x64']
             cmake_args += ['-T', 'llvm']
-            cmake_args += ['-D', 'PYTHON_LIBRARY={}\\libs\\python{}.lib'.format(sysconfig.get_path('data'),  sysconfig.get_config_var('py_version_short').replace('.',''))]
+            if self.debug:
+                cmake_args += ['-D', 'PYTHON_LIBRARY={}\\libs\\python{}.lib\\;PYTHON_LIBRARY={}\\libs\\python{}_d.lib'.format(sysconfig.get_path('data'),  sysconfig.get_config_var('py_version_short').replace('.',''), sysconfig.get_path('data'),  sysconfig.get_config_var('py_version_short').replace('.',''))]
+            else:
+                cmake_args += ['-D', 'PYTHON_LIBRARY={}\\libs\\python{}.lib'.format(sysconfig.get_path('data'),  sysconfig.get_config_var('py_version_short').replace('.',''))]
             build_args += ['--', '/m']
         else:
             build_args += ['--', '-j2']
