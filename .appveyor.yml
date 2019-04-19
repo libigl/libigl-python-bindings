@@ -10,29 +10,21 @@ environment:
   APPVEYOR_RDP_PASSWORD: pypAss126.
   matrix:
   - configuration: Debug
-    PYTHON: "C:\\Python36-x64"
-    PYTHON_VERSION: "3.6.x" # currently 3.6.8
-    PYTHON_VERSION_SMALL: "36"
-    PYTHON_ARCH: "64"
+    PYTHON_NAME: python3
+    PYTHON_NAME_LONG: python36
 
   - configuration: Debug
-    PYTHON: "C:\\Python35-x64"
-    PYTHON_VERSION: "3.5.x" # currently 3.5.8
-    PYTHON_VERSION_SMALL: "35"
-    PYTHON_ARCH: "64"
-
-  - configuration: Debug
-    PYTHON: "C:\\Python27-x64"
-    PYTHON_VERSION: "2.7.x" # currently 2.7.15
-    PYTHON_VERSION_SMALL: "27"
-    PYTHON_ARCH: "64"
+    PYTHON_NAME: python2
+    PYTHON_NAME_LONG: python27
 install:
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "python --version"
-  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-  - "python -m pip install numpy"
-  - "python -m pip install scipy"
-  - "python -c \"import numpy as np;import sys;print(np.get_include())\""
+  - "vcpkg.exe install %PYTHON_NAME%:x64-windows"
+  - "SET PYTHON=C:\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
+  - "SET PATH=%PYTHON%;%PYTHON%\\share;%PATH%"
+  - "%PYTHON_NAME% --version"
+  - "%PYTHON_NAME% -c \"import struct; print(struct.calcsize('P') * 8)\""
+  - "%PYTHON_NAME% -m pip install numpy"
+  - "%PYTHON_NAME% -m pip install scipy"
+  - "%PYTHON_NAME% -c \"import numpy as np;import sys;print(np.get_include())\""
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 on_finish:
@@ -40,11 +32,21 @@ on_finish:
 build:
   parallel: true
 build_script:
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "SET PYTHON=C:\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
+  - "SET PATH=%PYTHON%;%PYTHON%\\share;%PATH%"
   - cd c:\projects\igl
-  - "python --version"
-  - python setup.py build --debug install
+  - "%PYTHON_NAME% --version"
+  - "python setup.py build --debug install --python-lib %PYTHON%\\lib\\%PYTHON_NAME_LONG%.lib --python-lib-debug %PYTHON%\\debug\\lib\\%PYTHON_NAME_LONG%_d.lib"
 
 test_script:
   - cd c:\projects\igl
   - python setup.py test
+
+
+
+
+
+
+
+  vcpkg.exe install python3:x64-windows
+  vcpkg.exe install python2:x64-windows
