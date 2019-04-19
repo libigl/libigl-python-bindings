@@ -50,8 +50,8 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
             if sys.maxsize > 2**32:
                 cmake_args += ['-A', 'x64']
-            build_args += ['--', '/m']
             build_args += ['-Tllvm']
+            build_args += ['--', '/m']
         else:
             build_args += ['--', '-j2']
 
