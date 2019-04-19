@@ -9,17 +9,17 @@ branches:
 environment:
   APPVEYOR_RDP_PASSWORD: pypAss126.
   matrix:
-  - config: Release
+  - config: Debug
     PYTHON: "C:\\Python36-x64"
     PYTHON_VERSION: "3.6.x" # currently 3.6.8
     PYTHON_ARCH: "64"
 
-  - config: Release
+  - config: Debug
     PYTHON: "C:\\Python35-x64"
     PYTHON_VERSION: "3.5.x" # currently 3.5.8
     PYTHON_ARCH: "64"
 
-  - config: Release
+  - config: Debug
     PYTHON: "C:\\Python27-x64"
     PYTHON_VERSION: "2.7.x" # currently 2.7.15
     PYTHON_ARCH: "64"
@@ -40,10 +40,8 @@ build_script:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - cd c:\projects\igl
   - "python --version"
-  - python setup.py build install
-  - type C:\projects\igl\build\temp.win-amd64-3.6\Debug\average_onto_vertices.out.cpp
+  - python setup.py build --debug install
 
 test_script:
-  - type C:\projects\igl\build\temp.win-amd64-3.6\Debug\average_onto_vertices.out.cpp
   - cd c:\projects\igl
   - python setup.py test
