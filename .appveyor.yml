@@ -40,6 +40,6 @@ build_script:
 
 test_script:
   - cd c:\projects\igl
-  - %PYTHON_NAME% setup.py test
+  - "%PYTHON_NAME% setup.py test"
 
 
