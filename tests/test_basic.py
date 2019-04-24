@@ -2,7 +2,6 @@ import unittest
 import sys
 import os
 
-sys.path.insert(0, os.getcwd() + "/../")
 import igl
 import inspect
 import numpy as np
