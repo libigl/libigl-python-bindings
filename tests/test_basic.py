@@ -109,23 +109,23 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float32)
         self.assertTrue(type(pd1) == type(pd2) == type(pv1) == type(pv2) == np.ndarray)
 
-    def test_read_obj(self):
-        v, _, n, f, _, _ = igl.read_obj(igl.TUTORIAL_PATH + "face.obj")
-        self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
-        self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
-        self.assertTrue(v.dtype == np.float64)
-        v, _, n, f, _, _ = igl.read_obj(igl.TUTORIAL_PATH + "face.obj", dtype="float32")
-        self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
-        self.assertTrue(v.dtype == np.float32)
+    # def test_read_obj(self):
+    #     v, _, n, f, _, _ = igl.read_obj(igl.TUTORIAL_PATH + "face.obj")
+    #     self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
+    #     self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
+    #     self.assertTrue(v.dtype == np.float64)
+    #     v, _, n, f, _, _ = igl.read_obj(igl.TUTORIAL_PATH + "face.obj", dtype="float32")
+    #     self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
+    #     self.assertTrue(v.dtype == np.float32)
 
-    def test_read_off(self):
-        v, f, n = igl.read_off(igl.TUTORIAL_PATH + "bunny.off")
-        self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
-        self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
-        self.assertTrue(v.dtype == np.float64)
-        v, f, n = igl.read_off(igl.TUTORIAL_PATH + "bunny.off", read_normals=False, dtype="float32")
-        self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
-        self.assertTrue(v.dtype == np.float32)
+    # def test_read_off(self):
+    #     v, f, n = igl.read_off(igl.TUTORIAL_PATH + "bunny.off")
+    #     self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
+    #     self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
+    #     self.assertTrue(v.dtype == np.float64)
+    #     v, f, n = igl.read_off(igl.TUTORIAL_PATH + "bunny.off", read_normals=False, dtype="float32")
+    #     self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
+    #     self.assertTrue(v.dtype == np.float32)
 
     def test_read_triangle_mesh(self):
         # TODO fix segfault problem
