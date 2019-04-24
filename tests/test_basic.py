@@ -19,7 +19,7 @@ class TestBasic(unittest.TestCase):
         self.t = np.random.rand(10, 4)
         self.f = np.random.randint(0, 10, size=(20, 3), dtype="int32")
         self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
-        self.v1, self.f1, self.n1 = igl.read_off(os.path.join(igl.TUTORIAL_PATH, "bunny.off"))
+        # self.v1, self.f1, self.n1 = igl.read_off(os.path.join(igl.TUTORIAL_PATH, "bunny.off"))
 
     def test_module(self):
         # Extract all implemented functions from the module
