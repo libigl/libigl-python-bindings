@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <string>
 #include <typedefs.h>

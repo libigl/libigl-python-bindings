@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <igl/adjacency_list.h>
 #include <pybind11/stl.h>

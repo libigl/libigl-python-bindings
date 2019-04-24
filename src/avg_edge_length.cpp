@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <igl/avg_edge_length.h>
 

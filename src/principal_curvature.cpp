@@ -1,4 +1,5 @@
 #include <tuple>
+#include <common.h>
 #include <npe.h>
 #include <igl/principal_curvature.h>
 
