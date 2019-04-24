@@ -19,7 +19,7 @@ environment:
     PYTHON_NAME: python2
     PYTHON_NAME_LONG: python27
 install:
-  - "vcpkg.exe install %PYTHON_NAME%:x64-windows"
+  # - "vcpkg.exe install %PYTHON_NAME%:x64-windows"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
@@ -33,16 +33,17 @@ on_finish:
 build:
   parallel: true
 build_script:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  # - "SET PYTHON_LIB_DIR=C:\\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
+  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - cd c:\projects\igl
   - python --version
-  # - "python setup.py build --debug install --python-lib %PYTHON_LIB_DIR%\\lib\\%PYTHON_NAME_LONG%.lib --python-lib-debug %PYTHON_LIB_DIR%\\debug\\lib\\%PYTHON_NAME_LONG%_d.lib"
   - "python setup.py build --debug install --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"
+  # - "SET PYTHON_LIB_DIR=C:\\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
+  # - "python setup.py build --debug install --python-lib %PYTHON_LIB_DIR%\\lib\\%PYTHON_NAME_LONG%.lib --python-lib-debug %PYTHON_LIB_DIR%\\debug\\lib\\%PYTHON_NAME_LONG%_d.lib"
 
 test_script:
   - cd c:\projects\igl
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "python setup.py build --debug install --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"
   # - "SET PYTHON_LIB_DIR=C:\\Tools\\vcpkg\\packages\\%PYTHON_NAME%_x64-windows"
   # - "python setup.py test --python-lib %PYTHON_LIB_DIR%\\lib\\%PYTHON_NAME_LONG%.lib --python-lib-debug %PYTHON_LIB_DIR%\\debug\\lib\\%PYTHON_NAME_LONG%_d.lib"
-  - "python setup.py build --debug install --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"
