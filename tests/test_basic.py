@@ -137,14 +137,14 @@ class TestBasic(unittest.TestCase):
         #v, f = igl.read_triangle_mesh(igl.TUTORIAL_PATH + "beetle.off")
         #print(v.shape, f.shape)
 
-    # def test_triangulate(self):
-    #     v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
-    #     e = np.array([[0, 1], [1, 2], [2, 3], [3, 0]], dtype="int32")
-    #     h = np.array([[]])
-    #     print("v.dtype = %s, h.dtype = %s" % (v.dtype, h.dtype))
-    #     v2, f2 = igl.triangulate(v, e, h, flags="a0.005q")
-    #     self.assertTrue(v2.dtype == v.dtype)
-    #     self.assertTrue(type(v2) == type(f2) == np.ndarray)
+    def test_triangulate(self):
+        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
+        e = np.array([[0, 1], [1, 2], [2, 3], [3, 0]], dtype="int32")
+        h = np.array([[]])
+        print("v.dtype = %s, h.dtype = %s" % (v.dtype, h.dtype))
+        v2, f2 = igl.triangulate(v, e, h, flags="a0.005q")
+        self.assertTrue(v2.dtype == v.dtype)
+        self.assertTrue(type(v2) == type(f2) == np.ndarray)
 
     def test_write_obj(self):
         suc = igl.write_obj("test.obj", self.v, self.f)
@@ -191,13 +191,13 @@ class TestBasic(unittest.TestCase):
         bc = igl.barycentric_coordinates_tet(d, a, b, c, d)
         self.assertEqual(bc.shape, (a.shape[0], 4))
 
-    # def test_vertex_components(self):
-    #     a = igl.adjacency_matrix(self.f1)
-    #     c, count = igl.vertex_components_from_adjacency_matrix(a)
-    #     self.assertEqual(c.shape[0], self.v1.shape[0])
+    def test_vertex_components(self):
+        a = igl.adjacency_matrix(self.f1)
+        c, count = igl.vertex_components_from_adjacency_matrix(a)
+        self.assertEqual(c.shape[0], self.v1.shape[0])
 
-    #     c = igl.vertex_components(self.f1)
-    #     self.assertEqual(c.shape[0], self.v1.shape[0])
+        c = igl.vertex_components(self.f1)
+        self.assertEqual(c.shape[0], self.v1.shape[0])
 
     def test_face_components(self):
         c = igl.face_components(self.f1)
