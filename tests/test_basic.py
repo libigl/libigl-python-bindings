@@ -11,10 +11,10 @@ class TestBasic(unittest.TestCase):
     def setUp(self):
         # Some global datastructures to use in the tests
         np.random.seed(42)
-        self.v = np.random.rand(10, 3)
-        self.t = np.random.rand(10, 4)
-        self.f = np.random.randint(0, 10, size=(20, 3), dtype="int32")
-        self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
+        self.v = np.random.rand(10, 3).reshape((10, 3), order='F')
+        self.t = np.random.rand(10, 4).reshape((10, 4), order='F')
+        self.f = np.random.randint(0, 10, size=(20, 3), dtype="int32").reshape((20, 3), order='F')
+        self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32").reshape((20, 4), order='F')
         self.test_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data/")
         self.v1, self.f1, self.n1 = igl.read_off(os.path.join(self.test_path, "bunny.off"))
 
