@@ -79,6 +79,9 @@ npe_add_module(pyigl
  #TODO move additional libs to variable
 target_link_libraries(pyigl PRIVATE igl::core igl::triangle)
 target_include_directories(pyigl PRIVATE "src/include")
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
+endif()
 
 
 # set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)

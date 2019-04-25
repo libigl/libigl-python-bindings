@@ -26,16 +26,16 @@ install:
   - "python -m pip install numpy"
   - "python -m pip install scipy"
   - "python -c \"import numpy as np;import sys;print(np.get_include())\""
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# init:
+  # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 build:
   parallel: true
 build_script:
   # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "copy %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%_d.lib"
+  # - "copy %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%_d.lib"
   - cd c:\projects\igl
   - python --version
   - "python setup.py build install --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"

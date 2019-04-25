@@ -1,11 +1,8 @@
 import unittest
-import sys
 import os
 
 import igl
-import inspect
 import numpy as np
-import scipy.sparse.csr as csr
 import scipy.sparse.csc as csc
 
 
@@ -18,7 +15,8 @@ class TestBasic(unittest.TestCase):
         self.t = np.random.rand(10, 4)
         self.f = np.random.randint(0, 10, size=(20, 3), dtype="int32")
         self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
-        # self.v1, self.f1, self.n1 = igl.read_off(os.path.join(igl.TUTORIAL_PATH, "bunny.off"))
+        self.test_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data/")
+        self.v1, self.f1, self.n1 = igl.read_off(os.path.join(self.test_path, "bunny.off"))
 
     def test_module(self):
         # Extract all implemented functions from the module
@@ -108,32 +106,32 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float32)
         self.assertTrue(type(pd1) == type(pd2) == type(pv1) == type(pv2) == np.ndarray)
 
-    # def test_read_obj(self):
-    #     v, _, n, f, _, _ = igl.read_obj(igl.TUTORIAL_PATH + "face.obj")
-    #     self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
-    #     self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
-    #     self.assertTrue(v.dtype == np.float64)
-    #     v, _, n, f, _, _ = igl.read_obj(igl.TUTORIAL_PATH + "face.obj", dtype="float32")
-    #     self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
-    #     self.assertTrue(v.dtype == np.float32)
+    def test_read_obj(self):
+        v, _, n, f, _, _ = igl.read_obj(self.test_path + "face.obj")
+        self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
+        self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
+        self.assertTrue(v.dtype == np.float64)
+        v, _, n, f, _, _ = igl.read_obj(self.test_path + "face.obj", dtype="float32")
+        self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
+        self.assertTrue(v.dtype == np.float32)
 
-    # def test_read_off(self):
-    #     v, f, n = igl.read_off(igl.TUTORIAL_PATH + "bunny.off")
-    #     self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
-    #     self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
-    #     self.assertTrue(v.dtype == np.float64)
-    #     v, f, n = igl.read_off(igl.TUTORIAL_PATH + "bunny.off", read_normals=False, dtype="float32")
-    #     self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
-    #     self.assertTrue(v.dtype == np.float32)
+    def test_read_off(self):
+        v, f, n = igl.read_off(self.test_path + "bunny.off")
+        self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
+        self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
+        self.assertTrue(v.dtype == np.float64)
+        v, f, n = igl.read_off(self.test_path + "bunny.off", read_normals=False, dtype="float32")
+        self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
+        self.assertTrue(v.dtype == np.float32)
 
     def test_read_triangle_mesh(self):
         # TODO fix segfault problem
         pass
-        #v, f = igl.read_triangle_mesh(igl.TUTORIAL_PATH + "bunny.mesh")
+        #v, f = igl.read_triangle_mesh(self.test_path + "bunny.mesh")
         #print(v.shape, f.shape)
-        #v, f = igl.read_triangle_mesh(igl.TUTORIAL_PATH + "cube.obj")
+        #v, f = igl.read_triangle_mesh(self.test_path + "cube.obj")
         #print(v.shape, f.shape)
-        #v, f = igl.read_triangle_mesh(igl.TUTORIAL_PATH + "beetle.off")
+        #v, f = igl.read_triangle_mesh(self.test_path + "beetle.off")
         #print(v.shape, f.shape)
 
     def test_triangulate(self):
@@ -262,6 +260,7 @@ class TestBasic(unittest.TestCase):
         e = igl.edges(self.f1)
         self.assertTrue(e.shape[0] > self.f1.shape[0])
         self.assertEqual(e.shape[1], 2)
+
 
 if __name__ == '__main__':
     unittest.main()
