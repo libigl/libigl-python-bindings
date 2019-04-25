@@ -33,7 +33,7 @@ install:
 build:
   parallel: true
 build_script:
-  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   # - "copy %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%_d.lib"
   - cd c:\projects\igl
