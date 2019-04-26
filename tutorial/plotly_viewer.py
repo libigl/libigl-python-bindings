@@ -33,8 +33,12 @@ def create_plot_mesh_and_layout(vertices, connectivity, function, colorscale):
                      contour=dict(show=True, color='#fff'),
                      hoverinfo="all")
 
-    if function is not None:
+    if abs(z.max()) <1e-10 and abs(z.min()) <1e-10:
         mesh['flatshading']=True
+    else:
+        mesh['flatshading']=False
+
+    if function is not None:
         if len(function.shape) == 1 or function.shape[1] == 1 or function.shape[0] == 1:
             mesh['intensity']=function
             mesh['colorscale']='Viridis' if colorscale is None else colorscale
@@ -48,7 +52,6 @@ def create_plot_mesh_and_layout(vertices, connectivity, function, colorscale):
                 assert(False)
     else:
         mesh['color'] = 'rgb(255,235,80)'
-        mesh['flatshading']=False
 
 
     layout = go.Layout(scene=go.layout.Scene(
