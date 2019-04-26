@@ -14,10 +14,10 @@ environment:
     PYTHON_NAME: python3
     PYTHON_NAME_LONG: python36
 
-  - configuration: Release
-    PYTHON: "C:\\Python27-x64"
-    PYTHON_NAME: python2
-    PYTHON_NAME_LONG: python27
+  # - configuration: Release
+  #   PYTHON: "C:\\Python27-x64"
+  #   PYTHON_NAME: python2
+  #   PYTHON_NAME_LONG: python27
 install:
   # - "vcpkg.exe install %PYTHON_NAME%:x64-windows"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
