@@ -6,7 +6,8 @@ bin
 bin_rel
 build
 
-tutorial/
+tutorial/data
+tutorial/.ipynb_*
 
 test.obj
 pyigl.cpython*
