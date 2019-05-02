@@ -1,7 +1,19 @@
 from pythreejs import *
 from IPython.display import display
+import matplotlib.pyplot as plt
+import numpy as np
 
-#probably drop me
+# Helper functions
+def get_colors(inp, colormap=plt.cm.viridis, normalize=True, vmin=None, vmax=None):
+    if normalize:
+        vmin=np.min(inp)
+        vmax=np.max(inp)
+
+    norm = plt.Normalize(vmin, vmax)
+    return colormap(norm(inp))
+
+
+
 class Viewer():
     def __init__(self):
         #print("Viewer initialization")
@@ -9,10 +21,23 @@ class Viewer():
         self.cam = PerspectiveCamera(position=[0, 0, 1], lookAt=[0, 0, 0],fov=30,
                         children=[DirectionalLight(color='white', position=[0, 0, 1], intensity=0.6)])
         self.renderer = Renderer(camera=self.cam, scene = Scene(), controls=[OrbitControls(controlling=self.cam)], 
-                    width=600, height=600, antialias=False)
+                    width=750, height=750, antialias=True)
         self.widgets = []
+    
+    def normalize_mesh(self, v):
+        mi = np.min(v)
+        ma = np.max(v)
 
-    def set_mesh(self, v, f, c=None):
+        v = (v - mi) / ((ma - mi) * 2)
+        mi = np.min(v)
+        ma = np.max(v)
+        mean = v.mean(0)
+        v -= mean
+        return v
+
+    def set_mesh(self, v, f, c=None, shading={"flat": True, "wireframe": True}):
+        self.shading = shading
+        v = self.normalize_mesh(v)
         v = v.astype("float32", copy=False)
         f = f.astype("uint16", copy=False).ravel()
         
@@ -34,18 +59,19 @@ class Viewer():
                 color=BufferAttribute(c),
             ))
         geometry.exec_three_obj_method('computeVertexNormals')
-        self.mesh = Mesh(geometry=geometry, material=[MeshStandardMaterial(vertexColors='VertexColors', reflectivity=1.0, 
+        self.mesh = Mesh(geometry=geometry, material=MeshStandardMaterial(vertexColors='VertexColors', reflectivity=1.0, 
                                                             #side='FrontSide', 
-                                                            roughness=0.5, metalness=0.25, flatShading=False,
+                                                            roughness=0.5, metalness=0.25, flatShading=self.shading["flat"],
                                                             polygonOffset=True, polygonOffsetFactor= 1,
-                                                            polygonOffsetUnits=1)])
+                                                            polygonOffsetUnits=1))
 #MeshLambertMaterial(vertexColors='VertexColors')
-        geon = WireframeGeometry(self.mesh.geometry) # WireframeGeometry
-        mat = LineBasicMaterial(color="black", linewidth=0.6)
-        wireframe = LineSegments( geon, mat )
-        self.mesh.add(wireframe)
+        if self.shading["wireframe"]:
+            geon = WireframeGeometry(self.mesh.geometry) # WireframeGeometry
+            mat = LineBasicMaterial(color="black", linewidth=0.05)
+            wireframe = LineSegments( geon, mat )
+            self.mesh.add(wireframe)
 
-        self.scene = Scene(children=[self.mesh, self.cam, AmbientLight(intensity=0.5)], background="#4c4c80")
+        self.scene = Scene(children=[self.mesh, self.cam, AmbientLight(intensity=0.5)], background="#ffffff")#"#4c4c80"
         self.renderer.scene = self.scene
         
     def set_colors(self, c):
@@ -79,3 +105,14 @@ class Viewer():
         for w in self.widgets:
             display(w)
 
+
+def plot(v, f, c, viewer=None):
+    if not viewer:
+        view = Viewer()
+    else:
+        view = viewer
+    c_dec = get_colors(c, normalize=True)
+    view.set_mesh(v, f, c_dec, shading={"flat":True, "wireframe":True})
+    if not viewer:
+        view.launch()
+    return view
