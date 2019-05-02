@@ -4,7 +4,6 @@
 #include <pybind11/stl.h>
 
 const char* ds_adjacency_list = R"igl_Qu8mg5v7(
-
 Constructs the graph adjacency list of a given mesh (v, f)
 
 Parameters

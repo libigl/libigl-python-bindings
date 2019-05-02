@@ -73,12 +73,6 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(h.shape == (self.f.shape[0] * self.v.shape[1], self.v.shape[0]))
         self.assertTrue(type(g) == type(h) == csc.csc_matrix)
 
-    def test_jet(self):
-        c = igl.jet(np.random.rand(1000), True)
-        self.assertTrue(len(c) == 1000)
-        self.assertTrue(np.min(c) >= 0.0)
-        self.assertTrue(np.max(c) <= 1.0)
-
     def test_massmatrix(self):
         a = igl.massmatrix(self.v, self.f)
         b = igl.massmatrix(self.v, self.f, type=igl.MASSMATRIX_TYPE_BARYCENTRIC)
@@ -87,12 +81,6 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(b.dtype == np.float64)
         self.assertTrue(a.dtype == np.float64)
         self.assertTrue(type(a) == type(b) == csc.csc_matrix)
-
-    def test_parula(self):
-        c = igl.parula(np.random.rand(1000), True)
-        self.assertTrue(len(c) == 1000)
-        self.assertTrue(np.min(c) >= 0.0)
-        self.assertTrue(np.max(c) <= 1.0)
 
     def test_principal_curvature(self):
         pd1, pd2, pv1, pv2 = igl.principal_curvature(self.v, self.f)
