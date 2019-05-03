@@ -6,6 +6,12 @@ import numpy as np
 import scipy.sparse.csc as csc
 
 
+DOUBLE_EPS = 1.0e-14
+DOUBLE_EPS_SQ = 1.0e-28
+FLOAT_EPS = 1.0e-7
+FLOAT_EPS_SQ = 1.0e-14
+
+
 class TestBasic(unittest.TestCase):
 
     def setUp(self):

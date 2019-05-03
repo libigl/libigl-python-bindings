@@ -10,11 +10,6 @@ import os
 # Constant definitions
 #Clean me up
 
-DOUBLE_EPS = 1.0e-14
-DOUBLE_EPS_SQ = 1.0e-28
-FLOAT_EPS = 1.0e-7
-FLOAT_EPS_SQ = 1.0e-14
-
 # Enum definitions
 MASSMATRIX_TYPE_BARYCENTRIC = 0
 MASSMATRIX_TYPE_VORONOI = 1
