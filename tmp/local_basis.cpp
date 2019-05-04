@@ -1,3 +1,8 @@
+// TODO: not working idk why
+// probably because
+// const Eigen::MatrixBase<DerivedF>& F,
+// Eigen::PlainObjectBase<DerivedV>& B1,
+// have the same template
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -36,9 +41,9 @@ npe_arg(v, dense_f32, dense_f64)
 npe_arg(f, dense_i32, dense_i64)
 npe_begin_code()
 
-  EigenDense<npe_Scalar_v> b1;
-  EigenDense<npe_Scalar_v> b2;
-  EigenDense<npe_Scalar_v> b3;
+  npe_Matrix_v b1;
+  npe_Matrix_v b2;
+  npe_Matrix_v b3;
   igl::local_basis(v, f, b1, b2, b3);
   return std::make_tuple(npe::move(b1), npe::move(b2), npe::move(b3));
 

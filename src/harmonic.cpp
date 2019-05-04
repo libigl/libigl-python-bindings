@@ -5,6 +5,7 @@
 //TODO: is is only dense_i32 because min_quad_with_fixed_data hardcodes int, fixme
 
 const char* ds_harmonic_w = R"igl_Qu8mg5v7(
+Compute k-harmonic weight functions "coordinates".
 
 Parameters
 ----------
@@ -24,7 +25,6 @@ See also
 
 Notes
 -----
-  Compute k-harmonic weight functions "coordinates".
 
 Examples
 --------
@@ -51,6 +51,8 @@ npe_end_code()
 
 const char* ds_harmonic_ul = R"igl_Qu8mg5v7(
 
+Compute harmonic map using uniform laplacian operator
+
 Parameters
 ----------
      F  #F by simplex-size list of element indices
@@ -68,7 +70,6 @@ See also
 
 Notes
 -----
-Compute harmonic map using uniform laplacian operator
 
 Examples
 --------
@@ -101,6 +102,8 @@ npe_end_code()
 
 const char* ds_harmonic = R"igl_Qu8mg5v7(
 
+Compute a harmonic map using a given Laplacian and mass matrix
+
 Parameters
 ----------
      L  #V by #V discrete (integrated) Laplacian
@@ -119,7 +122,6 @@ See also
 
 Notes
 -----
-    Compute a harmonic map using a given Laplacian and mass matrix
 
 Examples
 --------
@@ -147,6 +149,10 @@ npe_end_code()
 
 const char* ds_harmonic_int_lapl = R"igl_Qu8mg5v7(
 
+ Build the discrete k-harmonic operator (computing integrated quantities).
+   That is, if the k-harmonic PDE is Q x = 0, then this minimizes x' Q x
+
+
 Parameters
 ----------
      L  #V by #V discrete (integrated) Laplacian
@@ -162,9 +168,6 @@ See also
 
 Notes
 -----
- Build the discrete k-harmonic operator (computing integrated quantities).
-   That is, if the k-harmonic PDE is Q x = 0, then this minimizes x' Q x
-
 Examples
 --------
 
@@ -204,7 +207,7 @@ See also
 
 Notes
 -----
-None
+
 
 Examples
 --------

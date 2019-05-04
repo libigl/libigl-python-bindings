@@ -1,3 +1,4 @@
+//TODO: libigl is not templated...
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/copyleft/comiso/nrosy.h>
@@ -40,11 +41,11 @@ npe_doc(ds_nrosy)
 
 npe_arg(v, dense_f32, dense_f64)
 npe_arg(f, dense_i32, dense_i64)
-npe_arg(b, dense_i32, dense_i64)
-npe_arg(bc, dense_f32, dense_f64)
-npe_arg(b_soft, dense_i32, dense_i64)
-npe_arg(w_soft, dense_f32, dense_f64)
-npe_arg(bc_soft, dense_f32, dense_f64)
+npe_arg(b, npe_matches(f))
+npe_arg(bc, npe_matches(v))
+npe_arg(b_soft, npe_matches(f))
+npe_arg(w_soft, npe_matches(v))
+npe_arg(bc_soft, npe_matches(v))
 npe_arg(n, int)
 npe_arg(soft, double)
 

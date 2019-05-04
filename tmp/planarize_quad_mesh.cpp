@@ -1,3 +1,5 @@
+//TODO: problem with template input in libigl
+// probably same as local_basis
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>

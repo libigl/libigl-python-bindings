@@ -36,11 +36,13 @@ Examples
 
 )igl_Qu8mg5v7";
 
+
+//TODO: libigl matrix to list supports only same type
 npe_function(tetrahedralize)
 npe_doc(ds_tetrahedralize)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_f64)
+npe_arg(f, dense_i32)
 npe_arg(switches, std::string)
 npe_begin_code()
 

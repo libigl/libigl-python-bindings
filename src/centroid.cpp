@@ -41,7 +41,8 @@ npe_begin_code()
   npe_Matrix_v c;
   npe_Scalar_v vol;
   igl::centroid(v, f, c, vol);
-  return std::make_tuple(npe::move(c), vol);
+  //TODO: return std::make_tuple(npe::move(c), vol); is broken
+  return std::make_tuple(npe::move(c));
 
 npe_end_code()
 

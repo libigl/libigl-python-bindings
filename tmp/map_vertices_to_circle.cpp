@@ -1,3 +1,4 @@
+//TODO: libigl is not templated...
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>

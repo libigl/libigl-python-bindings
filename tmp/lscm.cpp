@@ -1,3 +1,4 @@
+//TODO: the libigl function is not templated...
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -40,10 +41,10 @@ Examples
 
 npe_function(lscm)
 npe_doc(ds_lscm)
-npe_arg(v, dense_f64)
-npe_arg(f, dense_i64)
-npe_arg(b, dense_i64)
-npe_arg(bc, dense_f64)
+npe_arg(v, dense_f32, dense_f64)
+npe_arg(f, dense_i32, dense_i64)
+npe_arg(b, npe_matches(f))
+npe_arg(bc, npe_matches(v))
 npe_begin_code()
 
   EigenDenseLike<npe_Matrix_v> uv;
