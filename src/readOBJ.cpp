@@ -51,7 +51,7 @@ npe_begin_code()
     return std::make_tuple(npe::move(v), npe::move(tc), npe::move(n), npe::move(f), npe::move(ftc), npe::move(fn));
   } else if (dtype.type() == npe::type_f64) {
     EigenDenseF64 v, tc, n;
-    EigenDenseI32 f, ftc, fn;
+    EigenDenseI64 f, ftc, fn; // TODO weird problem, int64 gives int128 dtype in numpy
     bool ret = igl::readOBJ(filename, v, tc, n, f, ftc, fn);
     if (!ret) {
       throw std::invalid_argument("File '" + filename + "' not found.");
