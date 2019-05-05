@@ -41,7 +41,7 @@ class Viewer():
                 "width": 600, "height": 600, "antialias": True, "scale": 2.3, "side": 'DoubleSide',
                 "colormap": "viridis", "normalize": [None, None], "background": "#ffffff",
                 "line_width": 1.0, "line_color": "black", "bbox": False, 
-                "point_color": "red", "point_size": 0.01
+                "point_color": "red", "point_size": 0.01, "coloring": "VertexColors"
                }
         for k in shading:
             shad[k] = shading[k]
@@ -60,34 +60,42 @@ class Viewer():
         self.light.position = [0, 0, self.scale]
         
         v = v.astype("float32", copy=False)
+        
+        
         f = f.astype("uint16", copy=False).ravel()
         
         if type(c) == type(None):
             c = np.ones_like(v)
             c[:, 1] = 0.874
             c[:, 2] = 0.0
-            geometry = BufferGeometry(attributes=dict(
-                position=BufferAttribute(v, normalized=False),
-                index=BufferAttribute(f, normalized=False),
-                color=BufferAttribute(c)
-            ))
         else:
             normalize = self.s["normalize"][0] != None and self.s["normalize"][1] != None
             c = get_colors(c, self.s["colormap"], normalize=normalize, 
                        vmin=self.s["normalize"][0], vmax=self.s["normalize"][1])
             c = c.astype("float32", copy=False)
             c = c[:, :3]
-            geometry = BufferGeometry(attributes=dict(
-                position=BufferAttribute(v, normalized=False),
-                index=BufferAttribute(f, normalized=False),
-                color=BufferAttribute(c),
-            ))
+            
+        #ci = np.zeros((v.shape[0], 3))
+        #for ii, fi in enumerate(f):
+        #    for vi in fi:
+        #        ci[vi] = c[ii]
         
-        self.meshmaterial = MeshStandardMaterial(vertexColors='VertexColors', 
+        # = f.ravel()
+        #print(ci.shape, f.shape, v.shape)
+        geometry = BufferGeometry(attributes=dict(
+            position=BufferAttribute(v, normalized=False),
+            index=BufferAttribute(f, normalized=False),
+            color=BufferAttribute(c)
+        ))
+        
+        self.meshmaterial = MeshStandardMaterial(vertexColors=self.s["coloring"], 
                             reflectivity=1.0, side=self.s["side"], 
                             roughness=0.5, metalness=0.25, flatShading=self.s["flat"],
                             polygonOffset=True, polygonOffsetFactor= 1, polygonOffsetUnits=1)
-        geometry.exec_three_obj_method('computeVertexNormals')
+        if self.s["coloring"] == "VertexColors":
+            geometry.exec_three_obj_method('computeVertexNormals')
+        else:
+            geometry.exec_three_obj_method('computeFaceNormals')
         self.mesh = Mesh(geometry=geometry, material=self.meshmaterial)
         
         #MeshLambertMaterial(vertexColors='VertexColors')
