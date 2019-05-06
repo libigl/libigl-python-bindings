@@ -18,8 +18,6 @@ def get_colors(inp, colormap="viridis", normalize=True, vmin=None, vmax=None):
     norm = plt.Normalize(vmin, vmax)
     return colormap(norm(inp))
 
-
-
 class Viewer():
     def __init__(self, shading={}):
         self.update_shading(shading)
@@ -46,8 +44,25 @@ class Viewer():
         for k in shading:
             shad[k] = shading[k]
         self.s = shad
+    
+    def gen_checkers(self, n_checkers_x, n_checkers_y, width=256, height=256): 
+        # tex dims need to be power of two.
+        array = np.ones((width, height, 3), dtype='float32')
 
-    def set_mesh(self, v, f, c=None, shading={}):
+        # width in texels of each checker
+        checker_w = width / n_checkers_x
+        checker_h = height / n_checkers_y
+
+        for y in range(arr_h):
+            for x in range(arr_w):
+                color_key = int(x / checker_w) + int(y / checker_h)
+                if color_key % 2 == 0:
+                    array[x, y, :] = [ 1., 0.874, 0.0 ]
+                else:
+                    array[x, y, :] = [ 0., 0., 0. ]
+        return array
+
+    def set_mesh(self, v, f, c=None, uv=None, shading={}):
         self.update_shading(shading)
 
         self.scale = self.s["scale"] * (np.max(v) - np.min(v))
@@ -60,8 +75,6 @@ class Viewer():
         self.light.position = [0, 0, self.scale]
         
         v = v.astype("float32", copy=False)
-        
-        
         f = f.astype("uint16", copy=False).ravel()
         
         if type(c) == type(None):
@@ -82,21 +95,35 @@ class Viewer():
         
         # = f.ravel()
         #print(ci.shape, f.shape, v.shape)
-        geometry = BufferGeometry(attributes=dict(
-            position=BufferAttribute(v, normalized=False),
-            index=BufferAttribute(f, normalized=False),
-            color=BufferAttribute(c)
-        ))
+        if type(uv) == type(None):
+            geometry = BufferGeometry(attributes=dict(
+                position=BufferAttribute(v, normalized=False),
+                index=BufferAttribute(f, normalized=False),
+                color=BufferAttribute(c)
+            ))
+            self.material = MeshStandardMaterial(vertexColors=self.s["coloring"], 
+                    reflectivity=1.0, side=self.s["side"], 
+                    roughness=0.5, metalness=0.25, flatShading=self.s["flat"],
+                    polygonOffset=True, polygonOffsetFactor= 1, polygonOffsetUnits=1)
+        else:
+            uv = (uv - np.min(uv)) / (np.max(uv) - np.min(uv))
+            uv = uv.astype("float32", copy=False)
+            geometry = BufferGeometry(attributes=dict(
+                position=BufferAttribute(v, normalized=False),
+                index=BufferAttribute(f, normalized=False),
+                color=BufferAttribute(c),
+                uv=BufferAttribute(uv)
+            ))
+            self.data_tex = DataTexture(data=self.gen_checkers(20, 20), format="RGBFormat", type="FloatType")
+            self.material = MeshStandardMaterial(map=self.data_tex, reflectivity=1.0, side=self.s["side"], 
+                    roughness=0.5, metalness=0.25, flatShading=self.s["flat"],
+                    polygonOffset=True, polygonOffsetFactor= 1, polygonOffsetUnits=1)
         
-        self.meshmaterial = MeshStandardMaterial(vertexColors=self.s["coloring"], 
-                            reflectivity=1.0, side=self.s["side"], 
-                            roughness=0.5, metalness=0.25, flatShading=self.s["flat"],
-                            polygonOffset=True, polygonOffsetFactor= 1, polygonOffsetUnits=1)
         if self.s["coloring"] == "VertexColors":
             geometry.exec_three_obj_method('computeVertexNormals')
         else:
             geometry.exec_three_obj_method('computeFaceNormals')
-        self.mesh = Mesh(geometry=geometry, material=self.meshmaterial)
+        self.mesh = Mesh(geometry=geometry, material=self.material)
         
         #MeshLambertMaterial(vertexColors='VertexColors')
         if self.s["wireframe"]:
@@ -124,7 +151,6 @@ class Viewer():
         self.mesh.geometry.verticesNeedUpdate = True
         self.mesh.geometry.elementsNeedUpdate = True
         self.update()
-
         
     def update_colors(self, c):
         normalize = self.s["normalize"][0] != None and self.s["normalize"][1] != None
@@ -241,12 +267,12 @@ class Viewer():
             display(w)
 
 
-def plot(v, f, c=None, shading={}, plot=None, return_plot=False):
+def plot(v, f, c=None, uv=None, shading={}, plot=None, return_plot=False):
     if not plot:
         view = Viewer(shading)
     else:
         view = plot
-    view.set_mesh(v, f, c, shading=shading)
+    view.set_mesh(v, f, c, uv=uv, shading=shading)
     if not plot:
         view.launch()
 

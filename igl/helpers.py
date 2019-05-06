@@ -74,3 +74,66 @@ def min_quad_with_fixed(q, b, bc, beq=np.array([]), bl=np.array([])):
     #z = factor(-b)
 
     return z[:-nr_const]
+
+
+# Needs to be tested
+def harmonic(v, f, b, bc, k):
+    l = igl.cotmatrix(v, f)
+    assert l.shape[0] == l.shape[1]
+    if k > 1:
+        m = igl.massmatrix(v, f, igl.MASSMATRIX_TYPE_DEFAULT)
+        assert l.shape[0] == l.shape[1] == m.shape[0] == m.shape[1]
+        assert sp.sparse.isdiag(m)
+
+    def harmonic_sub(l, m, k):
+        q = -l
+        if k == 1:
+            return q
+        minv = sp.sparse.diags(1 / m.diagonal())
+        for p in range(1, k):
+            q = q.dot(minv).dot(-l)
+        return q
+
+    q = harmonic_sub(l, m, k)
+    
+    # Solve with equality and linear constraints
+    vn = np.zeros_like(v)
+    for i in range(v.shape[1]):
+        bcw = bc[i]
+        w = igl.min_quad_with_fixed(q, b, bcw)
+        vn[:, i] = w
+    
+    return vn
+
+
+
+def map_vertices_to_circle(v, bnd):
+
+    map_ij = np.zeros(v.shape[0], dtype="int32")
+    interior = []
+    is_on_bnd = np.zeros(v.shape[0])
+
+    for i in range(len(bnd)):
+        is_on_bnd[bnd[i]] = 1
+        map_ij[bnd[i]] = i
+
+    is_on_bnd = is_on_bnd.astype("bool")
+    for i in range(is_on_bnd.size):
+        if not is_on_bnd[i]:
+            map_ij[i] = len(interior)
+            interior.append(i)
+
+    length = np.zeros(len(bnd))
+    length[0] = 0.0
+
+    for i in range(1, len(bnd)):
+        length[i] = length[i-1] + np.linalg.norm(v[bnd[i-1]] - v[bnd[i]])
+
+    total = length[-1] + np.linalg.norm(v[bnd[0]] - v[bnd[-1]])
+
+    uv = np.zeros((len(bnd), 2))
+    for i in range(len(bnd)):
+        frac = length[i] * 2.0 * np.pi / total
+        uv[map_ij[bnd[i]]] = np.array([np.cos(frac), np.sin(frac)])
+
+    return uv
