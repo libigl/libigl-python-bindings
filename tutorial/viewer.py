@@ -36,10 +36,11 @@ class Viewer():
         
     def update_shading(self, shading):
         shad = {"flat":True, "wireframe":True, "wire_width": 0.03, "wire_color": "black",
-                "width": 600, "height": 600, "antialias": True, "scale": 2.3, "side": 'DoubleSide',
+                "width": 600, "height": 600, "antialias": True, "scale": 1.5, "side": 'DoubleSide',
                 "colormap": "viridis", "normalize": [None, None], "background": "#ffffff",
                 "line_width": 1.0, "line_color": "black", "bbox": False, 
-                "point_color": "red", "point_size": 0.01, "coloring": "VertexColors"
+                "point_color": "red", "point_size": 0.01, "coloring": "VertexColors",# FaceColors not yet supported
+                "text_color" : "red"
                }
         for k in shading:
             shad[k] = shading[k]
@@ -53,8 +54,8 @@ class Viewer():
         checker_w = width / n_checkers_x
         checker_h = height / n_checkers_y
 
-        for y in range(arr_h):
-            for x in range(arr_w):
+        for y in range(height):
+            for x in range(width):
                 color_key = int(x / checker_w) + int(y / checker_h)
                 if color_key % 2 == 0:
                     array[x, y, :] = [ 1., 0.874, 0.0 ]
@@ -64,15 +65,23 @@ class Viewer():
 
     def set_mesh(self, v, f, c=None, uv=None, shading={}):
         self.update_shading(shading)
+        
+        ma = np.max(v, axis=0)
+        mi = np.min(v, axis=0)
+        diag = np.linalg.norm(ma-mi)
+        mean = (ma - mi) / 2 + mi
+        #print(ma-mi, ma, mi, diag)
 
-        self.scale = self.s["scale"] * (np.max(v) - np.min(v))
-        mean = v.mean(0)# * self.scale
+        self.scale = self.s["scale"] * (diag)
+        #print(self.scale, np.max(v), np.min(v), v.mean(0))
+        #print(mean, v.mean(0))
+        #mean = v.mean(0)# * self.scale
         mean = mean.tolist()
         self.orbit.target = mean
         self.cam.lookAt(mean)
         
-        self.cam.position = [0, 0, self.scale]
-        self.light.position = [0, 0, self.scale]
+        self.cam.position = [mean[0], mean[1], mean[2]+self.scale]
+        self.light.position = [mean[0], mean[1], mean[2]+self.scale]
         
         v = v.astype("float32", copy=False)
         f = f.astype("uint16", copy=False).ravel()
@@ -148,6 +157,7 @@ class Viewer():
         self.mesh.geometry.attributes["position"].array = v
         #self.wireframe.attributes["position"].array = v # Wireframe updates?
         self.mesh.geometry.attributes["position"].needsUpdate = True
+        self.mesh.geometry.exec_three_obj_method('computeVertexNormals')
         self.mesh.geometry.verticesNeedUpdate = True
         self.mesh.geometry.elementsNeedUpdate = True
         self.update()
@@ -185,6 +195,7 @@ class Viewer():
             self.update()
             
     def add_bbox(self, shading={}, update=True):
+        self.update_shading(shading)
         v = self.mesh.geometry.attributes["position"].array
         m = np.min(v, axis=0)
         M = np.max(v, axis=0)
@@ -195,7 +206,7 @@ class Viewer():
 
         f_box = np.array([[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4],
                     [0, 4], [1, 5], [2, 6], [7, 3]], dtype=np.int)
-        self.add_edges(v_box, f_box, shading, update)
+        self.add_edges(v_box, f_box, shading, update=False)
         self.add_points(v_box, shading, update)
 
     def add_points(self, points, shading={}, update=True):
@@ -243,7 +254,13 @@ class Viewer():
              #type='LinePieces')
         arrowhelper = ArrowHelper(dir=arrow[1], origin=arrow[0], length=length);
         self.mesh.add(arrowhelper)
-
+        
+    def add_text(self, text, shading={}):
+        self.update_shading(shading)
+        tt = TextTexture(string=text, color=self.s["text_color"])
+        sm = SpriteMaterial(map=tt)
+        self.text = Sprite(material=sm, scaleToTexture=True)    
+        self.scene.add(self.text)
         
     #def add_widget(self, widget, callback):
     #    self.widgets.append(widget)
