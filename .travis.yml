@@ -14,7 +14,7 @@ addons:
     # - libc++-dev
     - gcc-7
     - g++-7
-    # - libsuitesparse-dev
+    - libsuitesparse-dev
 env:
   - CC=gcc-7 && CXX=g++-7
   # - CC=clang CXX=clang++ CXXFLAGS="-stdlib=libc++"
@@ -22,9 +22,6 @@ install:
   - pip install numpy
   - pip install scipy
 script:
-  - ls
-  - pwd
-  - rm -rf build
   - python setup.py build --debug install
   - cd build
   - cmake ..

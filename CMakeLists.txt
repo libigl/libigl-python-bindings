@@ -79,9 +79,9 @@ npe_add_module(pyigl
  #TODO move additional libs to variable
 target_link_libraries(pyigl PRIVATE igl::core igl::triangle igl::comiso igl::tetgen)
 target_include_directories(pyigl PRIVATE "src/include")
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
-endif()
+# if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+#   target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
+# endif()
 
 
 # set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)
@@ -89,7 +89,6 @@ endif()
 # find_package(PythonInterp REQUIRED)
 # target_link_libraries(pyigl PRIVATE ${PYTHON_LIBRARIES})
 # set_target_properties(pyigl PROPERTIES LINK_FLAGS "-Wl,-undefined,error")
-#target_link_libraries(pyigl PRIVATE ${PYTHON_LIBRARIES})
 #set_target_properties(pyigl PROPERTIES LINK_FLAGS "-Wl,--no-undefined")
 # set_target_properties(pyigl PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -msse2")
 set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/igl")
