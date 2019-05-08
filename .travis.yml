@@ -23,8 +23,4 @@ install:
   - pip install scipy
 script:
   - python setup.py build --debug install
-  - cd build
-  - cmake ..
-  - ls
-  - cd ..
   - python setup.py test
