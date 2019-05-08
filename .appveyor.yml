@@ -41,4 +41,4 @@ build_script:
 test_script:
   - cd c:\projects\igl
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - python tests\test_basic.py -v
+  - "python setup.py test --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"
