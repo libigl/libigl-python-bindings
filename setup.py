@@ -71,7 +71,7 @@ class CMakeBuild(build_ext):
             build_args += ['--', '-j2']
 
 
-        if python_libs:
+        if python_libs and len(python_libs) > 0:
                 cmake_args += ['-D', 'PYTHON_LIBRARY={}'.format(python_libs)]
 
         env = os.environ.copy()
