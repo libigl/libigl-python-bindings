@@ -91,7 +91,7 @@ target_include_directories(pyigl PRIVATE "src/include")
 # set_target_properties(pyigl PROPERTIES LINK_FLAGS "-Wl,-undefined,error")
 #set_target_properties(pyigl PROPERTIES LINK_FLAGS "-Wl,--no-undefined")
 # set_target_properties(pyigl PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -msse2")
-set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/igl")
+# set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/igl")
 
 
 if(${LIBIGL_PYTHON_TESTS})
