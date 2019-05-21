@@ -111,7 +111,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://libigl.github.io/",
-    ext_modules=[CMakeExtension('igl')],
+    ext_modules=[CMakeExtension('pyigl')],
     cmdclass=dict(build_ext=CMakeBuild),
     packages=find_packages(),
     classifiers=[
