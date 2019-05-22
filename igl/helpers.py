@@ -9,6 +9,8 @@ import os
 
 import numpy as np
 from scipy import sparse
+from scipy.sparse.linalg import spsolve
+
 
 
 # Enum definitions
@@ -68,7 +70,7 @@ def min_quad_with_fixed(q, b, bc, beq=np.array([]), bl=np.array([])):
     d = sparse.vstack([tmp, aeqz]).tocsc()
     b = sparse.vstack([bl, beq]).tocsc()
 
-    z = sparse.linalg.spsolve(d, -b)
+    z = spsolve(d, -b)
     #from scikits.sparse.cholmod import cholesky
     #factor = cholesky(d)
     #z = factor(-b)
