@@ -17,6 +17,7 @@ class TestBasic(unittest.TestCase):
     def setUp(self):
         # Some global datastructures to use in the tests
         np.random.seed(42)
+        self.e = np.random.rand(10, 2)
         self.v = np.random.rand(10, 3)
         self.t = np.random.rand(10, 4)
         self.f = np.random.randint(0, 10, size=(20, 3), dtype="int32")
@@ -254,6 +255,11 @@ class TestBasic(unittest.TestCase):
         e = igl.edges(self.f1)
         self.assertTrue(e.shape[0] > self.f1.shape[0])
         self.assertEqual(e.shape[1], 2)
+
+    def test_bone_parents(self):
+        e = igl.edges(self.f1)
+        res = igl.bone_parents(e)
+        self.assertEqual(res.shape[0], e.shape[0])
 
 
 if __name__ == '__main__':
