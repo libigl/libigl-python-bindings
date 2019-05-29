@@ -60,7 +60,7 @@ npe_doc(ds_seam_edges)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(tc, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(ftc, dense_float, dense_double)
 
 

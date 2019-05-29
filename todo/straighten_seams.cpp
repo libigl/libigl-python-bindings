@@ -59,7 +59,7 @@ npe_function(straighten_seams)
 npe_doc(ds_straighten_seams)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(vt, dense_float, dense_double)
 npe_arg(ft, dense_float, dense_double)
 npe_arg(tol, Scalar)

@@ -46,7 +46,7 @@ npe_doc(ds_write_dae)
 
 npe_arg(filename, std::string &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

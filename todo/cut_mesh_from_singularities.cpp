@@ -41,7 +41,7 @@ npe_function(cut_mesh_from_singularities)
 npe_doc(ds_cut_mesh_from_singularities)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(m_match, dense_float, dense_double)
 
 

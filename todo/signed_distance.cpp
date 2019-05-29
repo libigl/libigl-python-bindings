@@ -31,7 +31,7 @@ npe_doc(ds_signed_distance)
 
 npe_arg(p, dense_float, dense_double)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(sign_type, igl::SignedDistanceType)
 
 
@@ -100,7 +100,7 @@ npe_doc(ds_signed_distance)
 
 npe_arg(p, dense_float, dense_double)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(sign_type, igl::SignedDistanceType)
 npe_arg(lower_bound, typename DerivedV::Scalar)
 npe_arg(upper_bound, typename DerivedV::Scalar)
@@ -158,7 +158,7 @@ npe_doc(ds_signed_distance_pseudonormal)
 
 npe_arg(tree, AABB<DerivedV, 3> &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(fn, dense_float, dense_double)
 npe_arg(vn, dense_float, dense_double)
 npe_arg(en, dense_float, dense_double)
@@ -183,7 +183,7 @@ npe_doc(ds_signed_distance_pseudonormal)
 
 npe_arg(p, dense_float, dense_double)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(tree, AABB<DerivedV, 3> &)
 npe_arg(fn, dense_float, dense_double)
 npe_arg(vn, dense_float, dense_double)
@@ -237,7 +237,7 @@ npe_doc(ds_signed_distance_pseudonormal)
 
 npe_arg(tree, AABB<DerivedV, 3> &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(fn, dense_float, dense_double)
 npe_arg(vn, dense_float, dense_double)
 npe_arg(en, dense_float, dense_double)
@@ -319,7 +319,7 @@ npe_doc(ds_signed_distance_winding_number)
 
 npe_arg(tree, AABB<DerivedV, 3> &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(hier, igl::WindingNumberAABB<Derivedq, DerivedV, DerivedF> &)
 npe_arg(q, dense_float, dense_double)
 
@@ -364,7 +364,7 @@ npe_doc(ds_signed_distance_winding_number)
 
 npe_arg(tree, AABB<DerivedV, 3> &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(hier, igl::WindingNumberAABB<Derivedq, DerivedV, DerivedF> &)
 npe_arg(q, dense_float, dense_double)
 
@@ -390,7 +390,7 @@ npe_doc(ds_signed_distance_winding_number)
 
 npe_arg(tree, AABB<DerivedV, 2> &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(q, dense_float, dense_double)
 
 

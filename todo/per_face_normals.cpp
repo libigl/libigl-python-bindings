@@ -40,7 +40,7 @@ npe_function(per_face_normals)
 npe_doc(ds_per_face_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(z, dense_float, dense_double)
 
 
@@ -82,7 +82,7 @@ npe_function(per_face_normals)
 npe_doc(ds_per_face_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -123,7 +123,7 @@ npe_function(per_face_normals_stable)
 npe_doc(ds_per_face_normals_stable)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

@@ -41,7 +41,7 @@ Examples
 npe_function(triangle_triangle_adjacency)
 npe_doc(ds_triangle_triangle_adjacency)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -61,7 +61,7 @@ See triangle_triangle_adjacency for the documentation.
 npe_function(triangle_triangle_adjacency)
 npe_doc(ds_triangle_triangle_adjacency)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -106,7 +106,7 @@ Examples
 npe_function(triangle_triangle_adjacency_preprocess)
 npe_doc(ds_triangle_triangle_adjacency_preprocess)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -145,7 +145,7 @@ Examples
 npe_function(triangle_triangle_adjacency_extract_tt)
 npe_doc(ds_triangle_triangle_adjacency_extract_tt)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -185,7 +185,7 @@ Examples
 npe_function(triangle_triangle_adjacency_extract_t_ti)
 npe_doc(ds_triangle_triangle_adjacency_extract_t_ti)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -235,7 +235,7 @@ Examples
 npe_function(triangle_triangle_adjacency)
 npe_doc(ds_triangle_triangle_adjacency)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -255,7 +255,7 @@ See triangle_triangle_adjacency for the documentation.
 npe_function(triangle_triangle_adjacency)
 npe_doc(ds_triangle_triangle_adjacency)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -295,7 +295,7 @@ Examples
 npe_function(triangle_triangle_adjacency)
 npe_doc(ds_triangle_triangle_adjacency)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(construct_t_ti, bool)
 
 

@@ -46,7 +46,7 @@ npe_function(reorient_facets_raycast)
 npe_doc(ds_reorient_facets_raycast)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -99,7 +99,7 @@ npe_function(reorient_facets_raycast)
 npe_doc(ds_reorient_facets_raycast)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

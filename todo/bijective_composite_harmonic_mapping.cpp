@@ -49,7 +49,7 @@ npe_function(bijective_composite_harmonic_mapping)
 npe_doc(ds_bijective_composite_harmonic_mapping)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(b, dense_float, dense_double)
 npe_arg(bc, dense_float, dense_double)
 
@@ -101,7 +101,7 @@ npe_function(bijective_composite_harmonic_mapping)
 npe_doc(ds_bijective_composite_harmonic_mapping)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(b, dense_float, dense_double)
 npe_arg(bc, dense_float, dense_double)
 npe_arg(min_steps, int)

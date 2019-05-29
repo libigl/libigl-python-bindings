@@ -40,7 +40,7 @@ npe_function(per_edge_normals)
 npe_doc(ds_per_edge_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(weight, igl::PerEdgeNormalsWeightingType)
 npe_arg(fn, dense_float, dense_double)
 
@@ -64,7 +64,7 @@ npe_function(per_edge_normals)
 npe_doc(ds_per_edge_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(weight, igl::PerEdgeNormalsWeightingType)
 
 
@@ -87,7 +87,7 @@ npe_function(per_edge_normals)
 npe_doc(ds_per_edge_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

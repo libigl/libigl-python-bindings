@@ -49,7 +49,7 @@ npe_function(outer_vertex)
 npe_doc(ds_outer_vertex)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(i, dense_float, dense_double)
 
 
@@ -106,7 +106,7 @@ npe_function(outer_edge)
 npe_doc(ds_outer_edge)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(i, dense_float, dense_double)
 
 

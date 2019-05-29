@@ -39,7 +39,7 @@ Examples
 npe_function(principal_curvature)
 npe_doc(ds_principal_curvature)
 npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_default_arg(radius, int, 5)
 npe_default_arg(use_k_ring, bool, true)
 npe_begin_code()

@@ -37,7 +37,7 @@ Examples
 npe_function(connect_boundary_to_infinity)
 npe_doc(ds_connect_boundary_to_infinity)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -84,7 +84,7 @@ npe_function(connect_boundary_to_infinity)
 npe_doc(ds_connect_boundary_to_infinity)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -131,7 +131,7 @@ Examples
 npe_function(connect_boundary_to_infinity)
 npe_doc(ds_connect_boundary_to_infinity)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(inf_index, typename DerivedF::Scalar)
 
 

@@ -57,7 +57,7 @@ npe_arg(model, Eigen::Matrix4f &)
 npe_arg(proj, Eigen::Matrix4f &)
 npe_arg(viewport, Eigen::Vector4f &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -139,7 +139,7 @@ npe_arg(model, Eigen::Matrix4f &)
 npe_arg(proj, Eigen::Matrix4f &)
 npe_arg(viewport, Eigen::Vector4f &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

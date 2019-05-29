@@ -95,7 +95,7 @@ npe_function(remove_duplicate_vertices)
 npe_doc(ds_remove_duplicate_vertices)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(epsilon, double)
 
 

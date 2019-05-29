@@ -28,7 +28,7 @@ Examples
 npe_function(bone_parents)
 npe_doc(ds_bone_parents)
 
-npe_arg(be, dense_int, dense_longlong)
+npe_arg(be, dense_int, dense_long)
 
 
 npe_begin_code()

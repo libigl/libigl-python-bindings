@@ -49,7 +49,7 @@ npe_doc(ds_write_triangle_mesh)
 
 npe_arg(str, std::string)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(force_ascii, bool)
 
 

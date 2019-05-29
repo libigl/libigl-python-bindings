@@ -57,7 +57,7 @@ npe_function(extract_feature)
 npe_doc(ds_extract_feature)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(tol, double)
 
 
@@ -115,7 +115,7 @@ npe_function(extract_feature)
 npe_doc(ds_extract_feature)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(tol, double)
 npe_arg(e, dense_float, dense_double)
 npe_arg(u_e, dense_float, dense_double)

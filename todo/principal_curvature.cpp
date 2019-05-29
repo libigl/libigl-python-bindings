@@ -56,7 +56,7 @@ npe_function(principal_curvature)
 npe_doc(ds_principal_curvature)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

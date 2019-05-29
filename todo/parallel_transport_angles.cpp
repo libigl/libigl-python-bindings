@@ -47,7 +47,7 @@ npe_function(parallel_transport_angles)
 npe_doc(ds_parallel_transport_angles)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(fn, dense_float, dense_double)
 npe_arg(e2_f, Eigen::MatrixXi &)
 npe_arg(f2_e, Eigen::MatrixXi &)

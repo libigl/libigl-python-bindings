@@ -53,7 +53,7 @@ npe_function(order_facets_around_edge)
 npe_doc(ds_order_facets_around_edge)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(adj_faces, std::vector<int> &)
 
 
@@ -100,7 +100,7 @@ npe_function(order_facets_around_edge)
 npe_doc(ds_order_facets_around_edge)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(adj_faces, std::vector<int> &)
 npe_arg(pivot_point, dense_float, dense_double)
 

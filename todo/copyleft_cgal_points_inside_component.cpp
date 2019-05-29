@@ -47,7 +47,7 @@ npe_function(points_inside_component)
 npe_doc(ds_points_inside_component)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(i, dense_float, dense_double)
 npe_arg(p, dense_float, dense_double)
 
@@ -90,7 +90,7 @@ npe_function(points_inside_component)
 npe_doc(ds_points_inside_component)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(p, dense_float, dense_double)
 
 

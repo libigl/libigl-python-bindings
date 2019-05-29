@@ -46,7 +46,7 @@ npe_doc(ds_point_mesh_squared_distance)
 
 npe_arg(p, dense_float, dense_double)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -99,7 +99,7 @@ npe_function(point_mesh_squared_distance_precompute)
 npe_doc(ds_point_mesh_squared_distance_precompute)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

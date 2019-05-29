@@ -53,7 +53,7 @@ npe_function(offset_surface)
 npe_doc(ds_offset_surface)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(isolevel, isolevelType)
 npe_arg(s, typename Derivedside::Scalar)
 npe_arg(signed_distance_type, igl::SignedDistanceType &)

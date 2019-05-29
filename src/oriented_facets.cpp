@@ -35,7 +35,7 @@ Examples
 
 npe_function(oriented_facets)
 npe_doc(ds_oriented_facets)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
   npe_Matrix_f e;

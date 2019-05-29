@@ -41,7 +41,7 @@ npe_function(intersect_with_half_space)
 npe_doc(ds_intersect_with_half_space)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(p, dense_float, dense_double)
 npe_arg(n, dense_float, dense_double)
 
@@ -94,7 +94,7 @@ npe_function(intersect_with_half_space)
 npe_doc(ds_intersect_with_half_space)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(equ, dense_float, dense_double)
 
 
@@ -151,7 +151,7 @@ npe_function(intersect_with_half_space)
 npe_doc(ds_intersect_with_half_space)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(p, CGAL::Plane_3<CGAL::Epeck> &)
 
 

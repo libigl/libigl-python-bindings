@@ -52,7 +52,7 @@ npe_function(remesh_along_isoline)
 npe_doc(ds_remesh_along_isoline)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(s, dense_float, dense_double)
 npe_arg(val, typename DerivedS::Scalar)
 
@@ -100,7 +100,7 @@ npe_function(remesh_along_isoline)
 npe_doc(ds_remesh_along_isoline)
 
 npe_arg(n, int)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(s, dense_float, dense_double)
 npe_arg(val, typename DerivedS::Scalar)
 

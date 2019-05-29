@@ -57,7 +57,7 @@ npe_function(remesh_intersections)
 npe_doc(ds_remesh_intersections)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(t, std::vector<CGAL::Triangle_3<Kernel> > &)
 npe_arg(offending, std::map<typename DerivedF::Index, std::vector<std::pair<typename DerivedF::Index, CGAL::Object> > > &)
 
@@ -103,7 +103,7 @@ npe_function(remesh_intersections)
 npe_doc(ds_remesh_intersections)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(t, std::vector<CGAL::Triangle_3<Kernel> > &)
 npe_arg(offending, std::map<typename DerivedF::Index, std::vector<std::pair<typename DerivedF::Index, CGAL::Object> > > &)
 

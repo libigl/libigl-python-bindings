@@ -39,7 +39,7 @@ npe_function(is_boundary_edge)
 npe_doc(ds_is_boundary_edge)
 
 npe_arg(e, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -80,7 +80,7 @@ Examples
 npe_function(is_boundary_edge)
 npe_doc(ds_is_boundary_edge)
 
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

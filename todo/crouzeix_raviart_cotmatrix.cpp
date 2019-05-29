@@ -50,7 +50,7 @@ npe_function(crouzeix_raviart_cotmatrix)
 npe_doc(ds_crouzeix_raviart_cotmatrix)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -92,7 +92,7 @@ npe_function(crouzeix_raviart_cotmatrix)
 npe_doc(ds_crouzeix_raviart_cotmatrix)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(e, dense_float, dense_double)
 npe_arg(emap, dense_float, dense_double)
 

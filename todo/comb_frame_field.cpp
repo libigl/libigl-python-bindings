@@ -40,7 +40,7 @@ npe_function(comb_frame_field)
 npe_doc(ds_comb_frame_field)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(pd1, dense_float, dense_double)
 npe_arg(pd2, dense_float, dense_double)
 npe_arg(bis1_combed, dense_float, dense_double)

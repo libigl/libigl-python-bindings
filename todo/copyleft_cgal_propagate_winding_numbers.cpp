@@ -50,7 +50,7 @@ npe_function(propagate_winding_numbers)
 npe_doc(ds_propagate_winding_numbers)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(labels, dense_float, dense_double)
 
 
@@ -112,7 +112,7 @@ npe_function(propagate_winding_numbers)
 npe_doc(ds_propagate_winding_numbers)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(u_e, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)
 npe_arg(num_patches, size_t)

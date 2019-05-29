@@ -46,7 +46,7 @@ npe_function(submesh_aabb_tree)
 npe_doc(ds_submesh_aabb_tree)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(i, dense_float, dense_double)
 
 

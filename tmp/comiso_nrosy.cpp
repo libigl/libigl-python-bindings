@@ -40,7 +40,7 @@ npe_function(nrosy)
 npe_doc(ds_nrosy)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(b, npe_matches(f))
 npe_arg(bc, npe_matches(v))
 npe_arg(b_soft, npe_matches(f))

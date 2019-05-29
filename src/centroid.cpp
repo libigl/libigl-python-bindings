@@ -33,7 +33,7 @@ npe_function(centroid)
 npe_doc(ds_centroid)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

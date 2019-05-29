@@ -30,7 +30,7 @@ npe_function(cut_mesh)
 npe_doc(ds_cut_mesh)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(cuts, dense_float, dense_double)
 
 
@@ -110,7 +110,7 @@ npe_function(cut_mesh)
 npe_doc(ds_cut_mesh)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(vf, std::vector<std::vector<VFType> > &)
 npe_arg(v_fi, std::vector<std::vector<VFType> > &)
 npe_arg(tt, dense_float, dense_double)

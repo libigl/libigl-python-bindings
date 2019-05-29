@@ -29,7 +29,7 @@ Examples
 
 npe_function(average_onto_faces)
 npe_doc(ds_average_onto_faces)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(s, dense_float, dense_double)
 npe_begin_code()
 

@@ -29,7 +29,7 @@ Examples
 
 npe_function(vertex_components)
 npe_doc(ds_vertex_components)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
     npe_Matrix_f c;
     igl::vertex_components(f, c);
@@ -65,7 +65,7 @@ Examples
 
 npe_function(vertex_components_from_adjacency_matrix)
 npe_doc(ds_vertex_components_from_adjacency_matrix)
-npe_arg(a, sparse_int, sparse_longlong)
+npe_arg(a, sparse_int, sparse_long)
 npe_begin_code()
     EigenDense<npe_Scalar_a> c;
     EigenDense<npe_Scalar_a> counts;

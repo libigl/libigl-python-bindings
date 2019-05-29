@@ -43,7 +43,7 @@ npe_function(per_corner_normals)
 npe_doc(ds_per_corner_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(corner_threshold, double)
 
 
@@ -85,7 +85,7 @@ npe_function(per_corner_normals)
 npe_doc(ds_per_corner_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(fn, dense_float, dense_double)
 npe_arg(corner_threshold, double)
 
@@ -128,7 +128,7 @@ npe_function(per_corner_normals)
 npe_doc(ds_per_corner_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(fn, dense_float, dense_double)
 npe_arg(vf, std::vector<std::vector<IndexType> > &)
 npe_arg(corner_threshold, double)

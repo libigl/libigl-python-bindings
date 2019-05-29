@@ -49,7 +49,7 @@ npe_function(relabel_small_immersed_cells)
 npe_doc(ds_relabel_small_immersed_cells)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(num_patches, size_t)
 npe_arg(p, dense_float, dense_double)
 npe_arg(num_cells, size_t)

@@ -100,7 +100,7 @@ npe_function(tetrahedralize)
 npe_doc(ds_tetrahedralize)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(switches, std::string)
 
 
@@ -212,7 +212,7 @@ npe_function(tetrahedralize)
 npe_doc(ds_tetrahedralize)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(vm, dense_float, dense_double)
 npe_arg(fm, dense_float, dense_double)
 npe_arg(switches, std::string)

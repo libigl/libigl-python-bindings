@@ -30,7 +30,7 @@ Examples
 npe_function(quad_planarity)
 npe_doc(ds_quad_planarity)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
   EigenDenseLike<npe_Matrix_v> p;

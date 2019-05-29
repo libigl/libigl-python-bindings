@@ -56,7 +56,7 @@ npe_function(miq)
 npe_doc(ds_miq)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(pd1, dense_float, dense_double)
 npe_arg(pd2, dense_float, dense_double)
 
@@ -115,7 +115,7 @@ npe_function(miq)
 npe_doc(ds_miq)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(pd1_combed, dense_float, dense_double)
 npe_arg(pd2_combed, dense_float, dense_double)
 npe_arg(m_match, Eigen::Matrix<int, Eigen::Dynamic, 3> &)

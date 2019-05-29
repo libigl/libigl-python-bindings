@@ -36,7 +36,7 @@ npe_function(planarize_quad_mesh)
 npe_doc(ds_planarize_quad_mesh)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(max_iter, int)
 npe_arg(threshold, double)
 

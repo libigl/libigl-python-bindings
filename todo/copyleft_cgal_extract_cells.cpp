@@ -41,7 +41,7 @@ npe_function(extract_cells)
 npe_doc(ds_extract_cells)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -102,7 +102,7 @@ npe_function(extract_cells)
 npe_doc(ds_extract_cells)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(p, dense_float, dense_double)
 npe_arg(e, dense_float, dense_double)
 npe_arg(u_e, dense_float, dense_double)
@@ -162,7 +162,7 @@ npe_function(extract_cells_single_component)
 npe_doc(ds_extract_cells_single_component)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(p, dense_float, dense_double)
 npe_arg(u_e, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)

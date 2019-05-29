@@ -10,7 +10,7 @@ npe_function(peel_winding_number_layers)
 npe_doc(ds_peel_winding_number_layers)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

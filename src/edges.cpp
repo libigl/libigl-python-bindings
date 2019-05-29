@@ -30,7 +30,7 @@ Examples
 
 npe_function(edges)
 npe_doc(ds_edges)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
   npe_Matrix_f e;

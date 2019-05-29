@@ -45,7 +45,7 @@ npe_doc(ds_write_ply)
 
 npe_arg(filename, std::string &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(n, dense_float, dense_double)
 npe_arg(uv, dense_float, dense_double)
 npe_arg(ascii, bool)
@@ -68,7 +68,7 @@ npe_doc(ds_write_ply)
 
 npe_arg(filename, std::string &)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(ascii, bool)
 
 
