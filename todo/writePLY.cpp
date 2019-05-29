@@ -44,10 +44,10 @@ npe_function(write_ply)
 npe_doc(ds_write_ply)
 
 npe_arg(filename, std::string &)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(n, dense_f32, dense_f64)
-npe_arg(uv, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(n, dense_float, dense_double)
+npe_arg(uv, dense_float, dense_double)
 npe_arg(ascii, bool)
 
 
@@ -67,8 +67,8 @@ npe_function(write_ply)
 npe_doc(ds_write_ply)
 
 npe_arg(filename, std::string &)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 npe_arg(ascii, bool)
 
 

@@ -41,7 +41,7 @@ Examples
 npe_function(polar_svd)
 npe_doc(ds_polar_svd)
 
-npe_arg(a, dense_f32, dense_f64)
+npe_arg(a, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -64,7 +64,7 @@ See polar_svd for the documentation.
 npe_function(polar_svd)
 npe_doc(ds_polar_svd)
 
-npe_arg(a, dense_f32, dense_f64)
+npe_arg(a, dense_float, dense_double)
 
 
 npe_begin_code()

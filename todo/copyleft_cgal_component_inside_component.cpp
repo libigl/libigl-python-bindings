@@ -46,12 +46,12 @@ Examples
 npe_function(component_inside_component)
 npe_doc(ds_component_inside_component)
 
-npe_arg(v1, dense_f32, dense_f64)
-npe_arg(f1, dense_f32, dense_f64)
-npe_arg(i1, dense_f32, dense_f64)
-npe_arg(v2, dense_f32, dense_f64)
-npe_arg(f2, dense_f32, dense_f64)
-npe_arg(i2, dense_f32, dense_f64)
+npe_arg(v1, dense_float, dense_double)
+npe_arg(f1, dense_float, dense_double)
+npe_arg(i1, dense_float, dense_double)
+npe_arg(v2, dense_float, dense_double)
+npe_arg(f2, dense_float, dense_double)
+npe_arg(i2, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -103,10 +103,10 @@ Examples
 npe_function(component_inside_component)
 npe_doc(ds_component_inside_component)
 
-npe_arg(v1, dense_f32, dense_f64)
-npe_arg(f1, dense_f32, dense_f64)
-npe_arg(v2, dense_f32, dense_f64)
-npe_arg(f2, dense_f32, dense_f64)
+npe_arg(v1, dense_float, dense_double)
+npe_arg(f1, dense_float, dense_double)
+npe_arg(v2, dense_float, dense_double)
+npe_arg(f2, dense_float, dense_double)
 
 
 npe_begin_code()

@@ -37,8 +37,8 @@ Examples
 npe_function(face_areas)
 npe_doc(ds_face_areas)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -86,7 +86,7 @@ Examples
 npe_function(face_areas)
 npe_doc(ds_face_areas)
 
-npe_arg(l, dense_f32, dense_f64)
+npe_arg(l, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -131,7 +131,7 @@ Examples
 npe_function(face_areas)
 npe_doc(ds_face_areas)
 
-npe_arg(l, dense_f32, dense_f64)
+npe_arg(l, dense_float, dense_double)
 npe_arg(doublearea_nan_replacement, typename DerivedL::Scalar)
 
 

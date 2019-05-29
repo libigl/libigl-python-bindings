@@ -39,8 +39,8 @@ Examples
 npe_function(snap_rounding)
 npe_doc(ds_snap_rounding)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(e, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(e, dense_float, dense_double)
 
 
 npe_begin_code()

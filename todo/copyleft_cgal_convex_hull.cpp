@@ -35,7 +35,7 @@ Examples
 npe_function(convex_hull)
 npe_doc(ds_convex_hull)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -82,7 +82,7 @@ Examples
 npe_function(convex_hull)
 npe_doc(ds_convex_hull)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()

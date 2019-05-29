@@ -41,8 +41,8 @@ Examples
 npe_function(tetrahedralize)
 npe_doc(ds_tetrahedralize)
 
-npe_arg(v, dense_f64)
-npe_arg(f, dense_i32)
+npe_arg(v, dense_double)
+npe_arg(f, dense_int)
 npe_arg(switches, std::string)
 npe_begin_code()
 

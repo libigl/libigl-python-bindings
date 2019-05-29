@@ -40,8 +40,8 @@ Examples
 npe_function(outer_hull)
 npe_doc(ds_outer_hull)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()
@@ -103,8 +103,8 @@ Examples
 npe_function(outer_hull_legacy)
 npe_doc(ds_outer_hull_legacy)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()

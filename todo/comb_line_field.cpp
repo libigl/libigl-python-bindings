@@ -37,9 +37,9 @@ Examples
 npe_function(comb_line_field)
 npe_doc(ds_comb_line_field)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(pd1in, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(pd1in, dense_float, dense_double)
 
 
 npe_begin_code()

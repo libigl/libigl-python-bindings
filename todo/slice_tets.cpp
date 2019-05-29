@@ -9,9 +9,9 @@ See slice_tets for the documentation.
 npe_function(slice_tets)
 npe_doc(ds_slice_tets)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
-npe_arg(s, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
+npe_arg(s, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -55,9 +55,9 @@ Examples
 npe_function(slice_tets)
 npe_doc(ds_slice_tets)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
-npe_arg(s, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
+npe_arg(s, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -120,9 +120,9 @@ Examples
 npe_function(slice_tets)
 npe_doc(ds_slice_tets)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
-npe_arg(s, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
+npe_arg(s, dense_float, dense_double)
 
 
 npe_begin_code()

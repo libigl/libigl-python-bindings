@@ -9,8 +9,8 @@ See sort_triangles for the documentation.
 npe_function(sort_triangles)
 npe_doc(ds_sort_triangles)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()
@@ -30,8 +30,8 @@ See sort_triangles_slow for the documentation.
 npe_function(sort_triangles_slow)
 npe_doc(ds_sort_triangles_slow)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()

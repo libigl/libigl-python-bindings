@@ -51,8 +51,8 @@ npe_function(random_search)
 npe_doc(ds_random_search)
 
 npe_arg(f, std::function<Scalar (DerivedX &)>)
-npe_arg(lb, dense_f32, dense_f64)
-npe_arg(ub, dense_f32, dense_f64)
+npe_arg(lb, dense_float, dense_double)
+npe_arg(ub, dense_float, dense_double)
 npe_arg(iters, int)
 
 

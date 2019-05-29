@@ -62,7 +62,7 @@ Examples
 npe_function(octree)
 npe_doc(ds_octree)
 
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()

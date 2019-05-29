@@ -52,10 +52,10 @@ Examples
 npe_function(mesh_boolean)
 npe_doc(ds_mesh_boolean)
 
-npe_arg(va, dense_f32, dense_f64)
-npe_arg(fa, dense_f32, dense_f64)
-npe_arg(vb, dense_f32, dense_f64)
-npe_arg(fb, dense_f32, dense_f64)
+npe_arg(va, dense_float, dense_double)
+npe_arg(fa, dense_float, dense_double)
+npe_arg(vb, dense_float, dense_double)
+npe_arg(fb, dense_float, dense_double)
 npe_arg(type, igl::MeshBooleanType &)
 
 
@@ -77,10 +77,10 @@ See mesh_boolean for the documentation.
 npe_function(mesh_boolean)
 npe_doc(ds_mesh_boolean)
 
-npe_arg(va, dense_f32, dense_f64)
-npe_arg(fa, dense_f32, dense_f64)
-npe_arg(vb, dense_f32, dense_f64)
-npe_arg(fb, dense_f32, dense_f64)
+npe_arg(va, dense_float, dense_double)
+npe_arg(fa, dense_float, dense_double)
+npe_arg(vb, dense_float, dense_double)
+npe_arg(fb, dense_float, dense_double)
 npe_arg(type_str, std::string &)
 
 
@@ -140,10 +140,10 @@ Examples
 npe_function(mesh_boolean)
 npe_doc(ds_mesh_boolean)
 
-npe_arg(va, dense_f32, dense_f64)
-npe_arg(fa, dense_f32, dense_f64)
-npe_arg(vb, dense_f32, dense_f64)
-npe_arg(fb, dense_f32, dense_f64)
+npe_arg(va, dense_float, dense_double)
+npe_arg(fa, dense_float, dense_double)
+npe_arg(vb, dense_float, dense_double)
+npe_arg(fb, dense_float, dense_double)
 npe_arg(wind_num_op, std::function<int (const Eigen::Matrix<int, 1, Eigen::Dynamic>)> &)
 npe_arg(keep, std::function<int (const int, const int)> &)
 
@@ -289,9 +289,9 @@ Examples
 npe_function(mesh_boolean)
 npe_doc(ds_mesh_boolean)
 
-npe_arg(vv, dense_f32, dense_f64)
-npe_arg(ff, dense_f32, dense_f64)
-npe_arg(sizes, dense_f32, dense_f64)
+npe_arg(vv, dense_float, dense_double)
+npe_arg(ff, dense_float, dense_double)
+npe_arg(sizes, dense_float, dense_double)
 npe_arg(wind_num_op, std::function<int (const Eigen::Matrix<int, 1, Eigen::Dynamic>)> &)
 npe_arg(keep, std::function<int (const int, const int)> &)
 
@@ -344,10 +344,10 @@ Examples
 npe_function(mesh_boolean)
 npe_doc(ds_mesh_boolean)
 
-npe_arg(va, dense_f32, dense_f64)
-npe_arg(fa, dense_f32, dense_f64)
-npe_arg(vb, dense_f32, dense_f64)
-npe_arg(fb, dense_f32, dense_f64)
+npe_arg(va, dense_float, dense_double)
+npe_arg(fa, dense_float, dense_double)
+npe_arg(vb, dense_float, dense_double)
+npe_arg(fb, dense_float, dense_double)
 npe_arg(type, igl::MeshBooleanType &)
 
 

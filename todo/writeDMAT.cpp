@@ -45,7 +45,7 @@ npe_function(write_dmat)
 npe_doc(ds_write_dmat)
 
 npe_arg(file_name, std::string)
-npe_arg(w, dense_f32, dense_f64)
+npe_arg(w, dense_float, dense_double)
 npe_arg(ascii, bool)
 
 

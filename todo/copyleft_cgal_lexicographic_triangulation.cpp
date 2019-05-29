@@ -36,7 +36,7 @@ Examples
 npe_function(lexicographic_triangulation)
 npe_doc(ds_lexicographic_triangulation)
 
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()

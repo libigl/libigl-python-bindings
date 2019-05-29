@@ -55,11 +55,11 @@ Examples
 npe_function(fast_winding_number)
 npe_doc(ds_fast_winding_number)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
-npe_arg(a, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
+npe_arg(a, dense_float, dense_double)
 npe_arg(point_indices, std::vector<std::vector<int> > &)
-npe_arg(ch, dense_f32, dense_f64)
+npe_arg(ch, dense_float, dense_double)
 npe_arg(expansion_order, int)
 
 
@@ -115,10 +115,10 @@ Examples
 npe_function(fast_winding_number)
 npe_doc(ds_fast_winding_number)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
-npe_arg(a, dense_f32, dense_f64)
-npe_arg(q, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
+npe_arg(a, dense_float, dense_double)
+npe_arg(q, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -187,15 +187,15 @@ Examples
 npe_function(fast_winding_number)
 npe_doc(ds_fast_winding_number)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
-npe_arg(a, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
+npe_arg(a, dense_float, dense_double)
 npe_arg(point_indices, std::vector<std::vector<int> > &)
-npe_arg(ch, dense_f32, dense_f64)
-npe_arg(cm, dense_f32, dense_f64)
-npe_arg(r, dense_f32, dense_f64)
-npe_arg(ec, dense_f32, dense_f64)
-npe_arg(q, dense_f32, dense_f64)
+npe_arg(ch, dense_float, dense_double)
+npe_arg(cm, dense_float, dense_double)
+npe_arg(r, dense_float, dense_double)
+npe_arg(ec, dense_float, dense_double)
+npe_arg(q, dense_float, dense_double)
 npe_arg(beta, BetaType)
 
 

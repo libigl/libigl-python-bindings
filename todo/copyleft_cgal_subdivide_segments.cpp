@@ -47,8 +47,8 @@ Examples
 npe_function(subdivide_segments)
 npe_doc(ds_subdivide_segments)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(e, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(e, dense_float, dense_double)
 npe_arg(steiner, std::vector<std::vector<CGAL::Point_2<Kernel> > > &)
 
 

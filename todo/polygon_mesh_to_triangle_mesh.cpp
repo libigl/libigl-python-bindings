@@ -62,7 +62,7 @@ See polygon_mesh_to_triangle_mesh for the documentation.
 npe_function(polygon_mesh_to_triangle_mesh)
 npe_doc(ds_polygon_mesh_to_triangle_mesh)
 
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()

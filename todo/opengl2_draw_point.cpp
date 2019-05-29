@@ -68,7 +68,7 @@ See draw_point for the documentation.
 npe_function(draw_point)
 npe_doc(ds_draw_point)
 
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 npe_arg(requested_r, double)
 npe_arg(selected, bool)
 

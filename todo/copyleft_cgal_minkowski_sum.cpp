@@ -44,10 +44,10 @@ Examples
 npe_function(minkowski_sum)
 npe_doc(ds_minkowski_sum)
 
-npe_arg(va, dense_f32, dense_f64)
-npe_arg(fa, dense_f32, dense_f64)
-npe_arg(vb, dense_f32, dense_f64)
-npe_arg(fb, dense_f32, dense_f64)
+npe_arg(va, dense_float, dense_double)
+npe_arg(fa, dense_float, dense_double)
+npe_arg(vb, dense_float, dense_double)
+npe_arg(fb, dense_float, dense_double)
 npe_arg(resolve_overlaps, bool)
 
 
@@ -110,8 +110,8 @@ Examples
 npe_function(minkowski_sum)
 npe_doc(ds_minkowski_sum)
 
-npe_arg(va, dense_f32, dense_f64)
-npe_arg(fa, dense_f32, dense_f64)
+npe_arg(va, dense_float, dense_double)
+npe_arg(fa, dense_float, dense_double)
 npe_arg(s, Eigen::Matrix<sType, 1, sCols, sOptions> &)
 npe_arg(d, Eigen::Matrix<dType, 1, dCols, dOptions> &)
 npe_arg(resolve_overlaps, bool)
@@ -135,8 +135,8 @@ See minkowski_sum for the documentation.
 npe_function(minkowski_sum)
 npe_doc(ds_minkowski_sum)
 
-npe_arg(va, dense_f32, dense_f64)
-npe_arg(fa, dense_f32, dense_f64)
+npe_arg(va, dense_float, dense_double)
+npe_arg(fa, dense_float, dense_double)
 npe_arg(s, Eigen::Matrix<sType, 1, sCols, sOptions> &)
 npe_arg(d, Eigen::Matrix<dType, 1, dCols, dOptions> &)
 

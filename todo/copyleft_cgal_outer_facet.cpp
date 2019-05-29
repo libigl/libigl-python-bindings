@@ -52,9 +52,9 @@ Examples
 npe_function(outer_facet)
 npe_doc(ds_outer_facet)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(i, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(i, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -110,10 +110,10 @@ Examples
 npe_function(outer_facet)
 npe_doc(ds_outer_facet)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(n, dense_f32, dense_f64)
-npe_arg(i, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(n, dense_float, dense_double)
+npe_arg(i, dense_float, dense_double)
 
 
 npe_begin_code()

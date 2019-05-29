@@ -45,7 +45,7 @@ npe_function(half_space_box)
 npe_doc(ds_half_space_box)
 
 npe_arg(p, CGAL::Plane_3<CGAL::Epeck> &)
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -91,9 +91,9 @@ Examples
 npe_function(half_space_box)
 npe_doc(ds_half_space_box)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
+npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -138,8 +138,8 @@ Examples
 npe_function(half_space_box)
 npe_doc(ds_half_space_box)
 
-npe_arg(equ, dense_f32, dense_f64)
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(equ, dense_float, dense_double)
+npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()

@@ -31,7 +31,7 @@ Examples
 
 npe_function(bfs_orient)
 npe_doc(ds_bfs_orient)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(f, dense_int, dense_longlong)
 npe_begin_code()
 
   npe_Matrix_f ff, c;

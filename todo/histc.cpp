@@ -41,8 +41,8 @@ Examples
 npe_function(histc)
 npe_doc(ds_histc)
 
-npe_arg(x, dense_f32, dense_f64)
-npe_arg(e, dense_f32, dense_f64)
+npe_arg(x, dense_float, dense_double)
+npe_arg(e, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -82,8 +82,8 @@ Examples
 npe_function(histc)
 npe_doc(ds_histc)
 
-npe_arg(x, dense_f32, dense_f64)
-npe_arg(e, dense_f32, dense_f64)
+npe_arg(x, dense_float, dense_double)
+npe_arg(e, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -129,7 +129,7 @@ npe_function(histc)
 npe_doc(ds_histc)
 
 npe_arg(x, typename DerivedE::Scalar &)
-npe_arg(e, dense_f32, dense_f64)
+npe_arg(e, dense_float, dense_double)
 
 
 npe_begin_code()

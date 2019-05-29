@@ -35,9 +35,9 @@ Examples
 npe_function(signed_angle)
 npe_doc(ds_signed_angle)
 
-npe_arg(a, dense_f32, dense_f64)
-npe_arg(b, dense_f32, dense_f64)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(a, dense_float, dense_double)
+npe_arg(b, dense_float, dense_double)
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()

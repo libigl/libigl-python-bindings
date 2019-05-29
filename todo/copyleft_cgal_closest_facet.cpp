@@ -46,12 +46,12 @@ Examples
 npe_function(closest_facet)
 npe_doc(ds_closest_facet)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(i, dense_f32, dense_f64)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(i, dense_float, dense_double)
+npe_arg(p, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)
-npe_arg(emap, dense_f32, dense_f64)
+npe_arg(emap, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -71,11 +71,11 @@ See closest_facet for the documentation.
 npe_function(closest_facet)
 npe_doc(ds_closest_facet)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(p, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)
-npe_arg(emap, dense_f32, dense_f64)
+npe_arg(emap, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -95,12 +95,12 @@ See closest_facet for the documentation.
 npe_function(closest_facet)
 npe_doc(ds_closest_facet)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(i, dense_f32, dense_f64)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(i, dense_float, dense_double)
+npe_arg(p, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)
-npe_arg(emap, dense_f32, dense_f64)
+npe_arg(emap, dense_float, dense_double)
 npe_arg(vf, std::vector<std::vector<size_t> > &)
 npe_arg(v_fi, std::vector<std::vector<size_t> > &)
 npe_arg(tree, CGAL::AABB_tree<CGAL::AABB_traits<Kernel, CGAL::AABB_triangle_primitive<Kernel, typename std::vector<typename Kernel::Triangle_3>::iterator> > > &)

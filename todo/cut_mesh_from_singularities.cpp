@@ -40,9 +40,9 @@ Examples
 npe_function(cut_mesh_from_singularities)
 npe_doc(ds_cut_mesh_from_singularities)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(m_match, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(m_match, dense_float, dense_double)
 
 
 npe_begin_code()

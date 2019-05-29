@@ -43,13 +43,13 @@ Examples
 npe_function(hessian)
 npe_doc(ds_hessian)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()
 
-  Sparse_f64 h;
+  sparse_double h;
   igl::hessian(v, f, h);
   return npe::move(h);
 

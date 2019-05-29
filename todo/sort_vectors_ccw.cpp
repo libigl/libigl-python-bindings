@@ -38,8 +38,8 @@ Examples
 npe_function(sort_vectors_ccw)
 npe_doc(ds_sort_vectors_ccw)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -60,8 +60,8 @@ See sort_vectors_ccw for the documentation.
 npe_function(sort_vectors_ccw)
 npe_doc(ds_sort_vectors_ccw)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -81,8 +81,8 @@ See sort_vectors_ccw for the documentation.
 npe_function(sort_vectors_ccw)
 npe_doc(ds_sort_vectors_ccw)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -102,8 +102,8 @@ See sort_vectors_ccw for the documentation.
 npe_function(sort_vectors_ccw)
 npe_doc(ds_sort_vectors_ccw)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 
 
 npe_begin_code()

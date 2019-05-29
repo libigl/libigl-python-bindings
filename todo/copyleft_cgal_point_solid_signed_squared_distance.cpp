@@ -39,9 +39,9 @@ Examples
 npe_function(point_solid_signed_squared_distance)
 npe_doc(ds_point_solid_signed_squared_distance)
 
-npe_arg(q, dense_f32, dense_f64)
-npe_arg(vb, dense_f32, dense_f64)
-npe_arg(fb, dense_f32, dense_f64)
+npe_arg(q, dense_float, dense_double)
+npe_arg(vb, dense_float, dense_double)
+npe_arg(fb, dense_float, dense_double)
 
 
 npe_begin_code()

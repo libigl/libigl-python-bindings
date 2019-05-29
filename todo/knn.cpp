@@ -54,12 +54,12 @@ Examples
 npe_function(knn)
 npe_doc(ds_knn)
 
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 npe_arg(k, KType &)
 npe_arg(point_indices, std::vector<std::vector<IndexType> > &)
-npe_arg(ch, dense_f32, dense_f64)
-npe_arg(cn, dense_f32, dense_f64)
-npe_arg(w, dense_f32, dense_f64)
+npe_arg(ch, dense_float, dense_double)
+npe_arg(cn, dense_float, dense_double)
+npe_arg(w, dense_float, dense_double)
 
 
 npe_begin_code()

@@ -47,10 +47,10 @@ Examples
 npe_function(segments_intersect)
 npe_doc(ds_segments_intersect)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(r, dense_f32, dense_f64)
-npe_arg(q, dense_f32, dense_f64)
-npe_arg(s, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(r, dense_float, dense_double)
+npe_arg(q, dense_float, dense_double)
+npe_arg(s, dense_float, dense_double)
 
 
 npe_begin_code()

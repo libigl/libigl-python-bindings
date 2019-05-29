@@ -30,7 +30,7 @@ Examples
 npe_function(grid)
 npe_doc(ds_grid)
 
-npe_arg(res, dense_f32, dense_f64)
+npe_arg(res, dense_float, dense_double)
 
 
 npe_begin_code()

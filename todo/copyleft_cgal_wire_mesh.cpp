@@ -52,8 +52,8 @@ Examples
 npe_function(wire_mesh)
 npe_doc(ds_wire_mesh)
 
-npe_arg(wv, dense_f32, dense_f64)
-npe_arg(we, dense_f32, dense_f64)
+npe_arg(wv, dense_float, dense_double)
+npe_arg(we, dense_float, dense_double)
 npe_arg(th, double)
 npe_arg(poly_size, int)
 npe_arg(solid, bool)
@@ -97,8 +97,8 @@ Examples
 npe_function(wire_mesh)
 npe_doc(ds_wire_mesh)
 
-npe_arg(wv, dense_f32, dense_f64)
-npe_arg(we, dense_f32, dense_f64)
+npe_arg(wv, dense_float, dense_double)
+npe_arg(we, dense_float, dense_double)
 npe_arg(th, double)
 npe_arg(poly_size, int)
 

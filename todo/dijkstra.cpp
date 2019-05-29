@@ -98,7 +98,7 @@ npe_function(dijkstra_get_shortest_path_to)
 npe_doc(ds_dijkstra_get_shortest_path_to)
 
 npe_arg(vertex, IndexType &)
-npe_arg(previous, dense_f32, dense_f64)
+npe_arg(previous, dense_float, dense_double)
 
 
 npe_begin_code()

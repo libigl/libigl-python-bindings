@@ -49,9 +49,9 @@ Examples
 npe_function(propagate_winding_numbers)
 npe_doc(ds_propagate_winding_numbers)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(labels, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(labels, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -111,15 +111,15 @@ Examples
 npe_function(propagate_winding_numbers)
 npe_doc(ds_propagate_winding_numbers)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(u_e, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(u_e, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)
 npe_arg(num_patches, size_t)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 npe_arg(num_cells, size_t)
-npe_arg(c, dense_f32, dense_f64)
-npe_arg(labels, dense_f32, dense_f64)
+npe_arg(c, dense_float, dense_double)
+npe_arg(labels, dense_float, dense_double)
 
 
 npe_begin_code()

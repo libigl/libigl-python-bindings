@@ -29,8 +29,8 @@ Examples
 npe_function(procrustes)
 npe_doc(ds_procrustes)
 
-npe_arg(x, dense_f32, dense_f64)
-npe_arg(y, dense_f32, dense_f64)
+npe_arg(x, dense_float, dense_double)
+npe_arg(y, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -72,8 +72,8 @@ Examples
 npe_function(procrustes)
 npe_doc(ds_procrustes)
 
-npe_arg(x, dense_f32, dense_f64)
-npe_arg(y, dense_f32, dense_f64)
+npe_arg(x, dense_float, dense_double)
+npe_arg(y, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -146,8 +146,8 @@ Examples
 npe_function(procrustes)
 npe_doc(ds_procrustes)
 
-npe_arg(x, dense_f32, dense_f64)
-npe_arg(y, dense_f32, dense_f64)
+npe_arg(x, dense_float, dense_double)
+npe_arg(y, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -210,8 +210,8 @@ Examples
 npe_function(procrustes)
 npe_doc(ds_procrustes)
 
-npe_arg(x, dense_f32, dense_f64)
-npe_arg(y, dense_f32, dense_f64)
+npe_arg(x, dense_float, dense_double)
+npe_arg(y, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -252,8 +252,8 @@ Examples
 npe_function(procrustes)
 npe_doc(ds_procrustes)
 
-npe_arg(x, dense_f32, dense_f64)
-npe_arg(y, dense_f32, dense_f64)
+npe_arg(x, dense_float, dense_double)
+npe_arg(y, dense_float, dense_double)
 
 
 npe_begin_code()

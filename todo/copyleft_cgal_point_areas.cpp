@@ -50,9 +50,9 @@ Examples
 npe_function(point_areas)
 npe_doc(ds_point_areas)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(i, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(i, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -101,9 +101,9 @@ Examples
 npe_function(point_areas)
 npe_doc(ds_point_areas)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(i, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(i, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 
 
 npe_begin_code()

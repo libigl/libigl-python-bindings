@@ -36,7 +36,7 @@ Examples
 npe_function(delaunay_triangulation)
 npe_doc(ds_delaunay_triangulation)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()

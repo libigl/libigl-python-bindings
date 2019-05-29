@@ -34,7 +34,7 @@ Examples
 npe_function(facet_components)
 npe_doc(ds_facet_components)
 
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()

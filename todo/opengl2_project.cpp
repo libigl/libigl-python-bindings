@@ -29,7 +29,7 @@ Examples
 npe_function(project)
 npe_doc(ds_project)
 
-npe_arg(obj, dense_f32, dense_f64)
+npe_arg(obj, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -68,7 +68,7 @@ Examples
 npe_function(project)
 npe_doc(ds_project)
 
-npe_arg(obj, dense_f32, dense_f64)
+npe_arg(obj, dense_float, dense_double)
 
 
 npe_begin_code()

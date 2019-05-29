@@ -82,8 +82,8 @@ Examples
 npe_function(biharmonic_coordinates)
 npe_doc(ds_biharmonic_coordinates)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
 npe_arg(s, std::vector<std::vector<SType> > &)
 
 
@@ -123,8 +123,8 @@ Examples
 npe_function(biharmonic_coordinates)
 npe_doc(ds_biharmonic_coordinates)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
 npe_arg(s, std::vector<std::vector<SType> > &)
 npe_arg(k, int)
 

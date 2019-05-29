@@ -41,7 +41,7 @@ Examples
 npe_function(row_to_point)
 npe_doc(ds_row_to_point)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 npe_arg(i, typename DerivedV::Index &)
 
 

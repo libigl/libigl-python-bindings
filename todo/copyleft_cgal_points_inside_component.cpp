@@ -46,10 +46,10 @@ Examples
 npe_function(points_inside_component)
 npe_doc(ds_points_inside_component)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(i, dense_f32, dense_f64)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(i, dense_float, dense_double)
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -89,9 +89,9 @@ Examples
 npe_function(points_inside_component)
 npe_doc(ds_points_inside_component)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()

@@ -48,7 +48,7 @@ Examples
 npe_function(cell_adjacency)
 npe_doc(ds_cell_adjacency)
 
-npe_arg(per_patch_cells, dense_f32, dense_f64)
+npe_arg(per_patch_cells, dense_float, dense_double)
 npe_arg(num_cells, size_t)
 
 

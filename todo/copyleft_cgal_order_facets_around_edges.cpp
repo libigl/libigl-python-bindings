@@ -56,10 +56,10 @@ Examples
 npe_function(order_facets_around_edges)
 npe_doc(ds_order_facets_around_edges)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(n, dense_f32, dense_f64)
-npe_arg(u_e, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(n, dense_float, dense_double)
+npe_arg(u_e, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)
 
 
@@ -80,10 +80,10 @@ See order_facets_around_edges for the documentation.
 npe_function(order_facets_around_edges)
 npe_doc(ds_order_facets_around_edges)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(n, dense_f32, dense_f64)
-npe_arg(u_e, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(n, dense_float, dense_double)
+npe_arg(u_e, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)
 
 
@@ -125,9 +125,9 @@ Examples
 npe_function(order_facets_around_edges)
 npe_doc(ds_order_facets_around_edges)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(u_e, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(u_e, dense_float, dense_double)
 npe_arg(u_e2_e, std::vector<std::vector<uE2EType> > &)
 
 

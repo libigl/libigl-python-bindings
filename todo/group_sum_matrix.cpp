@@ -54,7 +54,7 @@ npe_arg(k, int)
 
 npe_begin_code()
 
-  Sparse_f64 a;
+  sparse_double a;
   igl::group_sum_matrix(g, k, a);
   return npe::move(a);
 
@@ -93,7 +93,7 @@ npe_arg(g, Eigen::Matrix<int, Eigen::Dynamic, 1> &)
 
 npe_begin_code()
 
-  Sparse_f64 a;
+  sparse_double a;
   igl::group_sum_matrix(g, a);
   return npe::move(a);
 

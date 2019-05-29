@@ -43,8 +43,8 @@ Examples
 npe_function(dqs)
 npe_doc(ds_dqs)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(w, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(w, dense_float, dense_double)
 npe_arg(v_q, std::vector<Q, QAlloc> &)
 npe_arg(v_t, std::vector<T> &)
 

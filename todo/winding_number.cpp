@@ -40,9 +40,9 @@ Examples
 npe_function(winding_number)
 npe_doc(ds_winding_number)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(o, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(o, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -89,9 +89,9 @@ Examples
 npe_function(winding_number)
 npe_doc(ds_winding_number)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()

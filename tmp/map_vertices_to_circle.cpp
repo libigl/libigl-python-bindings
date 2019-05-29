@@ -31,8 +31,8 @@ Examples
 
 npe_function(map_vertices_to_circle)
 npe_doc(ds_map_vertices_to_circle)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(bnd, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(bnd, dense_int, dense_longlong)
 npe_begin_code()
 
   EigenDenseLike<npe_Matrix_v> uv;

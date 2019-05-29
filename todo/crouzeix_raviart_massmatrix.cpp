@@ -50,8 +50,8 @@ Examples
 npe_function(crouzeix_raviart_massmatrix)
 npe_doc(ds_crouzeix_raviart_massmatrix)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()
@@ -92,10 +92,10 @@ Examples
 npe_function(crouzeix_raviart_massmatrix)
 npe_doc(ds_crouzeix_raviart_massmatrix)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(e, dense_f32, dense_f64)
-npe_arg(emap, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(e, dense_float, dense_double)
+npe_arg(emap, dense_float, dense_double)
 
 
 npe_begin_code()

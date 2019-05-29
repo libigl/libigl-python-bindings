@@ -29,9 +29,9 @@ Wrapper of the above with only vertices and faces as mesh input
 npe_function(cut_mesh)
 npe_doc(ds_cut_mesh)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(cuts, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(cuts, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -109,14 +109,14 @@ Examples
 npe_function(cut_mesh)
 npe_doc(ds_cut_mesh)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 npe_arg(vf, std::vector<std::vector<VFType> > &)
 npe_arg(v_fi, std::vector<std::vector<VFType> > &)
-npe_arg(tt, dense_f32, dense_f64)
-npe_arg(t_ti, dense_f32, dense_f64)
+npe_arg(tt, dense_float, dense_double)
+npe_arg(t_ti, dense_float, dense_double)
 npe_arg(v_border, std::vector<bool> &)
-npe_arg(cuts, dense_f32, dense_f64)
+npe_arg(cuts, dense_float, dense_double)
 
 
 npe_begin_code()

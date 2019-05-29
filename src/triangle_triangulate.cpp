@@ -33,9 +33,9 @@ Examples
 
 npe_function(triangulate)
 npe_doc(ds_triangulate)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(e, dense_i32, dense_i64)
-npe_arg(h, dense_f32, dense_f64) // TODO: npe_matches bug
+npe_arg(v, dense_float, dense_double)
+npe_arg(e, dense_int, dense_longlong)
+npe_arg(h, dense_float, dense_double) // TODO: npe_matches bug
 // TODO: Optionally support extra parameters
 npe_default_arg(flags, std::string, "a0.005q")
 npe_begin_code()

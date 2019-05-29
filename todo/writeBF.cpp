@@ -43,9 +43,9 @@ npe_function(write_bf)
 npe_doc(ds_write_bf)
 
 npe_arg(filename, std::string &)
-npe_arg(wi, dense_f32, dense_f64)
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(o, dense_f32, dense_f64)
+npe_arg(wi, dense_float, dense_double)
+npe_arg(p, dense_float, dense_double)
+npe_arg(o, dense_float, dense_double)
 
 
 npe_begin_code()

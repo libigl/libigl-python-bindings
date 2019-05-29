@@ -39,8 +39,8 @@ Examples
 npe_function(volume)
 npe_doc(ds_volume)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -59,10 +59,10 @@ See volume for the documentation.
 npe_function(volume)
 npe_doc(ds_volume)
 
-npe_arg(a, dense_f32, dense_f64)
-npe_arg(b, dense_f32, dense_f64)
-npe_arg(c, dense_f32, dense_f64)
-npe_arg(d, dense_f32, dense_f64)
+npe_arg(a, dense_float, dense_double)
+npe_arg(b, dense_float, dense_double)
+npe_arg(c, dense_float, dense_double)
+npe_arg(d, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -104,7 +104,7 @@ Examples
 npe_function(volume)
 npe_doc(ds_volume)
 
-npe_arg(l, dense_f32, dense_f64)
+npe_arg(l, dense_float, dense_double)
 
 
 npe_begin_code()

@@ -47,9 +47,9 @@ Examples
 npe_function(in_element)
 npe_doc(ds_in_element)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 npe_arg(ele, Eigen::MatrixXi &)
-npe_arg(q, dense_f32, dense_f64)
+npe_arg(q, dense_float, dense_double)
 npe_arg(aabb, AABB<DerivedV, DIM> &)
 
 
@@ -91,15 +91,15 @@ Examples
 npe_function(in_element)
 npe_doc(ds_in_element)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 npe_arg(ele, Eigen::MatrixXi &)
-npe_arg(q, dense_f32, dense_f64)
+npe_arg(q, dense_float, dense_double)
 npe_arg(aabb, AABB<DerivedV, DIM> &)
 
 
 npe_begin_code()
 
-  Sparse_f64 i;
+  sparse_double i;
   igl::in_element(v, ele, q, aabb, i);
   return npe::move(i);
 

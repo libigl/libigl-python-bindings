@@ -51,7 +51,7 @@ Examples
 npe_function(harwell_boeing)
 npe_doc(ds_harwell_boeing)
 
-npe_arg(a, Sparse_f64)
+npe_arg(a, sparse_double)
 
 
 npe_begin_code()

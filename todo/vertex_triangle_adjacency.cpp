@@ -38,7 +38,7 @@ Examples
 npe_function(vertex_triangle_adjacency)
 npe_doc(ds_vertex_triangle_adjacency)
 
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(f, dense_int, dense_longlong)
 npe_arg(n, int)
 
 
@@ -102,7 +102,7 @@ npe_function(vertex_triangle_adjacency)
 npe_doc(ds_vertex_triangle_adjacency)
 
 npe_arg(n, typename DerivedF::Scalar)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()
@@ -122,8 +122,8 @@ See vertex_triangle_adjacency for the documentation.
 npe_function(vertex_triangle_adjacency)
 npe_doc(ds_vertex_triangle_adjacency)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()

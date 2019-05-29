@@ -44,9 +44,9 @@ Examples
 npe_function(project_to_line)
 npe_doc(ds_project_to_line)
 
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(s, dense_f32, dense_f64)
-npe_arg(d, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(s, dense_float, dense_double)
+npe_arg(d, dense_float, dense_double)
 
 
 npe_begin_code()

@@ -37,9 +37,9 @@ Examples
 npe_function(look_at)
 npe_doc(ds_look_at)
 
-npe_arg(eye, dense_f32, dense_f64)
-npe_arg(center, dense_f32, dense_f64)
-npe_arg(up, dense_f32, dense_f64)
+npe_arg(eye, dense_float, dense_double)
+npe_arg(center, dense_float, dense_double)
+npe_arg(up, dense_float, dense_double)
 
 
 npe_begin_code()

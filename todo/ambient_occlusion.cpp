@@ -31,10 +31,10 @@ Examples
 npe_function(ambient_occlusion)
 npe_doc(ds_ambient_occlusion)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 npe_arg(num_samples, int)
 
 
@@ -91,8 +91,8 @@ npe_function(ambient_occlusion)
 npe_doc(ds_ambient_occlusion)
 
 npe_arg(shoot_ray, std::function<bool (const Eigen::Vector3f &, const Eigen::Vector3f &)> &)
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 npe_arg(num_samples, int)
 
 
@@ -134,10 +134,10 @@ npe_function(ambient_occlusion)
 npe_doc(ds_ambient_occlusion)
 
 npe_arg(aabb, igl::AABB<DerivedV, DIM> &)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(p, dense_f32, dense_f64)
-npe_arg(n, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(p, dense_float, dense_double)
+npe_arg(n, dense_float, dense_double)
 npe_arg(num_samples, int)
 
 

@@ -48,7 +48,7 @@ Examples
 npe_function(hausdorff)
 npe_doc(ds_hausdorff)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 npe_arg(tree_b, CGAL::AABB_tree<CGAL::AABB_traits<Kernel, CGAL::AABB_triangle_primitive<Kernel, typename std::vector<CGAL::Triangle_3<Kernel> >::iterator> > > &)
 npe_arg(tb, std::vector<CGAL::Triangle_3<Kernel> > &)
 

@@ -9,7 +9,7 @@ See assign for the documentation.
 npe_function(assign)
 npe_doc(ds_assign)
 
-npe_arg(c, dense_f32, dense_f64)
+npe_arg(c, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -28,7 +28,7 @@ See assign for the documentation.
 npe_function(assign)
 npe_doc(ds_assign)
 
-npe_arg(c, dense_f32, dense_f64)
+npe_arg(c, dense_float, dense_double)
 
 
 npe_begin_code()

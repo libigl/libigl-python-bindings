@@ -43,8 +43,8 @@ Examples
 npe_function(directed_edge_orientations)
 npe_doc(ds_directed_edge_orientations)
 
-npe_arg(c, dense_f32, dense_f64)
-npe_arg(e, dense_f32, dense_f64)
+npe_arg(c, dense_float, dense_double)
+npe_arg(e, dense_float, dense_double)
 
 
 npe_begin_code()

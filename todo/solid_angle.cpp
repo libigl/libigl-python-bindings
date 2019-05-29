@@ -36,10 +36,10 @@ Examples
 npe_function(solid_angle)
 npe_doc(ds_solid_angle)
 
-npe_arg(a, dense_f32, dense_f64)
-npe_arg(b, dense_f32, dense_f64)
-npe_arg(c, dense_f32, dense_f64)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(a, dense_float, dense_double)
+npe_arg(b, dense_float, dense_double)
+npe_arg(c, dense_float, dense_double)
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()

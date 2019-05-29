@@ -38,7 +38,7 @@ Examples
 npe_function(edges)
 npe_doc(ds_edges)
 
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(f, dense_int, dense_longlong)
 
 
 npe_begin_code()

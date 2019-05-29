@@ -52,13 +52,13 @@ Examples
 npe_function(pseudonormal_test)
 npe_doc(ds_pseudonormal_test)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(fn, dense_f32, dense_f64)
-npe_arg(vn, dense_f32, dense_f64)
-npe_arg(en, dense_f32, dense_f64)
-npe_arg(emap, dense_f32, dense_f64)
-npe_arg(q, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(fn, dense_float, dense_double)
+npe_arg(vn, dense_float, dense_double)
+npe_arg(en, dense_float, dense_double)
+npe_arg(emap, dense_float, dense_double)
+npe_arg(q, dense_float, dense_double)
 npe_arg(f, int)
 
 
@@ -80,11 +80,11 @@ See pseudonormal_test for the documentation.
 npe_function(pseudonormal_test)
 npe_doc(ds_pseudonormal_test)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(e, dense_f32, dense_f64)
-npe_arg(en, dense_f32, dense_f64)
-npe_arg(vn, dense_f32, dense_f64)
-npe_arg(q, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(e, dense_float, dense_double)
+npe_arg(en, dense_float, dense_double)
+npe_arg(vn, dense_float, dense_double)
+npe_arg(q, dense_float, dense_double)
 npe_arg(e, int)
 
 

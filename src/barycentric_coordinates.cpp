@@ -34,7 +34,7 @@ Examples
 
 npe_function(barycentric_coordinates_tet)
 npe_doc(ds_barycentric_coordinates_tet)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 npe_arg(a, npe_matches(p))
 npe_arg(b, npe_matches(p))
 npe_arg(c, npe_matches(p))
@@ -81,7 +81,7 @@ Examples
 
 npe_function(barycentric_coordinates_tri)
 npe_doc(ds_barycentric_coordinates_tri)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 npe_arg(a, npe_matches(p))
 npe_arg(b, npe_matches(p))
 npe_arg(c, npe_matches(p))

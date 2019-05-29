@@ -40,10 +40,10 @@ Examples
 npe_function(unproject_ray)
 npe_doc(ds_unproject_ray)
 
-npe_arg(pos, dense_f32, dense_f64)
-npe_arg(model, dense_f32, dense_f64)
-npe_arg(proj, dense_f32, dense_f64)
-npe_arg(viewport, dense_f32, dense_f64)
+npe_arg(pos, dense_float, dense_double)
+npe_arg(model, dense_float, dense_double)
+npe_arg(proj, dense_float, dense_double)
+npe_arg(viewport, dense_float, dense_double)
 
 
 npe_begin_code()

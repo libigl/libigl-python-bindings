@@ -48,9 +48,9 @@ Examples
 npe_function(ray_sphere_intersect)
 npe_doc(ds_ray_sphere_intersect)
 
-npe_arg(o, dense_f32, dense_f64)
-npe_arg(d, dense_f32, dense_f64)
-npe_arg(c, dense_f32, dense_f64)
+npe_arg(o, dense_float, dense_double)
+npe_arg(d, dense_float, dense_double)
+npe_arg(c, dense_float, dense_double)
 
 
 npe_begin_code()

@@ -45,7 +45,7 @@ npe_arg(x, Eigen::SparseMatrixBase<T> &)
 
 npe_begin_code()
 
-  Sparse_f64 y;
+  sparse_double y;
   igl::invert_diag(x, y);
   return npe::move(y);
 

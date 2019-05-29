@@ -9,9 +9,9 @@ See draw_skeleton_vector_graphics for the documentation.
 npe_function(draw_skeleton_vector_graphics)
 npe_doc(ds_draw_skeleton_vector_graphics)
 
-npe_arg(c, dense_f32, dense_f64)
-npe_arg(be, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
+npe_arg(c, dense_float, dense_double)
+npe_arg(be, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -142,9 +142,9 @@ Examples
 npe_function(draw_skeleton_vector_graphics)
 npe_doc(ds_draw_skeleton_vector_graphics)
 
-npe_arg(c, dense_f32, dense_f64)
-npe_arg(be, dense_f32, dense_f64)
-npe_arg(t, dense_f32, dense_f64)
+npe_arg(c, dense_float, dense_double)
+npe_arg(be, dense_float, dense_double)
+npe_arg(t, dense_float, dense_double)
 npe_arg(point_color, float *)
 npe_arg(line_color, float *)
 

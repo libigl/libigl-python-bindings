@@ -35,8 +35,8 @@ Examples
 
 npe_function(cotmatrix)
 npe_doc(ds_cotmatrix)
-npe_arg(v, dense_f64, dense_f32)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_double, dense_float)
+npe_arg(f, dense_int, dense_longlong)
 npe_begin_code()
 
   EigenSparseLike<npe_Matrix_v> l;

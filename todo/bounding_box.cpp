@@ -35,7 +35,7 @@ Examples
 npe_function(bounding_box)
 npe_doc(ds_bounding_box)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -61,7 +61,7 @@ See bounding_box for the documentation.
 npe_function(bounding_box)
 npe_doc(ds_bounding_box)
 
-npe_arg(v, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
 npe_arg(pad, typename DerivedV::Scalar)
 
 

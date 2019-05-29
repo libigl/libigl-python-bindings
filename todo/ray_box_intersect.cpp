@@ -47,8 +47,8 @@ Examples
 npe_function(ray_box_intersect)
 npe_doc(ds_ray_box_intersect)
 
-npe_arg(source, dense_f32, dense_f64)
-npe_arg(dir, dense_f32, dense_f64)
+npe_arg(source, dense_float, dense_double)
+npe_arg(dir, dense_float, dense_double)
 npe_arg(box, Eigen::AlignedBox<Scalar, 3> &)
 npe_arg(t0, Scalar &)
 npe_arg(t1, Scalar &)

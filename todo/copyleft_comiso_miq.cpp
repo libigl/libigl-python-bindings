@@ -55,10 +55,10 @@ Examples
 npe_function(miq)
 npe_doc(ds_miq)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(pd1, dense_f32, dense_f64)
-npe_arg(pd2, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(pd1, dense_float, dense_double)
+npe_arg(pd2, dense_float, dense_double)
 
 
 npe_begin_code()
@@ -114,10 +114,10 @@ Examples
 npe_function(miq)
 npe_doc(ds_miq)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
-npe_arg(pd1_combed, dense_f32, dense_f64)
-npe_arg(pd2_combed, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
+npe_arg(pd1_combed, dense_float, dense_double)
+npe_arg(pd2_combed, dense_float, dense_double)
 npe_arg(m_match, Eigen::Matrix<int, Eigen::Dynamic, 3> &)
 npe_arg(singular, Eigen::Matrix<int, Eigen::Dynamic, 1> &)
 npe_arg(seams, Eigen::Matrix<int, Eigen::Dynamic, 3> &)

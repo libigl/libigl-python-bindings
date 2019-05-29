@@ -9,7 +9,7 @@ See hsv_to_rgb for the documentation.
 npe_function(hsv_to_rgb)
 npe_doc(ds_hsv_to_rgb)
 
-npe_arg(h, dense_f32, dense_f64)
+npe_arg(h, dense_float, dense_double)
 
 
 npe_begin_code()

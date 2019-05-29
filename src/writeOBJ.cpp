@@ -33,8 +33,8 @@ Examples
 npe_function(write_obj)
 npe_doc(ds_write_obj)
 npe_arg(filename, std::string)
-npe_arg(v, dense_f64, dense_f32)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_double, dense_float)
+npe_arg(f, dense_int, dense_longlong)
 //npe_default_arg(cn, npe_matches(v), pybind11::array()) TODO: NPE Support none arrays as option
 //npe_default_arg(fn, npe_matches(f), pybind11::array())
 //npe_default_arg(tc, npe_matches(v), pybind11::array())

@@ -38,7 +38,7 @@ Examples
 npe_function(sort_angles)
 npe_doc(ds_sort_angles)
 
-npe_arg(m, dense_f32, dense_f64)
+npe_arg(m, dense_float, dense_double)
 
 
 npe_begin_code()

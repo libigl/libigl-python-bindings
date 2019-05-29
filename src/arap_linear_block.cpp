@@ -48,8 +48,8 @@ Examples
  */
 npe_function(arap_linear_block)
 npe_doc(ds_arap_linear_block)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 npe_arg(d, int)
 npe_arg(energy, int)
 npe_begin_code()
@@ -81,8 +81,8 @@ npe_end_code()
  */
 npe_function(arap_linear_block_spokes)
 npe_doc(ds_arap_linear_block)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 npe_arg(d, int)
 npe_begin_code()
 
@@ -99,8 +99,8 @@ npe_end_code()
  */
 npe_function(arap_linear_block_spokes_and_rims)
 npe_doc(ds_arap_linear_block)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 npe_arg(d, int)
 npe_begin_code()
 
@@ -118,8 +118,8 @@ npe_end_code()
  */
 npe_function(arap_linear_block_elements)
 npe_doc(ds_arap_linear_block)
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 npe_arg(d, int)
 npe_begin_code()
 

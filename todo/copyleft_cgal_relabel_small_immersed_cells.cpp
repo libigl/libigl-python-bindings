@@ -48,12 +48,12 @@ Examples
 npe_function(relabel_small_immersed_cells)
 npe_doc(ds_relabel_small_immersed_cells)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(f, dense_i32, dense_i64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_longlong)
 npe_arg(num_patches, size_t)
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 npe_arg(num_cells, size_t)
-npe_arg(c, dense_f32, dense_f64)
+npe_arg(c, dense_float, dense_double)
 npe_arg(vol_threashold, FT)
 
 

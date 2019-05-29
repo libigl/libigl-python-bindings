@@ -40,7 +40,7 @@ Examples
 npe_function(fit_rotations)
 npe_doc(ds_fit_rotations)
 
-npe_arg(s, dense_f32, dense_f64)
+npe_arg(s, dense_float, dense_double)
 npe_arg(single_precision, bool)
 
 
@@ -89,7 +89,7 @@ Examples
 npe_function(fit_rotations_planar)
 npe_doc(ds_fit_rotations_planar)
 
-npe_arg(s, dense_f32, dense_f64)
+npe_arg(s, dense_float, dense_double)
 
 
 npe_begin_code()

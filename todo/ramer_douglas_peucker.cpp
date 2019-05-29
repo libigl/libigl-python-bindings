@@ -43,7 +43,7 @@ Examples
 npe_function(ramer_douglas_peucker)
 npe_doc(ds_ramer_douglas_peucker)
 
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 npe_arg(tol, typename DerivedP::Scalar)
 
 
@@ -94,7 +94,7 @@ Examples
 npe_function(ramer_douglas_peucker)
 npe_doc(ds_ramer_douglas_peucker)
 
-npe_arg(p, dense_f32, dense_f64)
+npe_arg(p, dense_float, dense_double)
 npe_arg(tol, typename DerivedP::Scalar)
 
 

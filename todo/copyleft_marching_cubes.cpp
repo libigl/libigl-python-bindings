@@ -52,8 +52,8 @@ Examples
 npe_function(marching_cubes)
 npe_doc(ds_marching_cubes)
 
-npe_arg(values, dense_f32, dense_f64)
-npe_arg(points, dense_f32, dense_f64)
+npe_arg(values, dense_float, dense_double)
+npe_arg(points, dense_float, dense_double)
 npe_arg(x_res, unsigned int)
 npe_arg(y_res, unsigned int)
 npe_arg(z_res, unsigned int)

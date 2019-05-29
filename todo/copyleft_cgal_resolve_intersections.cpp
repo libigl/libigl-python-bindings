@@ -9,8 +9,8 @@ See resolve_intersections for the documentation.
 npe_function(resolve_intersections)
 npe_doc(ds_resolve_intersections)
 
-npe_arg(v, dense_f32, dense_f64)
-npe_arg(e, dense_f32, dense_f64)
+npe_arg(v, dense_float, dense_double)
+npe_arg(e, dense_float, dense_double)
 
 
 npe_begin_code()
