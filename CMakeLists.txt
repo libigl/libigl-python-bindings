@@ -13,6 +13,14 @@ include(UseColors)
 #WArning this is horrible but is needed to avoid a typo in Pybind11...
 SET(CMAKE_HOST_WIN32 OFF)
 
+include(PyiglDependencies)
+
+# NumpyEigen
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LIBIGL_EXTERNAL}/numpyeigen/cmake)
+# Generate position independent code by default
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+include(numpyeigen)
+
 
 # Extra warnings
 include(Warnings)
@@ -23,24 +31,6 @@ include(CXXFeatures)
 
 # Sort projects inside the solution
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# Generate position independent code by default
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	foreach(config ${CMAKE_CONFIGURATION_TYPES})
-		string(TOUPPER ${config} config)
-		string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
-		string(REPLACE /MD /MT CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
-	endforeach()
-endif()
-
-include(PyiglDependencies)
-
-# NumpyEigen
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LIBIGL_EXTERNAL}/numpyeigen/cmake)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-include(numpyeigen)
 
 
 # LibIGL
@@ -92,6 +82,16 @@ target_include_directories(pyigl PRIVATE "src/include")
 #set_target_properties(pyigl PROPERTIES LINK_FLAGS "-Wl,--no-undefined")
 # set_target_properties(pyigl PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -msse2")
 # set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/igl")
+
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  foreach(config ${CMAKE_CONFIGURATION_TYPES})
+    string(TOUPPER ${config} config)
+    string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
+    string(REPLACE /MD /MT CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
+  endforeach()
+endif()
+
 
 
 if(${LIBIGL_PYTHON_TESTS})
