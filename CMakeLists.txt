@@ -32,6 +32,16 @@ include(CXXFeatures)
 # Sort projects inside the solution
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	foreach(config ${CMAKE_CONFIGURATION_TYPES})
+		string(TOUPPER ${config} config)
+		string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
+		string(REPLACE /MD /MT CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
+	endforeach()
+endif()
+
+
+
 
 # LibIGL
 option(LIBIGL_USE_STATIC_LIBRARY    "Use libigl as static library" OFF)
@@ -82,16 +92,6 @@ target_include_directories(pyigl PRIVATE "src/include")
 #set_target_properties(pyigl PROPERTIES LINK_FLAGS "-Wl,--no-undefined")
 # set_target_properties(pyigl PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -msse2")
 # set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/igl")
-
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  foreach(config ${CMAKE_CONFIGURATION_TYPES})
-    string(TOUPPER ${config} config)
-    string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
-    string(REPLACE /MD /MT CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
-  endforeach()
-endif()
-
 
 
 if(${LIBIGL_PYTHON_TESTS})
