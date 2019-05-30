@@ -10,9 +10,6 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # Color output
 include(UseColors)
 
-#WArning this is horrible but is needed to avoid a typo in Pybind11...
-SET(CMAKE_HOST_WIN32 OFF)
-
 include(PyiglDependencies)
 
 # NumpyEigen
