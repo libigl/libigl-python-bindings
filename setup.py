@@ -5,14 +5,14 @@ import sys
 import platform
 import subprocess
 
-import sysconfig
+# import sysconfig
 
 from distutils.version import LooseVersion
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 
-python_lib = None
-python_lib_debug = None
+# python_lib = None
+# python_lib_debug = None
 
 
 class CMakeExtension(Extension):
@@ -51,15 +51,15 @@ class CMakeBuild(build_ext):
         build_args = ['--config', cfg]
         cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
 
-        python_libs = ""
+        # python_libs = ""
 
-        if python_lib:
-            python_libs += python_lib
-        if python_lib_debug:
-            if python_libs:
-                python_libs += "\\;" + python_lib_debug
-            else:
-                python_libs += python_lib_debug
+        # if python_lib:
+        #     python_libs += python_lib
+        # if python_lib_debug:
+        #     if python_libs:
+        #         python_libs += "\\;" + python_lib_debug
+        #     else:
+        #         python_libs += python_lib_debug
 
         if platform.system() == "Windows":
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
@@ -71,8 +71,8 @@ class CMakeBuild(build_ext):
             build_args += ['--', '-j2']
 
 
-        if python_libs and len(python_libs) > 0:
-                cmake_args += ['-D', 'PYTHON_LIBRARY={}'.format(python_libs)]
+        # if python_libs and len(python_libs) > 0:
+        #         cmake_args += ['-D', 'PYTHON_LIBRARY={}'.format(python_libs)]
 
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get('CXXFLAGS', ''),self.distribution.get_version())
@@ -90,16 +90,16 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 
-if "--python-lib" in sys.argv:
-    index = sys.argv.index('--python-lib')
-    sys.argv.pop(index)  # Removes the '--python-lib'
-    python_lib = sys.argv.pop(index)
+# if "--python-lib" in sys.argv:
+#     index = sys.argv.index('--python-lib')
+#     sys.argv.pop(index)  # Removes the '--python-lib'
+#     python_lib = sys.argv.pop(index)
 
 
-if "--python-lib-debug" in sys.argv:
-    index = sys.argv.index('--python-lib-debug')
-    sys.argv.pop(index)  # Removes the '--python-lib-debug'
-    python_lib_debug = sys.argv.pop(index)
+# if "--python-lib-debug" in sys.argv:
+#     index = sys.argv.index('--python-lib-debug')
+#     sys.argv.pop(index)  # Removes the '--python-lib-debug'
+#     python_lib_debug = sys.argv.pop(index)
 
 
 setup(

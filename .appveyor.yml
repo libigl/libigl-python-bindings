@@ -7,7 +7,7 @@ branches:
   only:
     - master
 environment:
-  APPVEYOR_RDP_PASSWORD: pypAss126.
+  # APPVEYOR_RDP_PASSWORD: pypAss126.
   matrix:
   - configuration: Release
     PYTHON: "C:\\Python36-x64"
@@ -35,10 +35,12 @@ build_script:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - cd c:\projects\igl
   - python --version
-  - "python setup.py build install --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"
+  - "python setup.py build install"
+  # - "python setup.py build install --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"
   # - "python setup.py build --debug install --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib --python-lib-debug %PYTHON%\\libs\\%PYTHON_NAME_LONG%_d.lib"
 
 test_script:
   - cd c:\projects\igl
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "python setup.py test --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"
+  - "python setup.py test"
+  # - "python setup.py test --python-lib %PYTHON%\\libs\\%PYTHON_NAME_LONG%.lib"
