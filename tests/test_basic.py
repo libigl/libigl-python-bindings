@@ -17,7 +17,6 @@ class TestBasic(unittest.TestCase):
     def setUp(self):
         # Some global datastructures to use in the tests
         np.random.seed(42)
-        self.e = np.random.rand(10, 2)
         self.v = np.random.rand(10, 3)
         self.t = np.random.rand(10, 4)
         self.f = np.random.randint(0, 10, size=(20, 3), dtype="int32")
@@ -66,6 +65,12 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(l.shape == (self.v.shape[0], self.v.shape[0]))
         self.assertTrue(l.dtype == self.v.dtype)
         self.assertTrue(type(l) == csc.csc_matrix)
+
+    def test_ear(self):
+        ears, ears_opp = igl.ears(self.f)
+        self.assertTrue(ears.shape == ears_opp.shape)
+        self.assertTrue(ears.dtype == self.f.dtype)
+        self.assertTrue(ears_opp.dtype == self.f.dtype)
 
     def test_gaussian_curvature(self):
         g = igl.gaussian_curvature(self.v, self.f)
