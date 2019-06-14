@@ -148,6 +148,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(suc)
         self.assertTrue(os.path.isfile("test.obj"))
 
+    def test_write_off(self):
+        suc = igl.write_off("test.off", self.v, self.f,self.v)
+        self.assertTrue(suc)
+        self.assertTrue(os.path.isfile("test.off"))
+
     def test_adjacency_list(self):
         a = igl.adjacency_list(self.f1)
         self.assertEqual(len(a), self.v1.shape[0])
