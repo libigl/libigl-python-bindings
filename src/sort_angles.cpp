@@ -33,11 +33,14 @@ Examples
 npe_function(sort_angles)
 npe_doc(ds_sort_angles)
 
-npe_arg(m, dense_double)
+npe_arg(m, dense_float, dense_double)
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_v> r;
+  // In the libigl code r is column major, and using row major fails assertion
+  // EIGEN_STATIC_ASSERT((EIGEN_IMPLIES(MaxRowsAtCompileTime==1 && 
+  //    MaxColsAtCompileTime!=1, (Options&RowMajor)==RowMajor)
+  Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor, Eigen::Dynamic, 1> r;
   igl::sort_angles(m, r);
   return npe::move(r);
 
