@@ -4,6 +4,8 @@
 
 const char* ds_sort_angles = R"igl_Qu8mg5v7(
 
+Sort angles in ascending order in a numerically robust way.
+Instead of computing angles using atan2(y, x), sort directly on (y, x).
 Parameters
 ---------
 M: m by n matrix of scalars. (n >= 2).  Assuming the first column of M
@@ -21,9 +23,7 @@ See also
 
 Notes
 -----
-Sort angles in ascending order in a numerically robust way.
-Instead of computing angles using atan2(y, x), sort directly on (y, x).
-
+None.
 
 Examples
 --------
