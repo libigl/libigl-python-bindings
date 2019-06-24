@@ -265,6 +265,12 @@ class TestBasic(unittest.TestCase):
         e = igl.edges(self.f1)
         res = igl.bone_parents(e)
         self.assertEqual(res.shape[0], e.shape[0])
+    
+    def test_sort_angles(self):
+        r = igl.sort_angles(self.v)
+        self.assertTrue(r.dtype == self.f.dtype)
+        self.assertEqual(r.shape[0], self.v.shape[0])
+
 
 
 if __name__ == '__main__':
