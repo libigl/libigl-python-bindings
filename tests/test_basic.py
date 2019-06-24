@@ -271,6 +271,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.dtype == self.f.dtype)
         self.assertEqual(r.shape[0], self.v.shape[0])
 
+    def test_circumradius(self):
+        r = igl.circumradius(self.v, self.f)
+        self.assertTrue(r.dtype == self.v.dtype)
+        self.assertEqual(r.shape[0], self.f.shape[0])
+
 
 
 if __name__ == '__main__':
