@@ -3,6 +3,5 @@ channels:
 dependencies:
   - numpy
   - scipy
-  - pythreejs
-  - matplotlib
+  - meshplot
   - igl
