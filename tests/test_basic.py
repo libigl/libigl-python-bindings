@@ -276,6 +276,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.dtype == self.v.dtype)
         self.assertEqual(r.shape[0], self.f.shape[0])
 
+    def test_quad_planarity(self):
+        p = igl.quad_planarity(self.v, self.g)
+        self.assertTrue(p.dtype == self.v.dtype)
+        self.assertEqual(p.shape[0], self.g.shape[0])
+
 
 
 if __name__ == '__main__':
