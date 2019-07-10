@@ -1,4 +1,4 @@
-// TODO: wrapper for MatrixXd
+// TODO: __example
 
 #include <npe.h>
 #include <typedefs.h>
@@ -38,13 +38,13 @@ Examples
 npe_function(bounding_box_diagonal)
 npe_doc(ds_bounding_box_diagonal)
 
-npe_arg(v, Eigen::MatrixXd &)
+npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()
-
-  igl::bounding_box_diagonal(v);
-  return ;
+  // TODO: remove __copy
+  Eigen::MatrixXd v_copy = v.template cast<double>();
+  return igl::bounding_box_diagonal(v_copy);
 
 npe_end_code()
 

@@ -1,5 +1,3 @@
-// TODO: Resolve typename argument in npe_arg
-
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/bounding_box.h>
@@ -37,8 +35,8 @@ npe_arg(v, dense_float, dense_double)
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_v> bv;
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen:Dynamic, Eigen::Dynamic> bf;
+  npe_Matrix_v bv;
+  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> bf;
   igl::bounding_box(v, bv, bf);
   return std::make_tuple(npe::move(bv), npe::move(bf));
 
@@ -59,13 +57,13 @@ npe_function(bounding_box)
 npe_doc(ds_bounding_box)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(pad, typename DerivedV::Scalar)
+npe_arg(pad, double)
 
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_v> bv;
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen:Dynamic, Eigen::Dynamic> bf;
+  npe_Matrix_v bv;
+  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> bf;
   igl::bounding_box(v, pad, bv, bf);
   return std::make_tuple(npe::move(bv), npe::move(bf));
 

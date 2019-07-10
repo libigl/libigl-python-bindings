@@ -1,4 +1,5 @@
-// TODO: Need to find npe function to wrap std::vector<SType>
+// TODO: Eigen opperators like *= /* coeff not working
+// __bug
 
 #include <npe.h>
 #include <typedefs.h>
@@ -81,23 +82,25 @@ npe_doc(ds_biharmonic_coordinates)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(t, dense_float, dense_double)
-npe_arg(s, std::vector<std::vector<SType> > &)
+npe_arg(s, std::vector<std::vector<int> > &)
 
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_v> w;
+  npe_Matrix_v w;
   igl::biharmonic_coordinates(v, t, s, w);
   return npe::move(w);
 
 npe_end_code()
-#include <igl/biharmonic_coordinates.h>
 
-const char* ds_biharmonic_coordinates = R"igl_Qu8mg5v7(
+
+
+const char* ds_bitriharmonic_coordinates = R"igl_Qu8mg5v7(
 
 Parameters
 ----------
 k  2-->biharmonic, 3-->triharmonic
+The rest are the same as biharmonic_coordinates
 
 Returns
 -------
@@ -116,18 +119,18 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(biharmonic_coordinates)
-npe_doc(ds_biharmonic_coordinates)
+npe_function(bitriharmonic_coordinates)
+npe_doc(ds_bitriharmonic_coordinates)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(t, dense_float, dense_double)
-npe_arg(s, std::vector<std::vector<SType> > &)
+npe_arg(s, std::vector<std::vector<int> > &)
 npe_arg(k, int)
 
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_v> w;
+  npe_Matrix_v w;
   igl::biharmonic_coordinates(v, t, s, k, w);
   return npe::move(w);
 
