@@ -4,13 +4,16 @@
 
 const char* ds_circumradius = R"igl_Qu8mg5v7(
 
+Compute the circumradius of each triangle in a mesh (V,F)
 Parameters
 ----------
-
+V  #V by dim list of mesh vertex positions
+F  #F by 3 list of triangle indices into V
+ 
 
 Returns
 -------
-
+R  #F list of circumradii
 
 See also
 --------
@@ -22,14 +25,8 @@ None
 
 Examples
 --------
-
- Compute the circumradius of each triangle in a mesh (V,F)
+R = circumradius(V, F)
   
-   Inputs:
-     V  #V by dim list of mesh vertex positions
-     F  #F by 3 list of triangle indices into V
-   Outputs:
-     R  #F list of circumradii
   
 )igl_Qu8mg5v7";
 
@@ -42,7 +39,7 @@ npe_arg(f, dense_int, dense_long)
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_> r;
+  EigenDense<npe_Scalar_v> r;
   igl::circumradius(v, f, r);
   return npe::move(r);
 

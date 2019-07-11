@@ -1,3 +1,5 @@
+// TODO: __type Quaterniond . missing __example
+
 #include <npe.h>
 #include <typedefs.h>
 
@@ -9,14 +11,19 @@
 #include <igl/angular_distance.h>
 
 const char* ds_angular_distance = R"igl_Qu8mg5v7(
+ 
+The "angular distance" between two unit quaternions is the angle of the
+  smallest rotation (treated as an Axis and Angle) that takes A to B.
 
 Parameters
 ----------
+A  unit quaternion
+B  unit quaternion
 
 
 Returns
 -------
-
+Returns angular distance
 
 See also
 --------
@@ -29,13 +36,7 @@ None
 Examples
 --------
 
- The "angular distance" between two unit quaternions is the angle of the
-   smallest rotation (treated as an Axis and Angle) that takes A to B.
   
-   Inputs:
-     A  unit quaternion
-     B  unit quaternion
-   Returns angular distance
 )igl_Qu8mg5v7";
 
 npe_function(angular_distance)

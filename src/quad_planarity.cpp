@@ -1,3 +1,5 @@
+// TODO: missing __example
+
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/quad_planarity.h>
@@ -33,7 +35,7 @@ npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
-  EigenDenseLike<npe_Matrix_v> p;
+  npe_Matrix_v p;
   igl::quad_planarity(v, f, p);
   return npe::move(p);
 

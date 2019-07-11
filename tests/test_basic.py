@@ -270,6 +270,45 @@ class TestBasic(unittest.TestCase):
         e = igl.edges(self.f1)
         res = igl.bone_parents(e)
         self.assertEqual(res.shape[0], e.shape[0])
+    
+    def test_sort_angles(self):
+        r = igl.sort_angles(self.v)
+        self.assertTrue(r.dtype == self.f.dtype)
+        self.assertEqual(r.shape[0], self.v.shape[0])
+
+    def test_circumradius(self):
+        r = igl.circumradius(self.v, self.f)
+        self.assertTrue(r.dtype == self.v.dtype)
+        self.assertEqual(r.shape[0], self.f.shape[0])
+
+    def test_quad_planarity(self):
+        p = igl.quad_planarity(self.v, self.g)
+        self.assertTrue(p.dtype == self.v.dtype)
+        self.assertEqual(p.shape[0], self.g.shape[0])
+
+    # TODO: not completed
+    def test_circulation(self):
+        ret = igl.circulation(0, False, self.f, self.g, self.g)
+        self.assertTrue(type(ret) == list)
+        self.assertTrue(type(ret[0]) == int)
+
+    def test_collapse_small_triangles(self):
+        ff = igl.collapse_small_triangles(self.v, self.f, 0.5)
+        self.assertEqual(ff.shape[1], self.f.shape[1])
+
+    def test_bounding_box(self):
+        bv, bf = igl.bounding_box(self.v)
+        self.assertEqual(bv.shape[1], self.v.shape[1])
+        self.assertEqual(bf.shape[1], self.v.shape[1])
+
+    def test_ambient_occlusion(self):
+        s = igl.ambient_occlusion(self.v, self.f, self.f, self.v, 1)
+        self.assertEqual(s.shape[0], self.f.shape[0])
+        self.assertEqual(len(s.shape), 1)
+
+    # boundary_conditions
+    # bounding_box_diagonal
+    # 
 
 
 if __name__ == '__main__':
