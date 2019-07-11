@@ -283,21 +283,23 @@ class TestBasic(unittest.TestCase):
 
     # TODO: not completed
     def test_circulation(self):
-        ret = igl.circulation(1, False, self.f, self.g, self.g)
+        ret = igl.circulation(0, False, self.f, self.g, self.g)
+        self.assertTrue(type(ret) == list)
+        self.assertTrue(type(ret[0]) == int)
 
     def test_collapse_small_triangles(self):
         ff = igl.collapse_small_triangles(self.v, self.f, 0.5)
         self.assertEqual(ff.shape[1], self.f.shape[1])
 
     def test_bounding_box(self):
-        bv, bf = igl.bounding_box(self.f)
-        self.assertEqual(bv.shape[1], f.shape[1])
-        self.assertEqual(bf.shape[1], f.shape[1])
+        bv, bf = igl.bounding_box(self.v)
+        self.assertEqual(bv.shape[1], self.v.shape[1])
+        self.assertEqual(bf.shape[1], self.v.shape[1])
 
     def test_ambient_occlusion(self):
-        s = igl.ambient_occlusion(self.v, self.f, self.f, self.f)
-        self.assertEqual(s.shape[0], f.shape[0])
-        self.assertEqual(s.shape[1], 1)
+        s = igl.ambient_occlusion(self.v, self.f, self.f, self.v, 1)
+        self.assertEqual(s.shape[0], self.f.shape[0])
+        self.assertEqual(len(s.shape), 1)
 
     # boundary_conditions
     # bounding_box_diagonal

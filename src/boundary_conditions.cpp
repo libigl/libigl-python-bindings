@@ -73,8 +73,8 @@ npe_begin_code()
   Eigen::MatrixXi ce_copy = ce.template cast<int>();
   Eigen::VectorXi b;
   Eigen::MatrixXd bc;
-  igl::boundary_conditions(v_copy, ele_copy, c_copy, p_copy, be_copy, ce_copy, b, bc);
-  return std::make_tuple(npe::move(p_copy), npe::move(v_copy));
+  bool success = igl::boundary_conditions(v_copy, ele_copy, c_copy, p_copy, be_copy, ce_copy, b, bc);
+  return std::make_tuple(success, npe::move(b), npe::move(bc));
 
 npe_end_code()
 

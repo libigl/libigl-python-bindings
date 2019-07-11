@@ -2,7 +2,7 @@
 
 #include <npe.h>
 #include <typedefs.h>
-
+#include <pybind11/stl.h>
 
 
 
@@ -59,58 +59,7 @@ npe_begin_code()
   Eigen::VectorXi emap_copy = emap.template cast<int>();
   Eigen::MatrixXi ef_copy = ef.template cast<int>();
   Eigen::MatrixXi ei_copy = ei.template cast<int>();
-  igl::circulation(e, ccw, emap_copy, ef_copy, ei_copy);
-  return ;
+  return igl::circulation(e, ccw, emap_copy, ef_copy, ei_copy);
 
 npe_end_code()
-
-
-const char* ds_circulation_op = R"igl_Qu8mg5v7(
-
-Wrapper with VectorXi output.
-
-Parameters
-----------
-
-
-Returns
--------
-
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(circulation_op)
-npe_doc(ds_circulation_op)
-
-npe_arg(e, int)
-npe_arg(ccw, bool)
-npe_arg(emap, dense_int, dense_long)
-npe_arg(ef, npe_matches(emap))
-npe_arg(ei, npe_matches(emap))
-
-
-npe_begin_code()
-
-// TODO: remove __copy
-  Eigen::VectorXi emap_copy = emap.template cast<int>();
-  Eigen::MatrixXi ef_copy = ef.template cast<int>();
-  Eigen::MatrixXi ei_copy = ei.template cast<int>();
-
-  Eigen::VectorXi v;
-  igl::circulation(e, ccw, emap_copy, ef_copy, ei_copy, v);
-  return npe::move(v);
-
-npe_end_code()
-
 
