@@ -281,6 +281,27 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(p.dtype == self.v.dtype)
         self.assertEqual(p.shape[0], self.g.shape[0])
 
+    # TODO: not completed
+    def test_circulation(self):
+        ret = igl.circulation(1, False, self.f, self.g, self.g)
+
+    def test_collapse_small_triangles(self):
+        ff = igl.collapse_small_triangles(self.v, self.f, 0.5)
+        self.assertEqual(ff.shape[1], self.f.shape[1])
+
+    def test_bounding_box(self):
+        bv, bf = igl.bounding_box(self.f)
+        self.assertEqual(bv.shape[1], f.shape[1])
+        self.assertEqual(bf.shape[1], f.shape[1])
+
+    def test_ambient_occlusion(self):
+        s = igl.ambient_occlusion(self.v, self.f, self.f, self.f)
+        self.assertEqual(s.shape[0], f.shape[0])
+        self.assertEqual(s.shape[1], 1)
+
+    # boundary_conditions
+    # bounding_box_diagonal
+    # 
 
 
 if __name__ == '__main__':
