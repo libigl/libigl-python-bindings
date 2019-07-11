@@ -1,4 +1,5 @@
 // TODO: Fix Derivedbc=Map<Matrix<...>>, which leads to Derivedbc b0 to fail.
+// __bug
 
 #include <npe.h>
 #include <typedefs.h>
@@ -52,7 +53,7 @@ npe_arg(bc, dense_float, dense_double)
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_v> u;
+  npe_Matrix_v u;
   igl::bijective_composite_harmonic_mapping(v, f, b, bc, u);
   return npe::move(u);
 
@@ -61,7 +62,7 @@ npe_end_code()
 
 #include <igl/bijective_composite_harmonic_mapping.h>
 
-const char* internal_ds_bijective_composite_harmonic_mapping = R"igl_Qu8mg5v7(
+const char* ds_internal_bijective_composite_harmonic_mapping = R"igl_Qu8mg5v7(
 
 Parameters
 ----------
@@ -93,8 +94,8 @@ Examples
    
 )igl_Qu8mg5v7";
 
-npe_function(bijective_composite_harmonic_mapping)
-npe_doc(ds_bijective_composite_harmonic_mapping)
+npe_function(internal_bijective_composite_harmonic_mapping)
+npe_doc(ds_internal_bijective_composite_harmonic_mapping)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
@@ -108,7 +109,7 @@ npe_arg(test_for_flips, bool)
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_v> u;
+  npe_Matrix_v u;
   igl::bijective_composite_harmonic_mapping(v, f, b, bc, min_steps, max_steps, num_inner_iters, test_for_flips, u);
   return npe::move(u);
 

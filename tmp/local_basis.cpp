@@ -3,6 +3,7 @@
 // const Eigen::MatrixBase<DerivedF>& F,
 // Eigen::PlainObjectBase<DerivedV>& B1,
 // have the same template
+// __bug
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>

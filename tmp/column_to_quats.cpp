@@ -1,4 +1,4 @@
-// TODO: wrap for VectorXd, Quaterniond and etc
+// TODO: wrap for VectorXd, Quaterniond and etc __type
 
 #include <npe.h>
 #include <typedefs.h>

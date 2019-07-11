@@ -1,6 +1,6 @@
 // TODO: Maybe need more templates or wasy to wrap around output params
 //        deduced conflicting types or param ... Eigen::Map<Eigen::Matrix<...>>
-//        and Eigen::Matrix<...>
+//        and Eigen::Matrix<...> __bug
 
 #include <npe.h>
 #include <typedefs.h>

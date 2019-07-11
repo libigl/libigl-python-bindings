@@ -1,4 +1,4 @@
-// TODO: wrap for Quaterniond
+// TODO: __type Quaterniond . missing __example
 
 #include <npe.h>
 #include <typedefs.h>
