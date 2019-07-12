@@ -1,4 +1,4 @@
-//TODO: libigl is not templated... __temp
+//TODO: __example
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -33,10 +33,14 @@ npe_function(map_vertices_to_circle)
 npe_doc(ds_map_vertices_to_circle)
 npe_arg(v, dense_float, dense_double)
 npe_arg(bnd, dense_int, dense_long)
+
 npe_begin_code()
 
-  EigenDenseLike<npe_Matrix_v> uv;
-  igl::map_vertices_to_circle(v, bnd, uv);
+  // TODO: remove __copy
+  Eigen::MatrixXd v_copy = v.template cast<double>();
+  Eigen::VectorXi bnd_copy = bnd.template cast<int>();
+  Eigen::MatrixXd uv;
+  igl::map_vertices_to_circle(v_copy, bnd_copy, uv);
   return npe::move(uv);
 
 npe_end_code()

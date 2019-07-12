@@ -1,5 +1,4 @@
-//TODO: libigl is not templated...
-// __temp
+//TODO: __example
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/copyleft/comiso/nrosy.h>
@@ -52,9 +51,18 @@ npe_arg(soft, double)
 
 
 npe_begin_code()
-  EigenDenseLike<npe_Matrix_v> r;
-  EigenDenseLike<npe_Matrix_v> s;
-  igl::copyleft::comiso::nrosy(v, f, b, bc, b_soft, w_soft, bc_soft, n, soft, r, s);
+
+  // remove __copy
+  Eigen::MatrixXd v_copy = v.template cast<double>();
+  Eigen::MatrixXi f_copy = f.template cast<int>();
+  Eigen::VectorXi b_copy = b.template cast<int>();
+  Eigen::MatrixXd bc_copy = bc.template cast<double>();
+  Eigen::VectorXi b_soft_copy = b_soft.template cast<int>();
+  Eigen::VectorXd w_soft_copy = w_soft.template cast<double>();
+  Eigen::MatrixXd bc_soft_copy = bc_soft.template cast<double>();
+  Eigen::MatrixXd r;
+  Eigen::VectorXd s;
+  igl::copyleft::comiso::nrosy(v_copy, f_copy, b_copy, bc_copy, b_soft_copy, w_soft_copy, bc_soft_copy, n, soft, r, s);
   return std::make_tuple(npe::move(r), npe::move(s));
 
 npe_end_code()

@@ -1,4 +1,4 @@
-//TODO: the libigl function is not templated... __temp
+//TODO: __example
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -47,9 +47,14 @@ npe_arg(b, npe_matches(f))
 npe_arg(bc, npe_matches(v))
 npe_begin_code()
 
-  EigenDenseLike<npe_Matrix_v> uv;
-  igl::lscm(v, f, b, bc, uv);
-  return npe::move(uv);
+  // TODO: remove __copy
+  Eigen::MatrixXd v_copy = v.template cast<double>();
+  Eigen::MatrixXi f_copy = f.template cast<int>();
+  Eigen::VectorXi b_copy = b.template cast<int>();
+  Eigen::MatrixXd bc_copy = bc.template cast<double>();
+  Eigen::MatrixXd uv;
+  bool success = igl::lscm(v_copy, f_copy, b_copy, bc_copy, uv);
+  return std::make_tuple(success, npe::move(uv));
 
 npe_end_code()
 
