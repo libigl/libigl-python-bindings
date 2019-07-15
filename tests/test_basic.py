@@ -126,14 +126,12 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.dtype == np.float32)
 
     def test_read_triangle_mesh(self):
-        # TODO fix segfault problem
-        pass
-        #v, f = igl.read_triangle_mesh(self.test_path + "bunny.mesh")
-        #print(v.shape, f.shape)
-        #v, f = igl.read_triangle_mesh(self.test_path + "cube.obj")
-        #print(v.shape, f.shape)
-        #v, f = igl.read_triangle_mesh(self.test_path + "beetle.off")
-        #print(v.shape, f.shape)
+        v, f = igl.read_triangle_mesh(self.test_path + "octopus-low.mesh")
+        print(v.shape, f.shape)
+        v, f = igl.read_triangle_mesh(self.test_path + "face.obj")
+        print(v.shape, f.shape)
+        v, f = igl.read_triangle_mesh(self.test_path + "bunny.off")
+        print(v.shape, f.shape)
 
     def test_triangulate(self):
         v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
@@ -318,6 +316,17 @@ class TestBasic(unittest.TestCase):
     def test_write_triangle_mesh(self):
         ok = igl.write_triangle_mesh("out.obj", self.v, self.f)
         self.assertEqual(ok, True)
+
+    def test_barycenter(self):
+        bc = igl.barycenter(self.v, self.f)
+        self.assertEqual(bc.dtype, self.v.dtype)
+        self.assertEqual(bc.shape[0], self.f.shape[0])
+        self.assertEqual(bc.shape[1], 3)
+
+    def test_read_dmat(self):
+        mat = igl.read_dmat(self.test_path + "decimated-knight-selection.dmat")
+        self.assertEqual(mat.dtype, "float64")
+
 
     # boundary_conditions
     # bounding_box_diagonal
