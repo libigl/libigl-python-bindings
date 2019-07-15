@@ -43,15 +43,13 @@ npe_doc(ds_tetrahedralize)
 
 npe_arg(v, dense_double)
 npe_arg(f, dense_int)
-npe_arg(switches, std::string)
+npe_default_arg(switches, std::string, std::string(""))
 npe_begin_code()
 
   EigenDenseLike<npe_Matrix_v> tv;
   EigenDenseLike<npe_Matrix_f> tt;
   EigenDenseLike<npe_Matrix_f> tf;
-  igl::copyleft::tetgen::tetrahedralize(v, f, switches, tv, tt, tf);
-  return std::make_tuple(npe::move(tv), npe::move(tt), npe::move(tf));
+  const auto status = igl::copyleft::tetgen::tetrahedralize(v, f, switches, tv, tt, tf);
+  return std::make_tuple(status, npe::move(tv), npe::move(tt), npe::move(tf));
 
-npe_end_code()
-
-
+  npe_end_code()

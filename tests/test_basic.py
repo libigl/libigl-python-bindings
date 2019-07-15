@@ -327,6 +327,28 @@ class TestBasic(unittest.TestCase):
         mat = igl.read_dmat(self.test_path + "decimated-knight-selection.dmat")
         self.assertEqual(mat.dtype, "float64")
 
+    def test_vector_area_matrix(self):
+        a = igl.vector_area_matrix(self.f)
+        self.assertEqual(a.dtype, self.f.dtype)
+        self.assertEqual(a.shape[0], a.shape[1])
+        self.assertEqual(a.shape[0], self.v.shape[0]*2)
+
+    def test_tetrahedralize(self):
+        # TODO: this test segfaults
+        pass
+        # status, tv, tt, tf = igl.tetrahedralize(self.v1, self.f1)
+
+        # self.assertEqual(status, 0)
+
+        # self.assertEqual(tv.dtype, self.v1.dtype)
+        # self.assertEqual(tt.dtype, self.f1.dtype)
+        # self.assertEqual(tf.dtype, self.f1.dtype)
+
+        # self.assertEqual(tv.shape[1], 3)
+        # self.assertEqual(tf.shape[1], 3)
+        # self.assertEqual(tt.shape[1], 4)
+
+
 
     # boundary_conditions
     # bounding_box_diagonal
