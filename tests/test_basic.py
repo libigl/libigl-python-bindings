@@ -348,6 +348,10 @@ class TestBasic(unittest.TestCase):
         # self.assertEqual(tf.shape[1], 3)
         # self.assertEqual(tt.shape[1], 4)
 
+    def test_hausdorff(self):
+        dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
+        print(dist)
+
 
 
     # boundary_conditions

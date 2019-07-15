@@ -11,6 +11,7 @@ tutorial/.ipynb_*
 
 test.obj
 pyigl.cpython*
+pyigl_classes.cpython*
 __pycache__
 
 igl.egg-info
