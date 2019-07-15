@@ -1,4 +1,14 @@
 //TODO: __example
+//TODO: linker problem:
+/*
+ld: warning: direct access in function
+'void gmm::copy<gmm::simple_vector_ref<gmm::wsvector<double>*>, gmm::simple_vector_ref<gmm::wsvector<double>*> >(gmm::simple_vector_ref<gmm::wsvector<double>*> const&, gmm::simple_vector_ref<gmm::wsvector<double>*>&)'
+ from file 'CMakeFiles/pyigl.dir/comiso_nrosy.out.cpp.o' to global weak symbol 'gmm::warning_level::level(int)::level_' from file
+  'CoMISo/libCoMISo.a(MISolver.cc.o)' means the weak symbol cannot be overridden at runtime. This was likely caused by different
+  translation units being compiled with different visibility settings.
+
+
+ */
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/copyleft/comiso/nrosy.h>

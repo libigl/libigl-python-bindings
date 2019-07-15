@@ -14,3 +14,7 @@ pyigl.cpython*
 __pycache__
 
 igl.egg-info
+*.code-workspace
+out.obj
+test.off
+.vscode
