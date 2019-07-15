@@ -80,6 +80,10 @@ target_include_directories(pyigl PRIVATE "src/include")
 #   target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
 # endif()
 
+pybind11_add_module(pyigl_classes classes/classes.cpp)
+target_link_libraries(pyigl_classes PRIVATE igl::core)
+target_include_directories(pyigl_classes PRIVATE "src/include")
+target_include_directories(pyigl_classes PRIVATE "external/numpyeigen/src")
 
 # set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)
 # find_package(PythonLibs REQUIRED)
