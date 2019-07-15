@@ -80,10 +80,15 @@ target_include_directories(pyigl PRIVATE "src/include")
 #   target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
 # endif()
 
-pybind11_add_module(pyigl_classes classes/classes.cpp)
-target_link_libraries(pyigl_classes PRIVATE igl::core)
+add_library(pyigl_classes MODULE classes/classes.cpp)
+target_link_libraries(pyigl_classes PRIVATE npe igl::core)
+target_link_libraries(pyigl_classes PRIVATE pybind11::module)
+set_target_properties(pyigl_classes PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}" SUFFIX "${PYTHON_MODULE_EXTENSION}")
 target_include_directories(pyigl_classes PRIVATE "src/include")
 target_include_directories(pyigl_classes PRIVATE "external/numpyeigen/src")
+
+#pybind11_add_module(pyigl_classes classes/classes.cpp)
+#target_link_libraries(pyigl_classes PRIVATE igl::core)
 
 # set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)
 # find_package(PythonLibs REQUIRED)
