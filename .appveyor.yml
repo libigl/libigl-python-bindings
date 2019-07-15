@@ -30,7 +30,7 @@ build_script:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - cd c:\projects\igl
   - python --version
-  - "python setup.py build --debug install"
+  - "python setup.py build install"
 
 test_script:
   - cd c:\projects\igl
