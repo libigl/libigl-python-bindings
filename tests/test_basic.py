@@ -363,6 +363,18 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(iso_e.dtype, self.f1.dtype)
         self.assertEqual(iso_e.shape[1], 2)
 
+    def test_winding_number(self):
+        s = igl.winding_number(self.v1, self.f1, self.v)
+
+        self.assertEqual(s.shape[0], self.v.shape[0])
+
+    def test_winding_number_for_number(self):
+        #TODO wierd dtype error
+        pass
+        # p = np.zeros((1, 3), dtype=self.v1.dtype)
+        # s = igl.winding_number(self.v1, self.f1, p)
+
+
 
 
     # boundary_conditions
