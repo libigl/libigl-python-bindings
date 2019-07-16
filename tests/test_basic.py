@@ -353,6 +353,14 @@ class TestBasic(unittest.TestCase):
         dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
         print(dist)
 
+    def test_isolines(self):
+        func = np.random.rand(self.v1.shape[0], 1)
+        iso_v, iso_e = igl.isolines(self.v1, self.f1, func, 10)
+
+        self.assertEqual(iso_v.dtype, func.dtype)
+        self.assertEqual(iso_e.dtype, self.f1.dtype)
+        self.assertEqual(iso_e.shape[1], 2)
+
 
 
     # boundary_conditions
