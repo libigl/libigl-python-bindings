@@ -8,10 +8,18 @@ Parameters
 ----------
 v : #v x dim matrix of vertex coordinates
 f : #f x simplex_size  matrix of indices of simplex corners into V
-cuts :
+cuts : #F by 3 list of boolean flags, indicating the edges that need to
+   be cut (has 1 at the face edges that are to be cut, 0 otherwise)
 
 Returns
 -------
+A pair (vcut, fcut) where:
+  * vcut is a #v by 3 list of the vertex positions
+    of the cut mesh. This matrix will be similar to the original vertices except
+    some rows will be duplicated.
+  * fcut is a #f by 3 list of the faces of the cut mesh (must be triangles). This
+    matrix will be similar to the original face matrix except some indices
+    will be redirected to point to the newly duplicated vertices.
 
 See also
 --------
@@ -21,7 +29,6 @@ Notes
 
 Examples
 --------
-
 
 )igl_Qu8mg5v7";
 
