@@ -37,7 +37,7 @@ npe_arg(v, dense_float, dense_double)
 npe_arg(e, dense_int, dense_long)
 npe_arg(h, dense_float, dense_double) // TODO: npe_matches bug
 // TODO: Optionally support extra parameters
-npe_default_arg(flags, std::string, "a0.005q")
+npe_default_arg(flags, std::string, "a0.005qQ")
 npe_begin_code()
 
   npe_Matrix_v v2;
