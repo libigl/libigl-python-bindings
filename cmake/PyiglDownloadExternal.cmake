@@ -27,7 +27,7 @@ endfunction()
 function(pyigl_download_igl)
     pyigl_download_project(libigl
         GIT_REPOSITORY https://github.com/skoch9/libigl.git
-        GIT_TAG        bc480bc59bd9f66668efb8cf2359deea6dfcd012
+        GIT_TAG        1e3cfb42c7968b6347061fb6d8fd29fb30c125a4
     )
 endfunction()
 
