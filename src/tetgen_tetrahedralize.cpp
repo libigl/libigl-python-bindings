@@ -43,7 +43,7 @@ npe_doc(ds_tetrahedralize)
 
 npe_arg(v, dense_double)
 npe_arg(f, dense_int)
-npe_default_arg(switches, std::string, std::string(""))
+npe_default_arg(switches, std::string, std::string("pY"))
 npe_begin_code()
 
   EigenDenseLike<npe_Matrix_v> tv;

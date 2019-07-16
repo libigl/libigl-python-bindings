@@ -18,12 +18,15 @@ class TestBasic(unittest.TestCase):
     def setUp(self):
         # Some global datastructures to use in the tests
         np.random.seed(42)
-        self.v = np.random.rand(10, 3)
-        self.t = np.random.rand(10, 4)
-        self.f = np.random.randint(0, 10, size=(20, 3), dtype="int32")
-        self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
-        self.test_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../data/")
+        self.test_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), "../data/")
         self.v1, self.f1, self.n1 = igl.read_off(os.path.join(self.test_path, "bunny.off"))
+        self.v2, self.f2, self.n2 = igl.read_off(os.path.join(self.test_path, "fertility.off"))
+
+        self.v = np.random.rand(10, 3).astype(self.v1.dtype)
+        self.t = np.random.rand(10, 4)
+        self.f = np.random.randint(0, 10, size=(20, 3), dtype=self.f1.dtype)
+        self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
 
     def test_module(self):
         # Extract all implemented functions from the module
@@ -334,19 +337,17 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(a.shape[0], self.v.shape[0]*2)
 
     def test_tetrahedralize(self):
-        # TODO: this test segfaults
-        pass
-        # status, tv, tt, tf = igl.tetrahedralize(self.v1, self.f1)
+        status, tv, tt, tf = igl.tetrahedralize(self.v2, self.f2)
 
-        # self.assertEqual(status, 0)
+        self.assertEqual(status, 0)
 
-        # self.assertEqual(tv.dtype, self.v1.dtype)
-        # self.assertEqual(tt.dtype, self.f1.dtype)
-        # self.assertEqual(tf.dtype, self.f1.dtype)
+        self.assertEqual(tv.dtype, self.v1.dtype)
+        self.assertEqual(tt.dtype, self.f1.dtype)
+        self.assertEqual(tf.dtype, self.f1.dtype)
 
-        # self.assertEqual(tv.shape[1], 3)
-        # self.assertEqual(tf.shape[1], 3)
-        # self.assertEqual(tt.shape[1], 4)
+        self.assertEqual(tv.shape[1], 3)
+        self.assertEqual(tf.shape[1], 3)
+        self.assertEqual(tt.shape[1], 4)
 
     def test_hausdorff(self):
         dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
