@@ -27,7 +27,7 @@ endfunction()
 function(pyigl_download_igl)
     pyigl_download_project(libigl
         GIT_REPOSITORY https://github.com/skoch9/libigl.git
-        GIT_TAG        1e3cfb42c7968b6347061fb6d8fd29fb30c125a4
+        GIT_TAG        eb1466ef5f57ecb2a39a0f06c13bcdc6bd295254
     )
 endfunction()
 
@@ -36,7 +36,7 @@ endfunction()
 function(pyigl_download_numpyeigen)
     pyigl_download_project(numpyeigen
         GIT_REPOSITORY https://github.com/fwilliams/numpyeigen.git
-        GIT_TAG        f14a1f87845211aa227d8f139b96bf9caf07e28b
+        GIT_TAG        f2010021df6b1aa2d1e50abf4faba07c7aa30949
     )
 endfunction()
 
