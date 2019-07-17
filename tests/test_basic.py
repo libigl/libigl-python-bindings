@@ -375,6 +375,15 @@ class TestBasic(unittest.TestCase):
         # s = igl.winding_number(self.v1, self.f1, p)
 
 
+    def test_unproject(self):
+        model = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], dtype=self.v.dtype)
+        proj = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], dtype=self.v.dtype)
+        viewport = np.array([1, 1, 1, 1], dtype=self.v.dtype)
+        scene = igl.unproject(self.v, model, proj, viewport)
+
+        self.assertEqual(scene.dtype, self.v.dtype)
+        self.assertEqual(scene.shape[0], self.v.shape[0])
+        self.assertEqual(scene.shape[1], 3)
 
 
     # boundary_conditions
