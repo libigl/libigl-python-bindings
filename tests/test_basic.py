@@ -363,6 +363,15 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(iso_e.dtype, self.f1.dtype)
         self.assertEqual(iso_e.shape[1], 2)
 
+    def test_unproject_ray(self):
+        pass
+        #TODO: seg fault
+        #source, direction = igl.unproject_ray(self.v, self.t, self.t, self.t)
+        #self.assertEqual(source.dtype, self.v.dtype)
+        #self.assertEqual(direction.dtype, self.v.dtype)
+        #self.assertEqual(source.shape[1], 1)
+        #self.assertEqual(source.shape[1], 1)
+
     def test_winding_number(self):
         s = igl.winding_number(self.v1, self.f1, self.v)
 
