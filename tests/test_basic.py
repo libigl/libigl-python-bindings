@@ -394,6 +394,15 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(scene.shape[0], self.v.shape[0])
         self.assertEqual(scene.shape[1], 3)
 
+    def test_upsample(self):
+        nv, nf = igl.upsample(self.v1, self.f1)
+
+        self.assertEqual(nv.dtype, self.v1.dtype)
+        self.assertEqual(nf.dtype, self.f1.dtype)
+
+        self.assertEqual(nv.shape[1], self.v1.shape[1])
+        self.assertEqual(nf.shape[1], self.f1.shape[1])
+
 
     # boundary_conditions
     # bounding_box_diagonal
