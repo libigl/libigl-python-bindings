@@ -67,7 +67,7 @@ npe_begin_code()
   Eigen::Vector4f viewport_copy = viewport.template cast<float>();
   int fid;
   npe_Matrix_v bc;
-  bool success igl::unproject_onto_mesh(pos_copy, model_copy, proj_copy, viewport_copy, v, f, fid, bc);
+  bool success = igl::unproject_onto_mesh(pos_copy, model_copy, proj_copy, viewport_copy, v, f, fid, bc);
   return std::make_tuple(success, fid, npe::move(bc));
 
 npe_end_code()
