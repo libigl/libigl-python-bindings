@@ -11,13 +11,14 @@ Parameters
 V  #V by dim list of rest domain positions
 F  #F by {3|4} list of {triangle|tetrahedra} indices into V
 
+
 Returns
 -------
-C  #F by 3 list of 1/2*cotangents corresponding angles
-  for triangles, columns correspond to edges [1,2],[2,0],[0,1]
+  C  #F by 3 list of 1/2*cotangents corresponding angles
+    for triangles, columns correspond to edges [1,2],[2,0],[0,1]
 OR
-C  #F by 6 list of 1/6*cotangents of dihedral angles*edge lengths
-  for tets, columns along edges [1,2],[2,0],[0,1],[3,0],[3,1],[3,2] 
+  C  #F by 6 list of 1/6*cotangents of dihedral angles*edge lengths
+    for tets, columns along edges [1,2],[2,0],[0,1],[3,0],[3,1],[3,2] 
 
 
 See also
@@ -30,7 +31,8 @@ None
 
 Examples
 --------
-   
+
+  
 )igl_Qu8mg5v7";
 
 npe_function(cotmatrix_entries)
