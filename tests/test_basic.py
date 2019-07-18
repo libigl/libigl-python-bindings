@@ -402,6 +402,17 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(nv.shape[1], self.v1.shape[1])
         self.assertEqual(nf.shape[1], self.f1.shape[1])
 
+    def test_random_points_on_mesh(self):
+        n = 10
+        b, fi = igl.random_points_on_mesh(n, self.v1, self.f1)
+
+        self.assertEqual(b.dtype, self.v1.dtype)
+        self.assertEqual(fi.dtype, self.f1.dtype)
+
+        self.assertEqual(b.shape[0], n)
+        self.assertEqual(b.shape[1], 3)
+        self.assertEqual(fi.shape[0], n)
+
 
     # boundary_conditions
     # bounding_box_diagonal
