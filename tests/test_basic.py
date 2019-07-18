@@ -377,11 +377,10 @@ class TestBasic(unittest.TestCase):
 
         self.assertEqual(s.shape[0], self.v.shape[0])
 
-    def test_winding_number_for_number(self):
-        #TODO wierd dtype error
+    def test_winding_number_for_point(self):
         pass
         # p = np.zeros((1, 3), dtype=self.v1.dtype)
-        # s = igl.winding_number(self.v1, self.f1, p)
+        # s = igl.winding_number_for_point(self.v1, self.f1, p)
 
 
     def test_unproject(self):
