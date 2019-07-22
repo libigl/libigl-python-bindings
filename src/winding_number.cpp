@@ -85,7 +85,7 @@ npe_doc(ds_winding_number1)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
-npe_arg(p, npe_matches(v))
+npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()
