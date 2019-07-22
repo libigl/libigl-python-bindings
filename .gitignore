@@ -19,3 +19,5 @@ igl.egg-info
 out.obj
 test.off
 .vscode
+
+data/*

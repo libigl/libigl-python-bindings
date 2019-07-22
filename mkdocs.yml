@@ -1,0 +1,57 @@
+site_name: igl
+site_url: 'https://libigl.github.io/'
+repo_name: 'libigl-python-bindings'
+repo_url: 'https://github.com/geometryprocessing/libigl-python-bindings'
+site_description: "Simple Python geometry processing library"
+# strict: true
+docs_dir: 'tutorial'
+remote_branch: 'gh-pages'
+theme:
+  name: material
+  favicon: 'favicon.ico'
+  logo:
+    icon: ' '
+  palette:
+    primary: 'light blue'
+    accent: 'blue'
+extra:
+  social:
+    - type: 'github'
+      link: 'https://github.com/geometryprocessing/libigl-python-bindings'
+markdown_extensions:
+  - codehilite
+  - footnotes
+  - admonition
+  - toc:
+      permalink: true
+  - markdown.extensions.smarty
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      repo_url_shortener: true
+      user: libigl-python-bindings
+      repo: libigl-python-bindings
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+plugins:
+  - mknotebooks:
+      execute: true
+      preamble: "tutorial/plot_to_md.py"
+      timeout: -1
+extra_javascript:
+  - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
+nav:
+  - Tutorial: tutorials.ipynb
+  - Docs: igl_docs.md
