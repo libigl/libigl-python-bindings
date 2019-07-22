@@ -36,7 +36,7 @@ npe_doc(ds_winding_number)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
-npe_arg(o, npe_matches(v))
+npe_arg(o, dense_float, dense_double)
 
 
 npe_begin_code()
