@@ -45,13 +45,14 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-# plugins:
-#   - mknotebooks:
-#       execute: true
-#       preamble: "tutorial/plot_to_md.py"
-#       timeout: -1
+plugins:
+  - mknotebooks:
+      execute: true
+      preamble: "tutorial/plot_to_md.py"
+      timeout: -1
 extra_javascript:
   - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
 nav:
+  - Home: index.md
   - Tutorial: tutorials.ipynb
   - Docs: igl_docs.md
