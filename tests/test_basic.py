@@ -305,16 +305,19 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(bv.shape[1], self.v.shape[1])
         self.assertEqual(bf.shape[1], self.v.shape[1])
 
-    def test_ambient_occlusion(self):
-        pass
-        #TODO: s is empty for some reason
-        # p = -np.ones((1, 3), dtype=self.v1.dtype)
-        # n = np.ones((1, 3), dtype=self.v1.dtype)*math.sqrt(3)
+    def test_per_face_normals(self):
+        n = igl.per_face_normals(self.v2, self.f2, self.v2)
 
-        # s = igl.ambient_occlusion(self.v1, self.f1, p, n, 2)
-        # self.assertEqual(s.shape[0], 1)
-        # self.assertEqual(s.dtype, self.v1.dtype)
-        # self.assertEqual(len(s.shape), 1)
+        self.assertEqual(n.dtype, self.v2.dtype)
+        self.assertEqual(n.shape[0], self.f2.shape[0])
+        self.assertEqual(n.shape[1], 3)
+
+    def test_ambient_occlusion(self):
+        n = igl.per_face_normals(self.v2, self.f2, self.v2)
+        s = igl.ambient_occlusion(self.v2, self.f2, self.v2, n, 2)
+
+        self.assertEqual(s.dtype, self.v1.dtype)
+        self.assertEqual(len(s.shape), 1)
 
     def test_write_triangle_mesh(self):
         ok = igl.write_triangle_mesh("out.obj", self.v, self.f)
