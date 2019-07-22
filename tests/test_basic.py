@@ -353,10 +353,8 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(tt.shape[1], 4)
 
     def test_hausdorff(self):
-        #TODO not passing on windows
-        pass
-        # dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
-        # print(dist)
+        dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
+        print(dist)
 
     def test_isolines(self):
         func = np.random.rand(self.v1.shape[0], 1)
