@@ -24,7 +24,8 @@ None
 
 Examples
 --------
->>> p = edges(e)
+e.np.random.randint(0, 10, size=(10, 2))
+p = directed_edge_parents(e)
 )igl_Qu8mg5v7";
 
 npe_function(directed_edge_parents)

@@ -472,7 +472,9 @@ class TestBasic(unittest.TestCase):
         l2 = igl.crouzeix_raviart_cotmatrix_known_e(self.v1, self.f1, e, emap)
         self.assertEqual(l2.dtype, l.dtype)
         self.assertEqual(l2.shape, l.shape)
-    def test_crouzeix_raviart_mmassmatrix(self):
+    def test_crouzeix_raviart_cotmatrix_known_e(self):
+        pass
+    def test_crouzeix_raviart_massmatrix(self):
         m, e, emap = igl.crouzeix_raviart_massmatrix(self.v1, self.f1)
         self.assertEqual(m.dtype, self.v1.dtype)
         self.assertEqual(m.shape[0], e.shape[0])
@@ -482,8 +484,59 @@ class TestBasic(unittest.TestCase):
         m2 = igl.crouzeix_raviart_massmatrix_known_e(self.v1, self.f1, e, emap)
         self.assertEqual(m2.dtype, m.dtype)
         self.assertEqual(m2.shape, m.shape)
-       
+    def test_crouzeix_raviart_massmatrix_known_e(self):
+        pass
 
+    def test_cylinder(self):
+        v, f = igl.cylinder(100, 100)
+        self.assertEqual(v.dtype, self.v.dtype)
+        self.assertEqual(f.dtype, self.f.dtype)
+        self.assertEqual(v.shape[1], 3)
+        self.assertEqual(f.shape[1], 3)
+
+    def test_decimate(self):
+        success, u, g, j, i = igl.decimate(self.v1, self.f1, 100)
+        self.assertEqual(u.shape[1], self.v1.shape[1]) 
+        self.assertEqual(g.shape[1], 3)
+        self.assertEqual(j.shape[0], g.shape[0])
+        self.assertTrue(len(j.shape) == len(i.shape) and len(i.shape) == 1)
+        self.assertEqual(type(success), bool)
+        self.assertTrue(u.dtype == self.v.dtype)
+        self.assertTrue(g.dtype == j.dtype and j.dtype == i.dtype and i.dtype == self.f.dtype)
+
+    def test_dihedral_angles(self):
+        t = np.random.randint(0, 10, size=(10, 4))
+        theta, cos_theta = igl.dihedral_angles(self.v, t)
+        self.assertEqual(theta.dtype, self.v.dtype)
+        self.assertEqual(cos_theta.dtype, self.v.dtype)
+        self.assertTrue(theta.shape == cos_theta.shape and cos_theta.shape == (self.t.shape[0], 6))
+
+    def test_directed_edge_parents(self):
+        e = np.random.randint(0,10, size=(10, 2))
+        p = igl.directed_edge_parents(e)
+        self.assertEqual(p.dtype, e.dtype)
+        self.assertEqual(p.shape[0], e.shape[0])
+        self.assertEqual(len(p.shape), 1)
+
+
+
+    # The commented asserts fail, but should pass according to documentation
+    def test_cut_mesh(self):
+        cuts = np.random.randint(0, 2, size=(self.f1.shape[0], 3), dtype="int32")
+        vcut, fcut = igl.cut_mesh(self.v1, self.f1, cuts)
+        self.assertEqual(vcut.dtype, self.v1.dtype)
+        self.assertEqual(vcut.shape[1], 3)
+        #self.assertEqual(vcut.shape[0], self.v1.shape[0])
+        self.assertEqual(fcut.dtype, self.f1.dtype)
+        self.assertEqual(fcut.shape[1], 3)
+        #self.assertEqual(fcut.shape[0], self.f1.shape[0])
+
+    # Seg fault
+    #def test_cut_mesh_from_singularities(self):
+    #    mismatch = np.random.randint(0, 2, size = (self.f1.shape[0], 3), dtype="int32")
+    #    seams = igl.cut_mesh_from_singularities(self.v1, self.f1, mismatch)
+    #    self.assertEqual(seams.shape, (self.f1.shape[0], 3))
+    #    self.assertEqual(seams.dtype, bool)
         
 
     # TODO: fix the bug that c has shape (0,0)

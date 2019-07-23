@@ -34,17 +34,16 @@ npe_function(cut_mesh_from_singularities)
 npe_doc(ds_cut_mesh_from_singularities)
 npe_arg(v, dense_double, dense_float)
 npe_arg(f, dense_int, dense_long)
-npe_arg(mismatch, npe_matches(f))
+npe_arg(mismatch, dense_int)
 npe_begin_code()
 
     // FIXME: LibIGL templates are broken so we need to do copies :'(
     npe_Matrix_v v_copy;
     npe_Matrix_f f_copy;
-    npe_Matrix_mismatch mismatch_copy;
 
     Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic, npe_Matrix_f::Options> seams;
 
-    igl::cut_mesh_from_singularities(v_copy, f_copy, mismatch_copy, seams);
+    igl::cut_mesh_from_singularities(v_copy, f_copy, mismatch, seams);
 
     return npe::move(seams);
 npe_end_code()
