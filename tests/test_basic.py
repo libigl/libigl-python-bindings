@@ -432,14 +432,13 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(kd.shape[1], self.f1.shape[0])
         self.assertEqual(len(kd.shape), 2)
 
-    # Inluding this test greatly increased the time required to finish
-    def test_boundary_conditions(self):
-        success, b, bc = igl.boundary_conditions(self.v1, self.f1, self.v1, self.f1, self.f1, self.f1)
-        self.assertEqual(type(success), bool)
-        self.assertEqual(b.dtype, self.f1.dtype)
-        self.assertEqual(bc.dtype, self.v1.dtype)
-        self.assertEqual(len(b.shape), 1)
-        self.assertEqual(b.shape[0], bc.shape[0])
+    # def test_boundary_conditions(self):
+    #     success, b, bc = igl.boundary_conditions(self.v1, self.f1, self.v1[1:10, :], self.f1, self.f1, self.f1)
+    #     self.assertEqual(type(success), bool)
+    #     self.assertEqual(b.dtype, self.f1.dtype)
+    #     self.assertEqual(bc.dtype, self.v1.dtype)
+    #     self.assertEqual(len(b.shape), 1)
+    #     self.assertEqual(b.shape[0], bc.shape[0])
 
 
     def test_bounding_box_diagonal(self):
@@ -461,7 +460,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(c.dtype, self.v1.dtype)
         self.assertEqual(c.shape[0], self.f1.shape[0])
         self.assertTrue(c.shape[1] == 3 or c.shape[1] == 6)
-        
+
     def test_crouzeix_raviart_cotmatrix(self):
         l, e, emap = igl.crouzeix_raviart_cotmatrix(self.v1, self.f1)
         self.assertEqual(l.dtype, self.v1.dtype)
@@ -496,7 +495,7 @@ class TestBasic(unittest.TestCase):
 
     def test_decimate(self):
         success, u, g, j, i = igl.decimate(self.v1, self.f1, 100)
-        self.assertEqual(u.shape[1], self.v1.shape[1]) 
+        self.assertEqual(u.shape[1], self.v1.shape[1])
         self.assertEqual(g.shape[1], 3)
         self.assertEqual(j.shape[0], g.shape[0])
         self.assertTrue(len(j.shape) == len(i.shape) and len(i.shape) == 1)
@@ -522,7 +521,7 @@ class TestBasic(unittest.TestCase):
 
     # The commented asserts fail, but should pass according to documentation
     def test_cut_mesh(self):
-        cuts = np.random.randint(0, 2, size=(self.f1.shape[0], 3), dtype="int32")
+        cuts = np.random.randint(0, 2, size=(self.f1.shape[0], 3), dtype=self.f1.dtype)
         vcut, fcut = igl.cut_mesh(self.v1, self.f1, cuts)
         self.assertEqual(vcut.dtype, self.v1.dtype)
         self.assertEqual(vcut.shape[1], 3)
@@ -537,7 +536,7 @@ class TestBasic(unittest.TestCase):
     #    seams = igl.cut_mesh_from_singularities(self.v1, self.f1, mismatch)
     #    self.assertEqual(seams.shape, (self.f1.shape[0], 3))
     #    self.assertEqual(seams.dtype, bool)
-        
+
 
     # TODO: fix the bug that c has shape (0,0)
     #def test_centroid(self):
