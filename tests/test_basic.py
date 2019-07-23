@@ -289,8 +289,8 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(p.shape[0], self.g.shape[0])
 
     # TODO: not completed
-    def test_circulation(self):
-        pass
+    # def test_circulation(self):
+    #     pass
         # emap ef, ei are missing
         # ret = igl.circulation(0, False, emap, ef, ei)
         # self.assertTrue(type(ret) == list)
@@ -352,9 +352,9 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(tf.shape[1], 3)
         self.assertEqual(tt.shape[1], 4)
 
-    def test_hausdorff(self):
-        dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
-        print(dist)
+    # def test_hausdorff(self):
+    #     dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
+    #     print(dist)
 
     def test_isolines(self):
         func = np.random.rand(self.v1.shape[0], 1)
@@ -364,14 +364,14 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(iso_e.dtype, self.f1.dtype)
         self.assertEqual(iso_e.shape[1], 2)
 
-    def test_unproject_ray(self):
-        pass
-        #TODO: seg fault
-        #source, direction = igl.unproject_ray(self.v, self.t, self.t, self.t)
-        #self.assertEqual(source.dtype, self.v.dtype)
-        #self.assertEqual(direction.dtype, self.v.dtype)
-        #self.assertEqual(source.shape[1], 1)
-        #self.assertEqual(source.shape[1], 1)
+    # def test_unproject_ray(self):
+    #     pass
+    #     #TODO: seg fault
+    #     #source, direction = igl.unproject_ray(self.v, self.t, self.t, self.t)
+    #     #self.assertEqual(source.dtype, self.v.dtype)
+    #     #self.assertEqual(direction.dtype, self.v.dtype)
+    #     #self.assertEqual(source.shape[1], 1)
+    #     #self.assertEqual(source.shape[1], 1)
 
     def test_winding_number(self):
         s = igl.winding_number(self.v1, self.f1, self.v)
