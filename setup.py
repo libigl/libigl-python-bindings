@@ -50,7 +50,7 @@ class CMakeBuild(build_ext):
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]
         cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
-        cmake_args += ['-DDEBUG_TRACE=ON']
+        # cmake_args += ['-DDEBUG_TRACE=ON']
 
         # python_libs = ""
 
