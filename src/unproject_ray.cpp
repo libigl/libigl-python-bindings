@@ -11,7 +11,7 @@ Construct a ray (source point + direction vector) given a screen space
 
 Parameters
 ----------
-pos  2d screen-space position (x,y) 
+pos  2d screen-space position (x,y)
 model  4x4 model-view matrix
 proj  4x4 projection matrix
 viewport  4-long viewport vector
@@ -46,8 +46,8 @@ npe_arg(viewport, npe_matches(pos))
 
 npe_begin_code()
 
-  npe_Matrix_pos s;
-  npe_Matrix_pos dir;
+  Eigen::Matrix<npe_Scalar_pos, 3, 1> s;
+  Eigen::Matrix<npe_Scalar_pos, 3, 1> dir;
   igl::unproject_ray(pos, model, proj, viewport, s, dir);
   return std::make_tuple(npe::move(s), npe::move(dir));
 
