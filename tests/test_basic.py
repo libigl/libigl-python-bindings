@@ -70,7 +70,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(l.dtype == self.v.dtype)
         self.assertTrue(type(l) == csc.csc_matrix)
 
-    def test_ear(self):
+    def test_ears(self):
         ears, ears_opp = igl.ears(self.f1)
         self.assertTrue(ears.shape == ears_opp.shape)
         self.assertTrue(ears.dtype == self.f.dtype)
@@ -434,7 +434,8 @@ class TestBasic(unittest.TestCase):
 
     # Inluding this test greatly increased the time required to finish
     def test_boundary_conditions(self):
-        success, b, bc = igl.boundary_conditions(self.v1, self.f1, self.v1, self.f1, self.f1, self.f1)
+        p = np.random.randint(0,10,size=(10,1), dtype="int32")
+        success, b, bc = igl.boundary_conditions(self.v, self.f, self.v, p, self.f, self.f)
         self.assertEqual(type(success), bool)
         self.assertEqual(b.dtype, self.f1.dtype)
         self.assertEqual(bc.dtype, self.v1.dtype)
@@ -518,7 +519,27 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(p.shape[0], e.shape[0])
         self.assertEqual(len(p.shape), 1)
 
+    def test_doublearea(self):
+        a = igl.doublearea(self.v1, self.f1)
+        self.assertEqual(a.shape[0], self.f1.shape[0])
+        self.assertEqual(a.dtype, self.v1.dtype)
 
+    def test_euler_characteristic(self):
+        eu = igl.euler_characteristic(self.f1)
+        self.assertEqual(type(eu), int)
+    def test_euler_characteristic_complete(self):
+        eu = igl.euler_characteristic_complete(self.v1, self.f1)
+        self.assertEqual(type(eu), int)
+
+
+    # npe_matches problem
+    #def test_exact_geodesic(self):
+        #vs = np.random.randint(0, 10, size=(10, 1))
+        #fs = np.random.randint(0, 10, size=(10, 1))
+        #vt = np.random.randint(0, 10, size=(10, 1))
+        #ft = np.random.randint(0, 10, size=(10, 1))
+        #d = igl.exact_geodesic(self.v, self.f, vs, fs, vt, ft)
+        #self.assertEqual(d.dtype, self.v.dtype)
 
     # The commented asserts fail, but should pass according to documentation
     def test_cut_mesh(self):
