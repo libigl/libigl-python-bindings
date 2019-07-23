@@ -17,7 +17,6 @@ Compute the length of the diagonal of a given meshes axis-aligned bounding
 Parameters
 ----------
 V  #V by 3 list of vertex positions
-F  #F by 3 list of triangle indices into V
 
 Returns
 -------

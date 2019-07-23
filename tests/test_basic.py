@@ -162,10 +162,13 @@ class TestBasic(unittest.TestCase):
     def test_arap_linear_block(self):
         kd = igl.arap_linear_block(self.v1, self.f1, d=2, energy=0)
         self.assertTrue(kd.shape[0] > 0)
+    def test_arap_linear_block_elements(self):
         kd = igl.arap_linear_block_elements(self.v1, self.f1, d=2)
         self.assertTrue(kd.shape[0] > 0)
+    def test_arap_linear_block_spokes(self):
         kd = igl.arap_linear_block_spokes(self.v1, self.f1, d=2)
         self.assertTrue(kd.shape[0] > 0)
+    def test_arap_linear_block_spokes_and_rims(self):
         kd = igl.arap_linear_block_spokes_and_rims(self.v1, self.f1, d=2)
         self.assertTrue(kd.shape[0] > 0)
 
@@ -296,6 +299,7 @@ class TestBasic(unittest.TestCase):
         # self.assertTrue(type(ret) == list)
         # self.assertTrue(type(ret[0]) == int)
 
+
     def test_collapse_small_triangles(self):
         ff = igl.collapse_small_triangles(self.v, self.f, 0.5)
         self.assertEqual(ff.shape[1], self.f.shape[1])
@@ -364,14 +368,15 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(iso_e.dtype, self.f1.dtype)
         self.assertEqual(iso_e.shape[1], 2)
 
-    # def test_unproject_ray(self):
-    #     pass
-    #     #TODO: seg fault
-    #     #source, direction = igl.unproject_ray(self.v, self.t, self.t, self.t)
-    #     #self.assertEqual(source.dtype, self.v.dtype)
-    #     #self.assertEqual(direction.dtype, self.v.dtype)
-    #     #self.assertEqual(source.shape[1], 1)
-    #     #self.assertEqual(source.shape[1], 1)
+    def test_unproject_ray(self):
+        pos = np.random.rand(2, 1)
+        model = np.random.rand(4, 4)
+        proj = np.random.rand(4, 4)
+        viewport = np.random.rand(4, 1)
+        source, direction = igl.unproject_ray(pos, model, proj, viewport)
+        self.assertEqual(source.dtype, self.v.dtype)
+        self.assertEqual(direction.dtype, self.v.dtype)
+        self.assertEqual(len(source.shape), 1)
 
     def test_winding_number(self):
         s = igl.winding_number(self.v1, self.f1, self.v)
@@ -413,10 +418,84 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(b.shape[1], 3)
         self.assertEqual(fi.shape[0], n)
 
+    def test_boundary_loop(self):
+        l = igl.boundary_loop(self.f)
+        self.assertEqual(len(l.shape), 1)
+        self.assertEqual(l.dtype, self.f.dtype)
 
-    # boundary_conditions
-    # bounding_box_diagonal
-    #
+    def test_arap_linear_block(self):
+        d = 2
+        energy = 2
+        kd = igl.arap_linear_block(self.v1, self.f1, d, energy)
+        self.assertEqual(kd.dtype, self.v1.dtype)
+        self.assertEqual(kd.shape[0], self.v1.shape[0])
+        self.assertEqual(kd.shape[1], self.f1.shape[0])
+        self.assertEqual(len(kd.shape), 2)
+
+    # Inluding this test greatly increased the time required to finish
+    def test_boundary_conditions(self):
+        success, b, bc = igl.boundary_conditions(self.v1, self.f1, self.v1, self.f1, self.f1, self.f1)
+        self.assertEqual(type(success), bool)
+        self.assertEqual(b.dtype, self.f1.dtype)
+        self.assertEqual(bc.dtype, self.v1.dtype)
+        self.assertEqual(len(b.shape), 1)
+        self.assertEqual(b.shape[0], bc.shape[0])
+
+
+    def test_bounding_box_diagonal(self):
+        length = igl.bounding_box_diagonal(self.v1)
+        self.assertEqual(type(length), float)
+
+    def test_boundary_facets(self):
+        b = igl.boundary_facets(self.f1)
+        self.assertEqual(b.dtype, self.f1.dtype)
+        self.assertTrue(b.shape[1] == 3 or b.shape[1] == 2)
+
+    def test_connect_boundary_to_infinity(self):
+        fo = igl.connect_boundary_to_infinity(self.f1)
+        self.assertEqual(fo.dtype, self.f1.dtype)
+        self.assertEqual(fo.shape[1], 3)
+
+    def test_cotmatrix_entries(self):
+        c = igl.cotmatrix_entries(self.v1, self.f1)
+        self.assertEqual(c.dtype, self.v1.dtype)
+        self.assertEqual(c.shape[0], self.f1.shape[0])
+        self.assertTrue(c.shape[1] == 3 or c.shape[1] == 6)
+        
+    def test_crouzeix_raviart_cotmatrix(self):
+        l, e, emap = igl.crouzeix_raviart_cotmatrix(self.v1, self.f1)
+        self.assertEqual(l.dtype, self.v1.dtype)
+        self.assertEqual(l.shape[0], e.shape[0])
+        self.assertEqual(l.shape[1], e.shape[0])
+        self.assertTrue(e.shape[1] == 2 or e.shape[1] == 3)
+        self.assertTrue(emap.shape[0] == 3*self.f1.shape[0] or emap.shape[0] ==4*self.f1.shape[0])
+        l2 = igl.crouzeix_raviart_cotmatrix_known_e(self.v1, self.f1, e, emap)
+        self.assertEqual(l2.dtype, l.dtype)
+        self.assertEqual(l2.shape, l.shape)
+    def test_crouzeix_raviart_mmassmatrix(self):
+        m, e, emap = igl.crouzeix_raviart_massmatrix(self.v1, self.f1)
+        self.assertEqual(m.dtype, self.v1.dtype)
+        self.assertEqual(m.shape[0], e.shape[0])
+        self.assertEqual(m.shape[1], e.shape[0])
+        self.assertTrue(e.shape[1] == 2 or e.shape[1] == 3)
+        self.assertTrue(emap.shape[0] == 3*self.f1.shape[0] or emap.shape[0] ==4*self.f1.shape[0])
+        m2 = igl.crouzeix_raviart_massmatrix_known_e(self.v1, self.f1, e, emap)
+        self.assertEqual(m2.dtype, m.dtype)
+        self.assertEqual(m2.shape, m.shape)
+       
+
+        
+
+    # TODO: fix the bug that c has shape (0,0)
+    #def test_centroid(self):
+    #    c, vol = igl.centroid(self.v1, self.f1)
+    #    self.assertEqual(c[0].dtype, self.v1.dtype)
+    #    self.assertEqual(type(vol), float)
+    #    self.assertEqual(c[0].shape[1], self.f1.shape[1])
+
+    #def test_BBW(self):
+    #    BBW = igl.BBW()
+    #    w = BBW.solve(self.v1, self.f1, self.bc, self.b0)
 
 
 if __name__ == '__main__':

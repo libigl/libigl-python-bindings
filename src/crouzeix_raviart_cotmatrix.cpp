@@ -1,5 +1,3 @@
-// static assertion fail: YOU_MIXED_DIFFERENT_NUMERIC_TYPES__YOU_NEED_TO_USE_THE_CAST_METHOD_OF_MATRIXBASE_TO_CAST_NUMERIC_TYPES_EXPLICITLY
-
 #include <npe.h>
 #include <typedefs.h>
 

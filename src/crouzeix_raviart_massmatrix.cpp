@@ -91,8 +91,8 @@ npe_doc(ds_crouzeix_raviart_massmatrix_known_e)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
-npe_arg(e, npe_matches(v))
-npe_arg(emap, npe_matches(v))
+npe_arg(e, npe_matches(f))
+npe_arg(emap, npe_matches(f))
 
 
 npe_begin_code()
