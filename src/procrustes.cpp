@@ -53,12 +53,11 @@ npe_doc(ds_procrustes)
 
 npe_arg(x, dense_float, dense_double)
 npe_arg(y, npe_matches(x))
-
+npe_arg(include_scaling, bool)
+npe_arg(include_reflections, bool)
 
 npe_begin_code()
 
-  bool include_scaling;
-  bool include_reflections;
   double scale;
   npe_Matrix_x r;
   npe_Matrix_x t;

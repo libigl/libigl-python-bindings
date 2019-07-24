@@ -42,7 +42,7 @@ npe_doc(ds_per_edge_normals)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
-npe_arg(weight, igl::PerEdgeNormalsWeightingType)
+npe_default_arg(weight, int , 0)
 npe_arg(fn, npe_matches(v))
 
 
@@ -51,7 +51,7 @@ npe_begin_code()
   npe_Matrix_v n;
   npe_Matrix_f e;
   npe_Matrix_f emap;
-  igl::per_edge_normals(v, f, weight, fn, n, e, emap);
+  igl::per_edge_normals(v, f, igl::PerEdgeNormalsWeightingType(weight), fn, n, e, emap);
   return std::make_tuple(npe::move(n), npe::move(e), npe::move(emap));
 
 npe_end_code()
