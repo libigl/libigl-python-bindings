@@ -49,9 +49,9 @@ npe_begin_code()
 
   // remove __copy
   Eigen::MatrixXd v_copy = v.template cast<double>();
-  Eigen::VectorXi f_copy = f.template cast<int>();
+  Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::MatrixXd nv;
-  Eigen::VectorXi nf;
+  Eigen::MatrixXi nf;
   Eigen::VectorXi i;
   igl::remove_duplicates(v_copy, f_copy, nv, nf, i, epsilon);
   return std::make_tuple(npe::move(nv), npe::move(nf), npe::move(i));
