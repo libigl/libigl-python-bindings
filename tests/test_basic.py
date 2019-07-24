@@ -540,15 +540,22 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(k.shape, self.f1.shape)
 
 
+    def test_is_edge_manifold(self):
+        is_m = igl.is_edge_manifold(self.f1)
+        self.assertEqual(type(is_m), bool)
+
+    #def test_is_irregular_vertex(self):
+    #    is_i = igl.is_irregular_vertex(self.v1, self.f1)
+    #    self.assertEqual(type(is_i[0]), bool)
+
     # problem in helper, requiring second argument be int type
     #def test_harmonic(self):
-    #    l = np.random.laplace((10, 10))
-    #    m = np.random.rand(10, 10)
+    #    l = igl.cotmatrix(self.v1, self.f1)
+    #    m = igl.massmatrix(self.v1, self.f1, igl.MASSMATRIX_TYPE_VORONOI)
     #    b = np.random.randint(0, 10, (10, 1))
-    #    # bc = self.v1
+    #    bc = self.v1[b, :]
     #    k = 1
     #    w = igl.harmonic(l, m, b, self.v1, k)
-    #    pass
 
     # npe_matches problem
     #def test_exact_geodesic(self):
@@ -561,15 +568,15 @@ class TestBasic(unittest.TestCase):
 
     # Fail on windows
     # The commented asserts fail, but should pass according to documentation
-    #def test_cut_mesh(self):
-    #    cuts = np.random.randint(0, 2, size=(self.f1.shape[0], 3), dtype="int32")
-    #    vcut, fcut = igl.cut_mesh(self.v1, self.f1, cuts)
-    #    self.assertEqual(vcut.dtype, self.v1.dtype)
-    #    self.assertEqual(vcut.shape[1], 3)
-    #    #self.assertEqual(vcut.shape[0], self.v1.shape[0])
-    #    self.assertEqual(fcut.dtype, self.f1.dtype)
-    #    self.assertEqual(fcut.shape[1], 3)
-    #    #self.assertEqual(fcut.shape[0], self.f1.shape[0])
+    def test_cut_mesh(self):
+        cuts = np.random.randint(0, 2, size=(self.f1.shape[0], 3), dtype=self.f1.dtype)
+        vcut, fcut = igl.cut_mesh(self.v1, self.f1, cuts)
+        self.assertEqual(vcut.dtype, self.v1.dtype)
+        self.assertEqual(vcut.shape[1], 3)
+        #self.assertEqual(vcut.shape[0], self.v1.shape[0])
+        self.assertEqual(fcut.dtype, self.f1.dtype)
+        self.assertEqual(fcut.shape[1], 3)
+        #self.assertEqual(fcut.shape[0], self.f1.shape[0])
 
     # Seg fault
     #def test_cut_mesh_from_singularities(self):

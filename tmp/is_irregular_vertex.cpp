@@ -1,6 +1,7 @@
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/is_irregular_vertex.h>
+#include <pybind11/stl.h>
 
 const char* ds_is_irregular_vertex = R"igl_Qu8mg5v7(
 Determine if a vertex is irregular, i.e. it has more than 6 (triangles) or 4 (quads) incident edges. Vertices on the boundary are ignored.
