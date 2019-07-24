@@ -544,6 +544,48 @@ class TestBasic(unittest.TestCase):
         is_m = igl.is_edge_manifold(self.f1)
         self.assertEqual(type(is_m), bool)
 
+
+    def test_map_vertices_to_circle(self):
+        bnd = np.random.randint(0, self.v1.shape[0], size=(100,1))
+        uv = igl.map_vertices_to_circle(self.v1, bnd)
+        self.assertEqual(uv.dtype, self.v1.dtype)
+        self.assertEqual(uv.shape, (bnd.shape[0], 2))
+
+    def test_per_vertex_normals(self):
+        n = igl.per_vertex_normals(self.v1, self.f1, 0)
+        self.assertEqual(n.shape, (self.v1.shape[0], 3))
+        self.assertEqual(n.dtype, self.v1.dtype)
+
+    def test_per_vertex_attribute_smoothing(self):
+        aout = igl.per_vertex_attribute_smoothing(self.v1, self.f1)
+        self.assertEqual(aout.shape, self.v1.shape)
+
+    def test_piecewise_constant_winding_number(self):
+        is_w = igl.piecewise_constant_winding_number(self.f1)
+        self.assertEqual(type(is_w), bool)
+
+    def test_procrustes(self):
+        s, r, t = igl.procrustes(self.v1, self.v1, True, True)
+
+    # deal with igl::PerEdgeNormalsWeightingType
+    #def test_per_edge_normals(self):
+    #    fn = np.random.rand(self.f1.shape[0], 3)
+    #    n, e, emap = igl.per_edge_normals(self.v1, self.f1, 0, fn)
+
+
+    # TODO: missing
+    #def test_min_quad_with_fixed(self):
+
+    # TODO: data type not familiar
+    #def test_min_quad_dense_precompute(self):
+
+    # bad_alloc()
+    #def test_lscm(self):
+    #    success, uv = igl.lscm(self.v1, self.f1, self.f1, self.v1)
+    #    self.assertEqual(type(success), bool)
+    #    self.assertEqual(uv.dtype, self.v1.dtype)
+    #    self.assertEqual(uv.shape, (self.v1.shape[0], 2))
+
     #def test_is_irregular_vertex(self):
     #    is_i = igl.is_irregular_vertex(self.v1, self.f1)
     #    self.assertEqual(type(is_i[0]), bool)
