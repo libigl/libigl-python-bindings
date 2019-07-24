@@ -37,7 +37,7 @@ npe_doc(ds_cut_mesh)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
-npe_arg(cuts, dense_int)
+npe_arg(cuts, npe_matches(f))
 npe_begin_code()
 
     // FIXME: Copying is bad m'kay but libIGL's templates are broken
