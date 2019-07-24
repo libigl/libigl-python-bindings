@@ -529,6 +529,25 @@ class TestBasic(unittest.TestCase):
         eu = igl.euler_characteristic_complete(self.v1, self.f1)
         self.assertEqual(type(eu), int)
 
+    def test_fit_plane(self):
+        n, c = igl.fit_plane(self.v1)
+        self.assertTrue(n.dtype == c.dtype == self.v1.dtype)
+        self.assertTrue(n.shape == c.shape == (3,))
+
+    def test_internal_angles(self):
+        k = igl.internal_angles(self.v1, self.f1)
+        self.assertEqual(k.dtype, self.v1.dtype)
+        self.assertEqual(k.shape, self.f1.shape)
+
+    # problem in helper, requiring second argument be int type
+    #def test_harmonic(self):
+    #    l = np.random.laplace((10, 10))
+    #    m = np.random.rand(10, 10)
+    #    b = np.random.randint(0, 10, (10, 1))
+    #    # bc = self.v1
+    #    k = 1
+    #    w = igl.harmonic(l, m, b, self.v1, k)
+    #    pass
 
     # npe_matches problem
     #def test_exact_geodesic(self):
@@ -541,7 +560,7 @@ class TestBasic(unittest.TestCase):
 
     # The commented asserts fail, but should pass according to documentation
     def test_cut_mesh(self):
-        cuts = np.random.randint(0, 2, size=(self.f1.shape[0], 3), dtype=self.f1.dtype)
+        cuts = np.random.randint(0, 2, size=(self.f1.shape[0], 3), dtype="int32")
         vcut, fcut = igl.cut_mesh(self.v1, self.f1, cuts)
         self.assertEqual(vcut.dtype, self.v1.dtype)
         self.assertEqual(vcut.shape[1], 3)
