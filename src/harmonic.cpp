@@ -131,10 +131,10 @@ Examples
 npe_function(harmonic)
 npe_doc(ds_harmonic)
 //TODO: l and bc need to have same type, matching missing
-npe_arg(l, sparse_float)
+npe_arg(l, sparse_double)
 npe_arg(m, npe_matches(l))
 npe_arg(b, dense_int)
-npe_arg(bc, dense_float)
+npe_arg(bc, dense_double)
 npe_arg(k, int)
 
 
