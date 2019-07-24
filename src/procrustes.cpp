@@ -62,7 +62,7 @@ npe_begin_code()
   npe_Matrix_x r;
   npe_Matrix_x t;
   igl::procrustes(x, y, include_scaling, include_reflections, scale, r, t);
-  return std::make_tuple(include_scaling, include_reflections, scale, npe::move(r), npe::move(t));
+  return std::make_tuple(scale, npe::move(r), npe::move(t));
 
 npe_end_code()
 
