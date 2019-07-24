@@ -672,6 +672,23 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(tti.shape, tet.shape)
         self.assertEqual(tti.dtype, tet.dtype)
 
+    def test_arap(self):
+        v, f, _ = igl.read_off("data/camelhead.off")
+        b = igl.boundary_loop(f)
+        thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
+        bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
+        uv_initial_guess = igl.harmonic_weights(v, f.astype(np.int32), b, bc, 1)
+        arap = igl.ARAP(v, f, 2, b)
+        vparam = arap.solve(bc, uv_initial_guess[:, :2])
+
+        arap2 = igl.ARAP(v, f, 2, b)
+        vparam2 = arap2.solve(bc, uv_initial_guess)
+
+    # deal with igl::PerEdgeNormalsWeightingType
+    #def test_per_edge_normals(self):
+    #    fn = np.random.rand(self.f1.shape[0], 3)
+    #    n, e, emap = igl.per_edge_normals(self.v1, self.f1, 0, fn)
+
 
     # TODO: missing
     #def test_min_quad_with_fixed(self):
