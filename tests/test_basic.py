@@ -679,9 +679,9 @@ class TestBasic(unittest.TestCase):
         bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
         uv_initial_guess = igl.harmonic_weights(v, f.astype(np.int32), b, bc, 1)
         arap = igl.ARAP(v, f, 2, b)
-        vparam = arap.solve(bc, uv_initial_guess[:, :2])
+        vparam = arap.solve(bc, uv_initial_guess)
 
-        arap2 = igl.ARAP(v, f, 2, b)
+        arap2 = igl.ARAP(v, f, 3, b)
         vparam2 = arap2.solve(bc, uv_initial_guess)
 
     # deal with igl::PerEdgeNormalsWeightingType
