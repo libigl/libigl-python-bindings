@@ -566,11 +566,44 @@ class TestBasic(unittest.TestCase):
 
     def test_procrustes(self):
         s, r, t = igl.procrustes(self.v1, self.v1, True, True)
+        self.assertEqual(type(s), float)
+        self.assertTrue(r.dtype == t.dtype == self.v1.dtype)
 
-    # deal with igl::PerEdgeNormalsWeightingType
-    #def test_per_edge_normals(self):
-    #    fn = np.random.rand(self.f1.shape[0], 3)
-    #    n, e, emap = igl.per_edge_normals(self.v1, self.f1, 0, fn)
+    def test_qslim(self):
+        success, u, g, j ,i = igl.qslim(self.v1, self.f1, 100)
+        self.assertEqual(u.dtype, self.v1.dtype)
+        self.assertTrue(g.dtype == j.dtype == i.dtype == self.f1.dtype)
+        self.assertEqual(u.shape[1], self.v1.shape[1])
+        self.assertEqual(g.shape[1], 3)
+        self.assertTrue(j.shape[0] > 0 and i.shape[0] > 0)
+
+    def test_per_edge_normals(self):
+        fn = np.random.rand(self.f1.shape[0], 3)
+        n, e, emap = igl.per_edge_normals(self.v1, self.f1, 0, fn)
+
+    # TODO: all the following tests
+    def test_remove_duplicate_vertices(self):
+        pass
+    def test_remove_duplicates(self):
+        pass
+    def test_remove_unreferenced(self):
+        pass
+    def test_resolve_duplicated_faces(self):
+        pass
+    def test_shape_diameter_function(self):
+        pass
+    def test_triangle_triangle_adjacency(self):
+        pass
+    def test_uniformly_sample_two_manifold(self):
+        pass
+    def test_unproject_in_mesh(self):
+        pass
+    def test_unproject_onto_mesh(self):
+        pass
+    def test_vertex_components_from_adjacency_matrix(self):
+        pass
+    def test_vertex_triangle_adjacency(self):
+        pass
 
 
     # TODO: missing
