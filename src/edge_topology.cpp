@@ -34,7 +34,7 @@ Examples
 npe_function(edge_topology)
 npe_doc(ds_edge_topology)
 npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   npe_Matrix_f ev, fe, ef;

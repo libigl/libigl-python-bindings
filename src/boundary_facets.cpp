@@ -30,7 +30,7 @@ Examples
 
 npe_function(boundary_facets)
 npe_doc(ds_boundary_facets)
-npe_arg(t, dense_int, dense_long)
+npe_arg(t, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   EigenDense<npe_Scalar_t> f;

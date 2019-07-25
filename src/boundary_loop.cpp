@@ -30,7 +30,7 @@ Examples
 
 npe_function(boundary_loop)
 npe_doc(ds_boundary_loop)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   EigenDenseLike<npe_Matrix_f> l;

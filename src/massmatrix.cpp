@@ -34,7 +34,7 @@ Examples
 npe_function(massmatrix)
 npe_doc(ds_massmatrix)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_default_arg(type, int, 1)
 npe_begin_code()
 

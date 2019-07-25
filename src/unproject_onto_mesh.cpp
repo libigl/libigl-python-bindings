@@ -55,7 +55,7 @@ npe_arg(model, npe_matches(pos))
 npe_arg(proj, npe_matches(pos))
 npe_arg(viewport, npe_matches(pos))
 npe_arg(v, npe_matches(pos))
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 
 
 npe_begin_code()

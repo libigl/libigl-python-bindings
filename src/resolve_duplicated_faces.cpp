@@ -43,7 +43,7 @@ Examples
 npe_function(resolve_duplicated_faces)
 npe_doc(ds_resolve_duplicated_faces)
 
-npe_arg(f1, dense_int, dense_long)
+npe_arg(f1, dense_int, dense_long, dense_longlong)
 
 
 npe_begin_code()

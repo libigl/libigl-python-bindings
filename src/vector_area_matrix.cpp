@@ -28,7 +28,7 @@ Examples
 
 npe_function(vector_area_matrix)
 npe_doc(ds_vector_area_matrix)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   EigenSparseLike<npe_Matrix_f> a;

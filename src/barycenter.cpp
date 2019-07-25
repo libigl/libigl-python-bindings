@@ -32,7 +32,7 @@ npe_function(barycenter)
 npe_doc(ds_barycenter)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   npe_Matrix_v bc;

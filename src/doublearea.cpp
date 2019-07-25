@@ -32,7 +32,7 @@ npe_function(doublearea)
 npe_doc(ds_doublearea)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 

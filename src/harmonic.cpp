@@ -34,7 +34,7 @@ Examples
 npe_function(harmonic_weights)
 npe_doc(ds_harmonic_w)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(b, dense_int)
 npe_arg(bc, npe_matches(v))
 npe_arg(k, int)
@@ -79,7 +79,7 @@ Examples
 npe_function(harmonic_uniform_laplacian)
 npe_doc(ds_harmonic_ul)
 
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(b, dense_int)
 npe_arg(bc, dense_float, dense_double)
 npe_arg(k, int)
@@ -219,7 +219,7 @@ npe_function(_integrated)
 npe_doc(ds_harmonic_int)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(k, int)
 
 
