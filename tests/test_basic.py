@@ -700,10 +700,11 @@ class TestBasic(unittest.TestCase):
     #    w = igl.harmonic(l, m, b, self.v1, k)
 
     def test_exact_geodesic(self):
-        vs = np.array([0])
+        vs = np.array([0], dtype=self.f1.dtype)
         vt = np.arange(self.v1.shape[0])
+        vt = vt.astype(self.f1.dtype)
         # TODO as type should be here
-        d = igl.exact_geodesic(self.v1, self.f1.astype("int64"), vs, vt)
+        d = igl.exact_geodesic(self.v1, self.f1, vs, vt)
         self.assertEqual(d.dtype, self.v1.dtype)
 
     # Fail on windows
