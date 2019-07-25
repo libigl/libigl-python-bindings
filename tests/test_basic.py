@@ -51,6 +51,8 @@ class TestBasic(unittest.TestCase):
         # Check that there are tests for all functions
         for f in funcs:
             if f not in tests:
+                if f == "igl" or f == "np" or f == "pyigl_classes":
+                    continue
                 print("WARNING: Test for function %s missing."%f)
                 #self.assertTrue(f in tests)
 
@@ -627,7 +629,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f2.dtype == self.f1.dtype == j.dtype)
         self.assertEqual(self.f1.shape[1], f2.shape[1])
         self.assertEqual(f2.shape[0], j.shape[0])
-    
+
     def test_shape_diameter_function(self):
         s = igl.shape_diameter_function(self.v1, self.f1, self.v1, self.v1, 100)
         self.assertEqual(s.shape[0], self.v1.shape[0])
@@ -653,14 +655,22 @@ class TestBasic(unittest.TestCase):
     #    pass
 
     def test_vertex_components_from_adjacency_matrix(self):
-        # tested in test_vertex_components 
+        # tested in test_vertex_components
         pass
-    
+
     def test_vertex_triangle_adjacency(self):
         vf, ni = igl.vertex_triangle_adjacency(self.f1, self.v1.shape[0])
         self.assertEqual(vf.shape[0], 3*self.f1.shape[0])
         self.assertTrue(len(vf.shape) == len(ni.shape) == 1)
         self.assertEqual(ni.shape[0], self.v1.shape[0]+1)
+
+    def test_tet_tet_adjacency(self):
+        tet = np.array([[0,1,2,3], [4,5,6,7]])
+        tt, tti = igl.tet_tet_adjacency(tet)
+
+        self.assertEqual(tt.shape, tet.shape)
+        self.assertEqual(tti.shape, tet.shape)
+        self.assertEqual(tti.dtype, tet.dtype)
 
 
     # TODO: missing
