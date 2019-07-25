@@ -686,9 +686,9 @@ class TestBasic(unittest.TestCase):
     #    self.assertEqual(uv.dtype, self.v1.dtype)
     #    self.assertEqual(uv.shape, (self.v1.shape[0], 2))
 
-    #def test_is_irregular_vertex(self):
-    #    is_i = igl.is_irregular_vertex(self.v1, self.f1)
-    #    self.assertEqual(type(is_i[0]), bool)
+    def test_is_irregular_vertex(self):
+       is_i = igl.is_irregular_vertex(self.v1, self.f1)
+       self.assertEqual(type(is_i[0]), bool)
 
     # problem in helper, requiring second argument be int type
     #def test_harmonic(self):
