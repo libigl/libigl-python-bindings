@@ -35,7 +35,8 @@ npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
 
 npe_begin_code()
-  return igl::is_irregular_vertex(v, f);
+  const std::vector<bool> res = igl::is_irregular_vertex(v, f);
+  return res;
 
 npe_end_code()
 

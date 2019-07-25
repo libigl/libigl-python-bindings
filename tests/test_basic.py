@@ -51,6 +51,8 @@ class TestBasic(unittest.TestCase):
         # Check that there are tests for all functions
         for f in funcs:
             if f not in tests:
+                if f == "igl" or f == "np" or f == "pyigl_classes":
+                    continue
                 print("WARNING: Test for function %s missing."%f)
                 #self.assertTrue(f in tests)
 
@@ -627,7 +629,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f2.dtype == self.f1.dtype == j.dtype)
         self.assertEqual(self.f1.shape[1], f2.shape[1])
         self.assertEqual(f2.shape[0], j.shape[0])
-    
+
     def test_shape_diameter_function(self):
         s = igl.shape_diameter_function(self.v1, self.f1, self.v1, self.v1, 100)
         self.assertEqual(s.shape[0], self.v1.shape[0])
@@ -653,14 +655,22 @@ class TestBasic(unittest.TestCase):
     #    pass
 
     def test_vertex_components_from_adjacency_matrix(self):
-        # tested in test_vertex_components 
+        # tested in test_vertex_components
         pass
-    
+
     def test_vertex_triangle_adjacency(self):
         vf, ni = igl.vertex_triangle_adjacency(self.f1, self.v1.shape[0])
         self.assertEqual(vf.shape[0], 3*self.f1.shape[0])
         self.assertTrue(len(vf.shape) == len(ni.shape) == 1)
         self.assertEqual(ni.shape[0], self.v1.shape[0]+1)
+
+    def test_tet_tet_adjacency(self):
+        tet = np.array([[0,1,2,3], [4,5,6,7]])
+        tt, tti = igl.tet_tet_adjacency(tet)
+
+        self.assertEqual(tt.shape, tet.shape)
+        self.assertEqual(tti.shape, tet.shape)
+        self.assertEqual(tti.dtype, tet.dtype)
 
 
     # TODO: missing
@@ -676,9 +686,9 @@ class TestBasic(unittest.TestCase):
     #    self.assertEqual(uv.dtype, self.v1.dtype)
     #    self.assertEqual(uv.shape, (self.v1.shape[0], 2))
 
-    #def test_is_irregular_vertex(self):
-    #    is_i = igl.is_irregular_vertex(self.v1, self.f1)
-    #    self.assertEqual(type(is_i[0]), bool)
+    def test_is_irregular_vertex(self):
+       is_i = igl.is_irregular_vertex(self.v1, self.f1)
+       self.assertEqual(type(is_i[0]), bool)
 
     # problem in helper, requiring second argument be int type
     #def test_harmonic(self):
@@ -689,14 +699,12 @@ class TestBasic(unittest.TestCase):
     #    k = 1
     #    w = igl.harmonic(l, m, b, self.v1, k)
 
-    # npe_matches problem
-    #def test_exact_geodesic(self):
-        #vs = np.random.randint(0, 10, size=(10, 1))
-        #fs = np.random.randint(0, 10, size=(10, 1))
-        #vt = np.random.randint(0, 10, size=(10, 1))
-        #ft = np.random.randint(0, 10, size=(10, 1))
-        #d = igl.exact_geodesic(self.v, self.f, vs, fs, vt, ft)
-        #self.assertEqual(d.dtype, self.v.dtype)
+    def test_exact_geodesic(self):
+        vs = np.array([0])
+        vt = np.arange(self.v1.shape[0])
+        # TODO as type should be here
+        d = igl.exact_geodesic(self.v1, self.f1.astype("int64"), vs, vt)
+        self.assertEqual(d.dtype, self.v1.dtype)
 
     # Fail on windows
     # The commented asserts fail, but should pass according to documentation
