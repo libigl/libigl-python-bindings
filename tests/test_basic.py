@@ -699,14 +699,12 @@ class TestBasic(unittest.TestCase):
     #    k = 1
     #    w = igl.harmonic(l, m, b, self.v1, k)
 
-    # npe_matches problem
-    #def test_exact_geodesic(self):
-        #vs = np.random.randint(0, 10, size=(10, 1))
-        #fs = np.random.randint(0, 10, size=(10, 1))
-        #vt = np.random.randint(0, 10, size=(10, 1))
-        #ft = np.random.randint(0, 10, size=(10, 1))
-        #d = igl.exact_geodesic(self.v, self.f, vs, fs, vt, ft)
-        #self.assertEqual(d.dtype, self.v.dtype)
+    def test_exact_geodesic(self):
+        vs = np.array([0])
+        vt = np.arange(self.v1.shape[0])
+        # TODO as type should be here
+        d = igl.exact_geodesic(self.v1, self.f1.astype("int64"), vs, vt)
+        self.assertEqual(d.dtype, self.v1.dtype)
 
     # Fail on windows
     # The commented asserts fail, but should pass according to documentation
