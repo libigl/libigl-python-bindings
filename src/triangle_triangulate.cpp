@@ -43,8 +43,8 @@ npe_begin_code()
   assert_nonzero_rows(v, "v");
   assert_cols_equals(e, 2, "e");
   assert_nonzero_rows(e, "e");
-  assert_cols_equals(h, 2, "h");
   if (h.rows() != 0 && h.cols() != 0) {
+      assert_cols_equals(h, 2, "h");
       assert_cols_equals(h, 1, "h");
   }
   npe_Matrix_v v2;
