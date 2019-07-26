@@ -12,8 +12,6 @@ from scipy import sparse
 from scipy.sparse.linalg import spsolve
 import igl
 
-
-
 # Enum definitions
 MASSMATRIX_TYPE_BARYCENTRIC = 0
 MASSMATRIX_TYPE_VORONOI = 1
@@ -23,6 +21,13 @@ PER_VERTEX_NORMALS_WEIGHTING_TYPE_UNIFORM = 0
 PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA = 1
 PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE = 2
 
+SLIM_ENERGY_TYPE_ARAP = 0
+SLIM_ENERGY_TYPE_LOG_ARAP = 1
+SLIM_ENERGY_TYPE_SYMMETRIC_DIRICHLET = 2
+SLIM_ENERGY_TYPE_CONFORMAL = 3
+SLIM_ENERGY_TYPE_EXP_CONFORMAL = 4
+SLIM_ENERGY_TYPE_EXP_SYMMETRIC_DIRICHLET = 5
+
 
 def check_dependencies(deps):
     import sys
@@ -31,7 +36,8 @@ def check_dependencies(deps):
     for i, d in enumerate(available):
         if not d:
             all_available = False
-            print("The libigl python bindings were compiled without %s support. Please recompile with the CMAKE flag LIBIGL_WITH_%s." %(deps[i], deps[i].upper()))
+            print("The libigl python bindings were compiled without %s support. "
+                  "Please recompile with the CMAKE flag LIBIGL_WITH_%s." %(deps[i], deps[i].upper()))
 
     if not all_available:
         sys.exit(-1)
