@@ -1,853 +1,4 @@
-
-
-
-
-<!DOCTYPE html>
-<html lang="en" class="no-js">
-  <head>
-    
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      
-        <meta name="description" content="Simple Python geometry processing library">
-      
-      
-        <link rel="canonical" href="https://libigl.github.io/tutorials/">
-      
-      
-      
-        <meta name="lang:clipboard.copy" content="Copy to clipboard">
-      
-        <meta name="lang:clipboard.copied" content="Copied to clipboard">
-      
-        <meta name="lang:search.language" content="en">
-      
-        <meta name="lang:search.pipeline.stopwords" content="True">
-      
-        <meta name="lang:search.pipeline.trimmer" content="True">
-      
-        <meta name="lang:search.result.none" content="No matching documents">
-      
-        <meta name="lang:search.result.one" content="1 matching document">
-      
-        <meta name="lang:search.result.other" content="# matching documents">
-      
-        <meta name="lang:search.tokenizer" content="[\s\-]+">
-      
-      <link rel="shortcut icon" href="../favicon.ico">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.1.0">
-    
-    
-      
-        <title>Tutorial - igl</title>
-      
-    
-    
-      <link rel="stylesheet" href="../assets/stylesheets/application.11e41852.css">
-      
-        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
-      
-      
-        
-        
-        <meta name="theme-color" content="#03a9f4">
-      
-    
-    
-      <script src="../assets/javascripts/modernizr.20ef595d.js"></script>
-    
-    
-      
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
-        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
-      
-    
-    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
-    
-    
-    
-  </head>
-  
-    
-    
-    <body dir="ltr" data-md-color-primary="light-blue" data-md-color-accent="blue">
-  
-    <svg class="md-svg">
-      <defs>
-        
-        
-          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
-    viewBox="0 0 416 448" id="__github">
-  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
-        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
-        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
-        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
-        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
-        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
-        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
-        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
-        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
-        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
-        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
-        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
-        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
-        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
-        99.5z" />
-</svg>
-        
-      </defs>
-    </svg>
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
-    
-      <a href="#libigl-tutorials" tabindex="1" class="md-skip">
-        Skip to content
-      </a>
-    
-    
-      <header class="md-header" data-md-component="header">
-  <nav class="md-header-nav md-grid">
-    <div class="md-flex">
-      <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="https://libigl.github.io/" title="igl" class="md-header-nav__button md-logo">
-          
-            <i class="md-icon"> </i>
-          
-        </a>
-      </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
-        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
-      </div>
-      <div class="md-flex__cell md-flex__cell--stretch">
-        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          
-            
-              <span class="md-header-nav__topic">
-                igl
-              </span>
-              <span class="md-header-nav__topic">
-                Tutorial
-              </span>
-            
-          
-        </div>
-      </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
-        
-          
-        
-      </div>
-      
-        <div class="md-flex__cell md-flex__cell--shrink">
-          <div class="md-header-nav__source">
-            
-
-
-  
-
-
-  <a href="https://github.com/geometryprocessing/libigl-python-bindings/" title="Go to repository" class="md-source" data-md-source="github">
-    
-      <div class="md-source__icon">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <use xlink:href="#__github" width="24" height="24"></use>
-        </svg>
-      </div>
-    
-    <div class="md-source__repository">
-      libigl-python-bindings
-    </div>
-  </a>
-
-          </div>
-        </div>
-      
-    </div>
-  </nav>
-</header>
-    
-    <div class="md-container">
-      
-        
-      
-      
-      <main class="md-main">
-        <div class="md-main__inner md-grid" data-md-component="container">
-          
-            
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    <nav class="md-nav md-nav--primary" data-md-level="0">
-  <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="https://libigl.github.io/" title="igl" class="md-nav__button md-logo">
-      
-        <i class="md-icon"> </i>
-      
-    </a>
-    igl
-  </label>
-  
-    <div class="md-nav__source">
-      
-
-
-  
-
-
-  <a href="https://github.com/geometryprocessing/libigl-python-bindings/" title="Go to repository" class="md-source" data-md-source="github">
-    
-      <div class="md-source__icon">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <use xlink:href="#__github" width="24" height="24"></use>
-        </svg>
-      </div>
-    
-    <div class="md-source__repository">
-      libigl-python-bindings
-    </div>
-  </a>
-
-    </div>
-  
-  <ul class="md-nav__list" data-md-scrollfix>
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href=".." title="Home" class="md-nav__link">
-      Home
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-  
-
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Tutorial
-      </label>
-    
-    <a href="./" title="Tutorial" class="md-nav__link md-nav__link--active">
-      Tutorial
-    </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#libigl-tutorials" title="Libigl Tutorials" class="md-nav__link">
-    Libigl Tutorials
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-0" title="Chapter 0" class="md-nav__link">
-    Chapter 0
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#libigl-design-principles" title="Libigl design principles" class="md-nav__link">
-    Libigl design principles
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#downloading-libigl" title="Downloading Libigl" class="md-nav__link">
-    Downloading Libigl
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mesh-representation" title="Mesh representation" class="md-nav__link">
-    Mesh representation
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-1-discrete-geometric-quantities-and-operators" title="Chapter 1: Discrete Geometric Quantities and Operators" class="md-nav__link">
-    Chapter 1: Discrete Geometric Quantities and Operators
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gaussian-curvature" title="Gaussian curvature" class="md-nav__link">
-    Gaussian curvature
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#curvature-directions" title="Curvature directions" class="md-nav__link">
-    Curvature directions
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gradient" title="Gradient" class="md-nav__link">
-    Gradient
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#laplacian" title="Laplacian" class="md-nav__link">
-    Laplacian
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mass-matrix" title="Mass matrix" class="md-nav__link">
-    Mass matrix
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-construction-of-laplacian" title="Alternative construction of Laplacian" class="md-nav__link">
-    Alternative construction of Laplacian
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#exact-discrete-geodesic-distances" title="Exact Discrete Geodesic Distances" class="md-nav__link">
-    Exact Discrete Geodesic Distances
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-2-matrices-and-linear-algebra" title="Chapter 2: Matrices and Linear Algebra" class="md-nav__link">
-    Chapter 2: Matrices and Linear Algebra
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#laplace-equation" title="Laplace equation" class="md-nav__link">
-    Laplace equation
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#quadratic-energy-minimization" title="Quadratic energy minimization" class="md-nav__link">
-    Quadratic energy minimization
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#linear-equality-constraints" title="Linear equality constraints" class="md-nav__link">
-    Linear equality constraints
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#eigen-decomposition" title="Eigen Decomposition" class="md-nav__link">
-    Eigen Decomposition
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-3-shape-deformation" title="Chapter 3: Shape deformation" class="md-nav__link">
-    Chapter 3: Shape deformation
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#biharmonic-deformation" title="Biharmonic deformation" class="md-nav__link">
-    Biharmonic deformation
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#biharmonic-surfaces" title="Biharmonic surfaces" class="md-nav__link">
-    Biharmonic surfaces
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#biharmonic-deformation-fields" title="Biharmonic deformation fields" class="md-nav__link">
-    Biharmonic deformation fields
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#relationship-to-differential-coordinates-and-laplacian-surface-editing" title="Relationship to "differential coordinates" and Laplacian surface editing" class="md-nav__link">
-    Relationship to "differential coordinates" and Laplacian surface editing
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-4-parametrization" title="Chapter 4: Parametrization" class="md-nav__link">
-    Chapter 4: Parametrization
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#harmonic-parametrization" title="Harmonic parametrization" class="md-nav__link">
-    Harmonic parametrization
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-5-external-libraries" title="Chapter 5: External libraries" class="md-nav__link">
-    Chapter 5: External libraries
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#triangulation-of-closed-polygons" title="Triangulation of closed polygons" class="md-nav__link">
-    Triangulation of closed polygons
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tetrahedralization-of-closed-surfaces" title="Tetrahedralization of closed surfaces" class="md-nav__link">
-    Tetrahedralization of closed surfaces
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-6-miscellaneous" title="Chapter 6: Miscellaneous" class="md-nav__link">
-    Chapter 6: Miscellaneous
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mesh-statistics" title="Mesh Statistics" class="md-nav__link">
-    Mesh Statistics
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" title="References" class="md-nav__link">
-    References
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../igl_docs/" title="Docs" class="md-nav__link">
-      Docs
-    </a>
-  </li>
-
-    
-  </ul>
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-            
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#libigl-tutorials" title="Libigl Tutorials" class="md-nav__link">
-    Libigl Tutorials
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-0" title="Chapter 0" class="md-nav__link">
-    Chapter 0
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#libigl-design-principles" title="Libigl design principles" class="md-nav__link">
-    Libigl design principles
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#downloading-libigl" title="Downloading Libigl" class="md-nav__link">
-    Downloading Libigl
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mesh-representation" title="Mesh representation" class="md-nav__link">
-    Mesh representation
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-1-discrete-geometric-quantities-and-operators" title="Chapter 1: Discrete Geometric Quantities and Operators" class="md-nav__link">
-    Chapter 1: Discrete Geometric Quantities and Operators
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gaussian-curvature" title="Gaussian curvature" class="md-nav__link">
-    Gaussian curvature
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#curvature-directions" title="Curvature directions" class="md-nav__link">
-    Curvature directions
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gradient" title="Gradient" class="md-nav__link">
-    Gradient
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#laplacian" title="Laplacian" class="md-nav__link">
-    Laplacian
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mass-matrix" title="Mass matrix" class="md-nav__link">
-    Mass matrix
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#alternative-construction-of-laplacian" title="Alternative construction of Laplacian" class="md-nav__link">
-    Alternative construction of Laplacian
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#exact-discrete-geodesic-distances" title="Exact Discrete Geodesic Distances" class="md-nav__link">
-    Exact Discrete Geodesic Distances
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-2-matrices-and-linear-algebra" title="Chapter 2: Matrices and Linear Algebra" class="md-nav__link">
-    Chapter 2: Matrices and Linear Algebra
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#laplace-equation" title="Laplace equation" class="md-nav__link">
-    Laplace equation
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#quadratic-energy-minimization" title="Quadratic energy minimization" class="md-nav__link">
-    Quadratic energy minimization
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#linear-equality-constraints" title="Linear equality constraints" class="md-nav__link">
-    Linear equality constraints
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#eigen-decomposition" title="Eigen Decomposition" class="md-nav__link">
-    Eigen Decomposition
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-3-shape-deformation" title="Chapter 3: Shape deformation" class="md-nav__link">
-    Chapter 3: Shape deformation
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#biharmonic-deformation" title="Biharmonic deformation" class="md-nav__link">
-    Biharmonic deformation
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#biharmonic-surfaces" title="Biharmonic surfaces" class="md-nav__link">
-    Biharmonic surfaces
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#biharmonic-deformation-fields" title="Biharmonic deformation fields" class="md-nav__link">
-    Biharmonic deformation fields
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#relationship-to-differential-coordinates-and-laplacian-surface-editing" title="Relationship to "differential coordinates" and Laplacian surface editing" class="md-nav__link">
-    Relationship to "differential coordinates" and Laplacian surface editing
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-4-parametrization" title="Chapter 4: Parametrization" class="md-nav__link">
-    Chapter 4: Parametrization
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#harmonic-parametrization" title="Harmonic parametrization" class="md-nav__link">
-    Harmonic parametrization
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-5-external-libraries" title="Chapter 5: External libraries" class="md-nav__link">
-    Chapter 5: External libraries
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#triangulation-of-closed-polygons" title="Triangulation of closed polygons" class="md-nav__link">
-    Triangulation of closed polygons
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tetrahedralization-of-closed-surfaces" title="Tetrahedralization of closed surfaces" class="md-nav__link">
-    Tetrahedralization of closed surfaces
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-6-miscellaneous" title="Chapter 6: Miscellaneous" class="md-nav__link">
-    Chapter 6: Miscellaneous
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mesh-statistics" title="Mesh Statistics" class="md-nav__link">
-    Mesh Statistics
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" title="References" class="md-nav__link">
-    References
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-          
-          <div class="md-content">
-            <article class="md-content__inner md-typeset">
-              
-                
-                  <a href="https://github.com/geometryprocessing/libigl-python-bindings/edit/master/docs/tutorials.ipynb" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
-                
-                
-                  <h1>Tutorial</h1>
-                
-                <h2 id="libigl-tutorials">Libigl Tutorials<a class="headerlink" href="#libigl-tutorials" title="Permanent link">&para;</a></h2>
+<!doctype html><html lang="en" class="no-js"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="description" content="Simple Python geometry processing library"><link rel="canonical" href="https://libigl.github.io/tutorials/"><meta name="lang:clipboard.copy" content="Copy to clipboard"><meta name="lang:clipboard.copied" content="Copied to clipboard"><meta name="lang:search.language" content="en"><meta name="lang:search.pipeline.stopwords" content="True"><meta name="lang:search.pipeline.trimmer" content="True"><meta name="lang:search.result.none" content="No matching documents"><meta name="lang:search.result.one" content="1 matching document"><meta name="lang:search.result.other" content="# matching documents"><meta name="lang:search.tokenizer" content="[\s\-]+"><link rel="shortcut icon" href="../favicon.ico"><meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.3.0"><title>Tutorial - igl</title><link rel="stylesheet" href="../assets/stylesheets/application.4031d38b.css"><link rel="stylesheet" href="../assets/stylesheets/application-palette.224b79ff.css"><meta name="theme-color" content="#03a9f4"><script src="../assets/javascripts/modernizr.74668098.js"></script><link href="https://fonts.gstatic.com" rel="preconnect" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=swap"><style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style><link rel="stylesheet" href="../assets/fonts/material-icons.css"></head><body dir="ltr" data-md-color-primary="light-blue" data-md-color-accent="blue"><svg class="md-svg"><defs><svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg></defs></svg> <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" data-md-component="overlay" for="__drawer"></label><a href="#libigl-tutorials" tabindex="1" class="md-skip">Skip to content </a><header class="md-header" data-md-component="header"><nav class="md-header-nav md-grid"><div class="md-flex"><div class="md-flex__cell md-flex__cell--shrink"><a href="https://libigl.github.io/" title="igl" class="md-header-nav__button md-logo"><i class="md-icon"> </i></a></div><div class="md-flex__cell md-flex__cell--shrink"><label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label></div><div class="md-flex__cell md-flex__cell--stretch"><div class="md-flex__ellipsis md-header-nav__title" data-md-component="title"><span class="md-header-nav__topic">igl</span><span class="md-header-nav__topic">Tutorial</span></div></div><div class="md-flex__cell md-flex__cell--shrink"></div><div class="md-flex__cell md-flex__cell--shrink"><div class="md-header-nav__source"><a href="https://github.com/geometryprocessing/libigl-python-bindings/" title="Go to repository" class="md-source" data-md-source="github"><div class="md-source__icon"><svg viewBox="0 0 24 24" width="24" height="24"><use xlink:href="#__github" width="24" height="24"></use></svg></div><div class="md-source__repository">libigl-python-bindings</div></a></div></div></div></nav></header><div class="md-container"><main class="md-main"><div class="md-main__inner md-grid" data-md-component="container"><div class="md-sidebar md-sidebar--primary" data-md-component="navigation"><div class="md-sidebar__scrollwrap"><div class="md-sidebar__inner"><nav class="md-nav md-nav--primary" data-md-level="0"><label class="md-nav__title md-nav__title--site" for="__drawer"><a href="https://libigl.github.io/" title="igl" class="md-nav__button md-logo"><i class="md-icon"> </i></a>igl</label><div class="md-nav__source"><a href="https://github.com/geometryprocessing/libigl-python-bindings/" title="Go to repository" class="md-source" data-md-source="github"><div class="md-source__icon"><svg viewBox="0 0 24 24" width="24" height="24"><use xlink:href="#__github" width="24" height="24"></use></svg></div><div class="md-source__repository">libigl-python-bindings</div></a></div><ul class="md-nav__list" data-md-scrollfix><li class="md-nav__item"><a href=".." title="Home" class="md-nav__link">Home</a></li><li class="md-nav__item md-nav__item--active"><input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc"><label class="md-nav__link md-nav__link--active" for="__toc">Tutorial</label><a href="./" title="Tutorial" class="md-nav__link md-nav__link--active">Tutorial</a><nav class="md-nav md-nav--secondary"><label class="md-nav__title" for="__toc">Table of contents</label><ul class="md-nav__list" data-md-scrollfix><li class="md-nav__item"><a href="#libigl-tutorials" title="Libigl Tutorials" class="md-nav__link">Libigl Tutorials</a></li><li class="md-nav__item"><a href="#chapter-0" title="Chapter 0" class="md-nav__link">Chapter 0</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#libigl-design-principles" title="Libigl design principles" class="md-nav__link">Libigl design principles</a></li><li class="md-nav__item"><a href="#downloading-libigl" title="Downloading Libigl" class="md-nav__link">Downloading Libigl</a></li><li class="md-nav__item"><a href="#mesh-representation" title="Mesh representation" class="md-nav__link">Mesh representation</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-1-discrete-geometric-quantities-and-operators" title="Chapter 1: Discrete Geometric Quantities and Operators" class="md-nav__link">Chapter 1: Discrete Geometric Quantities and Operators</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#gaussian-curvature" title="Gaussian curvature" class="md-nav__link">Gaussian curvature</a></li><li class="md-nav__item"><a href="#curvature-directions" title="Curvature directions" class="md-nav__link">Curvature directions</a></li><li class="md-nav__item"><a href="#gradient" title="Gradient" class="md-nav__link">Gradient</a></li><li class="md-nav__item"><a href="#laplacian" title="Laplacian" class="md-nav__link">Laplacian</a></li><li class="md-nav__item"><a href="#mass-matrix" title="Mass matrix" class="md-nav__link">Mass matrix</a></li><li class="md-nav__item"><a href="#alternative-construction-of-laplacian" title="Alternative construction of Laplacian" class="md-nav__link">Alternative construction of Laplacian</a></li><li class="md-nav__item"><a href="#exact-discrete-geodesic-distances" title="Exact Discrete Geodesic Distances" class="md-nav__link">Exact Discrete Geodesic Distances</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-2-matrices-and-linear-algebra" title="Chapter 2: Matrices and Linear Algebra" class="md-nav__link">Chapter 2: Matrices and Linear Algebra</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#laplace-equation" title="Laplace equation" class="md-nav__link">Laplace equation</a></li><li class="md-nav__item"><a href="#quadratic-energy-minimization" title="Quadratic energy minimization" class="md-nav__link">Quadratic energy minimization</a></li><li class="md-nav__item"><a href="#linear-equality-constraints" title="Linear equality constraints" class="md-nav__link">Linear equality constraints</a></li><li class="md-nav__item"><a href="#eigen-decomposition" title="Eigen Decomposition" class="md-nav__link">Eigen Decomposition</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-3-shape-deformation" title="Chapter 3: Shape deformation" class="md-nav__link">Chapter 3: Shape deformation</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#biharmonic-deformation" title="Biharmonic deformation" class="md-nav__link">Biharmonic deformation</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#biharmonic-surfaces" title="Biharmonic surfaces" class="md-nav__link">Biharmonic surfaces</a></li><li class="md-nav__item"><a href="#biharmonic-deformation-fields" title="Biharmonic deformation fields" class="md-nav__link">Biharmonic deformation fields</a></li><li class="md-nav__item"><a href="#relationship-to-differential-coordinates-and-laplacian-surface-editing" title="Relationship to "differential coordinates" and Laplacian surface editing" class="md-nav__link">Relationship to "differential coordinates" and Laplacian surface editing</a></li></ul></nav></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-4-parametrization" title="Chapter 4: Parametrization" class="md-nav__link">Chapter 4: Parametrization</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#harmonic-parametrization" title="Harmonic parametrization" class="md-nav__link">Harmonic parametrization</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-5-external-libraries" title="Chapter 5: External libraries" class="md-nav__link">Chapter 5: External libraries</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#triangulation-of-closed-polygons" title="Triangulation of closed polygons" class="md-nav__link">Triangulation of closed polygons</a></li><li class="md-nav__item"><a href="#tetrahedralization-of-closed-surfaces" title="Tetrahedralization of closed surfaces" class="md-nav__link">Tetrahedralization of closed surfaces</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-6-miscellaneous" title="Chapter 6: Miscellaneous" class="md-nav__link">Chapter 6: Miscellaneous</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#mesh-statistics" title="Mesh Statistics" class="md-nav__link">Mesh Statistics</a></li></ul></nav></li><li class="md-nav__item"><a href="#references" title="References" class="md-nav__link">References</a></li></ul></nav></li><li class="md-nav__item"><a href="../igl_docs/" title="Docs" class="md-nav__link">Docs</a></li></ul></nav></div></div></div><div class="md-sidebar md-sidebar--secondary" data-md-component="toc"><div class="md-sidebar__scrollwrap"><div class="md-sidebar__inner"><nav class="md-nav md-nav--secondary"><label class="md-nav__title" for="__toc">Table of contents</label><ul class="md-nav__list" data-md-scrollfix><li class="md-nav__item"><a href="#libigl-tutorials" title="Libigl Tutorials" class="md-nav__link">Libigl Tutorials</a></li><li class="md-nav__item"><a href="#chapter-0" title="Chapter 0" class="md-nav__link">Chapter 0</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#libigl-design-principles" title="Libigl design principles" class="md-nav__link">Libigl design principles</a></li><li class="md-nav__item"><a href="#downloading-libigl" title="Downloading Libigl" class="md-nav__link">Downloading Libigl</a></li><li class="md-nav__item"><a href="#mesh-representation" title="Mesh representation" class="md-nav__link">Mesh representation</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-1-discrete-geometric-quantities-and-operators" title="Chapter 1: Discrete Geometric Quantities and Operators" class="md-nav__link">Chapter 1: Discrete Geometric Quantities and Operators</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#gaussian-curvature" title="Gaussian curvature" class="md-nav__link">Gaussian curvature</a></li><li class="md-nav__item"><a href="#curvature-directions" title="Curvature directions" class="md-nav__link">Curvature directions</a></li><li class="md-nav__item"><a href="#gradient" title="Gradient" class="md-nav__link">Gradient</a></li><li class="md-nav__item"><a href="#laplacian" title="Laplacian" class="md-nav__link">Laplacian</a></li><li class="md-nav__item"><a href="#mass-matrix" title="Mass matrix" class="md-nav__link">Mass matrix</a></li><li class="md-nav__item"><a href="#alternative-construction-of-laplacian" title="Alternative construction of Laplacian" class="md-nav__link">Alternative construction of Laplacian</a></li><li class="md-nav__item"><a href="#exact-discrete-geodesic-distances" title="Exact Discrete Geodesic Distances" class="md-nav__link">Exact Discrete Geodesic Distances</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-2-matrices-and-linear-algebra" title="Chapter 2: Matrices and Linear Algebra" class="md-nav__link">Chapter 2: Matrices and Linear Algebra</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#laplace-equation" title="Laplace equation" class="md-nav__link">Laplace equation</a></li><li class="md-nav__item"><a href="#quadratic-energy-minimization" title="Quadratic energy minimization" class="md-nav__link">Quadratic energy minimization</a></li><li class="md-nav__item"><a href="#linear-equality-constraints" title="Linear equality constraints" class="md-nav__link">Linear equality constraints</a></li><li class="md-nav__item"><a href="#eigen-decomposition" title="Eigen Decomposition" class="md-nav__link">Eigen Decomposition</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-3-shape-deformation" title="Chapter 3: Shape deformation" class="md-nav__link">Chapter 3: Shape deformation</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#biharmonic-deformation" title="Biharmonic deformation" class="md-nav__link">Biharmonic deformation</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#biharmonic-surfaces" title="Biharmonic surfaces" class="md-nav__link">Biharmonic surfaces</a></li><li class="md-nav__item"><a href="#biharmonic-deformation-fields" title="Biharmonic deformation fields" class="md-nav__link">Biharmonic deformation fields</a></li><li class="md-nav__item"><a href="#relationship-to-differential-coordinates-and-laplacian-surface-editing" title="Relationship to "differential coordinates" and Laplacian surface editing" class="md-nav__link">Relationship to "differential coordinates" and Laplacian surface editing</a></li></ul></nav></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-4-parametrization" title="Chapter 4: Parametrization" class="md-nav__link">Chapter 4: Parametrization</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#harmonic-parametrization" title="Harmonic parametrization" class="md-nav__link">Harmonic parametrization</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-5-external-libraries" title="Chapter 5: External libraries" class="md-nav__link">Chapter 5: External libraries</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#triangulation-of-closed-polygons" title="Triangulation of closed polygons" class="md-nav__link">Triangulation of closed polygons</a></li><li class="md-nav__item"><a href="#tetrahedralization-of-closed-surfaces" title="Tetrahedralization of closed surfaces" class="md-nav__link">Tetrahedralization of closed surfaces</a></li></ul></nav></li><li class="md-nav__item"><a href="#chapter-6-miscellaneous" title="Chapter 6: Miscellaneous" class="md-nav__link">Chapter 6: Miscellaneous</a><nav class="md-nav"><ul class="md-nav__list"><li class="md-nav__item"><a href="#mesh-statistics" title="Mesh Statistics" class="md-nav__link">Mesh Statistics</a></li></ul></nav></li><li class="md-nav__item"><a href="#references" title="References" class="md-nav__link">References</a></li></ul></nav></div></div></div><div class="md-content"><article class="md-content__inner md-typeset"><a href="https://github.com/geometryprocessing/libigl-python-bindings/edit/master/docs/tutorials.ipynb" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a><h1>Tutorial</h1><h2 id="libigl-tutorials">Libigl Tutorials<a class="headerlink" href="#libigl-tutorials" title="Permanent link">&para;</a></h2>
 <p><a href="https://conda.anaconda.org/conda-forge"><img alt="Anaconda-Server Badge" src="https://anaconda.org/conda-forge/igl/badges/installer/conda.svg" /></a></p>
 <p><a href="https://anaconda.org/conda-forge/igl"><img alt="Anaconda-Server Badge" src="https://anaconda.org/conda-forge/igl/badges/downloads.svg" /></a></p>
 <p><a href="https://anaconda.org/conda-forge/igl"><img alt="Anaconda-Server Badge" src="https://anaconda.org/conda-forge/igl/badges/platforms.svg" /></a></p>
@@ -864,7 +15,7 @@ concepts of libigl.</p>
 libigl:</p>
 <ol>
 <li>
-<p><strong>No complex data types.</strong> We mostly use <code class="codehilite">numpy</code> or <code class="codehilite">scipy</code> matrices and vectors. This greatly
+<p><strong>No complex data types.</strong> We mostly use <code class="codehilite"><span class="n">numpy</span></code> or <code class="codehilite"><span class="n">scipy</span></code> matrices and vectors. This greatly
   favors code reusability and interoperability and forces the function authors to expose all the
   parameters used by the algorithm.</p>
 </li>
@@ -874,12 +25,12 @@ libigl:</p>
 </ol>
 <h3 id="downloading-libigl">Downloading Libigl<a class="headerlink" href="#downloading-libigl" title="Permanent link">&para;</a></h3>
 <p>Libigl can be downloaded from <a href="https://anaconda.org/conda-forge/igl">Conda forge</a>:
-<div class="codehilite"><pre><span></span>conda install -c conda-forge igl 
+<div class="codehilite"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="k">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">igl</span> 
 </pre></div></p>
-<p>All of libigl functionality depends only on <code class="codehilite">numpy</code> and <code class="codehilite">scipy</code>. For the visualization in this tutorial we use <a href="https://anaconda.org/conda-forge/meshplot">meshplot</a> which can be easily installed from Conda:
-<div class="codehilite"><pre><span></span>conda install -c conda-forge meshplot 
+<p>All of libigl functionality depends only on <code class="codehilite"><span class="n">numpy</span></code> and <code class="codehilite"><span class="n">scipy</span></code>. For the visualization in this tutorial we use <a href="https://anaconda.org/conda-forge/meshplot">meshplot</a> which can be easily installed from Conda:
+<div class="codehilite"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="k">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">meshplot</span> 
 </pre></div></p>
-<p>To start using libigl (with the plots) you just need to import it together with the <code class="codehilite">numpy</code>, <code class="codehilite">scipy</code>, and <code class="codehilite">meshplot</code>.</p>
+<p>To start using libigl (with the plots) you just need to import it together with the <code class="codehilite"><span class="n">numpy</span></code>, <code class="codehilite"><span class="n">scipy</span></code>, and <code class="codehilite"><span class="n">meshplot</span></code>.</p>
 <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">igl</span>
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="kn">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -887,19 +38,19 @@ libigl:</p>
 </pre></div>
 
 <h3 id="mesh-representation">Mesh representation<a class="headerlink" href="#mesh-representation" title="Permanent link">&para;</a></h3>
-<p>Libigl uses <code class="codehilite">numpy</code> to encode vectors and matrices and <code class="codehilite">scipy</code> for sparse matrices.</p>
+<p>Libigl uses <code class="codehilite"><span class="n">numpy</span></code> to encode vectors and matrices and <code class="codehilite"><span class="n">scipy</span></code> for sparse matrices.</p>
 <p>A triangular mesh is encoded as a pair of matrices:</p>
 <div class="codehilite"><pre><span></span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
 <span class="n">f</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
 </pre></div>
 
-<p><code class="codehilite">v</code> is a #N by 3 matrix which stores the coordinates of the vertices. Each
+<p><code class="codehilite"><span class="n">v</span></code> is a #N by 3 matrix which stores the coordinates of the vertices. Each
 row stores the coordinate of a vertex, with its x, y and z coordinates in the first,
-second and third column, respectively. The matrix <code class="codehilite">f</code> stores the triangle
-connectivity: each line of <code class="codehilite">f</code> denotes a triangle whose 3 vertices are
-represented as indices pointing to rows of <code class="codehilite">f</code>.</p>
+second and third column, respectively. The matrix <code class="codehilite"><span class="n">f</span></code> stores the triangle
+connectivity: each line of <code class="codehilite"><span class="n">f</span></code> denotes a triangle whose 3 vertices are
+represented as indices pointing to rows of <code class="codehilite"><span class="n">f</span></code>.</p>
 <p><img alt="A simple mesh made of 2 triangles and 4 vertices." src="../images/VF.png" /></p>
-<p>Note that the order of the vertex indices in <code class="codehilite">f</code> determines the orientation of
+<p>Note that the order of the vertex indices in <code class="codehilite"><span class="n">f</span></code> determines the orientation of
 the triangles and it should thus be consistent for the entire surface.
 This simple representation has many advantages:</p>
 <ol>
@@ -923,7 +74,7 @@ The IO functions are igl.read_* and igl.write_*.</p>
 </pre></div>
 
 
-<p>The function reads the mesh bumpy.off and returns the <code class="codehilite">v</code> and <code class="codehilite">f</code> matrices.
+<p>The function reads the mesh bumpy.off and returns the <code class="codehilite"><span class="n">v</span></code> and <code class="codehilite"><span class="n">f</span></code> matrices.
 Similarly, a mesh can be written to an OBJ file using:</p>
 <div class="codehilite"><pre><span></span><span class="c1">## Save the mesh in OBJ format</span>
 <span class="n">ret</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">write_obj</span><span class="p">(</span><span class="s2">&quot;data/bunny.obj&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
@@ -965,7 +116,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
   "version_major": 2,
   "version_minor": 0,
   "state": {
-    "4f1f7abedb424f5d8e1018770f7bb41a": {
+    "a607682c86114c169c3ee3fcece5f8b7": {
       "model_name": "RendererModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -974,23 +125,23 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         "_dom_classes": [],
         "_height": 600,
         "_width": 600,
-        "camera": "IPY_MODEL_4f5f94ea61dc43cb9f20a1d288038ec4",
+        "camera": "IPY_MODEL_7e51b056e2e349cfa7eda6b93a5622d5",
         "clippingPlanes": [],
         "controls": [
-          "IPY_MODEL_9f4e501d6eb5410c91f648996afe226d"
+          "IPY_MODEL_9a575a80b04a4a08b3bc91f4b6c6dfc4"
         ],
-        "layout": "IPY_MODEL_4639d3715be44217a115c296a0373179",
-        "scene": "IPY_MODEL_a69cc6f3311545d1aa76de5f9bb3c7e7",
-        "shadowMap": "IPY_MODEL_289be03511b749a4bbe2a2d8374acecf"
+        "layout": "IPY_MODEL_76ab478340084c9b9bf349182c1e50bc",
+        "scene": "IPY_MODEL_9ddd81288b6d4471a2640aa701f8a3d0",
+        "shadowMap": "IPY_MODEL_610d52c5832f4e4291ab57622fa4f618"
       }
     },
-    "4f5f94ea61dc43cb9f20a1d288038ec4": {
+    "7e51b056e2e349cfa7eda6b93a5622d5": {
       "model_name": "PerspectiveCameraModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_d5c35c63e4b746f2bc99ad9024023513"
+          "IPY_MODEL_01fae871c5b84d469cfad9d404fcc194"
         ],
         "fov": 30.0,
         "position": [
@@ -1016,7 +167,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "d5c35c63e4b746f2bc99ad9024023513": {
+    "01fae871c5b84d469cfad9d404fcc194": {
       "model_name": "DirectionalLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1049,33 +200,33 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "9f4e501d6eb5410c91f648996afe226d": {
+    "9a575a80b04a4a08b3bc91f4b6c6dfc4": {
       "model_name": "OrbitControlsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "controlling": "IPY_MODEL_4f5f94ea61dc43cb9f20a1d288038ec4",
+        "controlling": "IPY_MODEL_7e51b056e2e349cfa7eda6b93a5622d5",
         "maxAzimuthAngle": "inf",
         "maxDistance": "inf",
         "maxZoom": "inf",
         "minAzimuthAngle": "-inf"
       }
     },
-    "4639d3715be44217a115c296a0373179": {
+    "76ab478340084c9b9bf349182c1e50bc": {
       "model_name": "LayoutModel",
       "model_module": "@jupyter-widgets/base",
       "model_module_version": "1.2.0",
       "state": {}
     },
-    "a69cc6f3311545d1aa76de5f9bb3c7e7": {
+    "9ddd81288b6d4471a2640aa701f8a3d0": {
       "model_name": "SceneModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_4f5f94ea61dc43cb9f20a1d288038ec4",
-          "IPY_MODEL_d541d188290b4c72819c44397c69ca64",
-          "IPY_MODEL_0cce1c67cb7e4b358ebc3a0db7839813"
+          "IPY_MODEL_7e51b056e2e349cfa7eda6b93a5622d5",
+          "IPY_MODEL_301c3044c5834d26b362633fb638ecd2",
+          "IPY_MODEL_b00263afcd0748bd99670e067da99bfc"
         ],
         "fog": null,
         "overrideMaterial": null,
@@ -1097,7 +248,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "d541d188290b4c72819c44397c69ca64": {
+    "301c3044c5834d26b362633fb638ecd2": {
       "model_name": "AmbientLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1122,16 +273,16 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "0cce1c67cb7e4b358ebc3a0db7839813": {
+    "b00263afcd0748bd99670e067da99bfc": {
       "model_name": "MeshModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_69273dcaaec54233a06e1e2d36b22100"
+          "IPY_MODEL_77de5b4e3f7842f0be71691585e40b8c"
         ],
-        "geometry": "IPY_MODEL_8a2ee0d9466143e9ad69a1d39c826055",
-        "material": "IPY_MODEL_0c72bdaeaca347edb8976cfb98858279",
+        "geometry": "IPY_MODEL_251b0f48caa342acb3770fb048133e9c",
+        "material": "IPY_MODEL_9f6540b32346413d89a9e315151a5f52",
         "morphTargetInfluences": [],
         "quaternion": [
           0.0,
@@ -1151,14 +302,14 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "69273dcaaec54233a06e1e2d36b22100": {
+    "77de5b4e3f7842f0be71691585e40b8c": {
       "model_name": "LineSegmentsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [],
-        "geometry": "IPY_MODEL_823dda151a174f2cb1602552049997bb",
-        "material": "IPY_MODEL_1e6cb255bb564793b60338e75dce82c5",
+        "geometry": "IPY_MODEL_740eb4061b5b45cb86738f29ad1374c2",
+        "material": "IPY_MODEL_82a906fa623b4529ab4a21c649d5f52a",
         "quaternion": [
           0.0,
           0.0,
@@ -1177,31 +328,31 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "823dda151a174f2cb1602552049997bb": {
+    "740eb4061b5b45cb86738f29ad1374c2": {
       "model_name": "WireframeGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "geometry": "IPY_MODEL_8a2ee0d9466143e9ad69a1d39c826055"
+        "geometry": "IPY_MODEL_251b0f48caa342acb3770fb048133e9c"
       }
     },
-    "8a2ee0d9466143e9ad69a1d39c826055": {
+    "251b0f48caa342acb3770fb048133e9c": {
       "model_name": "BufferGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "_ref_geometry": null,
         "attributes": {
-          "color": "IPY_MODEL_c0f0ba8ecff1451c9bb47d4895076882",
-          "index": "IPY_MODEL_580bfbc39aab4314b3b82b3836c2fd22",
-          "position": "IPY_MODEL_78ded4b0ef094f198491f670ee101038"
+          "color": "IPY_MODEL_3582e87dca8549e0882219f81597853c",
+          "index": "IPY_MODEL_7026c282fbb74a0e9063290ba4049b2c",
+          "position": "IPY_MODEL_e0cb43e430154c96a933fcaa15476af8"
         },
         "index": null,
         "morphAttributes": {},
         "userData": {}
       }
     },
-    "c0f0ba8ecff1451c9bb47d4895076882": {
+    "3582e87dca8549e0882219f81597853c": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1226,7 +377,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         }
       ]
     },
-    "580bfbc39aab4314b3b82b3836c2fd22": {
+    "7026c282fbb74a0e9063290ba4049b2c": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1249,7 +400,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         }
       ]
     },
-    "78ded4b0ef094f198491f670ee101038": {
+    "e0cb43e430154c96a933fcaa15476af8": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1273,7 +424,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         }
       ]
     },
-    "1e6cb255bb564793b60338e75dce82c5": {
+    "82a906fa623b4529ab4a21c649d5f52a": {
       "model_name": "LineBasicMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1284,7 +435,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         "linewidth": 0.03
       }
     },
-    "0c72bdaeaca347edb8976cfb98858279": {
+    "9f6540b32346413d89a9e315151a5f52": {
       "model_name": "MeshStandardMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1317,7 +468,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         "vertexColors": "VertexColors"
       }
     },
-    "289be03511b749a4bbe2a2d8374acecf": {
+    "610d52c5832f4e4291ab57622fa4f618": {
       "model_name": "WebGLShadowMapModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1328,7 +479,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
 </script>
 
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "4f1f7abedb424f5d8e1018770f7bb41a"}
+{"version_major": 2, "version_minor": 0, "model_id": "a607682c86114c169c3ee3fcece5f8b7"}
 </script>
 
 <p>Next, compute the massmatrix and divide the gaussian curvature values by area to get the integral average.</p>
@@ -1343,7 +494,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
   "version_major": 2,
   "version_minor": 0,
   "state": {
-    "0e8c08b7c24b42e685b933f593e01743": {
+    "1f4543106293499fb573af22432c2231": {
       "model_name": "RendererModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1352,23 +503,23 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         "_dom_classes": [],
         "_height": 600,
         "_width": 600,
-        "camera": "IPY_MODEL_25ff7eccd7704edcb405640d7e5f46f8",
+        "camera": "IPY_MODEL_c623da5a197c477b8683239852a806cc",
         "clippingPlanes": [],
         "controls": [
-          "IPY_MODEL_b030b5eb60fd4b4bb1a96ef3942504ef"
+          "IPY_MODEL_52f6ccdb68a04fefa64d128def05828a"
         ],
-        "layout": "IPY_MODEL_94710de4653a423eb92d424713d284b9",
-        "scene": "IPY_MODEL_4be5661cde1a43e89d17cd3fc32d3d42",
-        "shadowMap": "IPY_MODEL_bcc663da110f4c728854572b44422f5e"
+        "layout": "IPY_MODEL_33297be15d884bdead4a84bdf04444c5",
+        "scene": "IPY_MODEL_4ba11b455d324528b189d854b60b1b8c",
+        "shadowMap": "IPY_MODEL_d96fba566f254b4498a67f452dced5b0"
       }
     },
-    "25ff7eccd7704edcb405640d7e5f46f8": {
+    "c623da5a197c477b8683239852a806cc": {
       "model_name": "PerspectiveCameraModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_d4d7b3f902464ee2a38ddb740c18f499"
+          "IPY_MODEL_948db78b2b4741eab47d71642c349e65"
         ],
         "fov": 30.0,
         "position": [
@@ -1394,7 +545,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "d4d7b3f902464ee2a38ddb740c18f499": {
+    "948db78b2b4741eab47d71642c349e65": {
       "model_name": "DirectionalLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1427,33 +578,33 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "b030b5eb60fd4b4bb1a96ef3942504ef": {
+    "52f6ccdb68a04fefa64d128def05828a": {
       "model_name": "OrbitControlsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "controlling": "IPY_MODEL_25ff7eccd7704edcb405640d7e5f46f8",
+        "controlling": "IPY_MODEL_c623da5a197c477b8683239852a806cc",
         "maxAzimuthAngle": "inf",
         "maxDistance": "inf",
         "maxZoom": "inf",
         "minAzimuthAngle": "-inf"
       }
     },
-    "94710de4653a423eb92d424713d284b9": {
+    "33297be15d884bdead4a84bdf04444c5": {
       "model_name": "LayoutModel",
       "model_module": "@jupyter-widgets/base",
       "model_module_version": "1.2.0",
       "state": {}
     },
-    "4be5661cde1a43e89d17cd3fc32d3d42": {
+    "4ba11b455d324528b189d854b60b1b8c": {
       "model_name": "SceneModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_25ff7eccd7704edcb405640d7e5f46f8",
-          "IPY_MODEL_c0d9b9d142a54e0ca204cda8e777fce3",
-          "IPY_MODEL_a6e54495f4b54c5e8134d0023302921b"
+          "IPY_MODEL_c623da5a197c477b8683239852a806cc",
+          "IPY_MODEL_fd842459e7844f6380c08a41768fd756",
+          "IPY_MODEL_e6289a5faa3f474496e3fd0fa78ab535"
         ],
         "fog": null,
         "overrideMaterial": null,
@@ -1475,7 +626,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "c0d9b9d142a54e0ca204cda8e777fce3": {
+    "fd842459e7844f6380c08a41768fd756": {
       "model_name": "AmbientLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1500,16 +651,16 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "a6e54495f4b54c5e8134d0023302921b": {
+    "e6289a5faa3f474496e3fd0fa78ab535": {
       "model_name": "MeshModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_b89a1689dd794133bddb87eab6d5f94f"
+          "IPY_MODEL_2f84c47cea39427291768d909c0393ce"
         ],
-        "geometry": "IPY_MODEL_6ffe232ed50241398ac6e8aa7df97bae",
-        "material": "IPY_MODEL_8d40efe44e404eb7b5798eaf24b251c1",
+        "geometry": "IPY_MODEL_e4481fc6b57d4756b611f61860e4b483",
+        "material": "IPY_MODEL_0d87d9a2ab3541a6830ea22fb63a25bd",
         "morphTargetInfluences": [],
         "quaternion": [
           0.0,
@@ -1529,14 +680,14 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "b89a1689dd794133bddb87eab6d5f94f": {
+    "2f84c47cea39427291768d909c0393ce": {
       "model_name": "LineSegmentsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [],
-        "geometry": "IPY_MODEL_e61a43c309674c57a3d8a390136849b4",
-        "material": "IPY_MODEL_a12a12f42a154a779eaa40e63de84f9a",
+        "geometry": "IPY_MODEL_8754140df0144e5188758ba3883e52a6",
+        "material": "IPY_MODEL_55890a68176a41049875df80341a6306",
         "quaternion": [
           0.0,
           0.0,
@@ -1555,31 +706,31 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         ]
       }
     },
-    "e61a43c309674c57a3d8a390136849b4": {
+    "8754140df0144e5188758ba3883e52a6": {
       "model_name": "WireframeGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "geometry": "IPY_MODEL_6ffe232ed50241398ac6e8aa7df97bae"
+        "geometry": "IPY_MODEL_e4481fc6b57d4756b611f61860e4b483"
       }
     },
-    "6ffe232ed50241398ac6e8aa7df97bae": {
+    "e4481fc6b57d4756b611f61860e4b483": {
       "model_name": "BufferGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "_ref_geometry": null,
         "attributes": {
-          "color": "IPY_MODEL_089b3db03a7749afaf44e76b5d76bd89",
-          "index": "IPY_MODEL_2fd5ab96b0274ba68ef47451be8bad11",
-          "position": "IPY_MODEL_675b4c65858b43d9840c2b314a6b4039"
+          "color": "IPY_MODEL_17da29e0925c46f0a98a7e32df7c0d28",
+          "index": "IPY_MODEL_0a3c5f229e06466b8cc3a23c94eca631",
+          "position": "IPY_MODEL_a678fc04fb774cb3ab3897279f3415c5"
         },
         "index": null,
         "morphAttributes": {},
         "userData": {}
       }
     },
-    "089b3db03a7749afaf44e76b5d76bd89": {
+    "17da29e0925c46f0a98a7e32df7c0d28": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1604,7 +755,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         }
       ]
     },
-    "2fd5ab96b0274ba68ef47451be8bad11": {
+    "0a3c5f229e06466b8cc3a23c94eca631": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1627,7 +778,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         }
       ]
     },
-    "675b4c65858b43d9840c2b314a6b4039": {
+    "a678fc04fb774cb3ab3897279f3415c5": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1651,7 +802,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         }
       ]
     },
-    "a12a12f42a154a779eaa40e63de84f9a": {
+    "55890a68176a41049875df80341a6306": {
       "model_name": "LineBasicMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1662,7 +813,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         "linewidth": 0.03
       }
     },
-    "8d40efe44e404eb7b5798eaf24b251c1": {
+    "0d87d9a2ab3541a6830ea22fb63a25bd": {
       "model_name": "MeshStandardMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1695,7 +846,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
         "vertexColors": "VertexColors"
       }
     },
-    "bcc663da110f4c728854572b44422f5e": {
+    "d96fba566f254b4498a67f452dced5b0": {
       "model_name": "WebGLShadowMapModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1706,7 +857,7 @@ elliptic, hyperbolic and parabolic vertices on the domain.</p>
 </script>
 
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "0e8c08b7c24b42e685b933f593e01743"}
+{"version_major": 2, "version_minor": 0, "model_id": "1f4543106293499fb573af22432c2231"}
 </script>
 
 <h3 id="curvature-directions">Curvature directions<a class="headerlink" href="#curvature-directions" title="Permanent link">&para;</a></h3>
@@ -1737,7 +888,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
   "version_major": 2,
   "version_minor": 0,
   "state": {
-    "873c0e95a3d2468abea0c2f7fa7e968c": {
+    "33ced640a6014cd8b673de0c7de16dd5": {
       "model_name": "RendererModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1746,23 +897,23 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         "_dom_classes": [],
         "_height": 600,
         "_width": 600,
-        "camera": "IPY_MODEL_dbbbdb9f8b35408c95cbb6925e32c3d7",
+        "camera": "IPY_MODEL_e19ed577ae864eb38d995830b226bf6c",
         "clippingPlanes": [],
         "controls": [
-          "IPY_MODEL_2cea6f5819064fb2a8aa975e8fcde486"
+          "IPY_MODEL_5997c0f58f914806a5c2560a67ed0285"
         ],
-        "layout": "IPY_MODEL_e4cae144dfed4e39bf08020b903494a9",
-        "scene": "IPY_MODEL_90892bf1aa7043e697264ef4bfdd7b63",
-        "shadowMap": "IPY_MODEL_8f7b72c8708f420ba797ca15426763d2"
+        "layout": "IPY_MODEL_ef8df0d7b9744b0a866cd12267554bb2",
+        "scene": "IPY_MODEL_1134949bf1c744c1a53e69e3b60147cd",
+        "shadowMap": "IPY_MODEL_565893cf47574eb0a9dc4536cfcc017a"
       }
     },
-    "dbbbdb9f8b35408c95cbb6925e32c3d7": {
+    "e19ed577ae864eb38d995830b226bf6c": {
       "model_name": "PerspectiveCameraModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_7ef44f9c272e483eaaa24d5c9c2c297f"
+          "IPY_MODEL_6df97e57e7a747539c19057ccf7c713e"
         ],
         "fov": 30.0,
         "position": [
@@ -1788,7 +939,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         ]
       }
     },
-    "7ef44f9c272e483eaaa24d5c9c2c297f": {
+    "6df97e57e7a747539c19057ccf7c713e": {
       "model_name": "DirectionalLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1821,33 +972,33 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         ]
       }
     },
-    "2cea6f5819064fb2a8aa975e8fcde486": {
+    "5997c0f58f914806a5c2560a67ed0285": {
       "model_name": "OrbitControlsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "controlling": "IPY_MODEL_dbbbdb9f8b35408c95cbb6925e32c3d7",
+        "controlling": "IPY_MODEL_e19ed577ae864eb38d995830b226bf6c",
         "maxAzimuthAngle": "inf",
         "maxDistance": "inf",
         "maxZoom": "inf",
         "minAzimuthAngle": "-inf"
       }
     },
-    "e4cae144dfed4e39bf08020b903494a9": {
+    "ef8df0d7b9744b0a866cd12267554bb2": {
       "model_name": "LayoutModel",
       "model_module": "@jupyter-widgets/base",
       "model_module_version": "1.2.0",
       "state": {}
     },
-    "90892bf1aa7043e697264ef4bfdd7b63": {
+    "1134949bf1c744c1a53e69e3b60147cd": {
       "model_name": "SceneModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_dbbbdb9f8b35408c95cbb6925e32c3d7",
-          "IPY_MODEL_b9427bc93fe64ac6abc12e0ee116d35d",
-          "IPY_MODEL_f3e49d42c8c94268b56fbf85e97df523"
+          "IPY_MODEL_e19ed577ae864eb38d995830b226bf6c",
+          "IPY_MODEL_63974c68f0604941a11eddbd1ac49305",
+          "IPY_MODEL_d607de98d6344cafad934693e4c1dcd7"
         ],
         "fog": null,
         "overrideMaterial": null,
@@ -1869,7 +1020,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         ]
       }
     },
-    "b9427bc93fe64ac6abc12e0ee116d35d": {
+    "63974c68f0604941a11eddbd1ac49305": {
       "model_name": "AmbientLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1894,16 +1045,16 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         ]
       }
     },
-    "f3e49d42c8c94268b56fbf85e97df523": {
+    "d607de98d6344cafad934693e4c1dcd7": {
       "model_name": "MeshModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_c69d0e1a82fa4bb7a1ac92f5a72dcae5"
+          "IPY_MODEL_27f08b35c55543f08a74d578ee9c8e21"
         ],
-        "geometry": "IPY_MODEL_1605bfae534d4bedbb3805c66b6274a6",
-        "material": "IPY_MODEL_b605642369734a2fa08020e2dfa6bed0",
+        "geometry": "IPY_MODEL_7b75cd7dd4f2471d9b78c63a08d8230c",
+        "material": "IPY_MODEL_023b8b8f33aa49d78d700d7c1bdb25ad",
         "morphTargetInfluences": [],
         "quaternion": [
           0.0,
@@ -1923,14 +1074,14 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         ]
       }
     },
-    "c69d0e1a82fa4bb7a1ac92f5a72dcae5": {
+    "27f08b35c55543f08a74d578ee9c8e21": {
       "model_name": "LineSegmentsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [],
-        "geometry": "IPY_MODEL_65fc4c397b1e4f2dbbb1509c55125e31",
-        "material": "IPY_MODEL_93df8490761048aab7102dde0f1609ed",
+        "geometry": "IPY_MODEL_141e678c27774ebcba0a62b4456d9f1e",
+        "material": "IPY_MODEL_fede6bb1bffa4a2dbe38dca052afe6b8",
         "quaternion": [
           0.0,
           0.0,
@@ -1949,31 +1100,31 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         ]
       }
     },
-    "65fc4c397b1e4f2dbbb1509c55125e31": {
+    "141e678c27774ebcba0a62b4456d9f1e": {
       "model_name": "WireframeGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "geometry": "IPY_MODEL_1605bfae534d4bedbb3805c66b6274a6"
+        "geometry": "IPY_MODEL_7b75cd7dd4f2471d9b78c63a08d8230c"
       }
     },
-    "1605bfae534d4bedbb3805c66b6274a6": {
+    "7b75cd7dd4f2471d9b78c63a08d8230c": {
       "model_name": "BufferGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "_ref_geometry": null,
         "attributes": {
-          "color": "IPY_MODEL_d4e0966d0ec148639fdec2ba498c3ddb",
-          "index": "IPY_MODEL_b1ba91411cff4780ac437c13e499e66f",
-          "position": "IPY_MODEL_9c6351deec274d1e9f766e9042586b3e"
+          "color": "IPY_MODEL_f2e79d62ce6b45fdbb8d176bf9d38ac9",
+          "index": "IPY_MODEL_6d6234ec6bc6449499e33edd4888a9ac",
+          "position": "IPY_MODEL_c1da2ecda89e4c079625bd30a424b2e7"
         },
         "index": null,
         "morphAttributes": {},
         "userData": {}
       }
     },
-    "d4e0966d0ec148639fdec2ba498c3ddb": {
+    "f2e79d62ce6b45fdbb8d176bf9d38ac9": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -1998,7 +1149,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         }
       ]
     },
-    "b1ba91411cff4780ac437c13e499e66f": {
+    "6d6234ec6bc6449499e33edd4888a9ac": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2021,7 +1172,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         }
       ]
     },
-    "9c6351deec274d1e9f766e9042586b3e": {
+    "c1da2ecda89e4c079625bd30a424b2e7": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2045,7 +1196,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         }
       ]
     },
-    "93df8490761048aab7102dde0f1609ed": {
+    "fede6bb1bffa4a2dbe38dca052afe6b8": {
       "model_name": "LineBasicMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2056,7 +1207,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         "linewidth": 0.03
       }
     },
-    "b605642369734a2fa08020e2dfa6bed0": {
+    "023b8b8f33aa49d78d700d7c1bdb25ad": {
       "model_name": "MeshStandardMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2089,7 +1240,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
         "vertexColors": "VertexColors"
       }
     },
-    "8f7b72c8708f420ba797ca15426763d2": {
+    "565893cf47574eb0a9dc4536cfcc017a": {
       "model_name": "WebGLShadowMapModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2100,7 +1251,7 @@ cotangent Laplace-Beltrami operator <cite data-cite="meyer2003">(Meyer, 2003)</c
 </script>
 
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "873c0e95a3d2468abea0c2f7fa7e968c"}
+{"version_major": 2, "version_minor": 0, "model_id": "33ced640a6014cd8b673de0c7de16dd5"}
 </script>
 
 <p>Combined with the angle defect definition of discrete Gaussian curvature, one
@@ -2141,7 +1292,7 @@ as a matrix multiplication taking vertex values to triangle values:</p>
 <p><span><span class="MathJax_Preview">\nabla f \approx \mathbf{G}\,\mathbf{f},</span><script type="math/tex">\nabla f \approx \mathbf{G}\,\mathbf{f},</script></span></p>
 <p>where <span><span class="MathJax_Preview">\mathbf{f}</span><script type="math/tex">\mathbf{f}</script></span> is <span><span class="MathJax_Preview">n\times 1</span><script type="math/tex">n\times 1</script></span> and <span><span class="MathJax_Preview">\mathbf{G}</span><script type="math/tex">\mathbf{G}</script></span> is an <span><span class="MathJax_Preview">md\times n</span><script type="math/tex">md\times n</script></span> sparse
 matrix. This matrix <span><span class="MathJax_Preview">\mathbf{G}</span><script type="math/tex">\mathbf{G}</script></span> can be derived geometrically <cite data-cite="jacobson2013">(Jacobson, 2013)</cite>.</p>
-<p>Libigl&rsquo;s <code class="codehilite">grad</code> function computes <span><span class="MathJax_Preview">\mathbf{G}</span><script type="math/tex">\mathbf{G}</script></span> for
+<p>Libigl&rsquo;s <code class="codehilite"><span class="n">grad</span></code> function computes <span><span class="MathJax_Preview">\mathbf{G}</span><script type="math/tex">\mathbf{G}</script></span> for
 triangle and tetrahedral meshes. 
 Let&rsquo;s see how this works. First load a mesh and a corresponding surface function.
 Next, compute the gradient operator g (#F*3 x #V) on the triangle mesh, apply it to the surface function and extract the magnitude.</p>
@@ -2219,7 +1370,7 @@ book&rdquo; FEM construction which involves many (small) matrix inversions <cite
     <span class="n">p</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">vs</span><span class="p">[</span><span class="n">level</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="n">cs</span><span class="p">[</span><span class="n">level</span><span class="p">])</span>
 </pre></div>
 
-<div class="codehilite"><pre><span></span>interactive(children=(IntSlider(value=0, description=&#39;level&#39;, max=9), Output()), _dom_classes=(&#39;widget-interac…
+<div class="codehilite"><pre><span></span><span class="n">interactive</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="p">(</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;level&#39;</span><span class="p">,</span> <span class="k">max</span><span class="o">=</span><span class="mi">9</span><span class="p">),</span> <span class="k">Output</span><span class="p">()),</span> <span class="n">_dom_classes</span><span class="o">=</span><span class="p">(</span><span class="err">&#39;</span><span class="n">widget</span><span class="o">-</span><span class="n">interac</span><span class="err">…</span>
 </pre></div>
 
 
@@ -2267,7 +1418,7 @@ to scalar divergence values at vertices.</p>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;|k-l|: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">sp</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="n">l</span><span class="p">))</span>
 </pre></div>
 
-<div class="codehilite"><pre><span></span>|k-l|: 6.654117928693559e-13
+<div class="codehilite"><pre><span></span><span class="o">|</span><span class="n">k</span><span class="o">-</span><span class="n">l</span><span class="o">|</span><span class="p">:</span> <span class="mi">6</span><span class="p">.</span><span class="mi">654117928693559</span><span class="n">e</span><span class="o">-</span><span class="mi">13</span>
 </pre></div>
 
 
@@ -2306,7 +1457,7 @@ then for the faces in ft. </p>
   "version_major": 2,
   "version_minor": 0,
   "state": {
-    "4b5224631ccf4f6c97f421468e1175ca": {
+    "99eddfb2d76f4210b17ba3053434f75a": {
       "model_name": "RendererModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2315,23 +1466,23 @@ then for the faces in ft. </p>
         "_dom_classes": [],
         "_height": 600,
         "_width": 600,
-        "camera": "IPY_MODEL_c6db2980c5ca440c87d45bca30a221b2",
+        "camera": "IPY_MODEL_c1c4f6f1d1e0478c910730398ba92944",
         "clippingPlanes": [],
         "controls": [
-          "IPY_MODEL_78910debcd9e41a0a1414afadf11b14d"
+          "IPY_MODEL_27ef2048b32a428b94a5a855079421b9"
         ],
-        "layout": "IPY_MODEL_8a87c60d7da74a61b7769edd357e634b",
-        "scene": "IPY_MODEL_a26c5b3683a24587b738862f5b7f54c3",
-        "shadowMap": "IPY_MODEL_fc6b4d04ca614312862fa7a9bbcc4fa0"
+        "layout": "IPY_MODEL_620636ab9911498ebae2dc64476499a2",
+        "scene": "IPY_MODEL_09769520da624da4a1fb08f0867b2d34",
+        "shadowMap": "IPY_MODEL_d82b643d374b4468ba974740a49d27c3"
       }
     },
-    "c6db2980c5ca440c87d45bca30a221b2": {
+    "c1c4f6f1d1e0478c910730398ba92944": {
       "model_name": "PerspectiveCameraModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_78090062eb984dd8930c9c59d736c3b8"
+          "IPY_MODEL_6dfa220307f1424eaccc476c4e8ab89e"
         ],
         "fov": 30.0,
         "position": [
@@ -2357,7 +1508,7 @@ then for the faces in ft. </p>
         ]
       }
     },
-    "78090062eb984dd8930c9c59d736c3b8": {
+    "6dfa220307f1424eaccc476c4e8ab89e": {
       "model_name": "DirectionalLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2390,12 +1541,12 @@ then for the faces in ft. </p>
         ]
       }
     },
-    "78910debcd9e41a0a1414afadf11b14d": {
+    "27ef2048b32a428b94a5a855079421b9": {
       "model_name": "OrbitControlsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "controlling": "IPY_MODEL_c6db2980c5ca440c87d45bca30a221b2",
+        "controlling": "IPY_MODEL_c1c4f6f1d1e0478c910730398ba92944",
         "target": [
           -0.015966489911079407,
           -0.0734264999628067,
@@ -2407,21 +1558,21 @@ then for the faces in ft. </p>
         "minAzimuthAngle": "-inf"
       }
     },
-    "8a87c60d7da74a61b7769edd357e634b": {
+    "620636ab9911498ebae2dc64476499a2": {
       "model_name": "LayoutModel",
       "model_module": "@jupyter-widgets/base",
       "model_module_version": "1.2.0",
       "state": {}
     },
-    "a26c5b3683a24587b738862f5b7f54c3": {
+    "09769520da624da4a1fb08f0867b2d34": {
       "model_name": "SceneModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_c6db2980c5ca440c87d45bca30a221b2",
-          "IPY_MODEL_2f8a825223c14b12a857cbcf93b9b3d7",
-          "IPY_MODEL_57a4448709a4462a883d89f348d8749c"
+          "IPY_MODEL_c1c4f6f1d1e0478c910730398ba92944",
+          "IPY_MODEL_23ac6d2132094f2eaac5292e75cba347",
+          "IPY_MODEL_a1d2d33dc790458b99d88ebe39524c6e"
         ],
         "fog": null,
         "overrideMaterial": null,
@@ -2443,7 +1594,7 @@ then for the faces in ft. </p>
         ]
       }
     },
-    "2f8a825223c14b12a857cbcf93b9b3d7": {
+    "23ac6d2132094f2eaac5292e75cba347": {
       "model_name": "AmbientLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2468,14 +1619,14 @@ then for the faces in ft. </p>
         ]
       }
     },
-    "57a4448709a4462a883d89f348d8749c": {
+    "a1d2d33dc790458b99d88ebe39524c6e": {
       "model_name": "MeshModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [],
-        "geometry": "IPY_MODEL_15747d66fdc546758a143b088d50954d",
-        "material": "IPY_MODEL_efa3975fad6e4469af82af82f6353fd1",
+        "geometry": "IPY_MODEL_dfbc46a35f9f4097b881a9e472bccd42",
+        "material": "IPY_MODEL_351a062019ce478f9a56fb23b45fd28c",
         "morphTargetInfluences": [],
         "quaternion": [
           0.0,
@@ -2495,23 +1646,23 @@ then for the faces in ft. </p>
         ]
       }
     },
-    "15747d66fdc546758a143b088d50954d": {
+    "dfbc46a35f9f4097b881a9e472bccd42": {
       "model_name": "BufferGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "_ref_geometry": null,
         "attributes": {
-          "color": "IPY_MODEL_eca22da532b44ea09fb0ffacf3c0f835",
-          "index": "IPY_MODEL_7b353fa2013943999fd24dbec5219f81",
-          "position": "IPY_MODEL_45a393774f9d485087ec1ecf9315c4d1"
+          "color": "IPY_MODEL_27900ea13c004ae4ab025c468ef2207d",
+          "index": "IPY_MODEL_898973efed744c71b38754ef11126710",
+          "position": "IPY_MODEL_2fc0b9e5e9eb46dd9045765e3f089ea2"
         },
         "index": null,
         "morphAttributes": {},
         "userData": {}
       }
     },
-    "eca22da532b44ea09fb0ffacf3c0f835": {
+    "27900ea13c004ae4ab025c468ef2207d": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2536,7 +1687,7 @@ then for the faces in ft. </p>
         }
       ]
     },
-    "7b353fa2013943999fd24dbec5219f81": {
+    "898973efed744c71b38754ef11126710": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2559,7 +1710,7 @@ then for the faces in ft. </p>
         }
       ]
     },
-    "45a393774f9d485087ec1ecf9315c4d1": {
+    "2fc0b9e5e9eb46dd9045765e3f089ea2": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2583,7 +1734,7 @@ then for the faces in ft. </p>
         }
       ]
     },
-    "efa3975fad6e4469af82af82f6353fd1": {
+    "351a062019ce478f9a56fb23b45fd28c": {
       "model_name": "MeshStandardMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2616,7 +1767,7 @@ then for the faces in ft. </p>
         "vertexColors": "VertexColors"
       }
     },
-    "fc6b4d04ca614312862fa7a9bbcc4fa0": {
+    "d82b643d374b4468ba974740a49d27c3": {
       "model_name": "WebGLShadowMapModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2627,7 +1778,7 @@ then for the faces in ft. </p>
 </script>
 
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "4b5224631ccf4f6c97f421468e1175ca"}
+{"version_major": 2, "version_minor": 0, "model_id": "99eddfb2d76f4210b17ba3053434f75a"}
 </script>
 
 <h2 id="chapter-2-matrices-and-linear-algebra">Chapter 2: Matrices and Linear Algebra<a class="headerlink" href="#chapter-2-matrices-and-linear-algebra" title="Permanent link">&para;</a></h2>
@@ -2707,13 +1858,13 @@ the top block:</p>
 </div>
 <p>Finally we can solve this equation for the unknown values at interior vertices
 <span><span class="MathJax_Preview">\mathbf{z}_{in}</span><script type="math/tex">\mathbf{z}_{in}</script></span>.</p>
-<p>However, our vertices will often not be sorted in this way. One option would be to sort <code class="codehilite">V</code>,
-then proceed as above and then <em>unsort</em> the solution <code class="codehilite">Z</code> to match <code class="codehilite">V</code>. However,
+<p>However, our vertices will often not be sorted in this way. One option would be to sort <code class="codehilite"><span class="n">V</span></code>,
+then proceed as above and then <em>unsort</em> the solution <code class="codehilite"><span class="n">Z</span></code> to match <code class="codehilite"><span class="n">V</span></code>. However,
 this solution is not very general.</p>
 <p>With array slicing no explicit sort is needed. Instead we can <em>slice-out</em>
 submatrix blocks (<span><span class="MathJax_Preview">\mathbf{L}_{in,in}</span><script type="math/tex">\mathbf{L}_{in,in}</script></span>, <span><span class="MathJax_Preview">\mathbf{L}_{in,b}</span><script type="math/tex">\mathbf{L}_{in,b}</script></span>, etc.) and follow
 the linear algebra above directly. Then we can slice the solution <em>into</em> the
-rows of <code class="codehilite">Z</code> corresponding to the interior vertices.</p>
+rows of <code class="codehilite"><span class="n">Z</span></code> corresponding to the interior vertices.</p>
 <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">spsolve</span>
 
 <span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">read_off</span><span class="p">(</span><span class="s2">&quot;data/camelhead.off&quot;</span><span class="p">)</span>
@@ -2751,7 +1902,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
   "version_major": 2,
   "version_minor": 0,
   "state": {
-    "ef5c39cc6e474270936b24b9aca5e5d8": {
+    "764b7e1a4cee4b66b0b98e91d014d666": {
       "model_name": "RendererModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2760,23 +1911,23 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         "_dom_classes": [],
         "_height": 600,
         "_width": 600,
-        "camera": "IPY_MODEL_a8c2fd6d601248fab2ee5e6599de280e",
+        "camera": "IPY_MODEL_509c007a8ec04eedb0f7e4fd363b1724",
         "clippingPlanes": [],
         "controls": [
-          "IPY_MODEL_daf8b4154e0548e697aaf53cb97cad75"
+          "IPY_MODEL_abe55210432c413c9c3376b904061b11"
         ],
-        "layout": "IPY_MODEL_12f5d980f9ed4bc78a1595e8b19e3373",
-        "scene": "IPY_MODEL_8d42503a4a4845a7bd2cfec9e0b54c19",
-        "shadowMap": "IPY_MODEL_84886acc80a7471c9b19210b797ed576"
+        "layout": "IPY_MODEL_5a05674626e04d6fb935837a0c944b10",
+        "scene": "IPY_MODEL_af95b505644a4c9da6bd335fdff54b7a",
+        "shadowMap": "IPY_MODEL_9fcf70a82cf5467fa455638824d47cc8"
       }
     },
-    "a8c2fd6d601248fab2ee5e6599de280e": {
+    "509c007a8ec04eedb0f7e4fd363b1724": {
       "model_name": "PerspectiveCameraModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_a2813d253a41487caf3882503b42ff4e"
+          "IPY_MODEL_77b14ece40f34deeafa5e2880367e060"
         ],
         "fov": 30.0,
         "position": [
@@ -2802,7 +1953,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         ]
       }
     },
-    "a2813d253a41487caf3882503b42ff4e": {
+    "77b14ece40f34deeafa5e2880367e060": {
       "model_name": "DirectionalLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2835,12 +1986,12 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         ]
       }
     },
-    "daf8b4154e0548e697aaf53cb97cad75": {
+    "abe55210432c413c9c3376b904061b11": {
       "model_name": "OrbitControlsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "controlling": "IPY_MODEL_a8c2fd6d601248fab2ee5e6599de280e",
+        "controlling": "IPY_MODEL_509c007a8ec04eedb0f7e4fd363b1724",
         "target": [
           1.996755599975586e-06,
           -0.0636419951915741,
@@ -2852,21 +2003,21 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         "minAzimuthAngle": "-inf"
       }
     },
-    "12f5d980f9ed4bc78a1595e8b19e3373": {
+    "5a05674626e04d6fb935837a0c944b10": {
       "model_name": "LayoutModel",
       "model_module": "@jupyter-widgets/base",
       "model_module_version": "1.2.0",
       "state": {}
     },
-    "8d42503a4a4845a7bd2cfec9e0b54c19": {
+    "af95b505644a4c9da6bd335fdff54b7a": {
       "model_name": "SceneModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_a8c2fd6d601248fab2ee5e6599de280e",
-          "IPY_MODEL_ae40c99bff60401a84d0d1988e60d5af",
-          "IPY_MODEL_f4827766aacf428c88832e4ea40e1771"
+          "IPY_MODEL_509c007a8ec04eedb0f7e4fd363b1724",
+          "IPY_MODEL_78addfb77a0d4150bd523ab62a32672c",
+          "IPY_MODEL_0a60d3d111de44f38adc4553825f2282"
         ],
         "fog": null,
         "overrideMaterial": null,
@@ -2888,7 +2039,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         ]
       }
     },
-    "ae40c99bff60401a84d0d1988e60d5af": {
+    "78addfb77a0d4150bd523ab62a32672c": {
       "model_name": "AmbientLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -2913,16 +2064,16 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         ]
       }
     },
-    "f4827766aacf428c88832e4ea40e1771": {
+    "0a60d3d111de44f38adc4553825f2282": {
       "model_name": "MeshModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_5bf3f12b372a430196cf218db6472375"
+          "IPY_MODEL_75c2c2842fd948a6afbbae0c17671308"
         ],
-        "geometry": "IPY_MODEL_dab4579918a84893a127599558d14dea",
-        "material": "IPY_MODEL_9688116ee02b42039ab4e04f87e0873d",
+        "geometry": "IPY_MODEL_e47d1b8c93ce428ebc12277559c0976f",
+        "material": "IPY_MODEL_cff3543fdf5f4538a8a9239fbf822a72",
         "morphTargetInfluences": [],
         "quaternion": [
           0.0,
@@ -2942,14 +2093,14 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         ]
       }
     },
-    "5bf3f12b372a430196cf218db6472375": {
+    "75c2c2842fd948a6afbbae0c17671308": {
       "model_name": "LineSegmentsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [],
-        "geometry": "IPY_MODEL_2d47c76d79ed4ebaaaad46589b3671e5",
-        "material": "IPY_MODEL_e5b16e80e10c44d7ba460f2ce71210c5",
+        "geometry": "IPY_MODEL_532f3f700d064458916a666e20b7cd5f",
+        "material": "IPY_MODEL_c21302e2a54b4cdca6222280260034ad",
         "quaternion": [
           0.0,
           0.0,
@@ -2968,31 +2119,31 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         ]
       }
     },
-    "2d47c76d79ed4ebaaaad46589b3671e5": {
+    "532f3f700d064458916a666e20b7cd5f": {
       "model_name": "WireframeGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "geometry": "IPY_MODEL_dab4579918a84893a127599558d14dea"
+        "geometry": "IPY_MODEL_e47d1b8c93ce428ebc12277559c0976f"
       }
     },
-    "dab4579918a84893a127599558d14dea": {
+    "e47d1b8c93ce428ebc12277559c0976f": {
       "model_name": "BufferGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "_ref_geometry": null,
         "attributes": {
-          "color": "IPY_MODEL_7be9ee0149cb45b2a48e940c93bb77ff",
-          "index": "IPY_MODEL_9f82c39adec24c1cafb6987346319610",
-          "position": "IPY_MODEL_926a7d19265a4aa6a45512c4339b244d"
+          "color": "IPY_MODEL_d1772a51ecaa403581308fbe86e5f21f",
+          "index": "IPY_MODEL_692eedbbf4644deead30f7c099101e8c",
+          "position": "IPY_MODEL_118bae28382e413f81d5c2d3cb6f86a2"
         },
         "index": null,
         "morphAttributes": {},
         "userData": {}
       }
     },
-    "7be9ee0149cb45b2a48e940c93bb77ff": {
+    "d1772a51ecaa403581308fbe86e5f21f": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3017,7 +2168,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         }
       ]
     },
-    "9f82c39adec24c1cafb6987346319610": {
+    "692eedbbf4644deead30f7c099101e8c": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3040,7 +2191,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         }
       ]
     },
-    "926a7d19265a4aa6a45512c4339b244d": {
+    "118bae28382e413f81d5c2d3cb6f86a2": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3064,7 +2215,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         }
       ]
     },
-    "e5b16e80e10c44d7ba460f2ce71210c5": {
+    "c21302e2a54b4cdca6222280260034ad": {
       "model_name": "LineBasicMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3075,7 +2226,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         "linewidth": 0.03
       }
     },
-    "9688116ee02b42039ab4e04f87e0873d": {
+    "cff3543fdf5f4538a8a9239fbf822a72": {
       "model_name": "MeshStandardMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3108,7 +2259,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
         "vertexColors": "VertexColors"
       }
     },
-    "84886acc80a7471c9b19210b797ed576": {
+    "9fcf70a82cf5467fa455638824d47cc8": {
       "model_name": "WebGLShadowMapModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3119,7 +2270,7 @@ rows of <code class="codehilite">Z</code> corresponding to the interior vertices
 </script>
 
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "ef5c39cc6e474270936b24b9aca5e5d8"}
+{"version_major": 2, "version_minor": 0, "model_id": "764b7e1a4cee4b66b0b98e91d014d666"}
 </script>
 
 <h3 id="quadratic-energy-minimization">Quadratic energy minimization<a class="headerlink" href="#quadratic-energy-minimization" title="Permanent link">&para;</a></h3>
@@ -3175,12 +2326,12 @@ common constraints:</p>
 \mathbf{z}_{bc}</script></span> as rows of <span><span class="MathJax_Preview">\mathbf{A}_{eq} \mathbf{z} =
 \mathbf{B}_{eq}</span><script type="math/tex">\mathbf{A}_{eq} \mathbf{z} =
 \mathbf{B}_{eq}</script></span>, but these fixed value constraints appear so often that they
-merit a dedicated function: <code class="codehilite">min_quad_with_fixed</code>.</p>
+merit a dedicated function: <code class="codehilite"><span class="n">min_quad_with_fixed</span></code>.</p>
 <h3 id="linear-equality-constraints">Linear equality constraints<a class="headerlink" href="#linear-equality-constraints" title="Permanent link">&para;</a></h3>
-<p>We saw above that <code class="codehilite">min_quad_with_fixed</code> in libigl provides a compact way to
+<p>We saw above that <code class="codehilite"><span class="n">min_quad_with_fixed</span></code> in libigl provides a compact way to
 solve general quadratic programs. Let&rsquo;s consider another example, this time
 with active linear equality constraints. Specifically let&rsquo;s solve the
-<code class="codehilite">bi-Laplace equation</code> or equivalently minimize the Laplace energy:</p>
+<code class="codehilite"><span class="n">bi</span><span class="o">-</span><span class="n">Laplace</span> <span class="n">equation</span></code> or equivalently minimize the Laplace energy:</p>
 <div>
 <div class="MathJax_Preview">
  \Delta^2 z = 0 \leftrightarrow \mathop{\text{minimize }}\limits_z \frac{1}{2}
@@ -3195,10 +2346,10 @@ with active linear equality constraints. Specifically let&rsquo;s solve the
 <p><span><span class="MathJax_Preview">z_{a} = 1, z_{b} = -1</span><script type="math/tex">z_{a} = 1, z_{b} = -1</script></span> and <span><span class="MathJax_Preview">z_{c} = z_{d}</span><script type="math/tex">z_{c} = z_{d}</script></span>.</p>
 <p>Notice that we can rewrite the last constraint in the familiar form from above:</p>
 <p><span><span class="MathJax_Preview">z_{c} - z_{d} = 0.</span><script type="math/tex">z_{c} - z_{d} = 0.</script></span></p>
-<p>Now we can assembly <code class="codehilite">Aeq</code> as a <span><span class="MathJax_Preview">1 \times n</span><script type="math/tex">1 \times n</script></span> sparse matrix with a coefficient
+<p>Now we can assembly <code class="codehilite"><span class="n">Aeq</span></code> as a <span><span class="MathJax_Preview">1 \times n</span><script type="math/tex">1 \times n</script></span> sparse matrix with a coefficient
 <span><span class="MathJax_Preview">1</span><script type="math/tex">1</script></span> in the column corresponding to vertex <span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span> and a <span><span class="MathJax_Preview">-1</span><script type="math/tex">-1</script></span> at <span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>. The right-hand
-side <code class="codehilite">Beq</code> is simply zero.</p>
-<p>Internally, <code class="codehilite">min_quad_with_fixed</code> solves using the Lagrange Multiplier
+side <code class="codehilite"><span class="n">Beq</span></code> is simply zero.</p>
+<p>Internally, <code class="codehilite"><span class="n">min_quad_with_fixed</span></code> solves using the Lagrange Multiplier
 method. This method adds additional variables for each linear constraint (in
 general a <span><span class="MathJax_Preview">m \times 1</span><script type="math/tex">m \times 1</script></span> vector of variables <span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span>) and then solves the
 saddle problem:</p>
@@ -3285,7 +2436,7 @@ a linear system and we can solve for <span><span class="MathJax_Preview">\mathbf
 difference from the straight quadratic <em>minimization</em> system, is that this
 saddle problem system will not be positive definite. Thus, we must use a
 different factorization technique (LDLT rather than LLT): libigl&rsquo;s
-<code class="codehilite">min_quad_with_fixed</code> automatically chooses the correct solver in
+<code class="codehilite"><span class="n">min_quad_with_fixed</span></code> automatically chooses the correct solver in
 the presence of linear equality constraints.</p>
 <p>The following example first solves with just fixed value constraints (left: 1 and -1 on the left hand and foot respectively), then solves with an additional linear equality constraint (right: points on right hand and foot constrained to be equal).</p>
 <div class="codehilite"><pre><span></span><span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">read_off</span><span class="p">(</span><span class="s2">&quot;data/cheburashka.off&quot;</span><span class="p">)</span>
@@ -3322,7 +2473,7 @@ the presence of linear equality constraints.</p>
     <span class="n">p</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="n">z</span><span class="p">[</span><span class="n">function</span><span class="p">])</span>
 </pre></div>
 
-<div class="codehilite"><pre><span></span>interactive(children=(Dropdown(description=&#39;function&#39;, options=((&#39;z0&#39;, 0), (&#39;z1&#39;, 1)), value=0), Output()), _d…
+<div class="codehilite"><pre><span></span><span class="n">interactive</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="p">(</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span> <span class="k">options</span><span class="o">=</span><span class="p">((</span><span class="s1">&#39;z0&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;z1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="k">Output</span><span class="p">()),</span> <span class="n">_d</span><span class="err">…</span>
 </pre></div>
 
 
@@ -3380,7 +2531,7 @@ Then, rescale the Eigen vectors and visualize them.</p>
     <span class="n">p</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="n">u</span><span class="p">[:,</span> <span class="n">ev</span><span class="p">])</span>
 </pre></div>
 
-<div class="codehilite"><pre><span></span>interactive(children=(Dropdown(description=&#39;ev&#39;, options=((&#39;EV 0&#39;, 0), (&#39;EV 1&#39;, 1), (&#39;EV 2&#39;, 2), (&#39;EV 3&#39;, 3), …
+<div class="codehilite"><pre><span></span><span class="n">interactive</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="p">(</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;ev&#39;</span><span class="p">,</span> <span class="k">options</span><span class="o">=</span><span class="p">((</span><span class="s1">&#39;EV 0&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;EV 1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;EV 2&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;EV 3&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="err">…</span>
 </pre></div>
 
 
@@ -3414,7 +2565,7 @@ conditions&rdquo;:</p>
 <p>where <span><span class="MathJax_Preview">\mathbf{x}'</span><script type="math/tex">\mathbf{x}'</script></span> is the unknown 3D position of a point on the surface. So we
 are asking that the bi-Laplacian of each of spatial coordinate function to be
 zero.</p>
-<p>In libigl, one can solve a biharmonic problem with <code class="codehilite">harmonic_weights</code>
+<p>In libigl, one can solve a biharmonic problem with <code class="codehilite"><span class="n">harmonic_weights</span></code>
 and setting <span><span class="MathJax_Preview">k=2</span><script type="math/tex">k=2</script></span> (<em>bi</em>-harmonic).</p>
 <p>This produces a smooth surface that interpolates the handle constraints, but all
 original details on the surface will be <em>smoothed away</em>. Most obviously, if the
@@ -3441,7 +2592,7 @@ fields of the handle constraints will impose a smooth deformed shape
 <p>subject to the same handle constraints, but rewritten in terms of their implied
 deformation field at the boundary (handles).</p>
 <p><span><span class="MathJax_Preview">\mathbf{d}_b = \mathbf{x}_{bc} - \mathbf{x}_b.</span><script type="math/tex">\mathbf{d}_b = \mathbf{x}_{bc} - \mathbf{x}_b.</script></span></p>
-<p>Again we can use <code class="codehilite">harmonic_weights</code> with <span><span class="MathJax_Preview">k=2</span><script type="math/tex">k=2</script></span>, but this time solve for the
+<p>Again we can use <code class="codehilite"><span class="n">harmonic_weights</span></code> with <span><span class="MathJax_Preview">k=2</span><script type="math/tex">k=2</script></span>, but this time solve for the
 deformation field and then recover the deformed positions:</p>
 <div class="codehilite"><pre><span></span><span class="n">v</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">read_obj</span><span class="p">(</span><span class="s2">&quot;data/decimated-max.obj&quot;</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int64&quot;</span><span class="p">)</span> <span class="c1"># TODO fix binding problem</span>
@@ -3481,7 +2632,7 @@ deformation field and then recover the deformed positions:</p>
     <span class="n">p</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">u</span><span class="p">)</span>
 </pre></div>
 
-<div class="codehilite"><pre><span></span>interactive(children=(Checkbox(value=True, description=&#39;deformation_field&#39;), FloatSlider(value=0.0, descriptio…
+<div class="codehilite"><pre><span></span><span class="n">interactive</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="p">(</span><span class="n">Checkbox</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="k">True</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;deformation_field&#39;</span><span class="p">),</span> <span class="n">FloatSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">descriptio</span><span class="err">…</span>
 </pre></div>
 
 
@@ -3542,7 +2693,7 @@ harmonic functions.</p>
 <li>Map the boundary vertices to a circle</li>
 <li>Compute two harmonic functions (one for u and one for the v coordinate). The harmonic functions use the fixed vertices on the circle as boundary constraints.</li>
 </ol>
-<p>The algorithm is coded with libigl in the following example. <code class="codehilite">bnd</code> contains the indices of the boundary vertices, bnd_uv their position on the UV plane, and &ldquo;1&rdquo; denotes that we want to compute an harmonic function (2 will be for biharmonic, 3 for triharmonic, etc.). Note that each of the three
+<p>The algorithm is coded with libigl in the following example. <code class="codehilite"><span class="n">bnd</span></code> contains the indices of the boundary vertices, bnd_uv their position on the UV plane, and &ldquo;1&rdquo; denotes that we want to compute an harmonic function (2 will be for biharmonic, 3 for triharmonic, etc.). Note that each of the three
 functions is designed to be reusable in other parametrization algorithms.
 The UV coordinates are then used to apply a procedural checkerboard texture to the mesh.</p>
 <div class="codehilite"><pre><span></span><span class="n">v</span><span class="p">,</span> <span class="n">f</span> <span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">read_off</span><span class="p">(</span><span class="s2">&quot;data/camelhead.off&quot;</span><span class="p">)</span>
@@ -3566,7 +2717,7 @@ The UV coordinates are then used to apply a procedural checkerboard texture to t
         <span class="n">plot</span><span class="p">(</span><span class="n">v_p</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">uv</span><span class="o">=</span><span class="n">uv</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wireframe&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s2">&quot;flat&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span> <span class="n">plot</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 
-<div class="codehilite"><pre><span></span>interactive(children=(Dropdown(description=&#39;mode&#39;, options=(&#39;3D&#39;, &#39;2D&#39;), value=&#39;3D&#39;), Output()), _dom_classes=…
+<div class="codehilite"><pre><span></span><span class="n">interactive</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="p">(</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="k">options</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;3D&#39;</span><span class="p">,</span> <span class="s1">&#39;2D&#39;</span><span class="p">),</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;3D&#39;</span><span class="p">),</span> <span class="k">Output</span><span class="p">()),</span> <span class="n">_dom_classes</span><span class="o">=</span><span class="err">…</span>
 </pre></div>
 
 
@@ -3578,9 +2729,9 @@ is easy to exchange data between libigl and other software and libraries.</p>
 task in geometry processing. We provide wrappers in libigl to
 <a href="http://www.cs.cmu.edu/~quake/triangle.html">triangle</a> and
 <a href="http://wias-berlin.de/software/tetgen/">Tetgen</a>.</p>
-<p>A triangle mesh with a given boundary can be created as in the following example. <code class="codehilite">e</code> is a set of boundary edges (#e by 2), <code class="codehilite">h</code> is a set of 2D positions of points contained in holes of the triangulation (#h by 2) and (<code class="codehilite">v</code>,<code class="codehilite">f</code>) is the
-generated triangulation. Additional parameters can be passed to <code class="codehilite">triangle</code>, to
-control the quality: <code class="codehilite">&quot;a0.005q&quot;</code> enforces a bound on the maximal area of the
+<p>A triangle mesh with a given boundary can be created as in the following example. <code class="codehilite"><span class="n">e</span></code> is a set of boundary edges (#e by 2), <code class="codehilite"><span class="n">h</span></code> is a set of 2D positions of points contained in holes of the triangulation (#h by 2) and (<code class="codehilite"><span class="n">v</span></code>,<code class="codehilite"><span class="n">f</span></code>) is the
+generated triangulation. Additional parameters can be passed to <code class="codehilite"><span class="n">triangle</span></code>, to
+control the quality: <code class="codehilite"><span class="ss">&quot;a0.005q&quot;</span></code> enforces a bound on the maximal area of the
 triangles and a minimal angle of 20 degrees. In the following example, the interior of a square (excluded a smaller square in its interior) is triangulated.</p>
 <div class="codehilite"><pre><span></span><span class="c1">## Input polygon</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
@@ -3598,7 +2749,7 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
   "version_major": 2,
   "version_minor": 0,
   "state": {
-    "30b197b4ec1745f795eb404fe8d5767d": {
+    "79bc001bba934e7e8db97bebd92bfefc": {
       "model_name": "RendererModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3607,23 +2758,23 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         "_dom_classes": [],
         "_height": 600,
         "_width": 600,
-        "camera": "IPY_MODEL_5b13b82d5fd44c44b8d4edcee503b670",
+        "camera": "IPY_MODEL_76c1c82d0b464f33b13b53e77a027ee4",
         "clippingPlanes": [],
         "controls": [
-          "IPY_MODEL_ed059feea4244bfbacce98069ba9eeb5"
+          "IPY_MODEL_189c3911bd7446a0b152750ff22ee3f5"
         ],
-        "layout": "IPY_MODEL_ff5512070c7e40fe88466246c296249d",
-        "scene": "IPY_MODEL_e1c37e24be9a4087be72b6eedd65a596",
-        "shadowMap": "IPY_MODEL_e0df4131493d409daa56fe9a92d9b574"
+        "layout": "IPY_MODEL_9be7ced0ea234c918272ef6337a26849",
+        "scene": "IPY_MODEL_c4c58582a90545b2ba6c82f2fdb80a18",
+        "shadowMap": "IPY_MODEL_4d37080f528642e89ad09d7389034b9d"
       }
     },
-    "5b13b82d5fd44c44b8d4edcee503b670": {
+    "76c1c82d0b464f33b13b53e77a027ee4": {
       "model_name": "PerspectiveCameraModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_4681f8b66b1b4212b6b7cc84625d0bbe"
+          "IPY_MODEL_d61770a3574a4f9ca4a73bc8a116a95f"
         ],
         "fov": 30.0,
         "position": [
@@ -3649,7 +2800,7 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         ]
       }
     },
-    "4681f8b66b1b4212b6b7cc84625d0bbe": {
+    "d61770a3574a4f9ca4a73bc8a116a95f": {
       "model_name": "DirectionalLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3682,33 +2833,33 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         ]
       }
     },
-    "ed059feea4244bfbacce98069ba9eeb5": {
+    "189c3911bd7446a0b152750ff22ee3f5": {
       "model_name": "OrbitControlsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "controlling": "IPY_MODEL_5b13b82d5fd44c44b8d4edcee503b670",
+        "controlling": "IPY_MODEL_76c1c82d0b464f33b13b53e77a027ee4",
         "maxAzimuthAngle": "inf",
         "maxDistance": "inf",
         "maxZoom": "inf",
         "minAzimuthAngle": "-inf"
       }
     },
-    "ff5512070c7e40fe88466246c296249d": {
+    "9be7ced0ea234c918272ef6337a26849": {
       "model_name": "LayoutModel",
       "model_module": "@jupyter-widgets/base",
       "model_module_version": "1.2.0",
       "state": {}
     },
-    "e1c37e24be9a4087be72b6eedd65a596": {
+    "c4c58582a90545b2ba6c82f2fdb80a18": {
       "model_name": "SceneModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_5b13b82d5fd44c44b8d4edcee503b670",
-          "IPY_MODEL_2027ec7fe6654c829308d7e5b32a95d1",
-          "IPY_MODEL_0bd1725ca06a4d16bf2f5702782e57e5"
+          "IPY_MODEL_76c1c82d0b464f33b13b53e77a027ee4",
+          "IPY_MODEL_6cee66a6612444c594f50a220129b9f1",
+          "IPY_MODEL_07461c35f91140cc854b858bdf72f1d6"
         ],
         "fog": null,
         "overrideMaterial": null,
@@ -3730,7 +2881,7 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         ]
       }
     },
-    "2027ec7fe6654c829308d7e5b32a95d1": {
+    "6cee66a6612444c594f50a220129b9f1": {
       "model_name": "AmbientLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3755,16 +2906,16 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         ]
       }
     },
-    "0bd1725ca06a4d16bf2f5702782e57e5": {
+    "07461c35f91140cc854b858bdf72f1d6": {
       "model_name": "MeshModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_5cb10d8f424d493f9b339e1c2ad1b7c3"
+          "IPY_MODEL_f7174f438fb74f9a8022bc9cc6e0497b"
         ],
-        "geometry": "IPY_MODEL_a72680976c1d438286932d89239ea8fc",
-        "material": "IPY_MODEL_47c2fc256cec404abc7c7bc10c410945",
+        "geometry": "IPY_MODEL_dcdffb33928b48bfaf2a3b41d973aa5c",
+        "material": "IPY_MODEL_57e982ce770241c19536422007cfe8ad",
         "morphTargetInfluences": [],
         "quaternion": [
           0.0,
@@ -3784,14 +2935,14 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         ]
       }
     },
-    "5cb10d8f424d493f9b339e1c2ad1b7c3": {
+    "f7174f438fb74f9a8022bc9cc6e0497b": {
       "model_name": "LineSegmentsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [],
-        "geometry": "IPY_MODEL_872339eda09946f7971654fa7e7f8198",
-        "material": "IPY_MODEL_b245aeb4008848e68ffd5555ceaaf8fd",
+        "geometry": "IPY_MODEL_cf47e1a455624152bffff4af63a74159",
+        "material": "IPY_MODEL_7629711d6de24eafb403b6a4cfe3320d",
         "quaternion": [
           0.0,
           0.0,
@@ -3810,31 +2961,31 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         ]
       }
     },
-    "872339eda09946f7971654fa7e7f8198": {
+    "cf47e1a455624152bffff4af63a74159": {
       "model_name": "WireframeGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "geometry": "IPY_MODEL_a72680976c1d438286932d89239ea8fc"
+        "geometry": "IPY_MODEL_dcdffb33928b48bfaf2a3b41d973aa5c"
       }
     },
-    "a72680976c1d438286932d89239ea8fc": {
+    "dcdffb33928b48bfaf2a3b41d973aa5c": {
       "model_name": "BufferGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "_ref_geometry": null,
         "attributes": {
-          "color": "IPY_MODEL_6a1452ef00af4ca7b466da1dd5c4df3c",
-          "index": "IPY_MODEL_82eba8217cb746da9c5351af21208c7f",
-          "position": "IPY_MODEL_7699bed0d8d642caba755b0061199b32"
+          "color": "IPY_MODEL_e4e89c816c42441db88be1ee4cee7430",
+          "index": "IPY_MODEL_033dc59721a14ff8b89cb5633603866b",
+          "position": "IPY_MODEL_94a539ed39414030ba27da1911b079cb"
         },
         "index": null,
         "morphAttributes": {},
         "userData": {}
       }
     },
-    "6a1452ef00af4ca7b466da1dd5c4df3c": {
+    "e4e89c816c42441db88be1ee4cee7430": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3859,7 +3010,7 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         }
       ]
     },
-    "82eba8217cb746da9c5351af21208c7f": {
+    "033dc59721a14ff8b89cb5633603866b": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3882,7 +3033,7 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         }
       ]
     },
-    "7699bed0d8d642caba755b0061199b32": {
+    "94a539ed39414030ba27da1911b079cb": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3906,7 +3057,7 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         }
       ]
     },
-    "b245aeb4008848e68ffd5555ceaaf8fd": {
+    "7629711d6de24eafb403b6a4cfe3320d": {
       "model_name": "LineBasicMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3917,7 +3068,7 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         "linewidth": 0.03
       }
     },
-    "47c2fc256cec404abc7c7bc10c410945": {
+    "57e982ce770241c19536422007cfe8ad": {
       "model_name": "MeshStandardMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3950,7 +3101,7 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
         "vertexColors": "VertexColors"
       }
     },
-    "e0df4131493d409daa56fe9a92d9b574": {
+    "4d37080f528642e89ad09d7389034b9d": {
       "model_name": "WebGLShadowMapModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -3961,12 +3112,12 @@ triangles and a minimal angle of 20 degrees. In the following example, the inter
 </script>
 
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "30b197b4ec1745f795eb404fe8d5767d"}
+{"version_major": 2, "version_minor": 0, "model_id": "79bc001bba934e7e8db97bebd92bfefc"}
 </script>
 
 <h3 id="tetrahedralization-of-closed-surfaces">Tetrahedralization of closed surfaces<a class="headerlink" href="#tetrahedralization-of-closed-surfaces" title="Permanent link">&para;</a></h3>
 <p>Similarly, the interior of a closed manifold surface can be tetrahedralized
-using the function <code class="codehilite">tetrahedralize</code> which wraps the Tetgen library.</p>
+using the function <code class="codehilite"><span class="n">tetrahedralize</span></code> which wraps the Tetgen library.</p>
 <div class="codehilite"><pre><span></span><span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">read_off</span><span class="p">(</span><span class="s2">&quot;data/fertility.off&quot;</span><span class="p">)</span>
 
 <span class="c1">## Tetrahedralize the interior</span>
@@ -3998,7 +3149,7 @@ using the function <code class="codehilite">tetrahedralize</code> which wraps th
     <span class="n">plot</span><span class="p">(</span><span class="n">tv</span><span class="p">,</span> <span class="n">f_tmp</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 
-<div class="codehilite"><pre><span></span>interactive(children=(IntSlider(value=5, description=&#39;level&#39;, max=9, min=1), Output()), _dom_classes=(&#39;widget-…
+<div class="codehilite"><pre><span></span><span class="n">interactive</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="p">(</span><span class="n">IntSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;level&#39;</span><span class="p">,</span> <span class="k">max</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="k">min</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="k">Output</span><span class="p">()),</span> <span class="n">_dom_classes</span><span class="o">=</span><span class="p">(</span><span class="err">&#39;</span><span class="n">widget</span><span class="o">-</span><span class="err">…</span>
 </pre></div>
 
 
@@ -4071,11 +3222,11 @@ in artifacts if used for solving PDEs.</p>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Angles in degrees (Min/Max) Sigma: </span><span class="se">\n</span><span class="si">%.2f</span><span class="s2">/</span><span class="si">%.2f</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">angle_min</span><span class="p">,</span> <span class="n">angle_max</span><span class="p">,</span> <span class="n">angle_sigma</span><span class="p">))</span>
 </pre></div>
 
-<div class="codehilite"><pre><span></span>Areas (Min/Max)/Avg_Area Sigma: 
-0.01/5.33 (0.87)
+<div class="codehilite"><pre><span></span><span class="n">Areas</span> <span class="p">(</span><span class="k">Min</span><span class="o">/</span><span class="k">Max</span><span class="p">)</span><span class="o">/</span><span class="n">Avg_Area</span> <span class="n">Sigma</span><span class="p">:</span> 
+<span class="mi">0</span><span class="p">.</span><span class="mi">01</span><span class="o">/</span><span class="mi">5</span><span class="p">.</span><span class="mi">33</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">87</span><span class="p">)</span>
 
-Angles in degrees (Min/Max) Sigma: 
-17.21/171.79 (15.36)
+<span class="n">Angles</span> <span class="k">in</span> <span class="n">degrees</span> <span class="p">(</span><span class="k">Min</span><span class="o">/</span><span class="k">Max</span><span class="p">)</span> <span class="n">Sigma</span><span class="p">:</span> 
+<span class="mi">17</span><span class="p">.</span><span class="mi">21</span><span class="o">/</span><span class="mi">171</span><span class="p">.</span><span class="mi">79</span> <span class="p">(</span><span class="mi">15</span><span class="p">.</span><span class="mi">36</span><span class="p">)</span>
 </pre></div>
 
 
@@ -4099,229 +3250,139 @@ Angles in degrees (Min/Max) Sigma:
 <hr />
 <ol>
 <li id="fn:jacobson_thesis_2013">
-<p>Alec Jacobson, <a href="https://www.google.com/search?q=Algorithms+and+Interfaces+for+Real-Time+Deformation+of+2D+and+3D+Shapes"><em>Algorithms and Interfaces for Real-Time Deformation of 2D and 3D Shapes</em></a>, 2013.&#160;<a class="footnote-backref" href="#fnref:jacobson_thesis_2013" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>Alec Jacobson, <a href="https://www.google.com/search?q=Algorithms+and+Interfaces+for+Real-Time+Deformation+of+2D+and+3D+Shapes"><em>Algorithms and Interfaces for Real-Time Deformation of 2D and 3D Shapes</em></a>, 2013.&#160;<a class="footnote-backref" href="#fnref:jacobson_thesis_2013" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:kazhdan_2012">
-<p>Michael Kazhdan, Jake Solomon, Mirela Ben-Chen, <a href="https://www.google.com/search?q=Can+Mean-Curvature+Flow+Be+Made+Non-Singular">Can Mean-Curvature Flow Be Made Non-Singular</a>, 2012.&#160;<a class="footnote-backref" href="#fnref:kazhdan_2012" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>Michael Kazhdan, Jake Solomon, Mirela Ben-Chen, <a href="https://www.google.com/search?q=Can+Mean-Curvature+Flow+Be+Made+Non-Singular">Can Mean-Curvature Flow Be Made Non-Singular</a>, 2012.&#160;<a class="footnote-backref" href="#fnref:kazhdan_2012" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:meyer_2003">
-<p>Mark Meyer, Mathieu Desbrun, Peter Schröder and Alan H.  Barr, <a href="https://www.google.com/search?q=Discrete+Differential-Geometry+Operators+for+Triangulated+2-Manifolds">Discrete Differential-Geometry Operators for Triangulated 2-Manifolds</a>, 2003.&#160;<a class="footnote-backref" href="#fnref:meyer_2003" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p>Mark Meyer, Mathieu Desbrun, Peter Schröder and Alan H.  Barr, <a href="https://www.google.com/search?q=Discrete+Differential-Geometry+Operators+for+Triangulated+2-Manifolds">Discrete Differential-Geometry Operators for Triangulated 2-Manifolds</a>, 2003.&#160;<a class="footnote-backref" href="#fnref:meyer_2003" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 <li id="fn:mitchell_1987">
-<p>Joseph S. B. Mitchell, David M. Mount, Christos H. Papadimitriou. <a href="https://www.google.com/search?q=The+Discrete+Geodesic+Problem">The Discrete Geodesic Problem</a>, 1987&#160;<a class="footnote-backref" href="#fnref:mitchell_1987" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<p>Joseph S. B. Mitchell, David M. Mount, Christos H. Papadimitriou. <a href="https://www.google.com/search?q=The+Discrete+Geodesic+Problem">The Discrete Geodesic Problem</a>, 1987&#160;<a class="footnote-backref" href="#fnref:mitchell_1987" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:panozzo_2010">
-<p>Daniele Panozzo, Enrico Puppo, Luigi Rocca, <a href="https://www.google.com/search?q=Efficient+Multi-scale+Curvature+and+Crease+Estimation">Efficient Multi-scale Curvature and Crease Estimation</a>, 2010.&#160;<a class="footnote-backref" href="#fnref:panozzo_2010" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<p>Daniele Panozzo, Enrico Puppo, Luigi Rocca, <a href="https://www.google.com/search?q=Efficient+Multi-scale+Curvature+and+Crease+Estimation">Efficient Multi-scale Curvature and Crease Estimation</a>, 2010.&#160;<a class="footnote-backref" href="#fnref:panozzo_2010" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:sharf_2007">
-<p>Andrei Sharf, Thomas Lewiner, Gil Shklarski, Sivan Toledo, and Daniel Cohen-Or. <a href="https://www.google.com/search?q=Interactive+topology-aware+surface+reconstruction">Interactive topology-aware surface reconstruction</a>, 2007.&#160;<a class="footnote-backref" href="#fnref:sharf_2007" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+<p>Andrei Sharf, Thomas Lewiner, Gil Shklarski, Sivan Toledo, and Daniel Cohen-Or. <a href="https://www.google.com/search?q=Interactive+topology-aware+surface+reconstruction">Interactive topology-aware surface reconstruction</a>, 2007.&#160;<a class="footnote-backref" href="#fnref:sharf_2007" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 <li id="fn:barbic_2005">
-<p>Jernej Barbic and Doug James. <a href="https://www.google.com/search?q=Real-Time+Subspace+Integration+for+St.Venant-Kirchhoff+Deformable+Models">Real-Time Subspace Integration for St.Venant-Kirchhoff Deformable Models</a>, 2005.&#160;<a class="footnote-backref" href="#fnref:barbic_2005" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+<p>Jernej Barbic and Doug James. <a href="https://www.google.com/search?q=Real-Time+Subspace+Integration+for+St.Venant-Kirchhoff+Deformable+Models">Real-Time Subspace Integration for St.Venant-Kirchhoff Deformable Models</a>, 2005.&#160;<a class="footnote-backref" href="#fnref:barbic_2005" title="Jump back to footnote 7 in the text">&#8617;</a></p>
 </li>
 <li id="fn:hildebrandt_2011">
-<p>Klaus Hildebrandt, Christian Schulz, Christoph von Tycowicz, and Konrad Polthier. <a href="https://www.google.com/search?q=Interactive+Surface+Modeling+using+Modal+Analysis">Interactive Surface Modeling using Modal Analysis</a>, 2011.&#160;<a class="footnote-backref" href="#fnref:hildebrandt_2011" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+<p>Klaus Hildebrandt, Christian Schulz, Christoph von Tycowicz, and Konrad Polthier. <a href="https://www.google.com/search?q=Interactive+Surface+Modeling+using+Modal+Analysis">Interactive Surface Modeling using Modal Analysis</a>, 2011.&#160;<a class="footnote-backref" href="#fnref:hildebrandt_2011" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:rustamov_2011">
-<p>Raid M. Rustamov, <a href="https://www.google.com/search?q=Multiscale+Biharmonic+Kernels">Multiscale Biharmonic Kernels</a>, 2011.&#160;<a class="footnote-backref" href="#fnref:rustamov_2011" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+<p>Raid M. Rustamov, <a href="https://www.google.com/search?q=Multiscale+Biharmonic+Kernels">Multiscale Biharmonic Kernels</a>, 2011.&#160;<a class="footnote-backref" href="#fnref:rustamov_2011" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:vallet_2008">
-<p>Bruno Vallet and Bruno Lévy. <a href="https://www.google.com/search?q=Spectral+Geometry+Processing+with+Manifold+Harmonics">Spectral Geometry Processing with Manifold Harmonics</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:vallet_2008" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+<p>Bruno Vallet and Bruno Lévy. <a href="https://www.google.com/search?q=Spectral+Geometry+Processing+with+Manifold+Harmonics">Spectral Geometry Processing with Manifold Harmonics</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:vallet_2008" title="Jump back to footnote 10 in the text">&#8617;</a></p>
 </li>
 <li id="fn:botsch_2004">
-<p>Matrio Botsch and Leif Kobbelt. <a href="https://www.google.com/search?q=An+Intuitive+Framework+for+Real-Time+Freeform+Modeling">An Intuitive Framework for Real-Time Freeform Modeling</a>, 2004.&#160;<a class="footnote-backref" href="#fnref:botsch_2004" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+<p>Matrio Botsch and Leif Kobbelt. <a href="https://www.google.com/search?q=An+Intuitive+Framework+for+Real-Time+Freeform+Modeling">An Intuitive Framework for Real-Time Freeform Modeling</a>, 2004.&#160;<a class="footnote-backref" href="#fnref:botsch_2004" title="Jump back to footnote 11 in the text">&#8617;</a></p>
 </li>
 <li id="fn:chao_2010">
-<p>Isaac Chao, Ulrich Pinkall, Patrick Sanan, Peter Schröder. <a href="https://www.google.com/search?q=A+Simple+Geometric+Model+for+Elastic+Deformations">A Simple Geometric Model for Elastic Deformations</a>, 2010.&#160;<a class="footnote-backref" href="#fnref:chao_2010" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
+<p>Isaac Chao, Ulrich Pinkall, Patrick Sanan, Peter Schröder. <a href="https://www.google.com/search?q=A+Simple+Geometric+Model+for+Elastic+Deformations">A Simple Geometric Model for Elastic Deformations</a>, 2010.&#160;<a class="footnote-backref" href="#fnref:chao_2010" title="Jump back to footnote 12 in the text">&#8617;</a></p>
 </li>
 <li id="fn:jacobson_2011">
-<p>Alec Jacobson, Ilya Baran, Jovan Popović, and Olga Sorkine. <a href="https://www.google.com/search?q=Bounded+biharmonic+weights+for+real-time+deformation">Bounded Biharmonic Weights for Real-Time Deformation</a>, 2011.&#160;<a class="footnote-backref" href="#fnref:jacobson_2011" rev="footnote" title="Jump back to footnote 13 in the text">&#8617;</a></p>
+<p>Alec Jacobson, Ilya Baran, Jovan Popović, and Olga Sorkine. <a href="https://www.google.com/search?q=Bounded+biharmonic+weights+for+real-time+deformation">Bounded Biharmonic Weights for Real-Time Deformation</a>, 2011.&#160;<a class="footnote-backref" href="#fnref:jacobson_2011" title="Jump back to footnote 13 in the text">&#8617;</a></p>
 </li>
 <li id="fn:jacobson_2012">
-<p>Alec Jacobson, Ilya Baran, Ladislav Kavan, Jovan Popović, and Olga Sorkine. <a href="https://www.google.com/search?q=Fast+Automatic+Skinning+Transformations">Fast Automatic Skinning Transformations</a>, 2012.&#160;<a class="footnote-backref" href="#fnref:jacobson_2012" rev="footnote" title="Jump back to footnote 14 in the text">&#8617;</a></p>
+<p>Alec Jacobson, Ilya Baran, Ladislav Kavan, Jovan Popović, and Olga Sorkine. <a href="https://www.google.com/search?q=Fast+Automatic+Skinning+Transformations">Fast Automatic Skinning Transformations</a>, 2012.&#160;<a class="footnote-backref" href="#fnref:jacobson_2012" title="Jump back to footnote 14 in the text">&#8617;</a></p>
 </li>
 <li id="fn:jacobson_mixed_2010">
-<p>Alec Jacobson, Elif Tosun, Olga Sorkine, and Denis Zorin. <a href="https://www.google.com/search?q=Mixed+Finite+Elements+for+Variational+Surface+Modeling">Mixed Finite Elements for Variational Surface Modeling</a>, 2010.&#160;<a class="footnote-backref" href="#fnref:jacobson_mixed_2010" rev="footnote" title="Jump back to footnote 15 in the text">&#8617;</a></p>
+<p>Alec Jacobson, Elif Tosun, Olga Sorkine, and Denis Zorin. <a href="https://www.google.com/search?q=Mixed+Finite+Elements+for+Variational+Surface+Modeling">Mixed Finite Elements for Variational Surface Modeling</a>, 2010.&#160;<a class="footnote-backref" href="#fnref:jacobson_mixed_2010" title="Jump back to footnote 15 in the text">&#8617;</a></p>
 </li>
 <li id="fn:jacobson_skinning_course_2014">
-<p>Alec Jacobson, Zhigang Deng, Ladislav Kavan, J.P. Lewis. <a href="https://www.google.com/search?q=Skinning+Real-Time+Shape+Deformation"><em>Skinning: Real-Time Shape Deformation</em></a>, 2014.&#160;<a class="footnote-backref" href="#fnref:jacobson_skinning_course_2014" rev="footnote" title="Jump back to footnote 16 in the text">&#8617;</a></p>
+<p>Alec Jacobson, Zhigang Deng, Ladislav Kavan, J.P. Lewis. <a href="https://www.google.com/search?q=Skinning+Real-Time+Shape+Deformation"><em>Skinning: Real-Time Shape Deformation</em></a>, 2014.&#160;<a class="footnote-backref" href="#fnref:jacobson_skinning_course_2014" title="Jump back to footnote 16 in the text">&#8617;</a></p>
 </li>
 <li id="fn:kavan_2008">
-<p>Ladislav Kavan, Steven Collins, Jiri Zara, and Carol O&rsquo;Sullivan. <a href="https://www.google.com/search?q=Geometric+Skinning+with+Approximate+Dual+Quaternion+Blending">Geometric Skinning with Approximate Dual Quaternion Blending</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:kavan_2008" rev="footnote" title="Jump back to footnote 17 in the text">&#8617;</a></p>
+<p>Ladislav Kavan, Steven Collins, Jiri Zara, and Carol O&rsquo;Sullivan. <a href="https://www.google.com/search?q=Geometric+Skinning+with+Approximate+Dual+Quaternion+Blending">Geometric Skinning with Approximate Dual Quaternion Blending</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:kavan_2008" title="Jump back to footnote 17 in the text">&#8617;</a></p>
 </li>
 <li id="fn:mcadams_2011">
-<p>Alexa McAdams, Andrew Selle, Rasmus Tamstorf, Joseph Teran, Eftychios Sifakis. <a href="https://www.google.com/search?q=Computing+the+Singular+Value+Decomposition+of+3x3+matrices+with+minimal+branching+and+elementary+floating+point+operations">Computing the Singular Value Decomposition of 3x3 matrices with minimal branching and elementary floating point operations</a>, 2011.&#160;<a class="footnote-backref" href="#fnref:mcadams_2011" rev="footnote" title="Jump back to footnote 18 in the text">&#8617;</a></p>
+<p>Alexa McAdams, Andrew Selle, Rasmus Tamstorf, Joseph Teran, Eftychios Sifakis. <a href="https://www.google.com/search?q=Computing+the+Singular+Value+Decomposition+of+3x3+matrices+with+minimal+branching+and+elementary+floating+point+operations">Computing the Singular Value Decomposition of 3x3 matrices with minimal branching and elementary floating point operations</a>, 2011.&#160;<a class="footnote-backref" href="#fnref:mcadams_2011" title="Jump back to footnote 18 in the text">&#8617;</a></p>
 </li>
 <li id="fn:sorkine_2004">
-<p>Olga Sorkine, Yaron Lipman, Daniel Cohen-Or, Marc Alexa, Christian Rössl and Hans-Peter Seidel. <a href="https://www.google.com/search?q=Laplacian+Surface+Editing">Laplacian Surface Editing</a>, 2004.&#160;<a class="footnote-backref" href="#fnref:sorkine_2004" rev="footnote" title="Jump back to footnote 19 in the text">&#8617;</a></p>
+<p>Olga Sorkine, Yaron Lipman, Daniel Cohen-Or, Marc Alexa, Christian Rössl and Hans-Peter Seidel. <a href="https://www.google.com/search?q=Laplacian+Surface+Editing">Laplacian Surface Editing</a>, 2004.&#160;<a class="footnote-backref" href="#fnref:sorkine_2004" title="Jump back to footnote 19 in the text">&#8617;</a></p>
 </li>
 <li id="fn:sorkine_2007">
-<p>Olga Sorkine and Marc Alexa. <a href="https://www.google.com/search?q=As-rigid-as-possible+Surface+Modeling">As-rigid-as-possible Surface Modeling</a>, 2007.&#160;<a class="footnote-backref" href="#fnref:sorkine_2007" rev="footnote" title="Jump back to footnote 20 in the text">&#8617;</a></p>
+<p>Olga Sorkine and Marc Alexa. <a href="https://www.google.com/search?q=As-rigid-as-possible+Surface+Modeling">As-rigid-as-possible Surface Modeling</a>, 2007.&#160;<a class="footnote-backref" href="#fnref:sorkine_2007" title="Jump back to footnote 20 in the text">&#8617;</a></p>
 </li>
 <li id="fn:wang_bc_2015">
-<p>Yu Wang, Alec Jacobson, Jernej Barbic, Ladislav Kavan. <a href="https://www.google.com/search?q=Linear+Subspace+Design+for+Real-Time+Shape+Deformation">Linear Subspace Design for Real-Time Shape Deformation</a>, 2015&#160;<a class="footnote-backref" href="#fnref:wang_bc_2015" rev="footnote" title="Jump back to footnote 21 in the text">&#8617;</a></p>
+<p>Yu Wang, Alec Jacobson, Jernej Barbic, Ladislav Kavan. <a href="https://www.google.com/search?q=Linear+Subspace+Design+for+Real-Time+Shape+Deformation">Linear Subspace Design for Real-Time Shape Deformation</a>, 2015&#160;<a class="footnote-backref" href="#fnref:wang_bc_2015" title="Jump back to footnote 21 in the text">&#8617;</a></p>
 </li>
 <li id="fn:bommes_2009">
-<p>David Bommes, Henrik Zimmer, Leif Kobbelt. <a href="http://www-sop.inria.fr/members/David.Bommes/publications/miq.pdf">Mixed-integer quadrangulation</a>, 2009.&#160;<a class="footnote-backref" href="#fnref:bommes_2009" rev="footnote" title="Jump back to footnote 22 in the text">&#8617;</a></p>
+<p>David Bommes, Henrik Zimmer, Leif Kobbelt. <a href="http://www-sop.inria.fr/members/David.Bommes/publications/miq.pdf">Mixed-integer quadrangulation</a>, 2009.&#160;<a class="footnote-backref" href="#fnref:bommes_2009" title="Jump back to footnote 22 in the text">&#8617;</a></p>
 </li>
 <li id="fn:bouaziz_2012">
-<p>Sofien Bouaziz, Mario Deuss, Yuliy Schwartzburg, Thibaut Weise, Mark Pauly <a href="http://lgg.epfl.ch/publications/2012/shapeup.pdf">Shape-Up: Shaping Discrete Geometry with Projections</a>, 2012&#160;<a class="footnote-backref" href="#fnref:bouaziz_2012" rev="footnote" title="Jump back to footnote 23 in the text">&#8617;</a></p>
+<p>Sofien Bouaziz, Mario Deuss, Yuliy Schwartzburg, Thibaut Weise, Mark Pauly <a href="http://lgg.epfl.ch/publications/2012/shapeup.pdf">Shape-Up: Shaping Discrete Geometry with Projections</a>, 2012&#160;<a class="footnote-backref" href="#fnref:bouaziz_2012" title="Jump back to footnote 23 in the text">&#8617;</a></p>
 </li>
 <li id="fn:eck_2005">
-<p>Matthias Eck, Tony DeRose, Tom Duchamp, Hugues Hoppe, Michael Lounsbery, Werner Stuetzle.  <a href="http://research.microsoft.com/en-us/um/people/hoppe/mra.pdf">Multiresolution Analysis of Arbitrary Meshes</a>, 2005.&#160;<a class="footnote-backref" href="#fnref:eck_2005" rev="footnote" title="Jump back to footnote 24 in the text">&#8617;</a></p>
+<p>Matthias Eck, Tony DeRose, Tom Duchamp, Hugues Hoppe, Michael Lounsbery, Werner Stuetzle.  <a href="http://research.microsoft.com/en-us/um/people/hoppe/mra.pdf">Multiresolution Analysis of Arbitrary Meshes</a>, 2005.&#160;<a class="footnote-backref" href="#fnref:eck_2005" title="Jump back to footnote 24 in the text">&#8617;</a></p>
 </li>
 <li id="fn:levy_2002">
-<p>Bruno Lévy, Sylvain Petitjean, Nicolas Ray, Jérome Maillot. <a href="http://www.cs.jhu.edu/~misha/Fall09/Levy02.pdf">Least Squares Conformal Maps, for Automatic Texture Atlas Generation</a>, 2002.&#160;<a class="footnote-backref" href="#fnref:levy_2002" rev="footnote" title="Jump back to footnote 25 in the text">&#8617;</a></p>
+<p>Bruno Lévy, Sylvain Petitjean, Nicolas Ray, Jérome Maillot. <a href="http://www.cs.jhu.edu/~misha/Fall09/Levy02.pdf">Least Squares Conformal Maps, for Automatic Texture Atlas Generation</a>, 2002.&#160;<a class="footnote-backref" href="#fnref:levy_2002" title="Jump back to footnote 25 in the text">&#8617;</a></p>
 </li>
 <li id="fn:levy_2008">
-<p>Nicolas Ray, Bruno Vallet, Wan Chiu Li, Bruno Lévy. <a href="http://alice.loria.fr/publications/papers/2008/DGF/NSDFD-TOG.pdf">N-Symmetry Direction Field Design</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:levy_2008" rev="footnote" title="Jump back to footnote 26 in the text">&#8617;</a></p>
+<p>Nicolas Ray, Bruno Vallet, Wan Chiu Li, Bruno Lévy. <a href="http://alice.loria.fr/publications/papers/2008/DGF/NSDFD-TOG.pdf">N-Symmetry Direction Field Design</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:levy_2008" title="Jump back to footnote 26 in the text">&#8617;</a></p>
 </li>
 <li id="fn:liu_2008">
-<p>Ligang Liu, Lei Zhang, Yin Xu, Craig Gotsman, Steven J. Gortler. <a href="http://cs.harvard.edu/~sjg/papers/arap.pdf">A Local/Global Approach to Mesh Parameterization</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:liu_2008" rev="footnote" title="Jump back to footnote 27 in the text">&#8617;</a></p>
+<p>Ligang Liu, Lei Zhang, Yin Xu, Craig Gotsman, Steven J. Gortler. <a href="http://cs.harvard.edu/~sjg/papers/arap.pdf">A Local/Global Approach to Mesh Parameterization</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:liu_2008" title="Jump back to footnote 27 in the text">&#8617;</a></p>
 </li>
 <li id="fn:mullen_2008">
-<p>Patrick Mullen, Yiying Tong, Pierre Alliez, Mathieu Desbrun. <a href="http://www.geometry.caltech.edu/pubs/MTAD08.pdf">Spectral Conformal Parameterization</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:mullen_2008" rev="footnote" title="Jump back to footnote 28 in the text">&#8617;</a></p>
+<p>Patrick Mullen, Yiying Tong, Pierre Alliez, Mathieu Desbrun. <a href="http://www.geometry.caltech.edu/pubs/MTAD08.pdf">Spectral Conformal Parameterization</a>, 2008.&#160;<a class="footnote-backref" href="#fnref:mullen_2008" title="Jump back to footnote 28 in the text">&#8617;</a></p>
 </li>
 <li id="fn:panozzo_2014">
-<p>Daniele Panozzo, Enrico Puppo, Marco Tarini, Olga Sorkine-Hornung.  <a href="http://cs.nyu.edu/~panozzo/papers/frame-fields-2014.pdf">Frame Fields: Anisotropic and Non-Orthogonal Cross Fields</a>, 2014.&#160;<a class="footnote-backref" href="#fnref:panozzo_2014" rev="footnote" title="Jump back to footnote 29 in the text">&#8617;</a></p>
+<p>Daniele Panozzo, Enrico Puppo, Marco Tarini, Olga Sorkine-Hornung.  <a href="http://cs.nyu.edu/~panozzo/papers/frame-fields-2014.pdf">Frame Fields: Anisotropic and Non-Orthogonal Cross Fields</a>, 2014.&#160;<a class="footnote-backref" href="#fnref:panozzo_2014" title="Jump back to footnote 29 in the text">&#8617;</a></p>
 </li>
 <li id="fn:vaxman_2016">
-<p>Amir Vaxman, Marcel Campen, Olga Diamanti, Daniele Panozzo, David Bommes, Klaus Hildebrandt, Mirela Ben-Chen. <a href="https://www.google.com/search?q=Directional+Field+Synthesis+Design+and+Processing">Directional Field Synthesis, Design, and Processing</a>, 2016&#160;<a class="footnote-backref" href="#fnref:vaxman_2016" rev="footnote" title="Jump back to footnote 30 in the text">&#8617;</a></p>
+<p>Amir Vaxman, Marcel Campen, Olga Diamanti, Daniele Panozzo, David Bommes, Klaus Hildebrandt, Mirela Ben-Chen. <a href="https://www.google.com/search?q=Directional+Field+Synthesis+Design+and+Processing">Directional Field Synthesis, Design, and Processing</a>, 2016&#160;<a class="footnote-backref" href="#fnref:vaxman_2016" title="Jump back to footnote 30 in the text">&#8617;</a></p>
 </li>
 <li id="fn:schuller_2013">
-<p>Christian Schüller, Ladislav Kavan, Daniele Panozzo, Olga Sorkine-Hornung.  <a href="http://igl.ethz.ch/projects/LIM/">Locally Injective Mappings</a>, 2013.&#160;<a class="footnote-backref" href="#fnref:schuller_2013" rev="footnote" title="Jump back to footnote 31 in the text">&#8617;</a></p>
+<p>Christian Schüller, Ladislav Kavan, Daniele Panozzo, Olga Sorkine-Hornung.  <a href="http://igl.ethz.ch/projects/LIM/">Locally Injective Mappings</a>, 2013.&#160;<a class="footnote-backref" href="#fnref:schuller_2013" title="Jump back to footnote 31 in the text">&#8617;</a></p>
 </li>
 <li id="fn:zhou_2016">
-<p>Qingnan Zhou, Eitan Grinspun, Denis Zorin. <a href="https://www.google.com/search?q=Mesh+Arrangements+for+Solid+Geometry">Mesh Arrangements for Solid Geometry</a>, 2016&#160;<a class="footnote-backref" href="#fnref:zhou_2016" rev="footnote" title="Jump back to footnote 32 in the text">&#8617;</a></p>
+<p>Qingnan Zhou, Eitan Grinspun, Denis Zorin. <a href="https://www.google.com/search?q=Mesh+Arrangements+for+Solid+Geometry">Mesh Arrangements for Solid Geometry</a>, 2016&#160;<a class="footnote-backref" href="#fnref:zhou_2016" title="Jump back to footnote 32 in the text">&#8617;</a></p>
 </li>
 <li id="fn:baerentzen_2005">
-<p>J Andreas Baerentzen and Henrik Aanaes. <a href="https://www.google.com/search?q=Signed+distance+computation+using+the+angle+weighted+pseudonormal">Signed distance computation using the angle weighted pseudonormal</a>, 2005.&#160;<a class="footnote-backref" href="#fnref:baerentzen_2005" rev="footnote" title="Jump back to footnote 33 in the text">&#8617;</a></p>
+<p>J Andreas Baerentzen and Henrik Aanaes. <a href="https://www.google.com/search?q=Signed+distance+computation+using+the+angle+weighted+pseudonormal">Signed distance computation using the angle weighted pseudonormal</a>, 2005.&#160;<a class="footnote-backref" href="#fnref:baerentzen_2005" title="Jump back to footnote 33 in the text">&#8617;</a></p>
 </li>
 <li id="fn:garg_2016">
-<p>Akash Garg, Alec Jacobson, Eitan Grinspun. <a href="https://www.google.com/search?q=Computational+Design+of+Reconfigurables">Computational Design of Reconfigurables</a>, 2016&#160;<a class="footnote-backref" href="#fnref:garg_2016" rev="footnote" title="Jump back to footnote 34 in the text">&#8617;</a></p>
+<p>Akash Garg, Alec Jacobson, Eitan Grinspun. <a href="https://www.google.com/search?q=Computational+Design+of+Reconfigurables">Computational Design of Reconfigurables</a>, 2016&#160;<a class="footnote-backref" href="#fnref:garg_2016" title="Jump back to footnote 34 in the text">&#8617;</a></p>
 </li>
 <li id="fn:hoppe_1996">
-<p>Hugues Hoppe. <a href="https://www.google.com/search?q=Progressive+meshes">Progressive Meshes</a>, 1996&#160;<a class="footnote-backref" href="#fnref:hoppe_1996" rev="footnote" title="Jump back to footnote 35 in the text">&#8617;</a></p>
+<p>Hugues Hoppe. <a href="https://www.google.com/search?q=Progressive+meshes">Progressive Meshes</a>, 1996&#160;<a class="footnote-backref" href="#fnref:hoppe_1996" title="Jump back to footnote 35 in the text">&#8617;</a></p>
 </li>
 <li id="fn:jacobson_2013">
-<p>Alec Jacobson, Ladislav Kavan, and Olga Sorkine. <a href="https://www.google.com/search?q=Robust+Inside-Outside+Segmentation+using+Generalized+Winding+Numbers">Robust Inside-Outside Segmentation using Generalized Winding Numbers</a>, 2013.&#160;<a class="footnote-backref" href="#fnref:jacobson_2013" rev="footnote" title="Jump back to footnote 36 in the text">&#8617;</a></p>
+<p>Alec Jacobson, Ladislav Kavan, and Olga Sorkine. <a href="https://www.google.com/search?q=Robust+Inside-Outside+Segmentation+using+Generalized+Winding+Numbers">Robust Inside-Outside Segmentation using Generalized Winding Numbers</a>, 2013.&#160;<a class="footnote-backref" href="#fnref:jacobson_2013" title="Jump back to footnote 36 in the text">&#8617;</a></p>
 </li>
 <li id="fn:loop_1987">
-<p>Charles Loop. <a href="https://www.google.com/search?q=smooth+subdivision+surfaces+based+on+triangles">Smooth Subdivision Surfaces Based on Triangles</a>, 1987.&#160;<a class="footnote-backref" href="#fnref:loop_1987" rev="footnote" title="Jump back to footnote 37 in the text">&#8617;</a></p>
+<p>Charles Loop. <a href="https://www.google.com/search?q=smooth+subdivision+surfaces+based+on+triangles">Smooth Subdivision Surfaces Based on Triangles</a>, 1987.&#160;<a class="footnote-backref" href="#fnref:loop_1987" title="Jump back to footnote 37 in the text">&#8617;</a></p>
 </li>
 <li id="fn:lorensen_1987">
-<p>W.E. Lorensen and Harvey E. Cline. <a href="https://www.google.com/search?q=Marching+cubes:+A+high+resolution+3d+surface+construction+algorithm">Marching cubes: A high resolution 3d surface construction algorithm</a>, 1987.&#160;<a class="footnote-backref" href="#fnref:lorensen_1987" rev="footnote" title="Jump back to footnote 38 in the text">&#8617;</a></p>
+<p>W.E. Lorensen and Harvey E. Cline. <a href="https://www.google.com/search?q=Marching+cubes:+A+high+resolution+3d+surface+construction+algorithm">Marching cubes: A high resolution 3d surface construction algorithm</a>, 1987.&#160;<a class="footnote-backref" href="#fnref:lorensen_1987" title="Jump back to footnote 38 in the text">&#8617;</a></p>
 </li>
 <li id="fn:rabinovich_2016">
-<p>Michael Rabinovich, Roi Poranne, Daniele Panozzo, Olga Sorkine-Hornung. <a href="http://cs.nyu.edu/~panozzo/papers/SLIM-2016.pdf">Scalable Locally Injective Mappings</a>, 2016.&#160;<a class="footnote-backref" href="#fnref:rabinovich_2016" rev="footnote" title="Jump back to footnote 39 in the text">&#8617;</a></p>
+<p>Michael Rabinovich, Roi Poranne, Daniele Panozzo, Olga Sorkine-Hornung. <a href="http://cs.nyu.edu/~panozzo/papers/SLIM-2016.pdf">Scalable Locally Injective Mappings</a>, 2016.&#160;<a class="footnote-backref" href="#fnref:rabinovich_2016" title="Jump back to footnote 39 in the text">&#8617;</a></p>
 </li>
 <li id="fn:schroeder_1994">
-<p>William J. Schroeder, William E. Lorensen, and Steve Linthicum. <a href="https://www.google.com/search?q=implicit+modeling+of+swept+surfaces+and+volumes">Implicit Modeling of Swept Surfaces and Volumes</a>, 1994.&#160;<a class="footnote-backref" href="#fnref:schroeder_1994" rev="footnote" title="Jump back to footnote 40 in the text">&#8617;</a></p>
+<p>William J. Schroeder, William E. Lorensen, and Steve Linthicum. <a href="https://www.google.com/search?q=implicit+modeling+of+swept+surfaces+and+volumes">Implicit Modeling of Swept Surfaces and Volumes</a>, 1994.&#160;<a class="footnote-backref" href="#fnref:schroeder_1994" title="Jump back to footnote 40 in the text">&#8617;</a></p>
 </li>
 <li id="fn:takayama14">
-<p>Kenshi Takayama, Alec Jacobson, Ladislav Kavan, Olga Sorkine-Hornung. <a href="https://www.google.com/search?q=A+Simple+Method+for+Correcting+Facet+Orientations+in+Polygon+Meshes+Based+on+Ray+Casting">A Simple Method for Correcting Facet Orientations in Polygon Meshes Based on Ray Casting</a>, 2014.&#160;<a class="footnote-backref" href="#fnref:takayama14" rev="footnote" title="Jump back to footnote 41 in the text">&#8617;</a></p>
+<p>Kenshi Takayama, Alec Jacobson, Ladislav Kavan, Olga Sorkine-Hornung. <a href="https://www.google.com/search?q=A+Simple+Method+for+Correcting+Facet+Orientations+in+Polygon+Meshes+Based+on+Ray+Casting">A Simple Method for Correcting Facet Orientations in Polygon Meshes Based on Ray Casting</a>, 2014.&#160;<a class="footnote-backref" href="#fnref:takayama14" title="Jump back to footnote 41 in the text">&#8617;</a></p>
 </li>
 <li id="fn:treece_1999">
-<p>G.M. Treece, R.W. Prager, and A.H.Gee <a href="https://www.sciencedirect.com/science/article/pii/S009784939900076X">Regularised marching tetrahedra: improved iso-surface extraction</a>, 1999.&#160;<a class="footnote-backref" href="#fnref:treece_1999" rev="footnote" title="Jump back to footnote 42 in the text">&#8617;</a></p>
+<p>G.M. Treece, R.W. Prager, and A.H.Gee <a href="https://www.sciencedirect.com/science/article/pii/S009784939900076X">Regularised marching tetrahedra: improved iso-surface extraction</a>, 1999.&#160;<a class="footnote-backref" href="#fnref:treece_1999" title="Jump back to footnote 42 in the text">&#8617;</a></p>
 </li>
 <li id="fn:crane_2013">
-<p>Keenan Crane, Clarisse Weischedel, and Max Wardetzky. <a href="https://www.google.com/search?q=geodesics+in+heat+a+new+approach+to+computing+distance+based+on+heat+flow">Geodesics in Heat: A New Approach to Computing Distance Based on Heat Flow</a>, 2013.&#160;<a class="footnote-backref" href="#fnref:crane_2013" rev="footnote" title="Jump back to footnote 43 in the text">&#8617;</a></p>
+<p>Keenan Crane, Clarisse Weischedel, and Max Wardetzky. <a href="https://www.google.com/search?q=geodesics+in+heat+a+new+approach+to+computing+distance+based+on+heat+flow">Geodesics in Heat: A New Approach to Computing Distance Based on Heat Flow</a>, 2013.&#160;<a class="footnote-backref" href="#fnref:crane_2013" title="Jump back to footnote 43 in the text">&#8617;</a></p>
 </li>
 <li id="fn:bobenko_2005">
-<p>Alexander I. Bobenko and Boris A. Springborn. <a href="https://www.google.com/search?q=a+discrete+laplace-beltrami+operator+for+simplicial+surfaces">A discrete Laplace-Beltrami operator for simplicial surfaces</a>, 2005.&#160;<a class="footnote-backref" href="#fnref:bobenko_2005" rev="footnote" title="Jump back to footnote 44 in the text">&#8617;</a></p>
+<p>Alexander I. Bobenko and Boris A. Springborn. <a href="https://www.google.com/search?q=a+discrete+laplace-beltrami+operator+for+simplicial+surfaces">A discrete Laplace-Beltrami operator for simplicial surfaces</a>, 2005.&#160;<a class="footnote-backref" href="#fnref:bobenko_2005" title="Jump back to footnote 44 in the text">&#8617;</a></p>
 </li>
 <li id="fn:jiang_2017">
-<p>Zhongshi Jiang, Scott Schaefer, Daniele Panozzo. <a href="https://doi.org/10.1145/3130800.3130895">SCAF: Simplicial Complex Augmentation Framework for Bijective Maps</a>, 2017&#160;<a class="footnote-backref" href="#fnref:jiang_2017" rev="footnote" title="Jump back to footnote 45 in the text">&#8617;</a></p>
+<p>Zhongshi Jiang, Scott Schaefer, Daniele Panozzo. <a href="https://doi.org/10.1145/3130800.3130895">SCAF: Simplicial Complex Augmentation Framework for Bijective Maps</a>, 2017&#160;<a class="footnote-backref" href="#fnref:jiang_2017" title="Jump back to footnote 45 in the text">&#8617;</a></p>
 </li>
 </ol>
-</div>
-                
-                  
-                
-              
-              
-                
-
-
-              
-            </article>
-          </div>
-        </div>
-      </main>
-      
-        
-<footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-        
-          <a href=".." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
-            </div>
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                Home
-              </span>
-            </div>
-          </a>
-        
-        
-          <a href="../igl_docs/" title="Docs" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Docs
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-footer-copyright">
-        
-        powered by
-        <a href="https://www.mkdocs.org">MkDocs</a>
-        and
-        <a href="https://squidfunk.github.io/mkdocs-material/">
-          Material for MkDocs</a>
-      </div>
-      
-        
-  <div class="md-footer-social">
-    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
-    
-      <a href="https://github.com/geometryprocessing/libigl-python-bindings" class="md-footer-social__link fa fa-github"></a>
-    
-  </div>
-
-      
-    </div>
-  </div>
-</footer>
-      
-    </div>
-    
-      <script src="../assets/javascripts/application.9e1f3b71.js"></script>
-      
-      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-      
-    
-    
-      
-    
-  </body>
-</html>
+</div></article></div></div></main><footer class="md-footer"><div class="md-footer-nav"><nav class="md-footer-nav__inner md-grid"><a href=".." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev"><div class="md-flex__cell md-flex__cell--shrink"><i class="md-icon md-icon--arrow-back md-footer-nav__button"></i></div><div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span class="md-flex__ellipsis"><span class="md-footer-nav__direction">Previous</span>Home</span></div></a><a href="../igl_docs/" title="Docs" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next"><div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span class="md-flex__ellipsis"><span class="md-footer-nav__direction">Next</span>Docs</span></div><div class="md-flex__cell md-flex__cell--shrink"><i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i></div></a></nav></div><div class="md-footer-meta md-typeset"><div class="md-footer-meta__inner md-grid"><div class="md-footer-copyright">powered by <a href="https://www.mkdocs.org">MkDocs</a> and <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a></div><div class="md-footer-social"><link rel="stylesheet" href="../assets/fonts/font-awesome.css"> <a href="https://github.com/geometryprocessing/libigl-python-bindings" class="md-footer-social__link fa fa-github"></a> </div></div></div></footer></div><script src="../assets/javascripts/application.b260a35d.js"></script><script>app.initialize({version:"1.0.4",url:{base:".."}})</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script></body></html>
