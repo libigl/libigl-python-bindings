@@ -694,7 +694,7 @@ class TestBasic(unittest.TestCase):
         r = thetas / (2 * np.pi)
         boundary = np.concatenate([r * np.cos(thetas), np.sin(thetas), np.zeros([num_b, 1])], axis=1)
         edges = np.array([(i, (i + 1) % boundary.shape[0]) for i in range(boundary.shape[0])])
-        v, f = igl.triangulate(boundary[:, :2], edges, np.zeros([0, 2]))
+        v, f = igl.triangulate(boundary[:, :2], edges, np.zeros([0, 0]))
         v = np.concatenate([v, np.zeros([v.shape[0], 1])], axis=1)
         b = igl.boundary_loop(f.astype(np.int32))
 
