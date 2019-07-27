@@ -47,8 +47,7 @@ class CMakeBuild(build_ext):
                       '-DLIBIGL_PYTHON_TESTS=OFF']
 
 
-        # cfg = 'Debug' if self.debug else 'Release'
-        cfg = 'Release'
+        cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]
         cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
         # cmake_args += ['-DDEBUG_TRACE=ON']
@@ -65,8 +64,8 @@ class CMakeBuild(build_ext):
 
         if platform.system() == "Windows":
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
-            # if sys.maxsize > 2**32:
-                # cmake_args += ['-A', 'x64']
+            if sys.maxsize > 2**32:
+                cmake_args += ['-A', 'x64']
             # cmake_args += ['-T', 'llvm']
             build_args += ['--', '/m']
         else:
