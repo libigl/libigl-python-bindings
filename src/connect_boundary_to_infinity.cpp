@@ -1,5 +1,6 @@
 // TODO: __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/connect_boundary_to_infinity.h>
@@ -39,6 +40,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  //assert_valid_3d_tri_mesh_faces(f, "f");
   npe_Matrix_f fo;
   igl::connect_boundary_to_infinity(f, fo);
   return npe::move(fo);
@@ -79,6 +81,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  //assert_valid_3d_tri_mesh_faces(f, "f");
   npe_Matrix_v vo;
   npe_Matrix_f fo;
   igl::connect_boundary_to_infinity(v, f, vo, fo);
@@ -124,6 +127,7 @@ npe_arg(inf_index, int)
 
 npe_begin_code()
 
+  //assert_valid_3d_tri_mesh_faces(f, "f");
   npe_Matrix_f fo;
   igl::connect_boundary_to_infinity(f, inf_index, fo);
   return npe::move(fo);

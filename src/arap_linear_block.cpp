@@ -54,6 +54,7 @@ npe_arg(d, int)
 npe_arg(energy, int)
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   static_assert(int(igl::ARAPEnergyType::ARAP_ENERGY_TYPE_SPOKES) == 0, "ARAPEnergyType enum changed!");
   static_assert(int(igl::ARAPEnergyType::ARAP_ENERGY_TYPE_SPOKES_AND_RIMS) == 1, "ARAPEnergyType enum changed!");
   static_assert(int(igl::ARAPEnergyType::ARAP_ENERGY_TYPE_ELEMENTS) == 2, "ARAPEnergyType enum changed!");

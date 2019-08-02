@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/dihedral_angles.h>
@@ -35,7 +36,7 @@ npe_arg(v, dense_float, dense_double)
 npe_arg(t, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
-
+  assert_valid_tet_mesh(v, t);
   npe_Matrix_v theta;
   npe_Matrix_v cos_theta;
   igl::dihedral_angles(v, t, theta, cos_theta);

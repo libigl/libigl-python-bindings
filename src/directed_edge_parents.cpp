@@ -33,6 +33,8 @@ npe_doc(ds_directed_edge_parents)
 npe_arg(e, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
+  assert_nonzero_rows(e, "e");
+  assert_cols_equals(e, 2, "e");
   npe_Matrix_e p;
   igl::directed_edge_parents(e, p);
   return npe::move(p);

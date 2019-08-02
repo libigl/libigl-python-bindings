@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/cotmatrix_entries.h>
@@ -44,6 +45,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   npe_Matrix_v c;
   igl::cotmatrix_entries(v, f, c);
   return npe::move(c);

@@ -14,7 +14,7 @@ s : #f by dim scalar field defined on simplices
 
 Returns
 -------
-#v by dim scalar field defined on vertices
+sv: #v by dim scalar field defined on vertices
 
 See also
 --------
@@ -35,6 +35,8 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(s, dense_float, dense_double) // TODO: Maybe do a matches here
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
+  assert_rows_match(f, s, "f", "s");
   npe_Matrix_s sv;
   igl::average_onto_vertices(v, f, s, sv);
   return npe::move(sv);

@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/bounding_box.h>
@@ -35,6 +36,7 @@ npe_arg(v, dense_float, dense_double)
 
 npe_begin_code()
 
+  assert_nonzero_rows(v, "v");
   npe_Matrix_v bv;
   Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> bf;
   igl::bounding_box(v, bv, bf);
@@ -47,7 +49,6 @@ npe_end_code()
 
 
 
-#include <igl/bounding_box.h>
 
 const char* ds_bounding_box_pad = R"igl_Qu8mg5v7(
 See bounding_box for the documentation.
@@ -62,6 +63,7 @@ npe_arg(pad, double)
 
 npe_begin_code()
 
+  assert_nonzero_rows(v, "v");
   npe_Matrix_v bv;
   Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> bf;
   igl::bounding_box(v, pad, bv, bf);

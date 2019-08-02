@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -48,6 +49,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   EigenSparseLike<npe_Matrix_v> l;
   npe_Matrix_f e;
   npe_Matrix_f emap;
@@ -94,6 +96,8 @@ npe_arg(emap, npe_matches(f))
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
+  assert_shapes_match(f, emap, "f", "emap");
   EigenSparseLike<npe_Matrix_v> l;
   igl::crouzeix_raviart_cotmatrix(v, f, e, emap, l);
   return npe::move(l);

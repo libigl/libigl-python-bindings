@@ -1,5 +1,6 @@
 // static assertion fail: YOU_MIXED_DIFFERENT_NUMERIC_TYPES__YOU_NEED_TO_USE_THE_CAST_METHOD_OF_MATRIXBASE_TO_CAST_NUMERIC_TYPES_EXPLICITLY
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -51,6 +52,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   EigenSparseLike<npe_Matrix_v> m;
   npe_Matrix_f e;
   npe_Matrix_f emap;
@@ -97,6 +99,8 @@ npe_arg(emap, npe_matches(f))
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
+  assert_shapes_match(f, emap, "f", "emap");
   EigenSparseLike<npe_Matrix_v> m;
   igl::crouzeix_raviart_massmatrix(v, f, e, emap, m);
   return npe::move(m);

@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/doublearea.h>
@@ -36,6 +37,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   EigenDenseLike<npe_Matrix_v> d_area;
   igl::doublearea(v, f, d_area);
   return npe::move(d_area);

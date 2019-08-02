@@ -1,5 +1,6 @@
 // TODO: __missing miss the rest two functions with AABB and shoot_ray. __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/ambient_occlusion.h>
@@ -42,6 +43,10 @@ npe_arg(num_samples, int)
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
+  assert_rows_match(p, n, "p", "n");
+  assert_cols_equals(p, 3, "p");
+  assert_cols_equals(n, 3, "n");
   npe_Matrix_p s;
   igl::ambient_occlusion(v, f, p, n, num_samples, s);
   return npe::move(s);

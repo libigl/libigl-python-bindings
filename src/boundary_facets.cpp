@@ -33,6 +33,8 @@ npe_doc(ds_boundary_facets)
 npe_arg(t, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
+  // TODO: need an option for multiple shapes
+  assert_cols_equals(t, 3, "t");
   EigenDense<npe_Scalar_t> f;
   igl::boundary_facets(t, f);
   return npe::move(f);
