@@ -672,6 +672,59 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(tti.shape, tet.shape)
         self.assertEqual(tti.dtype, tet.dtype)
 
+    def test_arap1(self):
+        v, f, _ = igl.read_off("data/camelhead.off")
+        b = igl.boundary_loop(f)
+        thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
+        bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
+        uv_initial_guess = igl.harmonic_weights(v, f, b, bc, 1)
+
+        arap1 = igl.ARAP(v, f, 2, b)
+        vp1 = arap1.solve(bc[:, :2], uv_initial_guess[:, :2])
+        self.assertEqual(vp1.shape[0], v.shape[0])
+
+        arap2 = igl.ARAP(v, f, 3, b)
+        vp2 = arap2.solve(bc, uv_initial_guess)
+        self.assertEqual(vp2.shape[0], v.shape[0])
+        
+    def test_arap2(self):
+        num_b = 100
+
+        thetas = np.linspace(0, 2 * np.pi, num_b)[:, np.newaxis]
+        r = thetas / (2 * np.pi)
+        boundary = np.concatenate([r * np.cos(thetas), np.sin(thetas), np.zeros([num_b, 1])], axis=1)
+        edges = np.array([(i, (i + 1) % boundary.shape[0]) for i in range(boundary.shape[0])])
+        v, f = igl.triangulate(boundary[:, :2], edges, np.zeros([0, 0]))
+        v = np.concatenate([v, np.zeros([v.shape[0], 1])], axis=1)
+        b = igl.boundary_loop(f.astype(np.int32))
+
+        thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
+        circle_b = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros([len(b), 1])], axis=1)
+
+        v0 = igl.harmonic_weights(v, f.astype(np.int32), b, np.asfortranarray(circle_b), 1)
+        print(circle_b.shape, b.shape, v.shape, v.shape)
+        arap = igl.ARAP(v, f, 2, b)
+
+        v2 = arap.solve(circle_b[:, :2], v0[:, :2])
+        self.assertEqual(v2.shape[0], v0.shape[0])
+
+    def test_slim(self):
+        v, f, _ = igl.read_off("data/camelhead.off")
+        b = igl.boundary_loop(f)
+        thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
+        bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
+        uv_initial_guess = igl.harmonic_weights(v, f, b, bc, 1)
+
+        slim = igl.SLIM(v, f, uv_initial_guess[:, :2], b, bc[:, :2], igl.SLIM_ENERGY_TYPE_ARAP, 0.0)
+        slim.solve(1)
+        v2 = slim.vertices()
+        self.assertEqual(v2.shape[0], v.shape[0])
+
+    # deal with igl::PerEdgeNormalsWeightingType
+    #def test_per_edge_normals(self):
+    #    fn = np.random.rand(self.f1.shape[0], 3)
+    #    n, e, emap = igl.per_edge_normals(self.v1, self.f1, 0, fn)
+
 
     # TODO: missing
     #def test_min_quad_with_fixed(self):
@@ -700,10 +753,11 @@ class TestBasic(unittest.TestCase):
     #    w = igl.harmonic(l, m, b, self.v1, k)
 
     def test_exact_geodesic(self):
-        vs = np.array([0])
+        vs = np.array([0], dtype=self.f1.dtype)
         vt = np.arange(self.v1.shape[0])
+        vt = vt.astype(self.f1.dtype)
         # TODO as type should be here
-        d = igl.exact_geodesic(self.v1, self.f1.astype("int64"), vs, vt)
+        d = igl.exact_geodesic(self.v1, self.f1, vs, vt)
         self.assertEqual(d.dtype, self.v1.dtype)
 
     # Fail on windows

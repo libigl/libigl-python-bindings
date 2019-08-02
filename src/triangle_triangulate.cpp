@@ -39,7 +39,14 @@ npe_arg(h, dense_float, dense_double) // TODO: npe_matches bug
 // TODO: Optionally support extra parameters
 npe_default_arg(flags, std::string, "a0.005qQ")
 npe_begin_code()
-
+  assert_cols_equals(v, 2, "v");
+  assert_nonzero_rows(v, "v");
+  assert_cols_equals(e, 2, "e");
+  assert_nonzero_rows(e, "e");
+  if (h.rows() != 0 && h.cols() != 0) {
+      assert_cols_equals(h, 2, "h");
+      assert_cols_equals(h, 1, "h");
+  }
   npe_Matrix_v v2;
   npe_Matrix_e f2;
   igl::triangle::triangulate(v, e, h, flags, v2, f2);
