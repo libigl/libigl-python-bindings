@@ -41,6 +41,7 @@ npe_default_arg(weighting, int, 0)
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
   static_assert(int(igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_UNIFORM) == 0, "PerVertexNormalWeightingType enum changed!");
   static_assert(int(igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA) == 1, "PerVertexNormalWeightingType enum changed!");
   static_assert(int(igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE) == 2, "PerVertexNormalWeightingType enum changed!");

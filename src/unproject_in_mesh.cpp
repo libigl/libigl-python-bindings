@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -59,7 +60,13 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-
+  assert_valid_3d_tri_mesh(v, f);
+  assert_cols_equals(pos, 2, "pos");
+  assert_rows_equals(model, 4, "model");
+  assert_cols_equals(model, 4, "model");
+  assert_shapes_match(model, proj, "model", "proj");
+  assert_cols_equals(viewport, 4, "viewport");
+ 
   // TODO: remove __copy
   Eigen::Vector2f pos_copy = pos.template cast<float>();
   Eigen::Matrix4f model_copy = model.template cast<float>();

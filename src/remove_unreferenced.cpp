@@ -1,5 +1,6 @@
 // TODO: __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/remove_unreferenced.h>
@@ -46,6 +47,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   npe_Matrix_v nv;
   npe_Matrix_f nf;
   npe_Matrix_f i;

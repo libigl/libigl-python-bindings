@@ -1,5 +1,6 @@
-//TODO: __example
+//TODO: __example remove __copy
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -53,6 +54,9 @@ npe_arg(use_lu_decomposition, bool)
 
 npe_begin_code()
 
+  assert_nonzero_rows(a, "a");
+  assert_nonzero_rows(aeq, "aeq");
+  assert_cols_match(a, aeq, "a", "aeq");
   Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> a_copy = a.template cast<double>();
   Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> aeq_copy = aeq.template cast<double>();
   Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> s;

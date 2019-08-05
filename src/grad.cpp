@@ -43,6 +43,7 @@ npe_default_arg(uniform, bool, false)
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
   EigenSparseLike<npe_Matrix_v> g;
   igl::grad(v, f, g, uniform);
   return npe::move(g);

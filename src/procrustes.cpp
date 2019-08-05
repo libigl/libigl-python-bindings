@@ -1,5 +1,6 @@
 // TODO: __miss
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/procrustes.h>
@@ -58,6 +59,8 @@ npe_arg(include_reflections, bool)
 
 npe_begin_code()
 
+  assert_cols_match(x, y, "x", "y");
+  assert_nonzero_rows(x, "x");
   double scale;
   npe_Matrix_x r;
   npe_Matrix_x t;

@@ -1,5 +1,6 @@
 // TODO: __example, decide if to remove the first function
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/is_edge_manifold.h>
@@ -18,6 +19,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  //assert_valid_tet_or_tri_mesh_faces(f, "f");
   return igl::is_edge_manifold(f);
 
 npe_end_code()

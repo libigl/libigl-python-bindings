@@ -1,5 +1,6 @@
 // TODO: __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/sort_angles.h>
@@ -39,6 +40,8 @@ npe_arg(m, dense_float, dense_double)
 
 npe_begin_code()
 
+  assert_nonzero_rows(m, "m");
+  //TODO: need to check column >= 2
   // In the libigl code r is column major, and using row major fails assertion
   // EIGEN_STATIC_ASSERT((EIGEN_IMPLIES(MaxRowsAtCompileTime==1 && 
   //    MaxColsAtCompileTime!=1, (Options&RowMajor)==RowMajor)

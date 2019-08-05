@@ -1,5 +1,6 @@
 //TODO: __example
 //TODO: __miss upsample that retuns a sparse matrix and inplace
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -42,6 +43,7 @@ npe_default_arg(number_of_subdivs, int, 1)
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
   npe_Matrix_v nv;
   npe_Matrix_f nf;
   igl::upsample(v, f, nv, nf, number_of_subdivs);

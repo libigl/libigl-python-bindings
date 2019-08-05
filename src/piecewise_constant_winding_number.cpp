@@ -1,5 +1,6 @@
 // TODO: __miss __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/piecewise_constant_winding_number.h>
@@ -58,6 +59,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  //assert_valid_3d_tri_mesh_faces(f, "f");
   return igl::piecewise_constant_winding_number(f);
 
 npe_end_code()

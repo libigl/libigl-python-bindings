@@ -1,5 +1,6 @@
 // TODO: __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -44,6 +45,8 @@ npe_arg(v, dense_float, dense_double)
 
 npe_begin_code()
 
+  assert_nonzero_rows(v, "v");
+  assert_cols_equals(v, 3, "v");
   // TODO: remove __copy
   Eigen::MatrixXd v_copy = v.template cast<double>();
   Eigen::RowVector3d n;

@@ -1,4 +1,5 @@
 //TODO: __example
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/random_points_on_mesh.h>
@@ -40,6 +41,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
   npe_Matrix_v b;
   npe_Matrix_f fi;
   igl::random_points_on_mesh(n, v, f, b, fi);

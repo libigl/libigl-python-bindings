@@ -36,6 +36,8 @@ npe_arg(bnd, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  assert_nonzero_rows(v, "v");
+  assert_nonzero_rows(bnd, "bnd");
   // TODO: remove __copy
   Eigen::MatrixXd v_copy = v.template cast<double>();
   Eigen::VectorXi bnd_copy = bnd.template cast<int>();

@@ -44,6 +44,7 @@ npe_default_arg(radius, int, 5)
 npe_default_arg(use_k_ring, bool, true)
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
   npe_Matrix_v pd1;
   npe_Matrix_v pd2;
   npe_Matrix_v pv1;

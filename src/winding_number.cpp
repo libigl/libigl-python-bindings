@@ -1,6 +1,7 @@
 //TODO: __example
 // TODO: remove __copy
 // copy is necessary since the winding number only supports matrices
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/winding_number.h>
@@ -40,6 +41,8 @@ npe_arg(o, dense_float, dense_double)
 
 
 npe_begin_code()
+  assert_valid_3d_tri_mesh(v, f);
+  assert_cols_match(v, o, "v", "o");
   Eigen::MatrixXd v_copy = v.template cast<double>();
   Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::MatrixXd o_copy = o.template cast<double>();
@@ -89,6 +92,8 @@ npe_arg(p, dense_float, dense_double)
 
 
 npe_begin_code()
+  assert_valid_tet_or_tri_mesh(v, f);
+  assert_cols_match(v, f, "v", "f");
   Eigen::MatrixXd v_copy = v.template cast<double>();
   Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::MatrixXd p_copy = p.template cast<double>();

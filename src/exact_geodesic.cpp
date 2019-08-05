@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/exact_geodesic.h>
@@ -42,6 +43,11 @@ npe_default_arg(fs, npe_matches(f), pybind11::array())
 npe_default_arg(ft, npe_matches(f), pybind11::array())
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
+  //assert_cols_equals(vs, 1, "vs");
+  //assert_cols_equals(fs, 1, "fs");
+  //assert_cols_equals(vt, 1, "vt");
+  //assert_cols_equals(ft, 1, "ft");
   EigenDenseLike<npe_Matrix_v> d;
   igl::exact_geodesic(v, f, vs, fs, vt, ft, d);
   return npe::move(d);

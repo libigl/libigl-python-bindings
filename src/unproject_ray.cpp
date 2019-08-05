@@ -1,5 +1,5 @@
-// error: static assertion failed: THIS_COEFFICIENT_ACCESSOR_TAKING_ONE_ACCESS_IS_ONLY_FOR_EXPRESSIONS_ALLOWING_LINEAR_ACCESS
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/unproject_ray.h>
@@ -45,6 +45,12 @@ npe_arg(viewport, npe_matches(pos))
 
 
 npe_begin_code()
+
+  assert_cols_equals(pos, 2, "pos");
+  assert_rows_equals(model, 4, "model");
+  assert_cols_equals(model, 4, "model");
+  assert_shapes_match(model, proj, "model", "proj");
+  assert_cols_equals(viewport, 4, "viewport");
 
   Eigen::Matrix<npe_Scalar_pos, 3, 1> s;
   Eigen::Matrix<npe_Scalar_pos, 3, 1> dir;

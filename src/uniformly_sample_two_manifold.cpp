@@ -1,5 +1,6 @@
 // TODO: __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -56,6 +57,7 @@ npe_arg(push, double)
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(w, f);
   // TODO: remove __copy
   Eigen::MatrixXd w_copy = w.template cast<double>();
   Eigen::MatrixXi f_copy = f.template cast<int>();

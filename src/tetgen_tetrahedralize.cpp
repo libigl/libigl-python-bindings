@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/copyleft/tetgen/tetrahedralize.h>
@@ -46,6 +47,7 @@ npe_arg(f, dense_int)
 npe_default_arg(switches, std::string, std::string("pYQ"))
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   EigenDenseLike<npe_Matrix_v> tv;
   EigenDenseLike<npe_Matrix_f> tt;
   EigenDenseLike<npe_Matrix_f> tf;

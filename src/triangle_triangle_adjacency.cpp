@@ -1,5 +1,6 @@
 // TODO: __miss __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/triangle_triangle_adjacency.h>
@@ -44,6 +45,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
+  //assert_valid_tet_or_tri_mesh_faces(f, "f");
   npe_Matrix_f tt;
   npe_Matrix_f t_ti;
   igl::triangle_triangle_adjacency(f, tt, t_ti);

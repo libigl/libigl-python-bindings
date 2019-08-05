@@ -1,8 +1,9 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/harmonic.h>
 
-//TODO: is is only dense_int because min_quad_with_fixed_data hardcodes int, fixme
+//TODO: is is only dense_int because min_quad_with_fixed_data hardcodes int, FIXME
 
 const char* ds_harmonic_w = R"igl_Qu8mg5v7(
 Compute k-harmonic weight functions "coordinates".
@@ -41,6 +42,8 @@ npe_arg(k, int)
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
+  assert_nonzero_rows(bc, "bc");
   EigenDenseLike<npe_Matrix_v> w;
   igl::harmonic(v, f, b, bc, k, w);
   return npe::move(w);
@@ -87,6 +90,8 @@ npe_arg(k, int)
 
 npe_begin_code()
 
+  //assert_valid_tet_or_tri_mesh_faces(f, "f");
+  assert_nonzero_rows(bc, "bc");
   EigenDenseLike<npe_Matrix_bc> w;
   igl::harmonic(f, b, bc, k, w);
   return npe::move(w);
@@ -140,6 +145,9 @@ npe_arg(k, int)
 
 npe_begin_code()
 
+  assert_shapes_match(l, m, "l", "m");
+  assert_nonzero_rows(l, "l");
+  assert_nonzero_rows(bc, "bc");
   EigenDenseLike<npe_Matrix_bc> w;
   igl::harmonic(l, m, b, bc, k, w);
   return npe::move(w);
@@ -182,6 +190,8 @@ npe_arg(k, int)
 
 
 npe_begin_code()
+  assert_shapes_match(l, m, "l", "m");
+  assert_nonzero_rows(l, "l");
   EigenSparseLike<npe_Matrix_l> q;
   igl::harmonic(l, m, k, q);
   return npe::move(q);
@@ -225,6 +235,7 @@ npe_arg(k, int)
 
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   EigenSparseLike<npe_Matrix_v> q;
   igl::harmonic(v, f, k, q);
   return npe::move(q);

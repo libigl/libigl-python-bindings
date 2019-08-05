@@ -1,5 +1,6 @@
 //TODO: __miss __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/per_edge_normals.h>
@@ -48,6 +49,7 @@ npe_arg(fn, npe_matches(v))
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
   npe_Matrix_v n;
   npe_Matrix_f e;
   npe_Matrix_f emap;

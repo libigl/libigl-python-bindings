@@ -1,5 +1,6 @@
 //TODO: __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -43,6 +44,7 @@ npe_default_arg(force_ascii, bool, bool(true))
 
 
 npe_begin_code()
+  assert_valid_3d_tri_mesh(v, f);
   // TODO: remove __copy
   //copy is necessary for the ply library
   Eigen::MatrixXi f_copy = f.template cast<int>();

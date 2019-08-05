@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -47,6 +48,7 @@ npe_arg(c, npe_matches(v))
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
   return igl::writeOFF(str, v, f, c);
 
 npe_end_code()

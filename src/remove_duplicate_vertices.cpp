@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -58,6 +59,7 @@ npe_begin_code()
   // TODO: remove __copy
   // I believe we can prevent this. The libigl function uses "DerivedV rv"
   //    which calls Eigen::Map(Eigen::Matrix<>)::Map() and DNE
+  assert_nonzero_rows(v, "v");
   Eigen::MatrixXd v_copy = v.template cast<double>();
   Eigen::MatrixXd sv;
   npe_Matrix_f svi;

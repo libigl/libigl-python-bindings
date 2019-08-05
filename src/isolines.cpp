@@ -1,5 +1,6 @@
 //TODO: __example
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/isolines.h>
@@ -44,6 +45,9 @@ npe_arg(n, int)
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
+  assert_rows_match(v, z, "v", "z");
+  assert_cols_equals(z, 1, "z");
   npe_Matrix_v iso_v;
   npe_Matrix_f iso_e;
   igl::isolines(v, f, z, n, iso_v, iso_e);

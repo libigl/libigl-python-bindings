@@ -1,6 +1,7 @@
 // TODO: __example __miss
 
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/shape_diameter_function.h>
@@ -51,6 +52,9 @@ npe_arg(num_samples, int)
 
 npe_begin_code()
 
+  assert_valid_3d_tri_mesh(v, f);
+  assert_nonzero_rows(p, "p");
+  assert_shapes_match(p, n, "p", "n");
   npe_Matrix_v s;
   igl::shape_diameter_function(v, f, p, n, num_samples, s);
   return npe::move(s);

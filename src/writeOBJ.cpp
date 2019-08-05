@@ -41,6 +41,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 //npe_default_arg(ftc, npe_matches(f), pybind11::array())
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
   //return igl::writeOBJ(filename, v, f, cn, fn, tc, ftc);
   return igl::writeOBJ(filename, v, f);
 

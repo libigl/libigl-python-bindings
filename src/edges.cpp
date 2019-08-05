@@ -33,6 +33,7 @@ npe_doc(ds_edges)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
+  //assert_valid_tet_or_tri_mesh_faces(f, "f");
   npe_Matrix_f e;
   igl::edges(f, e);
   return npe::move(e);

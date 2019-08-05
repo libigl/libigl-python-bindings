@@ -33,6 +33,8 @@ npe_doc(ds_tet_tet_adjacency)
 npe_arg(t, dense_int, dense_long)
 npe_begin_code()
 
+  assert_nonzero_rows(t, "t");
+  assert_cols_equals(t, 4, "t");
   npe_Matrix_t tt, tti;
   igl::tet_tet_adjacency(t, tt, tti);
   return std::make_tuple(npe::move(tt), npe::move(tti));

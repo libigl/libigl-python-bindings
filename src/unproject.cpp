@@ -1,4 +1,5 @@
 //TODO: __example
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/unproject.h>
@@ -41,6 +42,11 @@ npe_arg(viewport, dense_float, dense_double)
 
 npe_begin_code()
 
+  assert_cols_equals(win, 3, "win");
+  assert_rows_equals(model, 4, "model");
+  assert_cols_equals(model, 4, "model");
+  assert_shapes_match(model, proj, "model", "proj");
+  assert_cols_equals(viewport, 4, "viewport");
   npe_Matrix_win scene;
   igl::unproject(win, model, proj, viewport, scene);
   return npe::move(scene);
