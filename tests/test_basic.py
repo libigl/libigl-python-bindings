@@ -323,7 +323,7 @@ class TestBasic(unittest.TestCase):
 
     def test_ambient_occlusion(self):
         n = igl.per_face_normals(self.v2, self.f2, self.v2)
-        s = igl.ambient_occlusion(self.v2, self.f2, self.v2, n, 2)
+        s = igl.ambient_occlusion(self.v2, self.f2, self.v2, n[0:self.v2.shape[0], :], 2)
 
         self.assertEqual(s.dtype, self.v1.dtype)
         self.assertEqual(len(s.shape), 1)
