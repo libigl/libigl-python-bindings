@@ -33,7 +33,7 @@ npe_doc(ds_avg_edge_length)
 npe_arg(v, dense_double, dense_float)
 npe_arg(f, dense_int, dense_long)
 npe_begin_code()
-
+  assert_valid_3d_tri_mesh(v, f);
   return igl::avg_edge_length(v, f);
 
 npe_end_code()

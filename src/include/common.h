@@ -33,6 +33,13 @@ void assert_rows_equals(const T& mat, int rows, std::string name) {
     }
 }
 
+template <typename T>
+void assert_shape_equals(const T& mat, int rows, int cols, std::string name) {
+    if (mat.rows() != rows || mat.cols() != cols) {
+        throw pybind11::value_error("Parameter " + name + " has invalid shape, expected " + name + ".shape = [" + std::to_string(rows) + ", " + std::to_string(cols) +
+                                    "] but got " + name + ".shape = [" + std::to_string(mat.rows()) + ", " + std::to_string(mat.cols()) + "]");
+    }
+}
 
 
 template <typename T1, typename T2>
@@ -91,6 +98,19 @@ void assert_shapes_match(const T1& mat1, int mat2_rows, int mat2_cols, std::stri
     }
 }
 
+
+template <typename TF>
+void assert_valid_tet_or_tri_mesh_faces(const TF& f, std::string f_name="f") {
+    if (f.rows() <= 0) {
+        throw pybind11::value_error("Invalid mesh indices, " + f_name + " has zero rows (" + f_name + ".shape = [" +
+                                    std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]) ");
+    }
+
+    if (f.cols() != 3 && f.cols() != 4) {
+        throw pybind11::value_error("Invalid mesh indices, " + f_name + " must have shape [#faces, 3] (for a triangle mesh) or [#faces, 4] (for a tet mesh) " +
+                                    "but got " + f_name + ".shape = [" + std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]");
+    }
+}
 
 
 template <typename TV, typename TF>

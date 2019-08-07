@@ -42,6 +42,7 @@ npe_doc(ds_adjacency_matrix)
 npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh_faces(f, "f");
   EigenSparseLike<npe_Matrix_f> a;
   igl::adjacency_matrix(f, a);
   return npe::move(a);

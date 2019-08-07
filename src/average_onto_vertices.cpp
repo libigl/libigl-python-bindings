@@ -35,6 +35,9 @@ npe_arg(f, dense_int, dense_long)
 npe_arg(s, dense_float, dense_double) // TODO: Maybe do a matches here
 npe_begin_code()
 
+  assert_valid_tet_or_tri_mesh(v, f);
+  assert_shape_equals(s, f.rows(), v.cols(), "s");
+
   npe_Matrix_s sv;
   igl::average_onto_vertices(v, f, s, sv);
   return npe::move(sv);

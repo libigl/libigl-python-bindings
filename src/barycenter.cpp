@@ -34,7 +34,7 @@ npe_doc(ds_barycenter)
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
 npe_begin_code()
-
+  assert_valid_3d_tri_mesh(v, f);
   npe_Matrix_v bc;
   igl::barycenter(v, f, bc);
   return npe::move(bc);
