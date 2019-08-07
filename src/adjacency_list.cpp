@@ -32,8 +32,7 @@ npe_function(adjacency_list)
 npe_doc(ds_adjacency_list)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
-
-  //assert_valid_tet_or_tri_mesh_faces(f, "f")
+  assert_valid_tet_or_tri_mesh_faces(f, "f");
   std::vector<std::vector<npe_Scalar_f>> a;
   igl::adjacency_list(f, a);
   return pybind11::detail::type_caster<decltype(a)>::cast(a, pybind11::return_value_policy::move, pybind11::none());

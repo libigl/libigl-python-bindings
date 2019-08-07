@@ -39,14 +39,15 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(p, dense_float, dense_double)
 npe_arg(n, npe_matches(p))
 npe_arg(num_samples, int)
-
-
 npe_begin_code()
 
   assert_valid_3d_tri_mesh(v, f);
-  assert_rows_match(p, n, "p", "n");
   assert_cols_equals(p, 3, "p");
   assert_cols_equals(n, 3, "n");
+  assert_nonzero_rows(p, "p");
+  assert_nonzero_rows(n, "n");
+  assert_shapes_match(p, n, "p", "n");
+
   npe_Matrix_p s;
   igl::ambient_occlusion(v, f, p, n, num_samples, s);
   return npe::move(s);
