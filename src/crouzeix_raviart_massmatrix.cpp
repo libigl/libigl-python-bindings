@@ -100,7 +100,9 @@ npe_arg(emap, npe_matches(f))
 npe_begin_code()
 
   assert_valid_tet_or_tri_mesh(v, f);
-  assert_shapes_match(f, emap, "f", "emap");
+  //assert_rows_equals(emap, 3/4*f.rows(), "emap");
+  //assert_cols_equals(e, 2/3, "emap");
+  assert_cols_equals(emap, 1, "emap");
   EigenSparseLike<npe_Matrix_v> m;
   igl::crouzeix_raviart_massmatrix(v, f, e, emap, m);
   return npe::move(m);

@@ -46,11 +46,11 @@ npe_arg(viewport, npe_matches(pos))
 
 npe_begin_code()
 
-  assert_cols_equals(pos, 2, "pos");
+  assert_rows_equals(pos, 2, "pos");
   assert_rows_equals(model, 4, "model");
   assert_cols_equals(model, 4, "model");
   assert_shapes_match(model, proj, "model", "proj");
-  assert_cols_equals(viewport, 4, "viewport");
+  assert_rows_equals(viewport, 4, "viewport");
 
   Eigen::Matrix<npe_Scalar_pos, 3, 1> s;
   Eigen::Matrix<npe_Scalar_pos, 3, 1> dir;
