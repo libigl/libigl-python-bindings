@@ -678,7 +678,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(tti.dtype, tet.dtype)
 
     def test_arap1(self):
-        v, f, _ = igl.read_off("../data/camelhead.off")
+        v, f, _ = igl.read_off("data/camelhead.off")
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
@@ -714,7 +714,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(v2.shape[0], v0.shape[0])
 
     def test_slim(self):
-        v, f, _ = igl.read_off("../data/camelhead.off")
+        v, f, _ = igl.read_off("data/camelhead.off")
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
