@@ -184,7 +184,7 @@ class TestBasic(unittest.TestCase):
     #     self.assertEqual(sf.shape[0], self.f1.shape[0])
 
     def test_average_onto_vertices(self):
-        s = np.random.rand(self.f1.shape[0])
+        s = np.random.rand(self.f1.shape[0], self.v1.shape[1])
         sv = igl.average_onto_vertices(self.v1, self.f1, s)
         self.assertEqual(sv.shape[0], self.v1.shape[0])
 
@@ -199,7 +199,12 @@ class TestBasic(unittest.TestCase):
         d = 0.5*a + 0.5*c + np.array([0.1, 0.1, 0.1])
         bc = igl.barycentric_coordinates_tet(d, a, b, c, d)
         self.assertEqual(bc.shape, (a.shape[0], 4))
+
     def test_barycentric_coordinates_tri(self):
+        # tested in test_barycentric_coordinates
+        pass
+
+    def test_barycentric_coordinates_tet(self):
         # tested in test_barycentric_coordinates
         pass
 
@@ -322,7 +327,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(n.shape[1], 3)
 
     def test_ambient_occlusion(self):
-        n = igl.per_face_normals(self.v2, self.f2, self.v2)
+        n = igl.per_vertex_normals(self.v2, self.f2)
         s = igl.ambient_occlusion(self.v2, self.f2, self.v2, n, 2)
 
         self.assertEqual(s.dtype, self.v1.dtype)
@@ -686,7 +691,7 @@ class TestBasic(unittest.TestCase):
         arap2 = igl.ARAP(v, f, 3, b)
         vp2 = arap2.solve(bc, uv_initial_guess)
         self.assertEqual(vp2.shape[0], v.shape[0])
-        
+
     def test_arap2(self):
         num_b = 100
 
@@ -719,6 +724,10 @@ class TestBasic(unittest.TestCase):
         slim.solve(1)
         v2 = slim.vertices()
         self.assertEqual(v2.shape[0], v.shape[0])
+
+    def test_harmonic_weights(self):
+        #tested in test_slim, test_arap2, and test_arap1
+        pass
 
     # deal with igl::PerEdgeNormalsWeightingType
     #def test_per_edge_normals(self):
