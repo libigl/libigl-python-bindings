@@ -42,7 +42,7 @@ Examples
 npe_function(lscm)
 npe_doc(ds_lscm)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(b, npe_matches(f))
 npe_arg(bc, npe_matches(v))
 npe_begin_code()
@@ -52,7 +52,7 @@ npe_begin_code()
   Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::VectorXi b_copy = b.template cast<int>();
   Eigen::MatrixXd bc_copy = bc.template cast<double>();
-  Eigen::MatrixXd uv;
+  Eigen::MatrixXd uv; //TODO: major
   bool success = igl::lscm(v_copy, f_copy, b_copy, bc_copy, uv);
   return std::make_tuple(success, npe::move(uv));
 
