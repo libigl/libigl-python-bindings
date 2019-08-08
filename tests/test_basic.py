@@ -741,9 +741,13 @@ class TestBasic(unittest.TestCase):
     # TODO: data type not familiar
     #def test_min_quad_dense_precompute(self):
 
-    # bad_alloc()
+    # malloc seg fault
     #def test_lscm(self):
-    #    success, uv = igl.lscm(self.v1, self.f1, self.f1, self.v1)
+    #    b = np.int32([1, 2, 3])
+    #    bc = np.float32([[1, 0, 0],
+    #                     [1, 1, 1],
+    #                     [2, 2, 2]])
+    #    success, uv = igl.lscm(self.v1, self.f1, b, bc)
     #    self.assertEqual(type(success), bool)
     #    self.assertEqual(uv.dtype, self.v1.dtype)
     #    self.assertEqual(uv.shape, (self.v1.shape[0], 2))
@@ -811,6 +815,20 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(nv.shape[1], self.v1.shape[1])
         self.assertEqual(nf.dtype, self.f1.dtype)
         self.assertEqual(nf.shape[1], self.f1.shape[1])
+
+    def test_segments_intersect(self):
+        p = np.float32([0,0,0])
+        r = np.float32([1,2,3])
+        q = np.float32([5,5,5])
+        s = np.float32([3,2,1])
+        is_intersect, t, u, eps = igl.segments_intersect(p, r, q, s)
+        self.assertEqual(type(is_intersect), bool)
+        self.assertEqual(type(t), float)
+        self.assertEqual(type(u), float)
+
+    #std::vector in python
+    #def test_biharmonic_coordinates(self):
+    #    pass
 
 
 if __name__ == '__main__':

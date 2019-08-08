@@ -1,6 +1,7 @@
 // TODO: __example
 // error at line 33 and 41, saying cross is only for certain size matrices
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -56,6 +57,10 @@ npe_arg(s, npe_matches(p))
 
 
 npe_begin_code()
+  assert_shape_equals(p, 3, 1, "p");
+  assert_shapes_match(p, r, "p", "r");
+  assert_shapes_match(p, q, "p", "q");
+  assert_shapes_match(p, s, "p", "s");
   // TODO: remove __copy
   Eigen::Vector3d p_copy = p.template cast<double>();
   Eigen::Vector3d r_copy = r.template cast<double>();

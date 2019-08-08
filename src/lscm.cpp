@@ -46,6 +46,10 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(b, npe_matches(f))
 npe_arg(bc, npe_matches(v))
 npe_begin_code()
+  assert_valid_3d_tri_mesh(v, f);
+  assert_cols_equals(b, 1, "b");
+  assert_rows_match(b, bc, "b", "bc");
+  assert_cols_match(f, bc, "f", "bc");
 
   // TODO: remove __copy
   Eigen::MatrixXd v_copy = v.template cast<double>();
@@ -54,7 +58,8 @@ npe_begin_code()
   Eigen::MatrixXd bc_copy = bc.template cast<double>();
   Eigen::MatrixXd uv; //TODO: major
   bool success = igl::lscm(v_copy, f_copy, b_copy, bc_copy, uv);
-  return std::make_tuple(success, npe::move(uv));
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> uv_row_major = uv;
+  return std::make_tuple(success, npe::move(uv_row_major));
 
 npe_end_code()
 

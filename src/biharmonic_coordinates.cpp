@@ -1,6 +1,7 @@
 // TODO: Eigen opperators like *= /* coeff not working
 // __bug
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -87,6 +88,7 @@ npe_arg(s, std::vector<std::vector<int> >)
 npe_default_arg(k, int, 2)
 
 npe_begin_code()
+  assert_valid_tet_or_tri_mesh(v, t, "v", "t");
   // TODO: remove __copy
   // the problem is the data struct in min quad with fixed
   npe_Matrix_v w;
