@@ -112,6 +112,21 @@ void assert_valid_tet_or_tri_mesh_faces(const TF& f, std::string f_name="f") {
     }
 }
 
+template <typename TF>
+void assert_valid_tri_mesh_faces(const TF &f, std::string f_name = "f")
+{
+    if (f.rows() <= 0)
+    {
+        throw pybind11::value_error("Invalid mesh indices, " + f_name + " has zero rows (" + f_name + ".shape = [" +
+                                    std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]) ");
+    }
+
+    if (f.cols() != 3)
+    {
+        throw pybind11::value_error("Invalid mesh indices, " + f_name + " must have shape [#faces, 3] " +
+                                    "but got " + f_name + ".shape = [" + std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]");
+    }
+}
 
 template <typename TV, typename TF>
 void assert_valid_tet_or_tri_mesh(const TV& v, const TF& f, std::string v_name="v", std::string f_name="f") {
