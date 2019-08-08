@@ -12,7 +12,7 @@
 #include <igl/segment_segment_intersect.h>
 
 const char* ds_segments_intersect = R"igl_Qu8mg5v7(
- 
+
 Determine whether two line segments A,B intersect
     A: p + t*r :  t \in [0,1]
     B: q + u*s :  u \in [0,1]
@@ -24,7 +24,7 @@ r  3-vector direction of segment A
 q  3-vector origin of segment B
 s  3-vector direction of segment B
 eps precision
- 
+
 
 Returns
 -------
@@ -56,11 +56,16 @@ npe_arg(s, npe_matches(p))
 
 
 npe_begin_code()
+  // TODO: remove __copy
+  Eigen::Vector3d p_copy = p.template cast<double>();
+  Eigen::Vector3d r_copy = r.template cast<double>();
+  Eigen::Vector3d q_copy = q.template cast<double>();
+  Eigen::Vector3d s_copy = s.template cast<double>();
 
   double t;
   double u;
   double eps;
-  bool is_intersect = igl::segment_segment_intersect(p, r, q, s, t, u, eps);
+  bool is_intersect = igl::segment_segment_intersect(p_copy, r_copy, q_copy, s_copy, t, u, eps);
   return std::make_tuple(is_intersect, t, u, eps);
 
 npe_end_code()
