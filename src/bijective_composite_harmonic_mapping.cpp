@@ -1,6 +1,4 @@
-// TODO: Fix Derivedbc=Map<Matrix<...>>, which leads to Derivedbc b0 to fail.
-// __bug
-
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/bijective_composite_harmonic_mapping.h>
@@ -39,22 +37,29 @@ None
 
 Examples
 --------
-   
+
 )igl_Qu8mg5v7";
 
 npe_function(bijective_composite_harmonic_mapping)
 npe_doc(ds_bijective_composite_harmonic_mapping)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
-npe_arg(b, dense_float, dense_double)
-npe_arg(bc, dense_float, dense_double)
+npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(b, npe_matches(f))
+npe_arg(bc, npe_matches(v))
 
 
 npe_begin_code()
+  assert_valid_2d_tri_mesh(v, f);
+  assert_nonzero_rows(b, "b");
+  assert_cols_equals(b, 1, "b");
+  assert_shape_equals(bc, b.rows(), 2, "bc");
 
+  // TODO: remove __copy: min_quad_with_fixed.cpp data
+  Eigen::MatrixXi f_copy = f.template cast<int>();
+  Eigen::MatrixXi b_copy = b.template cast<int>();
   npe_Matrix_v u;
-  igl::bijective_composite_harmonic_mapping(v, f, b, bc, u);
+  igl::bijective_composite_harmonic_mapping(v, f_copy, b_copy, bc, u);
   return npe::move(u);
 
 npe_end_code()
@@ -91,16 +96,16 @@ None
 Examples
 --------
 
-   
+
 )igl_Qu8mg5v7";
 
-npe_function(internal_bijective_composite_harmonic_mapping)
+npe_function(bijective_composite_harmonic_mapping_with_steps)
 npe_doc(ds_internal_bijective_composite_harmonic_mapping)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
-npe_arg(b, dense_float, dense_double)
-npe_arg(bc, dense_float, dense_double)
+npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(b, npe_matches(f))
+npe_arg(bc, npe_matches(v))
 npe_arg(min_steps, int)
 npe_arg(max_steps, int)
 npe_arg(num_inner_iters, int)
@@ -108,10 +113,16 @@ npe_arg(test_for_flips, bool)
 
 
 npe_begin_code()
-
+  assert_valid_2d_tri_mesh(v, f);
+  assert_nonzero_rows(b, "b");
+  assert_cols_equals(b, 1, "b");
+  assert_shape_equals(bc, b.rows(), 2, "bc");
+  // TODO: remove __copy: min_quad_with_fixed.cpp data
+  Eigen::MatrixXi f_copy = f.template cast<int>();
+  Eigen::MatrixXi b_copy = b.template cast<int>();
   npe_Matrix_v u;
-  igl::bijective_composite_harmonic_mapping(v, f, b, bc, min_steps, max_steps, num_inner_iters, test_for_flips, u);
-  return npe::move(u);
+  bool success = igl::bijective_composite_harmonic_mapping(v, f_copy, b_copy, bc, min_steps, max_steps, num_inner_iters, test_for_flips, u);
+  return std::make_pair(success, npe::move(u));
 
 npe_end_code()
 
