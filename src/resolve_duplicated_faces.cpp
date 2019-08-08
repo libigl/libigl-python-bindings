@@ -49,7 +49,7 @@ npe_arg(f1, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-  //assert_valid_3d_tri_mesh_faces(f, "f");
+  assert_valid_tri_mesh_faces(f1, "f1");
   // TODO: remove __copy
   // same problem that DerivedF1 causes problem, can be prevented
   Eigen::MatrixXi f1_copy = f1.template cast<int>();

@@ -33,7 +33,7 @@ npe_doc(ds_boundary_loop)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
-  //assert_valid_tet_or_tri_mesh_faces(f, "f");
+  assert_valid_tri_mesh_faces(f);
   EigenDenseLike<npe_Matrix_f> l;
   igl::boundary_loop(f, l);
   return npe::move(l);

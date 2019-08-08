@@ -40,7 +40,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-  assert_valid_tet_or_tri_mesh(v, f);
+  assert_valid_3d_tri_mesh(v, f);
   EigenDense<npe_Scalar_v> r;
   igl::circumradius(v, f, r);
   return npe::move(r);

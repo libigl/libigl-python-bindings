@@ -31,7 +31,7 @@ npe_function(vertex_components)
 npe_doc(ds_vertex_components)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
-    //assert_valid_3d_tri_mesh_faces(f, "f");
+    assert_valid_tri_mesh_faces(f);
     npe_Matrix_f c;
     igl::vertex_components(f, c);
     return npe::move(c);

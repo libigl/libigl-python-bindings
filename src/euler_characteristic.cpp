@@ -38,7 +38,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-  //assert_valid_tet_or_tri_mesh_faces(f, "f");
+  assert_valid_tri_mesh_faces(f);
   return igl::euler_characteristic(f);
 
 npe_end_code()
@@ -77,7 +77,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-  assert_valid_tet_or_tri_mesh(v, f);
+  assert_valid_3d_tri_mesh(v, f);
   return igl::euler_characteristic(v, f);
 
 npe_end_code()

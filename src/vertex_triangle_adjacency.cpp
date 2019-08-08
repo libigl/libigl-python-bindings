@@ -46,7 +46,7 @@ npe_arg(n, int)
 
 npe_begin_code()
 
-  //assert_valid_3d_tri_mesh_faces(f, "f");
+  assert_valid_tri_mesh_faces(f);
   Eigen::VectorXi vf;
   Eigen::VectorXi ni;
   igl::vertex_triangle_adjacency(f, n, vf, ni);

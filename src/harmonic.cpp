@@ -90,7 +90,7 @@ npe_arg(k, int)
 
 npe_begin_code()
 
-  //assert_valid_tet_or_tri_mesh_faces(f, "f");
+  assert_valid_tet_or_tri_mesh_faces(f, "f");
   assert_nonzero_rows(bc, "bc");
   EigenDenseLike<npe_Matrix_bc> w;
   igl::harmonic(f, b, bc, k, w);
