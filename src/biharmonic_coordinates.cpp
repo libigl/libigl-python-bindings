@@ -11,7 +11,7 @@
 
 #include <igl/biharmonic_coordinates.h>
 
-const char* ds_biharmonic_coordinates = R"igl_Qu8mg5v7(
+const char *ds_biharmonic_coordinates = R"igl_Qu8mg5v7(
 
 Compute "discrete biharmonic generalized barycentric coordinates" as
   described in "Linear Subspace Design for Real-Time Shape Deformation"
@@ -34,6 +34,7 @@ S  #point-handles+#region-handles list of lists of selected vertices for
   each handle. Point handles should have singleton lists and region
   handles should have lists of size at least dim+1 (and these points
   should be in general position).
+k  2-->biharmonic, 3-->triharmonic
 
 
 Returns
@@ -81,59 +82,16 @@ npe_function(biharmonic_coordinates)
 npe_doc(ds_biharmonic_coordinates)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(t, dense_float, dense_double)
-npe_arg(s, std::vector<std::vector<int> > &)
-
+npe_arg(t, dense_int, dense_long, dense_longlong)
+npe_arg(s, std::vector<std::vector<int> >)
+npe_default_arg(k, int, 2)
 
 npe_begin_code()
-
+  // TODO: remove __copy
+  // the problem is the data struct in min quad with fixed
   npe_Matrix_v w;
-  igl::biharmonic_coordinates(v, t, s, w);
+  Eigen::MatrixXi t_copy = t.template cast<int>();
+  igl::biharmonic_coordinates(v, t_copy, s, k, w);
   return npe::move(w);
 
 npe_end_code()
-
-
-
-const char* ds_bitriharmonic_coordinates = R"igl_Qu8mg5v7(
-
-Parameters
-----------
-k  2-->biharmonic, 3-->triharmonic
-The rest are the same as biharmonic_coordinates
-
-Returns
--------
-
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(bitriharmonic_coordinates)
-npe_doc(ds_bitriharmonic_coordinates)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(t, dense_float, dense_double)
-npe_arg(s, std::vector<std::vector<int> > &)
-npe_arg(k, int)
-
-
-npe_begin_code()
-
-  npe_Matrix_v w;
-  igl::biharmonic_coordinates(v, t, s, k, w);
-  return npe::move(w);
-
-npe_end_code()
-
-
