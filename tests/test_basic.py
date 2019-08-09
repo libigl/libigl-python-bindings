@@ -139,7 +139,7 @@ class TestBasic(unittest.TestCase):
         #print(v.shape, f.shape)
 
     def test_read_triangle_mesh_type_issue(self):
-        v, f = igl.read_triangle_mesh("data/armadillo.obj")
+        v, f = igl.read_triangle_mesh(self.test_path + "face.obj")
         vs = np.array([0])
         vt = np.arange(v.shape[0])
         d = igl.exact_geodesic(v, f, vs, vt)
