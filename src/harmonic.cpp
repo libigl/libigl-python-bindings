@@ -36,16 +36,20 @@ npe_function(harmonic_weights)
 npe_doc(ds_harmonic_w)
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long, dense_longlong)
-npe_arg(b, dense_int)
+npe_arg(b, npe_matches(f))
 npe_arg(bc, npe_matches(v))
 npe_arg(k, int)
 
 npe_begin_code()
 
-  assert_valid_tet_or_tri_mesh(v, f);
+  assert_valid_tet_or_tri_mesh_23d(v, f);
   assert_nonzero_rows(bc, "bc");
+  assert_rows_match(b, bc, "b", "bc");
+  // TODO: remove __copy
+  // the problem is the data struct in min quad with fixed
+  Eigen::MatrixXi b_copy = b.template cast<int>();
   EigenDenseLike<npe_Matrix_v> w;
-  igl::harmonic(v, f, b, bc, k, w);
+  igl::harmonic(v, f, b_copy, bc, k, w);
   return npe::move(w);
 
 npe_end_code()
@@ -79,11 +83,11 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(harmonic_uniform_laplacian)
+npe_function(harmonic_weights_uniform_laplacian)
 npe_doc(ds_harmonic_ul)
 
 npe_arg(f, dense_int, dense_long, dense_longlong)
-npe_arg(b, dense_int)
+npe_arg(b, npe_matches(f))
 npe_arg(bc, dense_float, dense_double)
 npe_arg(k, int)
 
@@ -92,8 +96,13 @@ npe_begin_code()
 
   assert_valid_tet_or_tri_mesh_faces(f, "f");
   assert_nonzero_rows(bc, "bc");
+  assert_rows_match(b, bc, "b", "bc");
+
+  // TODO: remove __copy
+  // the problem is the data struct in min quad with fixed
+  Eigen::MatrixXi b_copy = b.template cast<int>();
   EigenDenseLike<npe_Matrix_bc> w;
-  igl::harmonic(f, b, bc, k, w);
+  igl::harmonic(f, b_copy, bc, k, w);
   return npe::move(w);
 
 npe_end_code()
@@ -133,12 +142,12 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(harmonic)
+npe_function(harmonic_weights_from_laplacian_and_mass)
 npe_doc(ds_harmonic)
 //TODO: l and bc need to have same type, matching missing
 npe_arg(l, sparse_double)
 npe_arg(m, npe_matches(l))
-npe_arg(b, dense_int)
+npe_arg(b, dense_int, dense_long, dense_longlong)
 npe_arg(bc, dense_double)
 npe_arg(k, int)
 
@@ -148,8 +157,13 @@ npe_begin_code()
   assert_shapes_match(l, m, "l", "m");
   assert_nonzero_rows(l, "l");
   assert_nonzero_rows(bc, "bc");
+  assert_rows_match(b, bc, "b", "bc");
+
+  // TODO: remove __copy
+  // the problem is the data struct in min quad with fixed
+  Eigen::MatrixXi b_copy = b.template cast<int>();
   EigenDenseLike<npe_Matrix_bc> w;
-  igl::harmonic(l, m, b, bc, k, w);
+  igl::harmonic(l, m, b_copy, bc, k, w);
   return npe::move(w);
 
 npe_end_code()
@@ -181,7 +195,7 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(harmonic_integrated_with_laplacian)
+npe_function(harmonic_weights_integrated_from_laplacian_and_mass)
 npe_doc(ds_harmonic_int_lapl)
 
 npe_arg(l, sparse_float, sparse_double)
@@ -225,7 +239,7 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(_integrated)
+npe_function(harmonic_weights_integrated)
 npe_doc(ds_harmonic_int)
 
 npe_arg(v, dense_float, dense_double)

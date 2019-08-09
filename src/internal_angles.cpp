@@ -35,7 +35,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-  assert_valid_3d_tri_mesh(v, f);
+  assert_valid_23d_tri_mesh(v, f);
   EigenDenseLike<npe_Matrix_v> k;
   igl::internal_angles(v, f, k);
   return npe::move(k);
@@ -69,7 +69,7 @@ npe_end_code()
 //   Output:
 //     K  #F by poly-size eigen Matrix of internal angles
 //       for triangles, columns correspond to edges [1,2],[2,0],[0,1]
-//  
+//
 //   Note:
 //     Usage of internal_angles_using_squared_edge_lengths is preferred to internal_angles_using_squared_edge_lengths
 //)igl_Qu8mg5v7";
@@ -115,7 +115,7 @@ npe_end_code()
 //   Output:
 //     K  #F by poly-size eigen Matrix of internal angles
 //       for triangles, columns correspond to edges [1,2],[2,0],[0,1]
-//  
+//
 //   Note:
 //     Usage of internal_angles_using_squared_edge_lengths is preferred to internal_angles_using_squared_edge_lengths
 //     This function is deprecated and probably will be removed in future versions

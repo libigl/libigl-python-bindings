@@ -8,7 +8,7 @@ Compute dihedral angles for all tets of a given tet mesh (v, t).
 
 Parameters
 ----------
-v : #v by dim list of vertex positions
+v : #v by 3 list of vertex positions
 t : #v by 4 list of tet indices
 
 Returns

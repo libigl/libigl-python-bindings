@@ -37,7 +37,7 @@ Examples
 --------
 See for example "Discrete Quadratic Curvature Energies" [Wardetzky, Bergou,
   Harmon, Zorin, Grinspun 2007]
- 
+
 )igl_Qu8mg5v7";
 
 npe_function(crouzeix_raviart_cotmatrix)
@@ -49,7 +49,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-  assert_valid_tet_or_tri_mesh(v, f);
+  assert_valid_tet_or_tri_mesh_23d(v, f);
   EigenSparseLike<npe_Matrix_v> l;
   npe_Matrix_f e;
   npe_Matrix_f emap;
@@ -61,7 +61,7 @@ npe_end_code()
 
 
 const char* ds_crouzeix_raviart_cotmatrix_known_e = R"igl_Qu8mg5v7(
- 
+
 wrapper if E and EMAP are already computed (better match!)
 
 Parameters

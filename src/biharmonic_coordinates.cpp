@@ -89,6 +89,7 @@ npe_default_arg(k, int, 2)
 
 npe_begin_code()
   assert_valid_tet_or_tri_mesh(v, t, "v", "t");
+  // TODO: t.rows = dim+1
   // TODO: remove __copy
   // the problem is the data struct in min quad with fixed
   npe_Matrix_v w;

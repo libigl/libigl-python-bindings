@@ -43,7 +43,7 @@ None
 Examples
 --------
 
-  
+
 )igl_Qu8mg5v7";
 
 npe_function(uniformly_sample_two_manifold_internal)
@@ -57,7 +57,7 @@ npe_arg(push, double)
 
 npe_begin_code()
 
-  assert_valid_3d_tri_mesh(w, f);
+  assert_valid_23d_tri_mesh(w, f);
   // TODO: remove __copy
   Eigen::MatrixXd w_copy = w.template cast<double>();
   Eigen::MatrixXi f_copy = f.template cast<int>();

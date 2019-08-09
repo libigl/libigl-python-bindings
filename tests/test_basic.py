@@ -143,7 +143,7 @@ class TestBasic(unittest.TestCase):
         e = np.array([[0, 1], [1, 2], [2, 3], [3, 0]], dtype="int32")
         h = np.array([[]])
         #print("v.dtype = %s, h.dtype = %s" % (v.dtype, h.dtype))
-        v2, f2 = igl.triangulate(v, e, h, flags="a0.005q")
+        v2, f2 = igl.triangulate(v, e, h, flags="a0.005qQ")
         self.assertTrue(v2.dtype == v.dtype)
         self.assertTrue(type(v2) == type(f2) == np.ndarray)
 
@@ -368,7 +368,7 @@ class TestBasic(unittest.TestCase):
 
     def test_hausdorff(self):
         dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
-        print(dist)
+        # print(dist)
 
     def test_isolines(self):
         func = np.random.rand(self.v1.shape[0], 1)
@@ -707,7 +707,7 @@ class TestBasic(unittest.TestCase):
         circle_b = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros([len(b), 1])], axis=1)
 
         v0 = igl.harmonic_weights(v, f.astype(np.int32), b, np.asfortranarray(circle_b), 1)
-        print(circle_b.shape, b.shape, v.shape, v.shape)
+        # print(circle_b.shape, b.shape, v.shape, v.shape)
         arap = igl.ARAP(v, f, 2, b)
 
         v2 = arap.solve(circle_b[:, :2], v0[:, :2])
@@ -742,28 +742,29 @@ class TestBasic(unittest.TestCase):
     #def test_min_quad_dense_precompute(self):
 
     # malloc seg fault
-    #def test_lscm(self):
-    #    b = np.int32([1, 2, 3])
-    #    bc = np.float32([[1, 0, 0],
-    #                     [1, 1, 1],
-    #                     [2, 2, 2]])
-    #    success, uv = igl.lscm(self.v1, self.f1, b, bc)
-    #    self.assertEqual(type(success), bool)
-    #    self.assertEqual(uv.dtype, self.v1.dtype)
-    #    self.assertEqual(uv.shape, (self.v1.shape[0], 2))
+    def test_lscm(self):
+       b = np.int32([1, 2, 3])
+       bc = np.array([
+           [1, 0],
+           [1, 1],
+           [2, 2]], dtype = self.v1.dtype)
+       success, uv = igl.lscm(self.v1, self.f1, b, bc)
+       self.assertEqual(type(success), bool)
+       self.assertEqual(uv.dtype, self.v1.dtype)
+       self.assertEqual(uv.shape, (self.v1.shape[0], 2))
 
     def test_is_irregular_vertex(self):
        is_i = igl.is_irregular_vertex(self.v1, self.f1)
        self.assertEqual(type(is_i[0]), bool)
 
     # problem in helper, requiring second argument be int type
-    #def test_harmonic(self):
-    #    l = igl.cotmatrix(self.v1, self.f1)
-    #    m = igl.massmatrix(self.v1, self.f1, igl.MASSMATRIX_TYPE_VORONOI)
-    #    b = np.random.randint(0, 10, (10, 1))
-    #    bc = self.v1[b, :]
-    #    k = 1
-    #    w = igl.harmonic(l, m, b, self.v1, k)
+    def test_harmonic(self):
+       l = igl.cotmatrix(self.v1, self.f1)
+       m = igl.massmatrix(self.v1, self.f1, igl.MASSMATRIX_TYPE_VORONOI)
+       b = np.array([1, 2, 10, 7])
+       bc = self.v1[b, :]
+       k = 1
+       w = igl.harmonic_weights_from_laplacian_and_mass(l, m, b, bc, k)
 
     def test_exact_geodesic(self):
         vs = np.array([0], dtype=self.f1.dtype)

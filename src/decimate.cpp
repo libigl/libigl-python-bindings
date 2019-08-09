@@ -41,7 +41,7 @@ None
 Examples
 --------
 
-  
+
 )igl_Qu8mg5v7";
 
 npe_function(decimate)
@@ -54,7 +54,7 @@ npe_arg(max_m, size_t)
 
 npe_begin_code()
 
-  assert_valid_3d_tri_mesh(v, f);
+  assert_valid_23d_tri_mesh(v, f);
   // TODO: remove __copy
   Eigen::MatrixXd v_copy = v.template cast<double>();
   Eigen::MatrixXi f_copy = f.template cast<int>();

@@ -13,8 +13,8 @@ const char *ds_write_triangle_mesh = R"igl_Qu8mg5v7(
 Parameters
 ----------
     str  path to file
-     V  eigen double matrix #V by 3
-     F  eigen int matrix #F by 3
+     V  double matrix #V by 3
+     F  int matrix #F by 3
     force_ascii=True  force ascii format even if binary is available
 Returns
 -------

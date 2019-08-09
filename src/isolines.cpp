@@ -45,7 +45,7 @@ npe_arg(n, int)
 
 npe_begin_code()
 
-  assert_valid_3d_tri_mesh(v, f);
+  assert_valid_23d_tri_mesh(v, f);
   assert_rows_match(v, z, "v", "z");
   assert_cols_equals(z, 1, "z");
   npe_Matrix_v iso_v;

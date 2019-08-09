@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -58,6 +59,8 @@ npe_arg(fb, npe_matches(fa))
 
 
 npe_begin_code()
+    assert_valid_3d_tri_mesh(va, fa, "va", "fa");
+    assert_valid_3d_tri_mesh(vb, fb, "vb", "fb");
 
   double d;
   igl::hausdorff(va, fa, vb, fb, d);

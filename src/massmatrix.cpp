@@ -38,7 +38,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_default_arg(type, int, 1)
 npe_begin_code()
 
-  assert_valid_tet_or_tri_mesh(v, f);
+  assert_valid_23d_tri_mesh(v, f);
   static_assert(int(igl::MASSMATRIX_TYPE_BARYCENTRIC) == 0, "ARAPEnergyType enum changed!");
   static_assert(int(igl::MASSMATRIX_TYPE_VORONOI) == 1, "ARAPEnergyType enum changed!");
   static_assert(int(igl::MASSMATRIX_TYPE_FULL) == 2, "ARAPEnergyType enum changed!");
