@@ -12,7 +12,7 @@ Parameters
 v : #v by 3 array of mesh vertex positions
 f : #f by 3 array of mesh faces (must be triangles)
 b : #b boundary indices into v
-bc : #b by 3 list of boundary values
+bc : #b by 2 list of boundary values
 
 Returns
 -------
@@ -49,7 +49,8 @@ npe_begin_code()
   assert_valid_3d_tri_mesh(v, f);
   assert_cols_equals(b, 1, "b");
   assert_rows_match(b, bc, "b", "bc");
-  assert_cols_match(f, bc, "f", "bc");
+  // assert_cols_match(f, bc, "f", "bc");
+  assert_cols_equals(bc, 2, "bc");
 
   // TODO: remove __copy
   Eigen::MatrixXd v_copy = v.template cast<double>();

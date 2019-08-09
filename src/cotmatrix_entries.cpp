@@ -19,7 +19,7 @@ Returns
     for triangles, columns correspond to edges [1,2],[2,0],[0,1]
 OR
   C  #F by 6 list of 1/6*cotangents of dihedral angles*edge lengths
-    for tets, columns along edges [1,2],[2,0],[0,1],[3,0],[3,1],[3,2] 
+    for tets, columns along edges [1,2],[2,0],[0,1],[3,0],[3,1],[3,2]
 
 
 See also
@@ -33,7 +33,7 @@ None
 Examples
 --------
 
-  
+
 )igl_Qu8mg5v7";
 
 npe_function(cotmatrix_entries)
@@ -45,7 +45,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-  assert_valid_tet_or_tri_mesh(v, f);
+  assert_valid_tet_or_tri_mesh_23d(v, f);
   npe_Matrix_v c;
   igl::cotmatrix_entries(v, f, c);
   return npe::move(c);

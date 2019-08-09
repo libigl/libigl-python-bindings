@@ -36,7 +36,7 @@ npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
 
 npe_begin_code()
-  assert_valid_tet_or_tri_mesh(v, f);
+  assert_valid_tet_or_tri_mesh_23d(v, f);
   const std::vector<bool> res = igl::is_irregular_vertex(v, f);
   return res;
 

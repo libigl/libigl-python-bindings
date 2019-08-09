@@ -35,7 +35,7 @@ None
 Examples
 --------
 
-  
+
 )igl_Qu8mg5v7";
 
 npe_function(remove_unreferenced)
@@ -47,7 +47,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
 
-  assert_valid_tet_or_tri_mesh(v, f);
+  assert_valid_tet_or_tri_mesh_23d(v, f);
   npe_Matrix_v nv;
   npe_Matrix_f nf;
   npe_Matrix_f i;

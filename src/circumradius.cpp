@@ -10,7 +10,7 @@ Parameters
 ----------
 V  #V by dim list of mesh vertex positions
 F  #F by 3 list of triangle indices into V
- 
+
 
 Returns
 -------
@@ -27,8 +27,8 @@ None
 Examples
 --------
 R = circumradius(V, F)
-  
-  
+
+
 )igl_Qu8mg5v7";
 
 npe_function(circumradius)
@@ -39,8 +39,8 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 
 npe_begin_code()
-
-  assert_valid_3d_tri_mesh(v, f);
+  // TODO: v can also be 2d
+  assert_valid_23d_tri_mesh(v, f);
   EigenDense<npe_Scalar_v> r;
   igl::circumradius(v, f, r);
   return npe::move(r);
