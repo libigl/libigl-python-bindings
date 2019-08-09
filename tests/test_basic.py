@@ -140,8 +140,8 @@ class TestBasic(unittest.TestCase):
 
     def test_read_triangle_mesh_type_issue(self):
         v, f = igl.read_triangle_mesh(self.test_path + "face.obj")
-        vs = np.array([0])
-        vt = np.arange(v.shape[0])
+        vs = np.array([0], dtype = f.dtype)
+        vt = np.arange(v.shape[0], dtype = f.dtype)
         d = igl.exact_geodesic(v, f, vs, vt)
 
     def test_triangulate(self):
