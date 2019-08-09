@@ -47,7 +47,7 @@ npe_begin_code()
     return std::make_tuple(npe::move(v), npe::move(f));
   } else if (dtype.type() == npe::type_f64) {
     EigenDenseF64 v;
-    EigenDenseI32 f;
+    EigenDenseI64 f;
     bool ret = igl::read_triangle_mesh(filename, v, f);
     if (!ret) {
       throw std::invalid_argument("File '" + filename + "' not found.");
