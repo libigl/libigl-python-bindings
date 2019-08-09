@@ -52,7 +52,9 @@ npe_begin_code()
   Eigen::RowVector3d n;
   Eigen::RowVector3d c;
   igl::fit_plane(v_copy, n, c);
-  return std::make_tuple(npe::move(n), npe::move(c));
+  Eigen::Matrix<double, 1, 3, Eigen::RowMajor> n_row_major = n;
+  Eigen::Matrix<double, 1, 3, Eigen::RowMajor> c_row_major = c;
+  return std::make_tuple(npe::move(n_row_major), npe::move(c_row_major));
 
 npe_end_code()
 

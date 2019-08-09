@@ -66,7 +66,12 @@ npe_begin_code()
   Eigen::VectorXi j;
   Eigen::VectorXi i;
   bool success = igl::qslim(v_copy, f_copy, max_m, u, g, j, i);
-  return std::make_tuple(success, npe::move(u), npe::move(g), npe::move(j), npe::move(i));
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> u_row_major = u;
+  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> g_row_major = g;
+  // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
+  Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor> j_row_major = j;
+  Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor> i_row_major = i;
+  return std::make_tuple(success, npe::move(u_row_major), npe::move(g_row_major), npe::move(j_row_major), npe::move(i_row_major));
 
 npe_end_code()
 

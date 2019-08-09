@@ -45,6 +45,7 @@ npe_begin_code()
   // In the libigl code r is column major, and using row major fails assertion
   // EIGEN_STATIC_ASSERT((EIGEN_IMPLIES(MaxRowsAtCompileTime==1 && 
   //    MaxColsAtCompileTime!=1, (Options&RowMajor)==RowMajor)
+  // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
   Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor, Eigen::Dynamic, 1> r;
   igl::sort_angles(m, r);
   return npe::move(r);

@@ -38,9 +38,10 @@ npe_begin_code()
 
   assert_nonzero_rows(v, "v");
   npe_Matrix_v bv;
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> bf;
+  Eigen::MatrixXi bf;
   igl::bounding_box(v, bv, bf);
-  return std::make_tuple(npe::move(bv), npe::move(bf));
+  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> bf_row_major = bf;
+  return std::make_tuple(npe::move(bv), npe::move(bf_row_major));
 
 npe_end_code()
 
@@ -65,9 +66,10 @@ npe_begin_code()
 
   assert_nonzero_rows(v, "v");
   npe_Matrix_v bv;
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> bf;
+  Eigen::MatrixXi bf;
   igl::bounding_box(v, pad, bv, bf);
-  return std::make_tuple(npe::move(bv), npe::move(bf));
+  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> bf_row_major = bf;
+  return std::make_tuple(npe::move(bv), npe::move(bf_row_major));
 
 npe_end_code()
 

@@ -60,7 +60,8 @@ npe_begin_code()
   Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::MatrixXi ff;
   igl::collapse_small_triangles(v_copy, f_copy, eps, ff);
-  return npe::move(ff);
+  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> ff_row_major = ff;
+  return npe::move(ff_row_major);
 
 npe_end_code()
 

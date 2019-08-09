@@ -42,10 +42,12 @@ npe_arg(height_devisions, int)
 
 npe_begin_code()
 
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> v;
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> f;
+  Eigen::MatrixXd v;
+  Eigen::MatrixXi f;
   igl::cylinder(axis_devisions, height_devisions, v, f);
-  return std::make_tuple(npe::move(v), npe::move(f));
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> v_row_major = v;
+  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> f_row_major = f;
+  return std::make_tuple(npe::move(v_row_major), npe::move(f_row_major));
 
 npe_end_code()
 

@@ -57,11 +57,12 @@ npe_begin_code()
   assert_nonzero_rows(a, "a");
   assert_nonzero_rows(aeq, "aeq");
   assert_cols_match(a, aeq, "a", "aeq");
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> a_copy = a.template cast<double>();
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> aeq_copy = aeq.template cast<double>();
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, Eigen::Dynamic, Eigen::Dynamic> s;
+  Eigen::MatrixXd a_copy = a.template cast<double>();
+  Eigen::MatrixXd aeq_copy = aeq.template cast<double>();
+  Eigen::MatrixXd s;
   igl::min_quad_dense_precompute(a_copy, aeq_copy, use_lu_decomposition, s);
-  return npe::move(s);
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> s_row_major = s;
+  return npe::move(s_row_major);
 
 npe_end_code()
 

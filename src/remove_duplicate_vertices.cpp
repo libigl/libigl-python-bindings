@@ -66,7 +66,8 @@ npe_begin_code()
   npe_Matrix_f svj;
   npe_Matrix_f sf;
   igl::remove_duplicate_vertices(v_copy, f, epsilon, sv, svi, svj, sf);
-  return std::make_tuple(npe::move(sv), npe::move(svi), npe::move(svj), npe::move(sf));
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> sv_row_major = sv;
+  return std::make_tuple(npe::move(sv_row_major), npe::move(svi), npe::move(svj), npe::move(sf));
 
 npe_end_code()
 
