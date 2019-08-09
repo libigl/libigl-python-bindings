@@ -442,15 +442,6 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(kd.shape[1], self.f1.shape[0])
         self.assertEqual(len(kd.shape), 2)
 
-    # def test_boundary_conditions(self):
-    #     success, b, bc = igl.boundary_conditions(self.v1, self.f1, self.v1[1:10, :], self.f1, self.f1, self.f1)
-    #     self.assertEqual(type(success), bool)
-    #     self.assertEqual(b.dtype, self.f1.dtype)
-    #     self.assertEqual(bc.dtype, self.v1.dtype)
-    #     self.assertEqual(len(b.shape), 1)
-    #     self.assertEqual(b.shape[0], bc.shape[0])
-
-
     def test_bounding_box_diagonal(self):
         length = igl.bounding_box_diagonal(self.v1)
         self.assertEqual(type(length), float)
@@ -793,13 +784,6 @@ class TestBasic(unittest.TestCase):
     #    self.assertEqual(seams.shape, (self.f1.shape[0], 3))
     #    self.assertEqual(seams.dtype, bool)
 
-
-    # TODO: fix the bug that c has shape (0,0)
-    #def test_centroid(self):
-    #    c, vol = igl.centroid(self.v1, self.f1)
-    #    self.assertEqual(c[0].dtype, self.v1.dtype)
-    #    self.assertEqual(type(vol), float)
-    #    self.assertEqual(c[0].shape[1], self.f1.shape[1])
 
     #def test_BBW(self):
     #    BBW = igl.BBW()
