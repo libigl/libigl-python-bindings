@@ -120,6 +120,9 @@ class TestBasic(unittest.TestCase):
         v, _, n, f, _, _ = igl.read_obj(self.test_path + "face.obj", dtype="float32")
         self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
         self.assertTrue(v.dtype == np.float32)
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(n.flags.c_contiguous)
 
     def test_read_off(self):
         v, f, n = igl.read_off(self.test_path + "bunny.off")
@@ -129,6 +132,9 @@ class TestBasic(unittest.TestCase):
         v, f, n = igl.read_off(self.test_path + "bunny.off", read_normals=False, dtype="float32")
         self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
         self.assertTrue(v.dtype == np.float32)
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(n.flags.c_contiguous)
 
     def test_read_triangle_mesh(self):
         v, f = igl.read_triangle_mesh(self.test_path + "octopus-low.mesh")
@@ -137,6 +143,8 @@ class TestBasic(unittest.TestCase):
         #print(v.shape, f.shape)
         v, f = igl.read_triangle_mesh(self.test_path + "bunny.off")
         #print(v.shape, f.shape)
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(f.flags.c_contiguous)
 
     def test_triangulate(self):
         v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
@@ -346,6 +354,7 @@ class TestBasic(unittest.TestCase):
     def test_read_dmat(self):
         mat = igl.read_dmat(self.test_path + "decimated-knight-selection.dmat")
         self.assertEqual(mat.dtype, "float64")
+        self.assertTrue(mat.flags.c_contiguous)
 
     def test_vector_area_matrix(self):
         a = igl.vector_area_matrix(self.f)
