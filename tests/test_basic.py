@@ -703,7 +703,7 @@ class TestBasic(unittest.TestCase):
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         circle_b = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros([len(b), 1])], axis=1)
 
-        v0 = igl.harmonic_weights(v, f.astype(np.int32), b, np.asfortranarray(circle_b), 1)
+        v0 = igl.harmonic_weights(v, f.astype(np.int32), b.astype(np.int32), np.asfortranarray(circle_b), 1)
         # print(circle_b.shape, b.shape, v.shape, v.shape)
         arap = igl.ARAP(v, f, 2, b)
 
@@ -732,15 +732,8 @@ class TestBasic(unittest.TestCase):
     #    n, e, emap = igl.per_edge_normals(self.v1, self.f1, 0, fn)
 
 
-    # TODO: missing
-    #def test_min_quad_with_fixed(self):
-
-    # TODO: data type not familiar
-    #def test_min_quad_dense_precompute(self):
-
-    # malloc seg fault
     def test_lscm(self):
-       b = np.int32([1, 2, 3])
+       b = np.array([1, 2, 3], dtype=self.f1.dtype)
        bc = np.array([
            [1, 0],
            [1, 1],
@@ -754,7 +747,6 @@ class TestBasic(unittest.TestCase):
        is_i = igl.is_irregular_vertex(self.v1, self.f1)
        self.assertEqual(type(is_i[0]), bool)
 
-    # problem in helper, requiring second argument be int type
     def test_harmonic(self):
        l = igl.cotmatrix(self.v1, self.f1)
        m = igl.massmatrix(self.v1, self.f1, igl.MASSMATRIX_TYPE_VORONOI)
