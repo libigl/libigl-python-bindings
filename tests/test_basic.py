@@ -355,12 +355,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(p.flags.c_contiguous)
 
     # TODO: not completed
-    # def test_circulation(self):
-    #     pass
-        # emap ef, ei are missing
-        # ret = igl.circulation(0, False, emap, ef, ei)
-        # self.assertTrue(type(ret) == list)
-        # self.assertTrue(type(ret[0]) == int)
+    #def test_circulation(self):
+    #    _, e, emap = igl.crouzeix_raviart_cotmatrix(self.v1, self.f1)
+    #    ret = igl.circulation(0, False, emap, e, e)
+    #    self.assertTrue(type(ret) == list)
+    #    self.assertTrue(type(ret[0]) == int)
 
 
     def test_collapse_small_triangles(self):
@@ -801,12 +800,12 @@ class TestBasic(unittest.TestCase):
         arap1 = igl.ARAP(v, f, 2, b)
         vp1 = arap1.solve(bc[:, :2], uv_initial_guess[:, :2])
         self.assertEqual(vp1.shape[0], v.shape[0])
-        self.assertTrue(arap1.flags.c_contiguous)
+        self.assertTrue(vp1.flags.c_contiguous)
 
         arap2 = igl.ARAP(v, f, 3, b)
         vp2 = arap2.solve(bc, uv_initial_guess)
         self.assertEqual(vp2.shape[0], v.shape[0])
-        self.assertTrue(arap2.flags.c_contiguous)
+        self.assertTrue(vp2.flags.c_contiguous)
 
     def test_arap2(self):
         num_b = 100
@@ -901,7 +900,7 @@ class TestBasic(unittest.TestCase):
 
     # Seg fault
     #def test_cut_mesh_from_singularities(self):
-    #    mismatch = np.random.randint(0, 2, size = (self.f1.shape[0], 3), dtype="int32")
+    #    mismatch = np.random.randint(0, 0, size = (self.f1.shape[0], 3), dtype="int32")
     #    seams = igl.cut_mesh_from_singularities(self.v1, self.f1, mismatch)
     #    self.assertEqual(seams.shape, (self.f1.shape[0], 3))
     #    self.assertEqual(seams.dtype, bool)
