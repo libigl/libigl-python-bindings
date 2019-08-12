@@ -939,6 +939,10 @@ class TestBasic(unittest.TestCase):
     #def test_biharmonic_coordinates(self):
     #    pass
 
+    #std::function in python
+    #def test_flip_avoid_line_search(self):
+    #    pass
+
 
 if __name__ == '__main__':
     unittest.main()
