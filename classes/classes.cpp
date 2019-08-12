@@ -30,7 +30,8 @@ PYBIND11_MODULE(pyigl_classes, m) {
           assert_cols_equals(initial_guess, self.dim, "initial_guess");
 
           igl::arap_solve(bc, self, initial_guess);
-          return npe::move(initial_guess);
+          Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> initial_guess_row_major = initial_guess;
+          return npe::move(initial_guess_row_major);
         });
 
     py::class_<igl::SLIMData>(m, "SLIM")
