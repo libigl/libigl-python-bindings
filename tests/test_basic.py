@@ -852,11 +852,12 @@ class TestBasic(unittest.TestCase):
 
 
     def test_lscm(self):
-        b = np.array([1, 2, 3], dtype=self.f1.dtype)
+        b = np.array([1, 2, 3])
+        print(b.dtype)
         bc = np.array([
            [1, 0],
            [1, 1],
-           [2, 2]], dtype = self.v1.dtype)
+           [2, 2]], dtype=float)
         success, uv = igl.lscm(self.v1, self.f1, b, bc)
         self.assertEqual(type(success), bool)
         self.assertEqual(uv.dtype, self.v1.dtype)

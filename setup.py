@@ -52,7 +52,7 @@ class CMakeBuild(build_ext):
                     cmake_args += ['-A', 'x64']
                 build_args += ['--', '/m']
         else:
-            build_args += ['--', '-j2']
+            build_args += ['--', '-j7']
 
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get('CXXFLAGS', ''),self.distribution.get_version())

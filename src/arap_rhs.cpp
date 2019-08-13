@@ -36,7 +36,7 @@ Examples
 npe_function(arap_rhs)
 npe_doc(ds_arap_rhs)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(d, int)
 npe_arg(energy, int)
 npe_begin_code()
