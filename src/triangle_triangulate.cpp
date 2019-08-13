@@ -47,8 +47,9 @@ npe_begin_code()
       assert_cols_equals(h, 2, "h");
       assert_cols_equals(h, 1, "h");
   }
-  npe_Matrix_v v2;
-  npe_Matrix_e f2;
+  EigenDenseLike<npe_Matrix_v> v2;
+  EigenDenseLike<npe_Matrix_e> f2;
+
   igl::triangle::triangulate(v, e, h, flags, v2, f2);
   return std::make_tuple(npe::move(v2), npe::move(f2));
 

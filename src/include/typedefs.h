@@ -3,15 +3,22 @@
 #include <Eigen/Sparse>
 
 
+const int IglDefaultOptions = Eigen::RowMajor;
+
+
+constexpr int extract_options(int options) {
+    if (options == (Eigen::ColMajor | Eigen::DontAlign) || options == (Eigen::RowMajor | Eigen::DontAlign)) {
+        return Eigen::RowMajor;
+    } else {
+        return options;
+    }
+}
+
 template <typename LikeT>
 using EigenSparseLike = Eigen::SparseMatrix<typename LikeT::Scalar, Eigen::ColMajor>; // FIXME: Maybe we should output CSR if LikeT is row major
 
 template <typename LikeT>
-using EigenDenseLike = Eigen::Matrix<typename LikeT::Scalar, Eigen::Dynamic, Eigen::Dynamic, LikeT::Options, Eigen::Dynamic, Eigen::Dynamic>;
-
-
-
-const int IglDefaultOptions = Eigen::RowMajor;
+using EigenDenseLike = Eigen::Matrix<typename LikeT::Scalar, Eigen::Dynamic, Eigen::Dynamic, extract_options(LikeT::Options), Eigen::Dynamic, Eigen::Dynamic>;
 
 template <typename Scalar>
 using EigenDense = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic, IglDefaultOptions, Eigen::Dynamic, Eigen::Dynamic>;

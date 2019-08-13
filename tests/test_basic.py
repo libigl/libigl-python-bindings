@@ -816,13 +816,12 @@ class TestBasic(unittest.TestCase):
         edges = np.array([(i, (i + 1) % boundary.shape[0]) for i in range(boundary.shape[0])])
         v, f = igl.triangulate(boundary[:, :2], edges, np.zeros([0, 0]))
         v = np.concatenate([v, np.zeros([v.shape[0], 1])], axis=1)
-        b = igl.boundary_loop(f.astype(np.int32))
+        b = igl.boundary_loop(f)
 
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         circle_b = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros([len(b), 1])], axis=1)
 
-        v0 = igl.harmonic_weights(v, f.astype(np.int32), b.astype(np.int32), np.asfortranarray(circle_b), 1)
-        # print(circle_b.shape, b.shape, v.shape, v.shape)
+        v0 = igl.harmonic_weights(v, f, b, circle_b, 1)
         arap = igl.ARAP(v, f, 2, b)
 
         v2 = arap.solve(circle_b[:, :2], v0[:, :2])
