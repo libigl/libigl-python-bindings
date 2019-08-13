@@ -114,9 +114,9 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(pv1.shape == qv1.shape == pv2.shape == qv2.shape == (self.v.shape[0],))
         self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float64)
         v = self.v.copy()
-        v = v.astype(np.float32)
+        #v = v.astype(np.float32)
         pd1, pd2, pv1, pv2 = igl.principal_curvature(v, self.f)
-        self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float32)
+        #self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float32)
         self.assertTrue(type(pd1) == type(pd2) == type(pv1) == type(pv2) == np.ndarray)
         self.assertTrue(pd1.flags.c_contiguous)
         self.assertTrue(pd2.flags.c_contiguous)
@@ -934,6 +934,11 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(type(is_intersect), bool)
         self.assertEqual(type(t), float)
         self.assertEqual(type(u), float)
+
+    def test_hessian_energy(self):
+        q = igl.hessian_energy(self.v1, self.f1)
+        self.assertEqual(q.dtype, self.v1.dtype)
+        self.assertEqual(q.shape, (self.v1.shape[0], self.v1.shape[0]))
 
     #std::vector in python
     #def test_biharmonic_coordinates(self):
