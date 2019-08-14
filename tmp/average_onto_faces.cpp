@@ -8,7 +8,7 @@ ImportError: dlopen(/Users/teseo/data/igl/python/igl/pyigl.cpython-36m-darwin.so
 #include <typedefs.h>
 #include <igl/average_onto_faces.h>
 
-const char* ds_average_onto_faces = R"igl_Qu8mg5v7(
+const char* doccc_faces_avg = R"igl_Qu8mg5v7(
 Move a scalar field defined on vertices to faces by averaging
 
 Parameters
@@ -32,14 +32,17 @@ Examples
 )igl_Qu8mg5v7";
 
 npe_function(average_onto_faces)
-npe_doc(ds_average_onto_faces)
+npe_doc(doccc_faces_avg)
+
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(s, dense_float, dense_double)
+
 npe_begin_code()
   assert_valid_tet_or_tri_mesh_faces(f);
 
-  npe_Matrix_s sf;
+  EigenDenseLike<npe_Matrix_s> sf;
   igl::average_onto_faces(f, s, sf);
   return npe::move(sf);
 
 npe_end_code()
+

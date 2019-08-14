@@ -47,11 +47,12 @@ npe_arg(b, npe_matches(a))
 
 
 npe_begin_code()
-  
+
   // TODO: remove __copy
   Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor, Eigen::Dynamic, 1> a_copy = a.template cast<int>();
   Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor, Eigen::Dynamic, 1> b_copy = b.template cast<int>();
-  return igl::intersect(a_copy, b_copy);
+  auto res = igl::intersect(a_copy, b_copy);
+  return npe::move(res);
 
 npe_end_code()
 

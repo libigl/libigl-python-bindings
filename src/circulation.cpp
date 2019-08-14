@@ -65,7 +65,9 @@ npe_begin_code()
       Eigen::VectorXi emap_copy = emap.template cast<int>();
   Eigen::MatrixXi ef_copy = ef.template cast<int>();
   Eigen::MatrixXi ei_copy = ei.template cast<int>();
-  return igl::circulation(e, ccw, emap_copy, ef_copy, ei_copy);
+  auto res = igl::circulation(e, ccw, emap_copy, ef_copy, ei_copy);
+  //res is a std::vector
+  return res;
 
 npe_end_code()
 
