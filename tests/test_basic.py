@@ -114,7 +114,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(pv1.shape == qv1.shape == pv2.shape == qv2.shape == (self.v.shape[0],))
         self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float64)
         v = self.v.copy()
-        #v = v.astype(np.float32)
+
         pd1, pd2, pv1, pv2 = igl.principal_curvature(v, self.f)
         self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float64)
         self.assertTrue(type(pd1) == type(pd2) == type(pv1) == type(pv2) == np.ndarray)
@@ -132,6 +132,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
         self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
         self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(f.dtype == self.f.dtype)
         v, _, n, f, _, _ = igl.read_obj(self.test_path + "face.obj", dtype="float32")
         self.assertTrue(v.shape == (25905, 3) and n.shape == (0, 0) and f.shape == (51712, 3))
         self.assertTrue(v.dtype == np.float32)
@@ -158,14 +159,16 @@ class TestBasic(unittest.TestCase):
         #print(v.shape, f.shape)
         v, f = igl.read_triangle_mesh(self.test_path + "bunny.off")
         #print(v.shape, f.shape)
+        self.assertTrue(f.dtype == self.f.dtype)
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(f.flags.c_contiguous)
 
     def test_read_triangle_mesh_type_issue(self):
         v, f = igl.read_triangle_mesh(self.test_path + "face.obj")
-        vs = np.array([0], dtype = f.dtype)
-        vt = np.arange(v.shape[0], dtype = f.dtype)
+        vs = np.array([0])
+        vt = np.arange(v.shape[0])
         d = igl.exact_geodesic(v, f, vs, vt)
+        self.assertTrue(d.dtype == v.dtype)
 
     def test_triangulate(self):
         v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
@@ -174,6 +177,7 @@ class TestBasic(unittest.TestCase):
         #print("v.dtype = %s, h.dtype = %s" % (v.dtype, h.dtype))
         v2, f2 = igl.triangulate(v, e, h, flags="a0.005qQ")
         self.assertTrue(v2.dtype == v.dtype)
+        self.assertTrue(f2.dtype == e.dtype)
         self.assertTrue(type(v2) == type(f2) == np.ndarray)
         self.assertTrue(v2.flags.c_contiguous)
         self.assertTrue(f2.flags.c_contiguous)
@@ -221,7 +225,9 @@ class TestBasic(unittest.TestCase):
         s = np.random.rand(self.f1.shape[0], self.v1.shape[1])
         sv = igl.average_onto_vertices(self.v1, self.f1, s)
         self.assertEqual(sv.shape[0], self.v1.shape[0])
+        self.assertEqual(sv.dtype, s.dtype)
         self.assertTrue(sv.flags.c_contiguous)
+
 
     def test_barycentric_coordinates(self):
         a, b, c = self.v1[self.f1[:, 0]], self.v1[self.f1[:, 1]], self.v1[self.f1[:, 2]]
@@ -273,21 +279,21 @@ class TestBasic(unittest.TestCase):
         except IndexError as e:
             pass
 
-        a = csc.csc_matrix(np.zeros([0, 0], dtype=np.int32))
+        a = csc.csc_matrix(np.zeros([0, 0]), dtype=np.int32)
         try:
             p, d, = igl.bfs(a, 0)
             self.assertTrue(False)
         except ValueError as e:
             pass
 
-        a = csc.csc_matrix(np.zeros([10, 11], dtype=np.int32))
+        a = csc.csc_matrix(np.zeros([10, 11]), dtype=np.int32)
         try:
             p, d, = igl.bfs(a, 0)
             self.assertTrue(False)
         except ValueError as e:
             pass
 
-        a = csc.csc_matrix(np.zeros([10, 10], dtype=np.int32))
+        a = csc.csc_matrix(np.zeros([10, 10]), dtype=np.int32)
         p, d, = igl.bfs(a, 0)
         self.assertEqual(p.shape, ())
         self.assertTrue(np.array_equal(d, -np.ones(10)))
@@ -393,7 +399,8 @@ class TestBasic(unittest.TestCase):
 
     def test_write_triangle_mesh(self):
         ok = igl.write_triangle_mesh("out.obj", self.v, self.f)
-        self.assertEqual(ok, True)
+        self.assertTrue(suc)
+        self.assertTrue(os.path.isfile("out.obj"))
 
     def test_barycenter(self):
         bc = igl.barycenter(self.v, self.f)
@@ -462,14 +469,14 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(s.shape[0], self.v.shape[0])
 
     def test_winding_number_for_point(self):
-        p = np.zeros((1, 3), dtype=self.v1.dtype)
+        p = np.zeros((1, 3))
         s = igl.winding_number_for_point(self.v1, self.f1, p)
 
 
     def test_unproject(self):
-        model = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], dtype=self.v.dtype)
-        proj = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], dtype=self.v.dtype)
-        viewport = np.array([1, 1, 1, 1], dtype=self.v.dtype)
+        model = np.array([[1., 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+        proj = np.array([[1., 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+        viewport = np.array([1., 1, 1, 1])
         scene = igl.unproject(self.v, model, proj, viewport)
 
         self.assertEqual(scene.dtype, self.v.dtype)
@@ -855,9 +862,9 @@ class TestBasic(unittest.TestCase):
         b = np.array([1, 2, 3])
         # print(b.dtype)
         bc = np.array([
-           [1, 0],
+           [1., 0],
            [1, 1],
-           [2, 2]], dtype=float)
+           [2, 2]])
         success, uv = igl.lscm(self.v1, self.f1, b, bc)
         self.assertEqual(type(success), bool)
         self.assertEqual(uv.dtype, self.v1.dtype)
@@ -878,10 +885,9 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(w.flags.c_contiguous)
 
     def test_exact_geodesic(self):
-        vs = np.array([0], dtype=self.f1.dtype)
+        vs = np.array([0])
         vt = np.arange(self.v1.shape[0])
-        vt = vt.astype(self.f1.dtype)
-        # TODO as type should be here
+
         d = igl.exact_geodesic(self.v1, self.f1, vs, vt)
         self.assertEqual(d.dtype, self.v1.dtype)
         self.assertTrue(d.flags.c_contiguous)
