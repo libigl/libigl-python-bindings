@@ -33,9 +33,11 @@ Examples
 npe_function(cut_mesh_from_singularities)
 npe_doc(ds_cut_mesh_from_singularities)
 npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int, dense_long)
-npe_arg(mismatch, dense_int)
+npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(mismatch, npe_matches(f))
 npe_begin_code()
+    assert_valid_3d_tri_mesh(v, f);
+    assert_shapes_match(f, mismatch, "f", "mismatch");
 
     // FIXME: LibIGL templates are broken so we need to do copies :'(
     npe_Matrix_v v_copy;

@@ -1,6 +1,7 @@
 // TODO: __example
 //difficult to test
 
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <pybind11/stl.h>
@@ -49,15 +50,19 @@ npe_doc(ds_circulation)
 
 npe_arg(e, int)
 npe_arg(ccw, bool)
-npe_arg(emap, dense_int, dense_long)
+npe_arg(emap, dense_int, dense_long, dense_longlong)
 npe_arg(ef, npe_matches(emap))
 npe_arg(ei, npe_matches(emap))
 
 
 npe_begin_code()
+  assert_cols_equals(emap, 3, "emap");
+  assert_cols_equals(ef, 2, "ef");
+  assert_cols_equals(ei, 2, "ei");
+  assert_shapes_match(ef, ei, "ef", "ei");
 
-  // TODO: remove __copy
-  Eigen::VectorXi emap_copy = emap.template cast<int>();
+      // TODO: remove __copy
+      Eigen::VectorXi emap_copy = emap.template cast<int>();
   Eigen::MatrixXi ef_copy = ef.template cast<int>();
   Eigen::MatrixXi ei_copy = ei.template cast<int>();
   return igl::circulation(e, ccw, emap_copy, ef_copy, ei_copy);

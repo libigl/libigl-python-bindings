@@ -220,6 +220,7 @@ class TestBasic(unittest.TestCase):
     #     s = np.random.rand(self.f1.shape[0])
     #     sf = igl.average_onto_faces(self.f1, s)
     #     self.assertEqual(sf.shape[0], self.f1.shape[0])
+    #     self.assertEqual(sf.dtype, s.dtype)
 
     def test_average_onto_vertices(self):
         s = np.random.rand(self.f1.shape[0], self.v1.shape[1])
