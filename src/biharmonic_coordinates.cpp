@@ -87,7 +87,7 @@ npe_default_arg(k, int, 2)
 npe_begin_code()
   assert_valid_tet_or_tri_mesh(v, t, "v", "t");
   // TODO: t.rows = dim+1
-  npe_Matrix_v w;
+  EigenDenseLike<npe_Matrix_v> w;
   Eigen::MatrixXi t_copy = t.template cast<int>();
   igl::biharmonic_coordinates(v, t, s, k, w);
   return npe::move(w);

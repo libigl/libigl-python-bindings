@@ -48,7 +48,7 @@ npe_begin_code()
   assert_nonzero_rows(n, "n");
   assert_shapes_match(p, n, "p", "n");
 
-  npe_Matrix_p s;
+  EigenDenseLike<npe_Matrix_p> s;
   igl::ambient_occlusion(v, f, p, n, num_samples, s);
   return npe::move(s);
 

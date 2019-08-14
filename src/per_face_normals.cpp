@@ -45,7 +45,7 @@ npe_arg(z, npe_matches(v))
 npe_begin_code()
 
   assert_valid_3d_tri_mesh(v, f);
-  npe_Matrix_v n;
+  EigenDenseLike<npe_Matrix_v> n;
   igl::per_face_normals(v, f, z, n);
   return npe::move(n);
 

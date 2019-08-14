@@ -1,5 +1,6 @@
 #include <common.h>
 #include <npe.h>
+#include <typedefs.h>
 #include <igl/cut_mesh_from_singularities.h>
 
 const char* ds_cut_mesh_from_singularities = R"igl_Qu8mg5v7(
@@ -40,8 +41,8 @@ npe_begin_code()
     assert_shapes_match(f, mismatch, "f", "mismatch");
 
     // FIXME: LibIGL templates are broken so we need to do copies :'(
-    npe_Matrix_v v_copy;
-    npe_Matrix_f f_copy;
+    EigenDenseLike<npe_Matrix_v> v_copy;
+    EigenDenseLike<npe_Matrix_f> f_copy;
 
     Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic, npe_Matrix_f::Options> seams;
 

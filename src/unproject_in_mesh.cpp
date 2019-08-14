@@ -73,7 +73,7 @@ npe_begin_code()
   Eigen::Matrix4f proj_copy = proj.template cast<float>();
   Eigen::Vector4f viewport_copy = viewport.template cast<float>();
 
-  npe_Matrix_v obj;
+  EigenDenseLike<npe_Matrix_v> obj;
   std::vector<igl::Hit, std::allocator<igl::Hit> > hits;
   igl::unproject_in_mesh(pos, model, proj, viewport, v, f, obj, hits);
   return std::make_tuple(npe::move(obj), hits);

@@ -1,6 +1,7 @@
 #include <common.h>
 #include <igl/cut_mesh.h>
 #include <npe.h>
+#include <typedefs.h>
 
 const char* ds_cut_mesh = R"igl_Qu8mg5v7(
 Compute the barycenter of every simplex
@@ -44,12 +45,12 @@ npe_begin_code()
     assert_shapes_match(f, cuts, "f", "cuts");
 
     // FIXME: Copying is bad m'kay but libIGL's templates are broken
-    npe_Matrix_v Vcopy = v;
-    npe_Matrix_f Fcopy = f;
-    npe_Matrix_cuts cutsCopy = cuts;
+    EigenDenseLike<npe_Matrix_v> Vcopy = v;
+    EigenDenseLike<npe_Matrix_f> Fcopy = f;
+    EigenDenseLike<npe_Matrix_cuts> cutsCopy = cuts;
 
-    npe_Matrix_v Vcut;
-    npe_Matrix_f Fcut;
+    EigenDenseLike<npe_Matrix_v> Vcut;
+    EigenDenseLike<npe_Matrix_f> Fcut;
 
     igl::cut_mesh(Vcopy, Fcopy, cutsCopy, Vcut, Fcut);
 

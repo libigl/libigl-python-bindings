@@ -38,7 +38,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   assert_valid_23d_tri_mesh(v, f);
-  npe_Matrix_f ev, fe, ef;
+  EigenDenseLike<npe_Matrix_f> ev, fe, ef;
   igl::edge_topology(v, f, ev, fe, ef);
 
 return std::make_tuple(npe::move(ev), npe::move(fe), npe::move(ef));

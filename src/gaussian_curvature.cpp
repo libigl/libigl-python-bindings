@@ -37,7 +37,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   assert_valid_3d_tri_mesh(v, f);
-  npe_Matrix_v k;
+  EigenDenseLike<npe_Matrix_v> k;
   igl::gaussian_curvature(v, f, k);
   return npe::move(k);
 

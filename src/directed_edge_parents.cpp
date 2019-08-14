@@ -35,7 +35,7 @@ npe_begin_code()
 
   assert_nonzero_rows(e, "e");
   assert_cols_equals(e, 2, "e");
-  npe_Matrix_e p;
+  EigenDenseLike<npe_Matrix_e> p;
   igl::directed_edge_parents(e, p);
   return npe::move(p);
 

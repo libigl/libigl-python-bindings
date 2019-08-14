@@ -50,7 +50,7 @@ npe_begin_code()
     assert_cols_equals(b, 3, "b");
     assert_cols_equals(c, 3, "c");
     assert_cols_equals(d, 3, "d");
-    npe_Matrix_p l;
+    EigenDenseLike<npe_Matrix_p> l;
     igl::barycentric_coordinates(p, a, b, c, d, l);
     return npe::move(l);
 
@@ -96,7 +96,7 @@ npe_arg(b, npe_matches(p))
 npe_arg(c, npe_matches(p))
 npe_begin_code()
 
-    npe_Matrix_p l;
+    EigenDenseLike<npe_Matrix_p> l;
     igl::barycentric_coordinates(p, a, b, c, l);
     return npe::move(l);
 

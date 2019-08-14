@@ -53,8 +53,7 @@ npe_begin_code()
   // TODO: remove __copy
   // same problem that DerivedF1 causes problem, can be prevented
   Eigen::MatrixXi f1_copy = f1.template cast<int>();
-  npe_Matrix_f1 f2;
-  npe_Matrix_f1 j;
+  EigenDenseLike<npe_Matrix_f1> f2, j;
   igl::resolve_duplicated_faces(f1_copy, f2, j);
   return std::make_tuple(npe::move(f2), npe::move(j));
 

@@ -1,6 +1,7 @@
 #include <tuple>
 #include <common.h>
 #include <npe.h>
+#include <typedefs.h>
 #include <igl/principal_curvature.h>
 
 const char* ds_principal_curvature = R"igl_Qu8mg5v7(
@@ -45,10 +46,7 @@ npe_default_arg(use_k_ring, bool, true)
 npe_begin_code()
 
   assert_valid_3d_tri_mesh(v, f);
-  npe_Matrix_v pd1;
-  npe_Matrix_v pd2;
-  npe_Matrix_v pv1;
-  npe_Matrix_v pv2;
+  EigenDenseLike<npe_Matrix_v> pd1, pd2, pv1, pv2;
 
   igl::principal_curvature(v, f, pd1, pd2, pv1, pv2, radius, use_k_ring);
   return std::make_tuple(npe::move(pd1), npe::move(pd2), npe::move(pv1), npe::move(pv2));

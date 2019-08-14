@@ -37,7 +37,7 @@ npe_arg(v, dense_float, dense_double)
 npe_begin_code()
 
   assert_nonzero_rows(v, "v");
-  npe_Matrix_v bv;
+  EigenDenseLike<npe_Matrix_v> bv;
   Eigen::MatrixXi bf;
   igl::bounding_box(v, bv, bf);
   EigenDenseI64 bf_row_major = bf.template cast<typename EigenDenseI64::Scalar>();;
@@ -65,7 +65,7 @@ npe_arg(pad, double)
 npe_begin_code()
 
   assert_nonzero_rows(v, "v");
-  npe_Matrix_v bv;
+  EigenDenseLike<npe_Matrix_v> bv;
   Eigen::MatrixXi bf;
   igl::bounding_box(v, pad, bv, bf);
   EigenDenseI64 bf_row_major = bf.template cast<typename EigenDenseI64::Scalar>();

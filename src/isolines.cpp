@@ -48,8 +48,8 @@ npe_begin_code()
   assert_valid_23d_tri_mesh(v, f);
   assert_rows_match(v, z, "v", "z");
   assert_cols_equals(z, 1, "z");
-  npe_Matrix_v iso_v;
-  npe_Matrix_f iso_e;
+  EigenDenseLike<npe_Matrix_v> iso_v;
+  EigenDenseLike<npe_Matrix_f> iso_e;
   igl::isolines(v, f, z, n, iso_v, iso_e);
   return std::make_tuple(npe::move(iso_v), npe::move(iso_e));
 

@@ -55,7 +55,7 @@ npe_begin_code()
   assert_cols_equals(b, 1, "b");
   assert_shape_equals(bc, b.rows(), 2, "bc");
 
-  npe_Matrix_v u;
+  EigenDenseLike<npe_Matrix_v> u;
   igl::bijective_composite_harmonic_mapping(v, f, b, bc, u);
   return npe::move(u);
 
@@ -115,7 +115,7 @@ npe_begin_code()
   assert_cols_equals(b, 1, "b");
   assert_shape_equals(bc, b.rows(), 2, "bc");
 
-  npe_Matrix_v u;
+  EigenDenseLike<npe_Matrix_v> u;
   bool success = igl::bijective_composite_harmonic_mapping(v, f, b, bc, min_steps, max_steps, num_inner_iters, test_for_flips, u);
   return std::make_pair(success, npe::move(u));
 

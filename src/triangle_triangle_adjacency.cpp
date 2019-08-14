@@ -46,8 +46,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   assert_valid_tri_mesh_faces(f);
-  npe_Matrix_f tt;
-  npe_Matrix_f t_ti;
+  EigenDenseLike<npe_Matrix_f> tt, t_ti;
   igl::triangle_triangle_adjacency(f, tt, t_ti);
   return std::make_tuple(npe::move(tt), npe::move(t_ti));
 

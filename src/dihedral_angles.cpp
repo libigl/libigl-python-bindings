@@ -37,8 +37,8 @@ npe_arg(t, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
   assert_valid_tet_mesh(v, t);
-  npe_Matrix_v theta;
-  npe_Matrix_v cos_theta;
+  EigenDenseLike<npe_Matrix_v> theta;
+  EigenDenseLike<npe_Matrix_v> cos_theta;
   igl::dihedral_angles(v, t, theta, cos_theta);
   return std::make_tuple(npe::move(theta), npe::move(cos_theta));
 
@@ -56,8 +56,8 @@ npe_arg(a, npe_matches(l))
 
 npe_begin_code()
 
-  npe_Matrix_l theta;
-  npe_Matrix_l cos_theta;
+  EigenDenseLike<npe_Matrix_l> theta;
+  EigenDenseLike<npe_Matrix_l> cos_theta;
   igl::dihedral_angles_intrinsic(l, a, theta, cos_theta);
   return std::make_tuple(npe::move(theta), npe::move(cos_theta));
 

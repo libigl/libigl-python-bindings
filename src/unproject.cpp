@@ -47,7 +47,7 @@ npe_begin_code()
   assert_cols_equals(model, 4, "model");
   assert_shapes_match(model, proj, "model", "proj");
   assert_rows_equals(viewport, 4, "viewport");
-  npe_Matrix_win scene;
+  EigenDenseLike<npe_Matrix_win> scene;
   igl::unproject(win, model, proj, viewport, scene);
   return npe::move(scene);
 

@@ -2,6 +2,7 @@
 
 #include <common.h>
 #include <npe.h>
+#include <typedefs.h>
 #include <igl/tet_tet_adjacency.h>
 
 const char *ds_tet_tet_adjacency = R"igl_Qu8mg5v7(
@@ -35,7 +36,7 @@ npe_begin_code()
 
   assert_nonzero_rows(t, "t");
   assert_cols_equals(t, 4, "t");
-  npe_Matrix_t tt, tti;
+  EigenDenseLike<npe_Matrix_t> tt, tti;
   igl::tet_tet_adjacency(t, tt, tti);
   return std::make_tuple(npe::move(tt), npe::move(tti));
 

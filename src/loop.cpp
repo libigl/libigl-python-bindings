@@ -43,7 +43,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
   assert_valid_tri_mesh_faces(f);
   Eigen::SparseMatrix<double> S;
-  npe_Matrix_f nf;
+  EigenDenseLike<npe_Matrix_f> nf;
   igl::loop(n_verts, f, S, nf);
   return std::make_tuple(npe::move(S), npe::move(nf));
 npe_end_code()
@@ -93,8 +93,8 @@ npe_default_arg(number_of_subdivs, int, 1)
 npe_begin_code()
   assert_valid_3d_tri_mesh(v, f);
 
-  npe_Matrix_v nv;
-  npe_Matrix_f nf;
+  EigenDenseLike<npe_Matrix_v> nv;
+  EigenDenseLike<npe_Matrix_f> nf;
 
   igl::loop(v, f, nv, nf, number_of_subdivs);
   return std::make_tuple(npe::move(nv), npe::move(nf));

@@ -48,10 +48,8 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   assert_valid_tet_or_tri_mesh_23d(v, f);
-  npe_Matrix_v nv;
-  npe_Matrix_f nf;
-  npe_Matrix_f i;
-  npe_Matrix_f j;
+  EigenDenseLike<npe_Matrix_v> nv;
+  EigenDenseLike<npe_Matrix_f> nf, i, j;
   igl::remove_unreferenced(v, f, nv, nf, i);
   return std::make_tuple(npe::move(nv), npe::move(nf), npe::move(i), npe::move(j));
 

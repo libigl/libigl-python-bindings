@@ -62,8 +62,7 @@ npe_begin_code()
   assert_cols_match(x, y, "x", "y");
   assert_nonzero_rows(x, "x");
   double scale;
-  npe_Matrix_x r;
-  npe_Matrix_x t;
+  EigenDenseLike<npe_Matrix_x> r, t;
   igl::procrustes(x, y, include_scaling, include_reflections, scale, r, t);
   return std::make_tuple(scale, npe::move(r), npe::move(t));
 

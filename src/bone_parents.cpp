@@ -34,7 +34,7 @@ npe_arg(be, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
   assert_cols_equals(be, 2, "be");
-  npe_Matrix_be p;
+  EigenDenseLike<npe_Matrix_be> p;
   igl::bone_parents(be, p);
   return npe::move(p);
 

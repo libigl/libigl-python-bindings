@@ -54,8 +54,8 @@ npe_begin_code()
 
   assert_valid_tet_or_tri_mesh_23d(v, f);
   EigenSparseLike<npe_Matrix_v> m;
-  npe_Matrix_f e;
-  npe_Matrix_f emap;
+  EigenDenseLike<npe_Matrix_f> e;
+  EigenDenseLike<npe_Matrix_f> emap;
   igl::crouzeix_raviart_massmatrix(v, f, m, e, emap);
   return std::make_tuple(npe::move(m), npe::move(e), npe::move(emap));
 

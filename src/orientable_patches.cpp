@@ -34,7 +34,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
     assert_valid_tri_mesh_faces(f);
-    npe_Matrix_f c;
+    EigenDenseLike<npe_Matrix_f> c;
     EigenSparseLike<npe_Matrix_f> A;
     igl::orientable_patches(f, c, A);
     return std::make_tuple(npe::move(c), npe::move(A));

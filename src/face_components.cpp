@@ -32,7 +32,7 @@ npe_doc(ds_face_components)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
     assert_valid_tri_mesh_faces(f);
-    npe_Matrix_f c;
+    EigenDenseLike<npe_Matrix_f> c;
     igl::facet_components(f, c);
     return npe::move(c);
 npe_end_code()

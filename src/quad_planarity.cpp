@@ -37,7 +37,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   assert_valid_tet_mesh(v, f);
-  npe_Matrix_v p;
+  EigenDenseLike<npe_Matrix_v> p;
   igl::quad_planarity(v, f, p);
   return npe::move(p);
 
