@@ -14,7 +14,7 @@ V  #V by dim list of rest domain positions
 Returns
 -------
 BV  2^dim by dim list of bounding box corners positions
-BF  #BF by dim list of simplex facets 
+BF  #BF by dim list of simplex facets
 
 See also
 --------
@@ -40,7 +40,7 @@ npe_begin_code()
   npe_Matrix_v bv;
   Eigen::MatrixXi bf;
   igl::bounding_box(v, bv, bf);
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> bf_row_major = bf;
+  EigenDenseI64 bf_row_major = bf.template cast<typename EigenDenseI64::Scalar>();;
   return std::make_tuple(npe::move(bv), npe::move(bf_row_major));
 
 npe_end_code()
@@ -68,7 +68,7 @@ npe_begin_code()
   npe_Matrix_v bv;
   Eigen::MatrixXi bf;
   igl::bounding_box(v, pad, bv, bf);
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> bf_row_major = bf;
+  EigenDenseI64 bf_row_major = bf.template cast<typename EigenDenseI64::Scalar>();
   return std::make_tuple(npe::move(bv), npe::move(bf_row_major));
 
 npe_end_code()

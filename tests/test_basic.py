@@ -116,7 +116,7 @@ class TestBasic(unittest.TestCase):
         v = self.v.copy()
         #v = v.astype(np.float32)
         pd1, pd2, pv1, pv2 = igl.principal_curvature(v, self.f)
-        #self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float32)
+        self.assertTrue(pd1.dtype == pd2.dtype == pv1.dtype == pv2.dtype == np.float64)
         self.assertTrue(type(pd1) == type(pd2) == type(pv1) == type(pv2) == np.ndarray)
         self.assertTrue(pd1.flags.c_contiguous)
         self.assertTrue(pd2.flags.c_contiguous)
@@ -853,7 +853,7 @@ class TestBasic(unittest.TestCase):
 
     def test_lscm(self):
         b = np.array([1, 2, 3])
-        print(b.dtype)
+        # print(b.dtype)
         bc = np.array([
            [1, 0],
            [1, 1],

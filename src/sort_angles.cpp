@@ -43,10 +43,10 @@ npe_begin_code()
   assert_nonzero_rows(m, "m");
   //TODO: need to check column >= 2
   // In the libigl code r is column major, and using row major fails assertion
-  // EIGEN_STATIC_ASSERT((EIGEN_IMPLIES(MaxRowsAtCompileTime==1 && 
+  // EIGEN_STATIC_ASSERT((EIGEN_IMPLIES(MaxRowsAtCompileTime==1 &&
   //    MaxColsAtCompileTime!=1, (Options&RowMajor)==RowMajor)
   // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
-  Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor, Eigen::Dynamic, 1> r;
+  Eigen::Matrix<typename EigenDenseI64::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor, Eigen::Dynamic, 1> r;
   igl::sort_angles(m, r);
   return npe::move(r);
 

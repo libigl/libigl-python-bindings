@@ -42,16 +42,20 @@ Examples
 npe_function(tetrahedralize)
 npe_doc(ds_tetrahedralize)
 
-npe_arg(v, dense_double)
-npe_arg(f, dense_int)
+npe_arg(v, dense_float, dense_double)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_default_arg(switches, std::string, std::string("pYQ"))
 npe_begin_code()
-
   assert_valid_tet_or_tri_mesh(v, f);
+  // TODO: remove __copy
+  Eigen::MatrixXd v_copy = v.template cast<double>();
+  Eigen::MatrixXi f_copy = f.template cast<int>();
+
+
   EigenDenseLike<npe_Matrix_v> tv;
   EigenDenseLike<npe_Matrix_f> tt;
   EigenDenseLike<npe_Matrix_f> tf;
-  const auto status = igl::copyleft::tetgen::tetrahedralize(v, f, switches, tv, tt, tf);
+  const auto status = igl::copyleft::tetgen::tetrahedralize(v_copy, f_copy, switches, tv, tt, tf);
   return std::make_tuple(status, npe::move(tv), npe::move(tt), npe::move(tf));
 
   npe_end_code()

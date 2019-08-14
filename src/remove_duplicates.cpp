@@ -56,10 +56,10 @@ npe_begin_code()
   Eigen::MatrixXi nf;
   Eigen::VectorXi i;
   igl::remove_duplicates(v_copy, f_copy, nv, nf, i, epsilon);
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> nv_row_major = nv;
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> nf_row_major = nf;
+  EigenDenseF64 nv_row_major = nv;
+  EigenDenseI64 nf_row_major = nf.template cast<typename EigenDenseI64::Scalar>();
   // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
-  Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor> i_row_major = i;
+  Eigen::Matrix<typename EigenDenseI64::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor> i_row_major = i.template cast<typename EigenDenseI64::Scalar>();
   return std::make_tuple(npe::move(nv_row_major), npe::move(nf_row_major), npe::move(i_row_major));
 
 npe_end_code()

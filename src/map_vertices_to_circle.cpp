@@ -43,7 +43,7 @@ npe_begin_code()
   Eigen::VectorXi bnd_copy = bnd.template cast<int>();
   Eigen::MatrixXd uv;
   igl::map_vertices_to_circle(v_copy, bnd_copy, uv);
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> uv_row_major = uv;
+  EigenDenseF64 uv_row_major = uv;
   return npe::move(uv_row_major);
 
 npe_end_code()

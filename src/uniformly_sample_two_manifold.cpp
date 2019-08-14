@@ -63,7 +63,7 @@ npe_begin_code()
   Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::MatrixXd ws;
   igl::uniformly_sample_two_manifold(w_copy, f_copy, k, push, ws);
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> ws_row_major = ws;
+  EigenDenseF64 ws_row_major = ws;
   return npe::move(ws_row_major);
 
 npe_end_code()
@@ -112,7 +112,8 @@ npe_begin_code()
   // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
   Eigen::VectorXi s;
   igl::uniformly_sample_two_manifold_at_vertices(ow_copy, k, push, s);
-  return npe::move(s);
+  Eigen::Matrix<typename EigenDenseI64::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor> s_out = s.template cast<typename EigenDenseI64::Scalar>();
+  return npe::move(s_out);
 
 npe_end_code()
 

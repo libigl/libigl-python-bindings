@@ -29,8 +29,8 @@ None
 
 Examples
 --------
-  
-  
+
+
 )igl_Qu8mg5v7";
 
 npe_function(cylinder)
@@ -45,8 +45,8 @@ npe_begin_code()
   Eigen::MatrixXd v;
   Eigen::MatrixXi f;
   igl::cylinder(axis_devisions, height_devisions, v, f);
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> v_row_major = v;
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> f_row_major = f;
+  EigenDenseF64 v_row_major = v;
+  EigenDenseI64 f_row_major = f.template cast<typename EigenDenseI64::Scalar>();
   return std::make_tuple(npe::move(v_row_major), npe::move(f_row_major));
 
 npe_end_code()

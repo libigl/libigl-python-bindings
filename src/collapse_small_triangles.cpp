@@ -15,7 +15,7 @@ const char* ds_collapse_small_triangles = R"igl_Qu8mg5v7(
 Given a triangle mesh (V,F) compute a new mesh (VV,FF) which contains the
   original faces and vertices of (V,F) except any small triangles have been
   removed via collapse.
-  
+
   We are *not* following the rules in "Mesh Optimization" [Hoppe et al]
   Section 4.2. But for our purposes we don't care about this criteria.
 
@@ -60,7 +60,7 @@ npe_begin_code()
   Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::MatrixXi ff;
   igl::collapse_small_triangles(v_copy, f_copy, eps, ff);
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> ff_row_major = ff;
+  EigenDenseI64 ff_row_major = ff.template cast<typename EigenDenseI64::Scalar>();;
   return npe::move(ff_row_major);
 
 npe_end_code()

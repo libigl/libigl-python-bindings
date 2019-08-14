@@ -63,11 +63,11 @@ npe_begin_code()
   Eigen::VectorXi j;
   Eigen::VectorXi i;
   bool reach = igl::decimate(v_copy, f_copy, max_m, u, g, j, i);
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> u_row_major = u;
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> g_row_major = g;
+  EigenDenseF64 u_row_major = u;
+  EigenDenseI64 g_row_major = g.template cast<typename EigenDenseI64::Scalar>();
   // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
-  Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor> j_row_major = j;
-  Eigen::Matrix<int, Eigen::Dynamic, 1, Eigen::ColMajor> i_row_major = i;
+  Eigen::Matrix<typename EigenDenseI64::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor> j_row_major = j.template cast<typename EigenDenseI64::Scalar>();
+  Eigen::Matrix<typename EigenDenseI64::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor> i_row_major = i.template cast<typename EigenDenseI64::Scalar>();
   return std::make_tuple(reach, npe::move(u_row_major), npe::move(g_row_major), npe::move(j_row_major), npe::move(i_row_major));
 
 npe_end_code()

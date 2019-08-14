@@ -45,7 +45,7 @@ npe_begin_code()
   Eigen::MatrixXd ain_copy = ain.template cast<double>();
   Eigen::MatrixXd aout;
   igl::per_vertex_attribute_smoothing(ain_copy, f, aout);
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> aout_row_major = aout;
+  EigenDenseF64 aout_row_major = aout;
   return npe::move(aout_row_major);
 
 npe_end_code()
