@@ -399,7 +399,7 @@ class TestBasic(unittest.TestCase):
 
     def test_write_triangle_mesh(self):
         ok = igl.write_triangle_mesh("out.obj", self.v, self.f)
-        self.assertTrue(suc)
+        self.assertTrue(ok)
         self.assertTrue(os.path.isfile("out.obj"))
 
     def test_barycenter(self):

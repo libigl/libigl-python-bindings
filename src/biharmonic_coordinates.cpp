@@ -1,6 +1,3 @@
-// TODO: Eigen opperators like *= /* coeff not working
-// __bug
-
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -90,11 +87,9 @@ npe_default_arg(k, int, 2)
 npe_begin_code()
   assert_valid_tet_or_tri_mesh(v, t, "v", "t");
   // TODO: t.rows = dim+1
-  // TODO: remove __copy
-  // the problem is the data struct in min quad with fixed
   npe_Matrix_v w;
   Eigen::MatrixXi t_copy = t.template cast<int>();
-  igl::biharmonic_coordinates(v, t_copy, s, k, w);
+  igl::biharmonic_coordinates(v, t, s, k, w);
   return npe::move(w);
 
 npe_end_code()

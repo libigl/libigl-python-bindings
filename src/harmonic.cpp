@@ -3,8 +3,6 @@
 #include <typedefs.h>
 #include <igl/harmonic.h>
 
-//TODO: is is only dense_int because min_quad_with_fixed_data hardcodes int, FIXME
-
 const char* ds_harmonic_w = R"igl_Qu8mg5v7(
 Compute k-harmonic weight functions "coordinates".
 
@@ -45,11 +43,8 @@ npe_begin_code()
   assert_valid_tet_or_tri_mesh_23d(v, f);
   assert_nonzero_rows(bc, "bc");
   assert_rows_match(b, bc, "b", "bc");
-  // TODO: remove __copy
-  // the problem is the data struct in min quad with fixed
-  Eigen::MatrixXi b_copy = b.template cast<int>();
   EigenDenseLike<npe_Matrix_v> w;
-  igl::harmonic(v, f, b_copy, bc, k, w);
+  igl::harmonic(v, f, b, bc, k, w);
   return npe::move(w);
 
 npe_end_code()
@@ -98,11 +93,8 @@ npe_begin_code()
   assert_nonzero_rows(bc, "bc");
   assert_rows_match(b, bc, "b", "bc");
 
-  // TODO: remove __copy
-  // the problem is the data struct in min quad with fixed
-  Eigen::MatrixXi b_copy = b.template cast<int>();
   EigenDenseLike<npe_Matrix_bc> w;
-  igl::harmonic(f, b_copy, bc, k, w);
+  igl::harmonic(f, b, bc, k, w);
   return npe::move(w);
 
 npe_end_code()
@@ -159,11 +151,8 @@ npe_begin_code()
   assert_nonzero_rows(bc, "bc");
   assert_rows_match(b, bc, "b", "bc");
 
-  // TODO: remove __copy
-  // the problem is the data struct in min quad with fixed
-  Eigen::MatrixXi b_copy = b.template cast<int>();
   EigenDenseLike<npe_Matrix_bc> w;
-  igl::harmonic(l, m, b_copy, bc, k, w);
+  igl::harmonic(l, m, b, bc, k, w);
   return npe::move(w);
 
 npe_end_code()

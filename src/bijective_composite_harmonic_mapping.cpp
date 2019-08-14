@@ -55,11 +55,8 @@ npe_begin_code()
   assert_cols_equals(b, 1, "b");
   assert_shape_equals(bc, b.rows(), 2, "bc");
 
-  // TODO: remove __copy: min_quad_with_fixed.cpp data
-  Eigen::MatrixXi f_copy = f.template cast<int>();
-  Eigen::MatrixXi b_copy = b.template cast<int>();
   npe_Matrix_v u;
-  igl::bijective_composite_harmonic_mapping(v, f_copy, b_copy, bc, u);
+  igl::bijective_composite_harmonic_mapping(v, f, b, bc, u);
   return npe::move(u);
 
 npe_end_code()
@@ -117,11 +114,9 @@ npe_begin_code()
   assert_nonzero_rows(b, "b");
   assert_cols_equals(b, 1, "b");
   assert_shape_equals(bc, b.rows(), 2, "bc");
-  // TODO: remove __copy: min_quad_with_fixed.cpp data
-  Eigen::MatrixXi f_copy = f.template cast<int>();
-  Eigen::MatrixXi b_copy = b.template cast<int>();
+
   npe_Matrix_v u;
-  bool success = igl::bijective_composite_harmonic_mapping(v, f_copy, b_copy, bc, min_steps, max_steps, num_inner_iters, test_for_flips, u);
+  bool success = igl::bijective_composite_harmonic_mapping(v, f, b, bc, min_steps, max_steps, num_inner_iters, test_for_flips, u);
   return std::make_pair(success, npe::move(u));
 
 npe_end_code()
