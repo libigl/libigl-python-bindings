@@ -61,12 +61,12 @@ Notes
 
 Examples
 --------
-  
+
 )igl_Qu8mg5v7";
 
 npe_function(vertex_components_from_adjacency_matrix)
 npe_doc(ds_vertex_components_from_adjacency_matrix)
-npe_arg(a, sparse_int, sparse_long)
+npe_arg(a, sparse_int, sparse_long, sparse_longlong)
 npe_begin_code()
     EigenDense<npe_Scalar_a> c;
     EigenDense<npe_Scalar_a> counts;

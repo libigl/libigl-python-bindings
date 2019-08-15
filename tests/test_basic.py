@@ -947,6 +947,22 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(q.dtype, self.v1.dtype)
         self.assertEqual(q.shape, (self.v1.shape[0], self.v1.shape[0]))
 
+    # def test_offset_surface(self):
+    #     sv, sf, gv, side, so = igl.offset_surface(self.v1, self.f1, 1, 10, igl.SIGNED_DISTANCE_TYPE_DEFAULT)
+    #     self.assertEqual(sv.dtype, self.v1.type)
+    #     self.assertEqual(sf.dtype, self.f1.type)
+
+    #     self.assertEqual(gv.dtype, self.v1.type)
+    #     self.assertEqual(side.dtype, self.f1.type)
+    #     self.assertEqual(so.dtype, self.f1.type)
+
+    #     self.assertEqual(sv.shape[1], 3)
+    #     self.assertEqual(sf.shape[1], 3)
+    #     self.assertEqual(gv.shape[1], 3)
+    #     self.assertEqual(so.shape[1], 3)
+
+    #     self.assertEqual(gv.shape, so.shape)
+
     #std::vector in python
     #def test_biharmonic_coordinates(self):
     #    pass
