@@ -36,7 +36,7 @@ endfunction()
 function(pyigl_download_numpyeigen)
     pyigl_download_project(numpyeigen
         GIT_REPOSITORY https://github.com/fwilliams/numpyeigen.git
-        GIT_TAG        ed9b267b5a0410ea0f837ff464e1bb0122be9a91
+        GIT_TAG        30d12167c5876fab59d169df11780aba84ac96aa
     )
 endfunction()
 
