@@ -59,7 +59,7 @@ npe_begin_code()
   Eigen::MatrixXd bc_copy = bc.template cast<double>();
   Eigen::MatrixXd uv; //TODO: major
   bool success = igl::lscm(v_copy, f_copy, b_copy, bc_copy, uv);
-  EigenDenseF64 uv_row_major = uv;
+  EigenDenseFloat uv_row_major = uv;
   return std::make_tuple(success, npe::move(uv_row_major));
 
 npe_end_code()

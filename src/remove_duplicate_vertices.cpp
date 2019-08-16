@@ -64,7 +64,7 @@ npe_begin_code()
   Eigen::MatrixXd sv;
   EigenDenseLike<npe_Matrix_f> svi, svj, sf;
   igl::remove_duplicate_vertices(v_copy, f, epsilon, sv, svi, svj, sf);
-  EigenDenseF64 sv_row_major = sv;
+  EigenDenseFloat sv_row_major = sv;
   return std::make_tuple(npe::move(sv_row_major), npe::move(svi), npe::move(svj), npe::move(sf));
 
 npe_end_code()

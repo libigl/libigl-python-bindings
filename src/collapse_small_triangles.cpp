@@ -60,7 +60,7 @@ npe_begin_code()
   Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::MatrixXi ff;
   igl::collapse_small_triangles(v_copy, f_copy, eps, ff);
-  EigenDenseI64 ff_row_major = ff.template cast<typename EigenDenseI64::Scalar>();;
+  EigenDenseInt ff_row_major = ff.template cast<typename EigenDenseInt::Scalar>();;
   return npe::move(ff_row_major);
 
 npe_end_code()

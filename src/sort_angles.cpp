@@ -46,7 +46,7 @@ npe_begin_code()
   // EIGEN_STATIC_ASSERT((EIGEN_IMPLIES(MaxRowsAtCompileTime==1 &&
   //    MaxColsAtCompileTime!=1, (Options&RowMajor)==RowMajor)
   // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
-  Eigen::Matrix<typename EigenDenseI64::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor, Eigen::Dynamic, 1> r;
+  Eigen::Matrix<typename EigenDenseInt::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor, Eigen::Dynamic, 1> r;
   igl::sort_angles(m, r);
   return npe::move(r);
 

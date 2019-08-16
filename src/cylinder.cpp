@@ -45,8 +45,8 @@ npe_begin_code()
   Eigen::MatrixXd v;
   Eigen::MatrixXi f;
   igl::cylinder(axis_devisions, height_devisions, v, f);
-  EigenDenseF64 v_row_major = v;
-  EigenDenseI64 f_row_major = f.template cast<typename EigenDenseI64::Scalar>();
+  EigenDenseFloat v_row_major = v;
+  EigenDenseInt f_row_major = f.template cast<typename EigenDenseInt::Scalar>();
   return std::make_tuple(npe::move(v_row_major), npe::move(f_row_major));
 
 npe_end_code()

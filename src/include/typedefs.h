@@ -37,6 +37,15 @@ typedef Eigen::Matrix<std::double_t, Eigen::Dynamic, Eigen::Dynamic, IglDefaultO
 typedef Eigen::Matrix<std::int32_t, Eigen::Dynamic, Eigen::Dynamic, IglDefaultOptions, Eigen::Dynamic, Eigen::Dynamic> EigenDenseI32;
 typedef Eigen::Matrix<std::int64_t, Eigen::Dynamic, Eigen::Dynamic, IglDefaultOptions, Eigen::Dynamic, Eigen::Dynamic> EigenDenseI64;
 
+//TODO replace with fancy CMAKE
+#ifdef WIN32
+typedef EigenDenseF64 EigenDenseFloat;
+typedef EigenDenseI32 EigenDenseInt;
+#else
+typedef EigenDenseF64 EigenDenseFloat;
+typedef EigenDenseI64 EigenDenseInt;
+#endif
+
 typedef Eigen::SparseMatrix<std::float_t, IglDefaultOptions> EigenSparseF32;
 typedef Eigen::SparseMatrix<std::double_t, IglDefaultOptions> EigenSparseF64;
 typedef Eigen::SparseMatrix<std::int32_t, IglDefaultOptions> EigenSparseI32;

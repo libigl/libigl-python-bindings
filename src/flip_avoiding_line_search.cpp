@@ -68,7 +68,7 @@ npe_begin_code()
   Eigen::MatrixXd cur_v_copy = cur_v.template cast<double>();
   Eigen::MatrixXd dst_v_copy = dst_v.template cast<double>();
   double ret_energy = igl::flip_avoiding_line_search(f_copy, cur_v_copy, dst_v_copy, energy, cur_energy);
-  EigenDenseF64 cur_v_row_major = cur_v_copy;
+  EigenDenseFloat cur_v_row_major = cur_v_copy;
   return std::make_tuple(ret_energy, npe::move(cur_v_row_major));
 
 npe_end_code()
