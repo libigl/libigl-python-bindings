@@ -41,7 +41,6 @@ Examples
 //TODO: libigl matrix to list supports only same type
 npe_function(tetrahedralize)
 npe_doc(ds_tetrahedralize)
-
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_default_arg(switches, std::string, std::string("pYQ"))

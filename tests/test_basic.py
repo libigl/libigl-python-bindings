@@ -427,7 +427,6 @@ class TestBasic(unittest.TestCase):
         status, tv, tt, tf = igl.tetrahedralize(self.v2, self.f2)
 
         self.assertEqual(status, 0)
-
         self.assertEqual(tv.dtype, self.v1.dtype)
         self.assertEqual(tt.dtype, self.f1.dtype)
         self.assertEqual(tf.dtype, self.f1.dtype)
