@@ -45,7 +45,7 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-plugins:
+plugins1:
   - mknotebooks:
       execute: true
       preamble: "tutorial/plot_to_md.py"

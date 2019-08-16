@@ -13,14 +13,18 @@ docs = ""
 def format_data(data):
 	global docs
 	docs += "\n| | |\n|-|-|\n"
-	docs += "|Parameters| {} |\n".format(data["Parameters"].strip().replace("\n", "</br>").replace("#", r"\#"))
-	docs += "|Returns| {} |\n".format(data["Returns"].strip().replace("\n", "</br>").replace("#", r"\#"))
-	if len(data["See also"].strip()) > 0 and data["See also"].strip() != "None":
+	if "Parameters" in data:
+		docs += "|Parameters| {} |\n".format(data["Parameters"].strip().replace("\n", "</br>").replace("#", r"\#"))
+	if "Returns" in data and len(data["Returns"].strip()) > 0:
+		docs += "|Returns| {} |\n".format(data["Returns"].strip().replace("\n", "</br>").replace("#", r"\#"))
+	if "See also" in data and len(data["See also"].strip()) > 0 and data["See also"].strip() != "None":
 		docs += "|See also| {} |\n".format(data["See also"].strip().replace("\n", "</br>").replace("#", r"\#"))
-	if len(data["Notes"].strip()) > 0 and data["Notes"].strip() != "None":
+	if "Notes" in data and len(data["Notes"].strip()) > 0 and data["Notes"].strip() != "None":
 		docs += "|Notes| {} |\n".format(data["Notes"].strip().replace("\n", "</br>").replace("#", r"\#"))
 	if "Examples" in data and len(data["Examples"].strip()) > 0:
-		docs += "\n**Examples**\n```python\n{}\n```\n".format(data["Examples"].strip().replace(">>>", ""))
+		docs += "\n**Examples**\n```python\n{}\n```\n".format(data["Examples"].strip().replace(">>> ", "").replace(">>>", ""))
+
+	docs += "\n\n"
 
 prevvv = None
 
@@ -114,8 +118,7 @@ while not packages.empty():
 	lines = lines.replace("builtins.object", "")
 	lines = lines.replace("|", "")
 	# lines = lines.replace("class ", "## class ")
-	lines = lines.replace("self: polyfempy.polyfempy.Solver, ", "")
-	lines = lines.replace("self: polyfempy.polyfempy.Solver", "")
+	lines = lines.replace("method of builtins.PyCapsule instance", "")
 	lines = lines.replace("self, ", "")
 	lines = lines.replace("self", "")
 	lines = lines.replace(" -> None", "")
@@ -180,7 +183,7 @@ while not packages.empty():
 			line.strip()
 			next_mark = True
 
-		if next_mark or (re.match(r'\w+\(.*\)', line) and (not "R90 " in line) and (not "M(e,e)" in line)):
+		if next_mark or (re.match(r'\w+\(.*\)', line) and (not "R90 " in line) and (not "M(e,e)" in line)) and (not "for(int" in line) and (not "if(" in line)and (not "assert(" in line):
 			next_mark = False
 			line = "**`" + line + "`**"
 
@@ -198,11 +201,10 @@ while not packages.empty():
 
 index = docs.find("FUNCTIONS")
 docs = docs[index+10:]
-index = docs.find("FUNCTIONS")
-docs = docs[index+10:]
 
 index = docs.find("igl/helpers.py")
-docs = docs[index+99:]
+index = docs.find("\n\n**", index)
+docs = docs[index:]
 
 docs = docs.replace("2/3", "2 / 3")
 docs = docs.replace("3/4", "3 / 4")
@@ -211,6 +213,8 @@ docs = docs.replace(" -> handle", "")
 docs = docs.replace(" -> object", "")
 docs = re.sub(r" -> Tuple\[.*\]", "", docs)
 docs = docs.replace("numpy.dtype  str  type", "dtype")
+docs = docs.replace(
+	"std::__1::vector<std::__1::vector<int, std::__1::allocator<int> >, std::__1::allocator<std::__1::vector<int, std::__1::allocator<int> > > >", "vector<vector<int>>")
 
 
 docs = docs.replace("scipy.sparse.csr_matrix  scipy.sparse.csc_matrix", "sparse_matrix")
@@ -227,6 +231,8 @@ for line in iter(tmp.splitlines()):
 		continue
 	if line.startswith("----"):
 		continue
+	if re.match(r'.+\(\.\.\.\)', line):
+		continue
 
 	if "class" in line:
 		if data:
@@ -239,9 +245,11 @@ for line in iter(tmp.splitlines()):
 		if data:
 			format_data(data)
 
-			data = None
-		line = line.replace("**`", "\n### **`")
-		docs += line + "\n"
+		data = None
+		title = line.replace("**`", "")
+		title = title[:title.find("(")]
+		docs += "### " + title + "\n"
+		docs += line + "\n\n"
 		continue
 
 	if line == "Parameters" or line == "Returns" or line == "See also" or line == "Notes" or line == "Examples":
