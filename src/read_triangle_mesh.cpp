@@ -35,7 +35,7 @@ npe_function(read_triangle_mesh)
 npe_doc(ds_read_triangle_mesh)
 npe_arg(filename, std::string)
 npe_default_arg(dtypef, npe::dtype, "float")
-npe_default_arg(dtypei, npe::dtype, "l")
+npe_default_arg(dtypei, npe::dtype, "int")
 npe_begin_code()
 
   if (dtypef.type() == npe::type_f32 && dtypei.type() == npe::type_i32) {
