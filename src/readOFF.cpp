@@ -42,7 +42,7 @@ npe_begin_code()
 
   if (dtype.type() == npe::type_f32) {
     EigenDenseF32 v, n;
-    EigenDenseI32 f;
+    EigenDenseInt f;
     bool ret;
     if (read_normals) {
       ret = igl::readOFF(filename, v, f, n);
@@ -58,7 +58,7 @@ npe_begin_code()
     return std::make_tuple(npe::move(v), npe::move(f), npe::move(n));
   } else if (dtype.type() == npe::type_f64) {
     EigenDenseF64 v, n;
-    EigenDenseI64 f;
+    EigenDenseInt f;
     bool ret;
     if (read_normals) {
       ret = igl::readOFF(filename, v, f, n);
