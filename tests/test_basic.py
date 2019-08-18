@@ -20,8 +20,8 @@ class TestBasic(unittest.TestCase):
         np.random.seed(42)
         self.test_path = os.path.join(os.path.dirname(
             os.path.realpath(__file__)), "../data/")
-        self.v1, self.f1, self.n1 = igl.read_off(os.path.join(self.test_path, "bunny.off"))
-        self.v2, self.f2, self.n2 = igl.read_off(os.path.join(self.test_path, "fertility.off"))
+        self.v1, self.f1 = igl.read_triangle_mesh(os.path.join(self.test_path, "bunny.off"))
+        self.v2, self.f2 = igl.read_triangle_mesh(os.path.join(self.test_path, "fertility.off"))
 
         self.v = np.random.rand(10, 3).astype(self.v1.dtype)
         self.t = np.random.rand(10, 4)
