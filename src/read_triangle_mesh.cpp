@@ -35,36 +35,19 @@ npe_function(read_triangle_mesh)
 npe_doc(ds_read_triangle_mesh)
 npe_arg(filename, std::string)
 npe_default_arg(dtypef, npe::dtype, "float")
-npe_default_arg(dtypei, npe::dtype, "int")
 npe_begin_code()
 
-  if (dtypef.type() == npe::type_f32 && dtypei.type() == npe::type_i32) {
+  if (dtypef.type() == npe::type_f32) {
     EigenDenseF32 v;
-    EigenDenseI32 f;
+    EigenDenseInt f;
     bool ret = igl::read_triangle_mesh(filename, v, f);
     if (!ret) {
       throw std::invalid_argument("File '" + filename + "' not found.");
     }
     return std::make_tuple(npe::move(v), npe::move(f));
-  } else if (dtypef.type() == npe::type_f32 && dtypei.type() == npe::type_i64) {
-    EigenDenseF32 v;
-    EigenDenseI64 f;
-    bool ret = igl::read_triangle_mesh(filename, v, f);
-    if (!ret) {
-      throw std::invalid_argument("File '" + filename + "' not found.");
-    }
-    return std::make_tuple(npe::move(v), npe::move(f));
-  } else if (dtypef.type() == npe::type_f64 && dtypei.type() == npe::type_i32) {
+  } else if (dtypef.type() == npe::type_f64) {
     EigenDenseF64 v;
-    EigenDenseI32 f;
-    bool ret = igl::read_triangle_mesh(filename, v, f);
-    if (!ret) {
-      throw std::invalid_argument("File '" + filename + "' not found.");
-    }
-    return std::make_tuple(npe::move(v), npe::move(f));
-  } else if (dtypef.type() == npe::type_f64 && dtypei.type() == npe::type_i64) {
-    EigenDenseF64 v;
-    EigenDenseI64 f;
+    EigenDenseInt f;
     bool ret = igl::read_triangle_mesh(filename, v, f);
     if (!ret) {
       throw std::invalid_argument("File '" + filename + "' not found.");
