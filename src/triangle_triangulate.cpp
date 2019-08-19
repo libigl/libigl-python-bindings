@@ -45,7 +45,6 @@ npe_begin_code()
   assert_nonzero_rows(e, "e");
   if (h.rows() != 0 && h.cols() != 0) {
       assert_cols_equals(h, 2, "h");
-      assert_cols_equals(h, 1, "h");
   }
   EigenDenseLike<npe_Matrix_v> v2;
   EigenDenseLike<npe_Matrix_e> f2;
