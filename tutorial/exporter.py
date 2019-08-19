@@ -10,6 +10,22 @@ packages.put("igl")
 docs = ""
 
 
+pattens_to_skip = [
+	"R90 ",
+	"M(e,e)",
+	"for(int",
+	"if(",
+	"assert(",
+	"E(e,1))",
+	" F(f, :) ",
+	"F(f,:) ",
+	"cur_energy(OPTIONAL)",
+	"d(A, B) = max(",
+	"d(A,B)",
+	"per_face_normals(V,F,Vector3d(1,1,1)",
+	"the number of positively"
+]
+
 def format_data(data):
 	global docs
 	docs += "\n| | |\n|-|-|\n"
@@ -183,7 +199,11 @@ while not packages.empty():
 			line.strip()
 			next_mark = True
 
-		if next_mark or (re.match(r'\w+\(.*\)', line) and (not "R90 " in line) and (not "M(e,e)" in line)) and (not "for(int" in line) and (not "if(" in line)and (not "assert(" in line):
+		if "for(int" in line:
+			print(line)
+
+		if next_mark or (re.match(r'\w+\(.*\)', line) and not any([line for pattern in pattens_to_skip if(pattern in line)])):
+		#  (not "R90 " in line) and (not "M(e,e)" in line)) and (not "for(int" in line) and (not "if(" in line) and (not "assert(" in line) and (not "E(e,1))" in line) and (not " F(f, :) " in line) and (not "cur_energy(OPTIONAL)" in line) and (not "d(A, B) = max(" in line):
 			next_mark = False
 			line = "**`" + line + "`**"
 
@@ -215,7 +235,8 @@ docs = re.sub(r" -> Tuple\[.*\]", "", docs)
 docs = docs.replace("numpy.dtype  str  type", "dtype")
 docs = docs.replace(
 	"std::__1::vector<std::__1::vector<int, std::__1::allocator<int> >, std::__1::allocator<std::__1::vector<int, std::__1::allocator<int> > > >", "vector<vector<int>>")
-
+docs = docs.replace(
+	"std::__1::function<double (Eigen::Matrix<double, -1, -1, 0, -1, -1>)>", "lambda function")
 
 docs = docs.replace("scipy.sparse.csr_matrix  scipy.sparse.csc_matrix", "sparse_matrix")
 

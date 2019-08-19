@@ -337,7 +337,7 @@ triangular graph within a given boundary" [Xu et al. 2011].
 
 | | |
 |-|-|
-|Parameters| min_steps  minimum number of steps to take from V(b,:) to bc</br>max_steps  minimum number of steps to take from V(b,:) to bc (if</br>max_steps == min_steps then no further number of steps will be tried)</br>num_inner_iters  number of iterations of harmonic solves to run after</br>for each morph step (to try to push flips back in)</br>test_for_flips  whether to check if flips occurred (and trigger more</br>steps). if test_for_flips = false then this function always returns</br>true |
+|Parameters| min_steps  minimum number of steps to take from V(b,:) to bc</br>max_steps  minimum number of steps to take from V(b,:) to bc (if max_steps == min_steps then no further number of steps will be tried)</br>num_inner_iters  number of iterations of harmonic solves to run after for each morph step (to try to push flips back in)</br>test_for_flips  whether to check if flips occurred (and trigger more steps). if test_for_flips = false then this function always returns</br>true |
 
 
 ### bone_parents
@@ -429,23 +429,7 @@ data-structures are built from an edge-manifold **closed** mesh.
 
 | | |
 |-|-|
-|Parameters| e  index into E of edge to circulate</br>ccw  whether to _continue_ in ccw direction of edge (circulate around |
-
-
-### E
-**`E(e,1))`**
-
-EMAP #F*3 list of indices into E, mapping each directed edge to unique
-unique edge in E
-EF  #E by 2 list of edge flaps, EF(e,0)=f means e=(i-->j) is the edge of
-### F
-**`F(f,:) opposite the vth corner, where EI(e,0)=v. Similarly EF(e,1) "`**
-
-e=(j->i)
-EI  #E by 2 list of edge flap corners (see above).
-
-| | |
-|-|-|
+|Parameters| e  index into E of edge to circulate</br>ccw  whether to _continue_ in ccw direction of edge (circulate around</br>E(e,1))</br>EMAP \#F*3 list of indices into E, mapping each directed edge to unique</br>unique edge in E</br>EF  \#E by 2 list of edge flaps, EF(e,0)=f means e=(i-->j) is the edge of</br>F(f,:) opposite the vth corner, where EI(e,0)=v. Similarly EF(e,1) "</br>e=(j->i)</br>EI  \#E by 2 list of edge flap corners (see above). |
 |Returns| Returns list of faces touched by circulation (in cyclically order). |
 
 
@@ -808,7 +792,7 @@ This function fits a plane to a point cloud.
 
 
 ### flip_avoiding_line_search
-**`flip_avoiding_line_search(f: array, cur_v: array, dst_v: array, energy: std::__1::function<double (Eigen::Matrix<double, -1, -1, 0, -1, -1>)>, cur_energy: float)`**
+**`flip_avoiding_line_search(f: array, cur_v: array, dst_v: array, energy: lambda function, cur_energy: float)`**
 
 A bisection line search for a mesh based energy that avoids triangle flips as suggested in
 "Bijective Parameterization with Free Boundaries" (Smith J. and Schaefer S., 2015).
@@ -818,15 +802,7 @@ Supports both triangle and tet meshes.
 
 | | |
 |-|-|
-|Parameters| F         \#F by 3 / 4 list of mesh faces or tets</br>cur_v     \#V by dim list of variables</br>dst_v     \#V by dim list of target vertices. This mesh may have flipped triangles</br>energy    A function to compute the mesh-based energy (return an energy that is bigger than 0) |
-
-
-### cur_energy
-**`cur_energy(OPTIONAL)         The energy at the given point. Helps save redundant c  omputations. This is optional. If not specified, the function will compute it.`**
-
-
-| | |
-|-|-|
+|Parameters| F         \#F by 3 / 4 list of mesh faces or tets</br>cur_v     \#V by dim list of variables</br>dst_v     \#V by dim list of target vertices. This mesh may have flipped triangles</br>energy    A function to compute the mesh-based energy (return an energy that is bigger than 0)</br>cur_energy(OPTIONAL)         The energy at the given point. Helps save redundant c  omputations. This is optional. If not specified, the function will compute it. |
 |Returns| cur_v     \#V by dim list of variables at the new location</br>Returns the energy at the new point |
 
 
@@ -928,9 +904,7 @@ Compute harmonic map using uniform laplacian operator
 
 HAUSDORFF compute the Hausdorff distance between mesh (VA,FA) and mesh
 (VB,FB). This is the
-### d
-**`d(A,B) = max ( max min d(a,b) , max min d(b,a) )`**
-
+d(A,B) = max ( max min d(a,b) , max min d(b,a) )
 a∈A b∈B          b∈B a∈A
 
 | | |
@@ -1105,11 +1079,9 @@ Compute face normals via vertex position list, face list
 **Examples**
 ```python
 Give degenerate faces (1/3,1/3,1/3)^0.5
+per_face_normals(V,F,Vector3d(1,1,1).normalized(),N);
 ```
 
-
-### per_face_normals
-**`per_face_normals(V,F,Vector3d(1,1,1).normalized(),N);`**
 
 ### per_vertex_attribute_smoothing
 **`per_vertex_attribute_smoothing(ain: array, f: array)`**
@@ -1295,7 +1267,7 @@ v, f, n, c = read_off("my_model.off")
 
 
 ### read_triangle_mesh
-**`read_triangle_mesh(filename: str, dtypef: dtype = 'float', dtypei: dtype = 'int')`**
+**`read_triangle_mesh(filename: str, dtypef: dtype = 'float')`**
 
 Read mesh from an ascii file with automatic detection of file format.
 Supported: obj, off, stl, wrl, ply, mesh.
@@ -1358,23 +1330,15 @@ Remove unreferenced vertices from V, updating F accordingly
 **`resolve_duplicated_faces(f1: array)`**
 
 Resolve duplicated faces according to the following rules per unique face:
-### If the number of positively oriented faces equals the number of`*
-**`If the number of positively oriented faces equals the number of`**
-
+- If the number of positively oriented faces equals the number of
 negatively oriented faces, remove all duplicated faces at this triangle.
-### If the number of positively oriented faces equals the number of`*
-**`If the number of positively oriented faces equals the number of`**
-
+- If the number of positively oriented faces equals the number of
 negatively oriented faces plus 1, keeps one of the positively oriented
 face.
-### If the number of positively oriented faces equals the number of`*
-**`If the number of positively oriented faces equals the number of`**
-
+- If the number of positively oriented faces equals the number of
 negatively oriented faces minus 1, keeps one of the negatively oriented
 face.
-### If the number of postively oriented faces differ with the number of`*
-**`If the number of postively oriented faces differ with the number of`**
-
+- If the number of postively oriented faces differ with the number of
 negativley oriented faces by more than 1, the mesh is not orientable.
 An exception will be thrown.
 

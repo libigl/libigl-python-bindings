@@ -6,15 +6,15 @@
 const char* ds_resolve_duplicated_faces = R"igl_Qu8mg5v7(
 
 Resolve duplicated faces according to the following rules per unique face:
-   1. If the number of positively oriented faces equals the number of
+   - If the number of positively oriented faces equals the number of
       negatively oriented faces, remove all duplicated faces at this triangle.
-   2. If the number of positively oriented faces equals the number of
+   - If the number of positively oriented faces equals the number of
       negatively oriented faces plus 1, keeps one of the positively oriented
       face.
-   3. If the number of positively oriented faces equals the number of
+   - If the number of positively oriented faces equals the number of
       negatively oriented faces minus 1, keeps one of the negatively oriented
       face.
-   4. If the number of postively oriented faces differ with the number of
+   - If the number of postively oriented faces differ with the number of
       negativley oriented faces by more than 1, the mesh is not orientable.
       An exception will be thrown.
 
@@ -37,8 +37,8 @@ None
 
 Examples
 --------
-  
-  
+
+
 )igl_Qu8mg5v7";
 
 npe_function(resolve_duplicated_faces)

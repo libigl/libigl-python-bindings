@@ -69,12 +69,9 @@ const char* ds_internal_bijective_composite_harmonic_mapping = R"igl_Qu8mg5v7(
 Parameters
 ----------
 min_steps  minimum number of steps to take from V(b,:) to bc
-max_steps  minimum number of steps to take from V(b,:) to bc (if
-max_steps == min_steps then no further number of steps will be tried)
-num_inner_iters  number of iterations of harmonic solves to run after
-  for each morph step (to try to push flips back in)
-test_for_flips  whether to check if flips occurred (and trigger more
-  steps). if test_for_flips = false then this function always returns
+max_steps  minimum number of steps to take from V(b,:) to bc (if max_steps == min_steps then no further number of steps will be tried)
+num_inner_iters  number of iterations of harmonic solves to run after for each morph step (to try to push flips back in)
+test_for_flips  whether to check if flips occurred (and trigger more steps). if test_for_flips = false then this function always returns
   true
 
 
