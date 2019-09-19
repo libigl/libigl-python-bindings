@@ -946,6 +946,24 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(q.dtype, self.v1.dtype)
         self.assertEqual(q.shape, (self.v1.shape[0], self.v1.shape[0]))
 
+    def test_signed_distance(self):
+        min_v = np.min(self.v1, axis=0)
+        max_v = np.max(self.v1, axis=0)
+        n = 64
+        g = np.mgrid[min_v[0]:max_v[0]:complex(n), min_v[1]:max_v[1]:complex(n), min_v[2]:max_v[2]:complex(n)]
+        p = np.vstack(map(np.ravel, g)).T
+        s, i, c = igl.signed_distance(p, self.v1, self.f1)
+
+        self.assertEqual(s.shape[0], p.shape[0])
+        self.assertEqual(i.shape[0], p.shape[0])
+        self.assertEqual(c.shape, p.shape)
+
+        s, i, c, n = igl.signed_distance(p, self.v1, self.f1, return_normals=True)
+        self.assertEqual(s.shape[0], p.shape[0])
+        self.assertEqual(i.shape[0], p.shape[0])
+        self.assertEqual(c.shape, p.shape)
+        self.assertEqual(n.shape, p.shape)
+
     # def test_offset_surface(self):
     #     sv, sf, gv, side, so = igl.offset_surface(self.v1, self.f1, 1, 10, igl.SIGNED_DISTANCE_TYPE_DEFAULT)
     #     self.assertEqual(sv.dtype, self.v1.type)
