@@ -949,7 +949,7 @@ class TestBasic(unittest.TestCase):
     def test_signed_distance(self):
         min_v = np.min(self.v1, axis=0)
         max_v = np.max(self.v1, axis=0)
-        n = 64
+        n = 16
         g = np.mgrid[min_v[0]:max_v[0]:complex(n), min_v[1]:max_v[1]:complex(n), min_v[2]:max_v[2]:complex(n)]
         p = np.vstack(map(np.ravel, g)).T
         s, i, c = igl.signed_distance(p, self.v1, self.f1)
