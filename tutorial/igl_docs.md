@@ -1027,6 +1027,21 @@ Constructs the mass (area) matrix for a given mesh (V,F).
 |See also| adjacency_matrix, cotmatrix, grad |
 
 
+### min_quad_with_fixed
+**`min_quad_with_fixed(A: sparse_matrix, B: array, known: array, Y: array, Aeq: sparse_matrix, Beq: array, is_A_pd: bool)`**
+
+MIN_QUAD_WITH_FIXED Minimize a quadratic energy of the form
+trace( 0.5*Z'*A*Z + Z'*B + constant )
+subject to
+Z(known,:) = Y, and
+Aeq*Z = Beq
+
+| | |
+|-|-|
+|Parameters| A  n by n matrix of quadratic coefficients</br>B  n by 1 column of linear coefficients</br>known list of indices to known rows in Z</br>Y  list of fixed values corresponding to known rows in Z</br>Aeq  m by n list of linear equality constraint coefficients</br>Beq  m by 1 list of linear equality constraint constant values</br>is_A_pd  flag specifying whether A(unknown,unknown) is positive definite |
+|Returns| Z  n by k solution |
+
+
 ### orientable_patches
 **`orientable_patches(f: array)`**
 
@@ -1373,6 +1388,23 @@ cone and a _uniform_ average (_not_ a average weighted by inverse angles).
 |-|-|
 |Parameters| V  \#V by 3 list of mesh vertex positions</br>F  \#F by 3 list of mesh face indices into V</br>P  \#P by 3 list of origin points</br>N  \#P by 3 list of origin normals |
 |Returns| S  \#P list of shape diamater function values between bounding box</br>diagonal (perfect sphere) and 0 (perfect needle hook) |
+
+
+### signed_distance
+**`signed_distance(p: array, v: array, f: array, return_normals: bool = False) -> tuple`**
+
+SIGNED_DISTANCE computes signed distance to a mesh
+
+| | |
+|-|-|
+|Parameters| P  \#P by 3 list of query point positions</br>V  \#V by 3 list of vertex positions</br>F  \#F by ss list of triangle indices, ss should be 3 unless sign_type</br>return_normals  (Optional, defaults to False) If set to True, will return pseudonormals of</br>closest points to each query point in P |
+|Returns| S  \#P list of smallest signed distances</br>I  \#P list of facet indices corresponding to smallest distances</br>C  \#P by 3 list of closest points |
+|Notes| Known issue: This only computes distances to triangles. So unreferenced</br>vertices and degenerate triangles are ignored. |
+
+**Examples**
+```python
+S, I, C = signed_distance(P, V, F, return_normals=False)
+```
 
 
 ### sort_angles

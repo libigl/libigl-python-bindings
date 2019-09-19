@@ -23,7 +23,9 @@ pattens_to_skip = [
 	"d(A, B) = max(",
 	"d(A,B)",
 	"per_face_normals(V,F,Vector3d(1,1,1)",
-	"the number of positively"
+	"the number of positively",
+	"trace(",
+	"Z(known,:)"
 ]
 
 def format_data(data):
