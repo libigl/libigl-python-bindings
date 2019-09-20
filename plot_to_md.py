@@ -2,7 +2,7 @@ import meshplot
 import json
 
 first = True
-meshplot.rendertype = "STATIC"
+meshplot.website()
 
 def mp_to_md(self):
     global first
