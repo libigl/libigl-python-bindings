@@ -1003,7 +1003,7 @@ class TestBasic(unittest.TestCase):
         Minv = sp.sparse.diags(1 / M.diagonal())
 
         ## Bi-Laplacian
-        Q = L @ (Minv @ L)
+        Q = L.dot(Minv.dot(L))
 
         ## Solve with only equality constraints
         Aeq = sp.sparse.csc_matrix((0, 0))
