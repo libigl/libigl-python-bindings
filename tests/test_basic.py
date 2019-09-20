@@ -3,6 +3,7 @@ import os
 
 import igl
 import numpy as np
+import scipy as sp
 import scipy.sparse.csc as csc
 import math
 
@@ -987,6 +988,30 @@ class TestBasic(unittest.TestCase):
     #std::function in python
     #def test_flip_avoid_line_search(self):
     #    pass
+
+    def test_min_quad_with_fixed(self):
+        v, f = igl.read_triangle_mesh(os.path.join(self.test_path, "cheburashka.off"))
+
+        ## Two fixed points: Left hand, left foot should have values 1 and -1
+        b = np.array([4331, 5957])
+        bc = np.array([1., -1.])
+        B = np.zeros((v.shape[0], 1))
+
+        ## Construct Laplacian and mass matrix
+        L = igl.cotmatrix(v, f)
+        M = igl.massmatrix(v, f, igl.MASSMATRIX_TYPE_VORONOI)
+        Minv = sp.sparse.diags(1 / M.diagonal())
+
+        ## Bi-Laplacian
+        Q = L @ (Minv @ L)
+
+        ## Solve with only equality constraints
+        Aeq = sp.sparse.csc_matrix((0, 0))
+        Beq = np.array([])
+        ok, z1 = igl.min_quad_with_fixed(Q, B, b, bc, Aeq, Beq, True)
+        self.assertTrue(z1.flags.c_contiguous)
+        self.assertTrue(z1.dtype == B.dtype)
+        self.assertTrue(ok)
 
 
 if __name__ == '__main__':

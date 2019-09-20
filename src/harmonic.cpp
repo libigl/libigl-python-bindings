@@ -137,10 +137,10 @@ Examples
 npe_function(harmonic_weights_from_laplacian_and_mass)
 npe_doc(ds_harmonic)
 //TODO: l and bc need to have same type, matching missing
-npe_arg(l, sparse_double)
+npe_arg(l, sparse_float, sparse_double)
 npe_arg(m, npe_matches(l))
 npe_arg(b, dense_int, dense_long, dense_longlong)
-npe_arg(bc, dense_double)
+npe_arg(bc, dense_float, dense_double)
 npe_arg(k, int)
 
 
@@ -151,8 +151,10 @@ npe_begin_code()
   assert_nonzero_rows(bc, "bc");
   assert_rows_match(b, bc, "b", "bc");
 
-  EigenDenseLike<npe_Matrix_bc> w;
-  igl::harmonic(l, m, b, bc, k, w);
+  Eigen::Matrix<typename npe_Matrix_l::Scalar, Eigen::Dynamic, Eigen::Dynamic> bc_copy = bc.template cast<typename npe_Matrix_l::Scalar>();
+
+  Eigen::Matrix<typename npe_Matrix_l::Scalar, Eigen::Dynamic, Eigen::Dynamic, npe_Matrix_bc::Options> w;
+  igl::harmonic(l, m, b, bc_copy, k, w);
   return npe::move(w);
 
 npe_end_code()

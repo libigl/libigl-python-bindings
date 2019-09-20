@@ -51,8 +51,8 @@ Examples
 npe_function(min_quad_with_fixed)
 npe_doc(ds_min_quad_with_fixed)
 //TODO missing npe_dense_like
-npe_arg(A, sparse_double)
-npe_arg(B, dense_double)
+npe_arg(A, sparse_float, sparse_double)
+npe_arg(B, dense_float, dense_double)
 npe_arg(known, dense_int, dense_long, dense_longlong)
 npe_arg(Y, npe_matches(B))
 npe_arg(Aeq, npe_matches(A))
@@ -71,13 +71,18 @@ npe_begin_code()
     assert_cols_match(B, Beq, "B", "Beq");
   assert_rows_match(Aeq, Beq, "Aeq", "Beq");
 
-  Eigen::SparseMatrix<double> A_copy = A;
-  Eigen::SparseMatrix<double> Aeq_copy = Aeq;
+  Eigen::SparseMatrix<double> A_copy = A.template cast<double>();
+  Eigen::SparseMatrix<double> Aeq_copy = Aeq.template cast<double>();
+
+  Eigen::MatrixXd B_copy = B.template cast<double>();
+  Eigen::MatrixXd Y_copy = Y.template cast<double>();
+  Eigen::MatrixXd Beq_copy = Beq.template cast<double>();
 
   Eigen::MatrixXd sol;
 
-  bool ok = igl::min_quad_with_fixed(A_copy, B, known, Y, Aeq_copy, Beq, is_A_pd, sol);
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> sol_row_major = sol;
+  bool ok = igl::min_quad_with_fixed(A_copy, B_copy, known, Y_copy, Aeq_copy, Beq_copy, is_A_pd, sol);
+  // Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> sol_row_major = sol;
+  EigenDenseLike<npe_Matrix_B> sol_row_major = sol.template cast < typename npe_Matrix_B::Scalar >();
   return std::make_pair(ok, npe::move(sol_row_major));
 
 npe_end_code()
