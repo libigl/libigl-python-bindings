@@ -1013,6 +1013,27 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(z1.dtype == B.dtype)
         self.assertTrue(ok)
 
+    def test_marching_tets(self):
+        TV = np.array([
+            [0., 0., 0.],
+            [1., 0., 0.],
+            [0., 1., 0.],
+            [0., 0., 1.]
+        ])
+        TT = np.array([[0, 1, 2, 3]])
+        S = np.array([0., 1., 1., 1.])
+
+        v, f = igl.marching_tets(TV, TT, S, 0.5)
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(f.flags.c_contiguous)
+
+        self.assertTrue(v.dtype == TV.dtype)
+        self.assertTrue(v.shape[0] >= 3)
+        self.assertTrue(v.shape[1] == 3)
+
+        self.assertTrue(f.dtype == TT.dtype)
+        self.assertTrue(f.shape[0] == 3)
+
 
 if __name__ == '__main__':
     unittest.main()
