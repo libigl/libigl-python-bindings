@@ -12,3 +12,5 @@ to run the tests:
 ```
 python setup.py test
 ```
+
+The temporary documentation and tutorial can be found [here](https://geometryprocessing.github.io/libigl-python-bindings/tutorials/)
