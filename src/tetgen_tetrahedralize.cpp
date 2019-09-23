@@ -47,7 +47,7 @@ npe_default_arg(switches, std::string, std::string("pYQ"))
 npe_begin_code()
    assert_nonzero_rows(v, "v");
    assert_cols_equals(v, 3, "v");
-   if(f.rows() >= 0){
+   if(f.rows() > 0){
       assert_cols_equals(f, 3, "f");
    }
   // TODO: remove __copy
