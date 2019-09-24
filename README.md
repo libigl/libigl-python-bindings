@@ -17,8 +17,8 @@ python setup.py install
 
 **NOTE:** We will not provide support for installations done in this way, since there is a lot of variation between systems. For a consistent experience. Use conda.
 
-## Help/Documentation
-The temporary documentation and tutorial can be found [here](https://geometryprocessing.github.io/libigl-python-bindings/tutorials/)
+## [Help/Documentation](https://geometryprocessing.github.io/libigl-python-bindings/tutorials/)
+The *temporary* documentation and tutorial can be found [here](https://geometryprocessing.github.io/libigl-python-bindings/tutorials/)
 
 ## Compiling and modifying the bindiings
 After cloning this repository, you can compile the bindings from scratch by running:
