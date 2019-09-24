@@ -1,5 +1,10 @@
+# *New* LibIGL Python Bindings
 [![Build Status](https://travis-ci.com/geometryprocessing/libigl-python-bindings.svg?branch=master)](https://travis-ci.com/geometryprocessing/libigl-python-bindings)
 [![Build status](https://ci.appveyor.com/api/projects/status/gti6d6encnc6akvr?svg=true)](https://ci.appveyor.com/project/teseoch/libigl-python-bindings)
+
+This repository contains the source code for the new and improved LibIGL Python bindings. These bindings are fully compatible with NumPy and SciPy and offer a convenient interface similar to functions in those libraries. 
+
+These bindings are still under active development and should still be considered alpha quality. We encourage users to post issues so we can improve the bindings!
 
 ## Installation
 
