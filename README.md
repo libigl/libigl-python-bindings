@@ -20,7 +20,7 @@ If you wish to install the current master branch, you can compile the library fr
 python setup.py install
 ```
 
-**NOTE:** We will not provide support for installations done in this way, since there is a lot of variation between systems. For a consistent experience. Use conda.
+**NOTE:** We will not provide support for installations done in this way, since there is a lot of variation between systems. For a consistent experience, use conda.
 
 ## [Help/Documentation](https://geometryprocessing.github.io/libigl-python-bindings/tutorials/)
 * A *temporary* tutorial on how to use the bindings can be found [here](https://geometryprocessing.github.io/libigl-python-bindings/tutorials/)
