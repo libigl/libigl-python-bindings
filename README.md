@@ -3,13 +3,13 @@
 
 ## Installation
 
-### With Conda [Recommended]
+### With Conda (Recommended)
 The simplest and best way to install the new LibIGL Python bindings is to run:
 ```
 conda install -c conda-forge igl
 ```
 
-### Compile from scratch [Not recommended]
+### Compile from scratch (Not recommended)
 If you wish to install the current master branch, you can compile the library from scratch, you can clone this repository and run the following command from the main directory:
 ```
 python setup.py install
