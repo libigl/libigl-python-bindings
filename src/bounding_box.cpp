@@ -40,7 +40,7 @@ npe_begin_code()
   EigenDenseLike<npe_Matrix_v> bv;
   Eigen::MatrixXi bf;
   igl::bounding_box(v, bv, bf);
-  EigenDenseInt bf_row_major = bf.template cast<typename EigenDenseInt::Scalar>();;
+  EigenDenseInt bf_row_major = bf.template cast<typename EigenDenseInt::Scalar>();
   return std::make_tuple(npe::move(bv), npe::move(bf_row_major));
 
 npe_end_code()

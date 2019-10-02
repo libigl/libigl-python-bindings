@@ -1034,6 +1034,43 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.dtype == TT.dtype)
         self.assertTrue(f.shape[0] == 3)
 
+    def test_read_tgf(self):
+        filename = os.path.join(self.test_path, "hand.tgf")
+        tf = np.array([1.])
+        ti = np.array([1])
+
+        ok, V, E, P, BE, CE, PE = igl.read_tgf(filename)
+        self.assertTrue(ok)
+        self.assertTrue(V.flags.c_contiguous)
+        self.assertTrue(E.flags.c_contiguous)
+        self.assertTrue(P.flags.c_contiguous)
+        self.assertTrue(BE.flags.c_contiguous)
+        self.assertTrue(CE.flags.c_contiguous)
+        self.assertTrue(PE.flags.c_contiguous)
+
+        self.assertTrue(V.dtype == tf.dtype)
+        self.assertTrue(E.dtype == ti.dtype)
+        self.assertTrue(P.dtype == ti.dtype)
+        self.assertTrue(BE.dtype == ti.dtype)
+        self.assertTrue(CE.dtype == ti.dtype)
+        self.assertTrue(PE.dtype == ti.dtype)
+
+    def test_deform_skeleton(self):
+        hand_file = os.path.join(self.test_path, "hand.tgf")
+        _, C, BE, _, _, _, _ = igl.read_tgf(hand_file)
+
+        T = np.zeros((BE.shape[0]*4, 3))
+        I = np.eye(3)
+        for i in range(0, T.shape[0], 4):
+            T[i:i+3, :] = I
+
+        CT, BET = igl.deform_skeleton(C, BE, T)
+        self.assertTrue(CT.flags.c_contiguous)
+        self.assertTrue(BET.flags.c_contiguous)
+
+        self.assertTrue(CT.dtype == C.dtype)
+        self.assertTrue(BET.dtype == BE.dtype)
+
 
 if __name__ == '__main__':
     unittest.main()
