@@ -141,6 +141,7 @@ npe_arg(l, sparse_float, sparse_double)
 npe_arg(m, npe_matches(l))
 npe_arg(b, dense_int, dense_long, dense_longlong)
 npe_arg(bc, dense_float, dense_double)
+// npe_arg(bc, npe_dense_like(l))
 npe_arg(k, int)
 
 

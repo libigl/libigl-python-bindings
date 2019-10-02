@@ -52,6 +52,7 @@ npe_function(min_quad_with_fixed)
 npe_doc(ds_min_quad_with_fixed)
 //TODO missing npe_dense_like
 npe_arg(A, sparse_float, sparse_double)
+// npe_arg(B, npe_dense_like(A))
 npe_arg(B, dense_float, dense_double)
 npe_arg(known, dense_int, dense_long, dense_longlong)
 npe_arg(Y, npe_matches(B))

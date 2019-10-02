@@ -71,7 +71,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="igl",
-    version="0.3.1",
+    version="0.4",
     author="libigl",
     author_email="",
     description="libigl Python Bindings",
