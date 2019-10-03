@@ -29,7 +29,7 @@ class TestBasic(unittest.TestCase):
         self.f = np.random.randint(0, 10, size=(20, 3), dtype=self.f1.dtype)
         self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
 
-    def test_module(self):
+    def test_z_module(self):
         # Extract all implemented functions from the module
         funcs = []
         flist = ["helpers", "os", "print_usage", "pyigl", "viewer", "check_dependencies"]
@@ -50,9 +50,10 @@ class TestBasic(unittest.TestCase):
                 tests.append(att[5:])
 
         # Check that there are tests for all functions
+        print("")
         for f in funcs:
             if f not in tests:
-                if f == "igl" or f == "np" or f == "pyigl_classes":
+                if f == "igl" or f == "np" or f == "pyigl_classes" or f == "sparse" or f == "spsolve":
                     continue
                 print("WARNING: Test for function %s missing."%f)
                 #self.assertTrue(f in tests)
@@ -885,6 +886,10 @@ class TestBasic(unittest.TestCase):
         w = igl.harmonic_weights_from_laplacian_and_mass(l, m, b, bc, k)
         self.assertTrue(w.flags.c_contiguous)
 
+    def test_harmonic_weights_from_laplacian_and_mass(self):
+        # tested in test_harmonic
+        pass
+
     def test_exact_geodesic(self):
         vs = np.array([0])
         vt = np.arange(self.v1.shape[0])
@@ -1070,6 +1075,15 @@ class TestBasic(unittest.TestCase):
 
         self.assertTrue(CT.dtype == C.dtype)
         self.assertTrue(BET.dtype == BE.dtype)
+
+    def test_edge_lengths(self):
+        l = igl.edge_lengths(self.v1, self.f1)
+
+        self.assertTrue(l.flags.c_contiguous)
+        self.assertTrue(l.dtype == self.v1.dtype)
+        self.assertTrue(l.shape == self.f1.shape)
+
+
 
 
 if __name__ == '__main__':
