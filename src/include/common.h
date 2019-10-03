@@ -260,11 +260,11 @@ void assert_valid_2d_tri_mesh(const TV& v, const TF& f, std::string v_name="v", 
                                     std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]) ");
     }
 
-    if (v.cols() != 3) {
+    if (v.cols() != 2) {
         throw pybind11::value_error("Invalid mesh vertices, " + v_name + " must have shape [#vertices, 2] but got " + v_name +
                                     ".shape = [" + std::to_string(v.rows()) + ", " + std::to_string(v.cols()) + "]");
     }
-    if (f.cols() != 4) {
+    if (f.cols() != 3) {
         throw pybind11::value_error("Invalid mesh faces, " + f_name + " must have shape [#faces, 3] but got " + f_name +
                                     ".shape = [" + std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]");
     }

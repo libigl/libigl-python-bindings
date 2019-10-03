@@ -56,8 +56,8 @@ npe_begin_code()
   assert_shape_equals(bc, b.rows(), 2, "bc");
 
   EigenDenseLike<npe_Matrix_v> u;
-  igl::bijective_composite_harmonic_mapping(v, f, b, bc, u);
-  return npe::move(u);
+  bool success = igl::bijective_composite_harmonic_mapping(v, f, b, bc, u);
+  return std::make_pair(success, npe::move(u));
 
 npe_end_code()
 

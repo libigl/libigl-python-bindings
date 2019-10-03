@@ -868,6 +868,26 @@ class TestBasic(unittest.TestCase):
         #tested in test_slim, test_arap2, and test_arap1
         pass
 
+    def test_harmonic_weights_integrated(self):
+        Q = igl.harmonic_weights_integrated(self.v1, self.f1, 1)
+        self.assertTrue(Q.dtype == self.v1.dtype)
+
+    def test_harmonic_weights_uniform_laplacian(self):
+        b = np.array([0, 10])
+        bc = np.array([
+            [0, 0], [10., 10.]])
+        W = igl.harmonic_weights_uniform_laplacian(self.f1, b, bc, 1)
+
+        self.assertTrue(W.dtype == self.v1.dtype)
+        self.assertTrue(W.flags.c_contiguous)
+
+    def test_harmonic_weights_integrated_from_laplacian_and_mass(self):
+        l = igl.cotmatrix(self.v1, self.f1)
+        m = igl.massmatrix(self.v1, self.f1, igl.MASSMATRIX_TYPE_VORONOI)
+
+        Q = igl.harmonic_weights_integrated_from_laplacian_and_mass(l, m, 1)
+        self.assertTrue(Q.dtype == self.v1.dtype)
+
     # deal with igl::PerEdgeNormalsWeightingType
     #def test_per_edge_normals(self):
     #    fn = np.random.rand(self.f1.shape[0], 3)
@@ -903,6 +923,23 @@ class TestBasic(unittest.TestCase):
     def test_harmonic_weights_from_laplacian_and_mass(self):
         # tested in test_harmonic
         pass
+
+    # this test is creating a matrix which is not spd and an assertion fails...
+    # def test_bijective_composite_harmonic_mapping(self):
+    #     v, f = igl.read_triangle_mesh(os.path.join(self.test_path, "circle.obj"))
+    #     f = np.array(f[:, [0, 2, 1]])
+    #     v = np.array(v[:, 0:2])
+    #     b = np.array([943, 1356]
+    #     bc = np.array([
+    #         [0, 0],
+    #         [10., 10.]
+    #     ])
+
+    #     ok, u = igl.bijective_composite_harmonic_mapping(v, f, b, bc)
+
+    #     self.assertTrue(u.flags.c_contiguous)
+    #     self.assertTrue(u.dtype == v1.dtype)
+    #     self.assertTrue(type(ok) == bool)
 
     def test_exact_geodesic(self):
         vs = np.array([0])
