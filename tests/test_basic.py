@@ -1139,6 +1139,27 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(l.dtype == self.v1.dtype)
         self.assertTrue(l.shape == self.f1.shape)
 
+    def test_planarize_quad_mesh(self):
+        v, f, _ = igl.read_off(os.path.join("data", "inspired_mesh_quads_Conjugate.off"))
+        out = igl.planarize_quad_mesh(v, f, 1, 1e-2)
+
+        self.assertTrue(out.dtype == v.dtype)
+        self.assertTrue(out.flags.c_contiguous)
+
+    def test_local_basis(self):
+        b1, b2, b3 = igl.local_basis(self.v1, self.f1)
+        self.assertTrue(b1.flags.c_contiguous)
+        self.assertTrue(b2.flags.c_contiguous)
+        self.assertTrue(b3.flags.c_contiguous)
+
+        self.assertTrue(b1.dtype == self.v1.dtype)
+        self.assertTrue(b2.dtype == self.v1.dtype)
+        self.assertTrue(b3.dtype == self.v1.dtype)
+
+        self.assertTrue(b1.shape == self.f1.shape)
+        self.assertTrue(b2.shape == self.f1.shape)
+        self.assertTrue(b3.shape == self.f1.shape)
+
 
 
 

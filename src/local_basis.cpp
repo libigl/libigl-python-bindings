@@ -1,9 +1,3 @@
-// TODO: not working idk why
-// probably because
-// const Eigen::MatrixBase<DerivedF>& F,
-// Eigen::PlainObjectBase<DerivedV>& B1,
-// have the same template
-// __bug
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -41,11 +35,14 @@ npe_doc(ds_local_basis)
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long)
 npe_begin_code()
+  assert_valid_3d_tri_mesh(v, f);
+  EigenDenseLike<npe_Matrix_v> v_copy = v;
+  EigenDenseLike<npe_Matrix_f> f_copy = f;
 
-  npe_Matrix_v b1;
-  npe_Matrix_v b2;
-  npe_Matrix_v b3;
-  igl::local_basis(v, f, b1, b2, b3);
+  EigenDenseLike<npe_Matrix_v> b1;
+  EigenDenseLike<npe_Matrix_v> b2;
+  EigenDenseLike<npe_Matrix_v> b3;
+  igl::local_basis(v_copy, f_copy, b1, b2, b3);
   return std::make_tuple(npe::move(b1), npe::move(b2), npe::move(b3));
 
 npe_end_code()

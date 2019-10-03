@@ -4,8 +4,6 @@
 
 
 
-
-
 #include <igl/forward_kinematics.h>
 
 const char* ds_forward_kinematics = R"igl_Qu8mg5v7(
@@ -31,7 +29,7 @@ Examples
 
  Given a skeleton and a set of relative bone rotations compute absolute
    rigid transformations for each bone.
-  
+
    Inputs:
      C  #C by dim list of joint positions
      BE  #BE by 2 list of bone edge indices

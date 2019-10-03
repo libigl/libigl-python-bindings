@@ -1,6 +1,3 @@
-//TODO: problem with template input in libigl
-// probably same as local_basis
-// __bug
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -43,9 +40,12 @@ npe_arg(threshold, double)
 
 
 npe_begin_code()
+  assert_valid_3d_quad_mesh(v, f);
+  EigenDenseLike<npe_Matrix_v> v_copy = v;
+  EigenDenseLike<npe_Matrix_f> f_copy = f;
 
   EigenDenseLike<npe_Matrix_v> out;
-  igl::planarize_quad_mesh(v, f, max_iter, threshold, out);
+  igl::planarize_quad_mesh(v_copy, f_copy, max_iter, threshold, out);
   return npe::move(out);
 
 npe_end_code()
