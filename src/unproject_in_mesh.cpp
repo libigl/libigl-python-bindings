@@ -1,7 +1,7 @@
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
-
+#include <pybind11/stl.h>
 
 
 
@@ -44,17 +44,17 @@ None
 Examples
 --------
 
-  
+
 )igl_Qu8mg5v7";
 
 npe_function(unproject_in_mesh)
 npe_doc(ds_unproject_in_mesh)
 
-npe_arg(pos, Eigen::Vector2f &)
-npe_arg(model, Eigen::Matrix4f &)
-npe_arg(proj, Eigen::Matrix4f &)
-npe_arg(viewport, Eigen::Vector4f &)
-npe_arg(v, dense_float, dense_double)
+npe_arg(pos, dense_float, dense_double)
+npe_arg(model, npe_matches(pos))
+npe_arg(proj, npe_matches(pos))
+npe_arg(viewport, npe_matches(pos))
+npe_arg(v, npe_matches(pos))
 npe_arg(f, dense_int, dense_long, dense_longlong)
 
 
@@ -66,7 +66,7 @@ npe_begin_code()
   assert_cols_equals(model, 4, "model");
   assert_shapes_match(model, proj, "model", "proj");
   assert_rows_equals(viewport, 4, "viewport");
- 
+
   // TODO: remove __copy
   Eigen::Vector2f pos_copy = pos.template cast<float>();
   Eigen::Matrix4f model_copy = model.template cast<float>();
@@ -75,7 +75,7 @@ npe_begin_code()
 
   EigenDenseLike<npe_Matrix_v> obj;
   std::vector<igl::Hit, std::allocator<igl::Hit> > hits;
-  igl::unproject_in_mesh(pos, model, proj, viewport, v, f, obj, hits);
+  igl::unproject_in_mesh(pos_copy, model_copy, proj_copy, viewport_copy, v, f, obj, hits);
   return std::make_tuple(npe::move(obj), hits);
 
 npe_end_code()

@@ -56,7 +56,6 @@ npe_arg(ei, npe_matches(emap))
 
 
 npe_begin_code()
-  assert_cols_equals(emap, 3, "emap");
   assert_cols_equals(ef, 2, "ef");
   assert_cols_equals(ei, 2, "ei");
   assert_shapes_match(ef, ei, "ef", "ei");

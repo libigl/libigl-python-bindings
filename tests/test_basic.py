@@ -363,8 +363,8 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(p.shape[0], self.g.shape[0])
         self.assertTrue(p.flags.c_contiguous)
 
-    # TODO: not completed
-    #def test_circulation(self):
+    # def test_circulation(self):
+    #    difficult data
     #    _, e, emap = igl.crouzeix_raviart_cotmatrix(self.v1, self.f1)
     #    ret = igl.circulation(0, False, emap, e, e)
     #    self.assertTrue(type(ret) == list)
@@ -771,11 +771,25 @@ class TestBasic(unittest.TestCase):
         # internal function tested in test_uniformly_sample_two_manifold
         pass
 
-    # TODO: data not familiar
-    #def test_unproject_in_mesh(self):
-    #    pass
-    #def test_unproject_onto_mesh(self):
-    #    pass
+    def test_unproject_in_mesh(self):
+        pos = np.array([10., 10.])
+        eye = np.eye(4)
+        viewport = np.array([0., 0., 100., 100.])
+        obj, hits = igl.unproject_in_mesh(pos, eye, eye, viewport, self.v1, self.f1)
+
+        self.assertTrue(obj.flags.c_contiguous)
+        self.assertTrue(obj.dtype == self.v1.dtype)
+
+
+    def test_unproject_onto_mesh(self):
+       pos = np.array([10., 10.])
+       eye = np.eye(4)
+       viewport = np.array([0., 0., 100., 100.])
+       ok, fid, bc = igl.unproject_onto_mesh(pos, eye, eye, viewport, self.v1, self.f1)
+
+       self.assertTrue(type(ok) == bool)
+       self.assertTrue(bc.flags.c_contiguous)
+       self.assertTrue(bc.dtype == self.v1.dtype)
 
     def test_vertex_components_from_adjacency_matrix(self):
         # tested in test_vertex_components
@@ -898,24 +912,27 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(d.dtype, self.v1.dtype)
         self.assertTrue(d.flags.c_contiguous)
 
-    # Fail on windows
-    # The commented asserts fail, but should pass according to documentation
-    #def test_cut_mesh(self):
-    #    cuts = np.random.randint(0, 2, size=(self.f1.shape[0], 3), dtype=self.f1.dtype)
-    #    vcut, fcut = igl.cut_mesh(self.v1, self.f1, cuts)
-    #    self.assertEqual(vcut.dtype, self.v1.dtype)
-    #    self.assertEqual(vcut.shape[1], 3)
-    #    #self.assertEqual(vcut.shape[0], self.v1.shape[0])
-    #    self.assertEqual(fcut.dtype, self.f1.dtype)
-    #    self.assertEqual(fcut.shape[1], 3)
-    #    #self.assertEqual(fcut.shape[0], self.f1.shape[0])
+    def test_cut_mesh(self):
+       cuts = np.random.randint(0, 2, size=self.f1.shape, dtype=self.f1.dtype)
+       vcut, fcut = igl.cut_mesh(self.v1, self.f1, cuts)
 
-    # Seg fault
-    #def test_cut_mesh_from_singularities(self):
-    #    mismatch = np.random.randint(0, 0, size = (self.f1.shape[0], 3), dtype="int32")
-    #    seams = igl.cut_mesh_from_singularities(self.v1, self.f1, mismatch)
-    #    self.assertEqual(seams.shape, (self.f1.shape[0], 3))
-    #    self.assertEqual(seams.dtype, bool)
+       self.assertTrue(vcut.flags.c_contiguous)
+       self.assertTrue(fcut.flags.c_contiguous)
+
+       self.assertTrue(vcut.dtype == self.v1.dtype)
+       self.assertTrue(vcut.shape[1] == 3)
+       self.assertTrue(vcut.shape[0] >= self.v1.shape[0])
+       self.assertTrue(fcut.dtype == self.f1.dtype)
+       self.assertTrue(fcut.shape[1] == 3)
+       self.assertTrue(fcut.shape[0] == self.f1.shape[0])
+
+
+    def test_cut_mesh_from_singularities(self):
+       mismatch = np.random.randint(0, 10, size=self.f1.shape, dtype=self.f1.dtype)
+       seams = igl.cut_mesh_from_singularities(self.v1, self.f1, mismatch)
+       self.assertEqual(seams.shape, (self.f1.shape[0], 3))
+       self.assertEqual(seams.dtype, bool)
+       self.assertTrue(seams.flags.c_contiguous)
 
 
     #def test_BBW(self):
@@ -986,9 +1003,11 @@ class TestBasic(unittest.TestCase):
 
     #     self.assertEqual(gv.shape, so.shape)
 
-    #std::vector in python
-    #def test_biharmonic_coordinates(self):
-    #    pass
+    def test_biharmonic_coordinates(self):
+       w = igl.biharmonic_coordinates(self.v1, self.f1, [[0]])
+
+       self.assertTrue(w.flags.c_contiguous)
+       self.assertTrue(w.dtype == self.v1.dtype)
 
     #std::function in python
     #def test_flip_avoid_line_search(self):

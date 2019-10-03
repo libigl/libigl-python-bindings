@@ -41,8 +41,8 @@ npe_begin_code()
     assert_shapes_match(f, mismatch, "f", "mismatch");
 
     // FIXME: LibIGL templates are broken so we need to do copies :'(
-    EigenDenseLike<npe_Matrix_v> v_copy;
-    EigenDenseLike<npe_Matrix_f> f_copy;
+    EigenDenseLike<npe_Matrix_v> v_copy = v;
+    EigenDenseLike<npe_Matrix_f> f_copy = f;
 
     Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic, npe_Matrix_f::Options> seams;
 
