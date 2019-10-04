@@ -1160,7 +1160,114 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(b2.shape == self.f1.shape)
         self.assertTrue(b3.shape == self.f1.shape)
 
+    def test_zz_cross_field(self):
+        V, F = igl.read_triangle_mesh(os.path.join(self.test_path, "3holes.off"))
 
+        B = igl.barycenter(V, F)
+        b = np.array([0])
+        bc = np.array([[1., 0., 0.]])
+
+        X1, S = igl.nrosy(V, F, b, bc,
+                        np.array([], dtype=b.dtype), np.array([]), np.array([]), 4, 0.5)
+
+        self.assertTrue(X1.flags.c_contiguous)
+        self.assertTrue(S.flags.c_contiguous)
+        self.assertTrue(X1.dtype == V.dtype)
+        self.assertTrue(S.dtype == V.dtype)
+
+        B1, B2, B3 = igl.local_basis(V, F)
+
+        X2 = igl.rotate_vectors(X1, np.array([math.pi/2]), B1, B2)
+        self.assertTrue(X2.flags.c_contiguous)
+        self.assertTrue(X2.dtype == V.dtype)
+
+
+        BIS1, BIS2 = igl.compute_frame_field_bisectors_no_basis(V, F, X1, X2)
+        self.assertTrue(BIS1.flags.c_contiguous)
+        self.assertTrue(BIS1.dtype == V.dtype)
+        self.assertTrue(BIS2.flags.c_contiguous)
+        self.assertTrue(BIS2.dtype == V.dtype)
+
+
+        BIS1t, BIS2t = igl.compute_frame_field_bisectors(V, F, X1, X2, BIS1, BIS2)
+        self.assertTrue(BIS1t.flags.c_contiguous)
+        self.assertTrue(BIS1t.dtype == V.dtype)
+        self.assertTrue(BIS2t.flags.c_contiguous)
+        self.assertTrue(BIS2t.dtype == V.dtype)
+
+        BIS1_combed, BIS2_combed = igl.comb_cross_field(V, F, BIS1, BIS2)
+        self.assertTrue(BIS1_combed.flags.c_contiguous)
+        self.assertTrue(BIS1_combed.dtype == V.dtype)
+        self.assertTrue(BIS2_combed.flags.c_contiguous)
+        self.assertTrue(BIS2_combed.dtype == V.dtype)
+
+        BI_combed = igl.comb_line_field(V, F, BIS1)
+        self.assertTrue(BI_combed.flags.c_contiguous)
+        self.assertTrue(BI_combed.dtype == V.dtype)
+
+
+        MMatch = igl.cross_field_mismatch(V, F, BIS1_combed, BIS2_combed, True)
+        self.assertTrue(MMatch.flags.c_contiguous)
+        self.assertTrue(MMatch.dtype == F.dtype)
+
+        isSingularity, singularityIndex = igl.find_cross_field_singularities(V, F, MMatch)
+        self.assertTrue(isSingularity.flags.c_contiguous)
+        self.assertTrue(isSingularity.dtype == F.dtype)
+        self.assertTrue(singularityIndex.flags.c_contiguous)
+        self.assertTrue(singularityIndex.dtype == F.dtype)
+
+        isSingularityt, singularityIndext = igl.find_cross_field_singularities_from_field(V, F, BIS1_combed, BIS2_combed)
+        self.assertTrue(isSingularityt.flags.c_contiguous)
+        self.assertTrue(isSingularityt.dtype == F.dtype)
+        self.assertTrue(singularityIndext.flags.c_contiguous)
+        self.assertTrue(singularityIndext.dtype == F.dtype)
+
+
+        X1_combed, X2_combed = igl.comb_frame_field(V, F, X1, X2, BIS1_combed, BIS2_combed)
+        self.assertTrue(X1_combed.flags.c_contiguous)
+        self.assertTrue(X1_combed.dtype == V.dtype)
+        self.assertTrue(X2_combed.flags.c_contiguous)
+        self.assertTrue(X2_combed.dtype == V.dtype)
+
+    def test_comb_cross_field(self):
+        #tested in test_cross_field
+        pass
+
+    def test_comb_frame_field(self):
+        #tested in test_cross_field
+        pass
+
+    def test_comb_line_field(self):
+        #tested in test_cross_field
+        pass
+
+    def test_compute_frame_field_bisectors(self):
+        #tested in test_cross_filed
+        pass
+
+    def test_compute_frame_field_bisectors_no_basis(self):
+        #tested in test_cross_filed
+        pass
+
+    def test_cross_field_mismatch(self):
+        #tested in test_cross_filed
+        pass
+
+    def test_find_cross_field_singularities(self):
+        #tested in test_cross_filed
+        pass
+
+    def test_find_cross_field_singularities_from_field(self):
+        #tested in test_cross_filed
+        pass
+
+    def test_nrosy(self):
+        #tested in test_cross_filed
+        pass
+
+    def test_rotate_vectors(self):
+        #tested in test_cross_filed
+        pass
 
 
 if __name__ == '__main__':

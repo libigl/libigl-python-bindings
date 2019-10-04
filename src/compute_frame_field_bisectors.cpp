@@ -1,4 +1,4 @@
-// TODO: __example __bug conflict type
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/compute_frame_field_bisectors.h>
@@ -32,14 +32,14 @@ None
 Examples
 --------
 
-  
+
 )igl_Qu8mg5v7";
 
 npe_function(compute_frame_field_bisectors)
 npe_doc(ds_compute_frame_field_bisectors)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(b1, npe_matches(v))
 npe_arg(b2, npe_matches(v))
 npe_arg(pd1, npe_matches(v))
@@ -47,10 +47,27 @@ npe_arg(pd2, npe_matches(v))
 
 
 npe_begin_code()
+  assert_valid_3d_tri_mesh(v, f);
+  assert_rows_match(f, b1, "F", "B1");
+  assert_rows_match(f, b2, "F", "B2");
+  assert_cols_equals(b1, 3, "b1");
+  assert_cols_equals(b2, 3, "b2");
 
-  npe_Matrix_v bis1;
-  npe_Matrix_v bis2;
-  igl::compute_frame_field_bisectors(v, f, b1, b2, pd1, pd2, bis1, bis2);
+  assert_rows_match(f, pd1, "F", "PD1");
+  assert_rows_match(f, pd2, "F", "PD2");
+  assert_cols_equals(pd1, 3, "PD1");
+  assert_cols_equals(pd2, 3, "PD2");
+
+  EigenDenseLike<npe_Matrix_v> v_copy = v;
+  EigenDenseLike<npe_Matrix_f> f_copy = f;
+  EigenDenseLike<npe_Matrix_v> b1_copy = b1;
+  EigenDenseLike<npe_Matrix_v> b2_copy = b2;
+  EigenDenseLike<npe_Matrix_v> pd1_copy = pd1;
+  EigenDenseLike<npe_Matrix_v> pd2_copy = pd2;
+
+  EigenDenseLike<npe_Matrix_v> bis1;
+  EigenDenseLike<npe_Matrix_v> bis2;
+  igl::compute_frame_field_bisectors(v_copy, f_copy, b1_copy, b2_copy, pd1_copy, pd2_copy, bis1, bis2);
   return std::make_tuple(npe::move(bis1), npe::move(bis2));
 
 npe_end_code()
@@ -86,16 +103,28 @@ npe_function(compute_frame_field_bisectors_no_basis)
 npe_doc(ds_compute_frame_field_bisectors_no_basis)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(pd1, npe_matches(v))
 npe_arg(pd2, npe_matches(v))
 
 
 npe_begin_code()
+  assert_valid_3d_tri_mesh(v, f);
 
-  npe_Matrix_v bis1;
-  npe_Matrix_v bis2;
-  igl::compute_frame_field_bisectors(v, f, pd1, pd2, bis1, bis2);
+  assert_rows_match(f, pd1, "F", "PD1");
+  assert_rows_match(f, pd2, "F", "PD2");
+  assert_cols_equals(pd1, 3, "PD1");
+  assert_cols_equals(pd2, 3, "PD2");
+
+  EigenDenseLike<npe_Matrix_v> v_copy = v;
+  EigenDenseLike<npe_Matrix_f> f_copy = f;
+  EigenDenseLike<npe_Matrix_v> pd1_copy = pd1;
+  EigenDenseLike<npe_Matrix_v> pd2_copy = pd2;
+
+  EigenDenseLike<npe_Matrix_v> bis1;
+  EigenDenseLike<npe_Matrix_v> bis2;
+
+  igl::compute_frame_field_bisectors(v_copy, f_copy, pd1_copy, pd2_copy, bis1, bis2);
   return std::make_tuple(npe::move(bis1), npe::move(bis2));
 
 npe_end_code()
