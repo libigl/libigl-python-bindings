@@ -67,6 +67,6 @@ npe_begin_code()
     EigenDenseLike<npe_Matrix_f> side = side_copy.template cast<typename npe_Matrix_f::Scalar>();
     EigenDenseLike<npe_Matrix_f> so = so_copy.template cast<typename npe_Matrix_f::Scalar>();
 
-    std::make_tuple(npe::move(sv), npe::move(sf), npe::move(gv), npe::move(side), npe::move(so));
+    return std::make_tuple(npe::move(sv), npe::move(sf), npe::move(gv), npe::move(side), npe::move(so));
 
-    npe_end_code()
+npe_end_code()

@@ -1024,21 +1024,22 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(c.shape, p.shape)
         self.assertEqual(n.shape, p.shape)
 
-    # def test_offset_surface(self):
-    #     sv, sf, gv, side, so = igl.offset_surface(self.v1, self.f1, 1, 10, igl.SIGNED_DISTANCE_TYPE_DEFAULT)
-    #     self.assertEqual(sv.dtype, self.v1.type)
-    #     self.assertEqual(sf.dtype, self.f1.type)
+    def test_offset_surface(self):
+        sv, sf, gv, side, so = igl.offset_surface(self.v1, self.f1, 1, 10, igl.SIGNED_DISTANCE_TYPE_DEFAULT)
+        self.assertTrue(sv.dtype==self.v1.dtype)
+        self.assertTrue(sf.dtype==self.f1.dtype)
 
-    #     self.assertEqual(gv.dtype, self.v1.type)
-    #     self.assertEqual(side.dtype, self.f1.type)
-    #     self.assertEqual(so.dtype, self.f1.type)
+        self.assertTrue(gv.dtype==self.v1.dtype)
+        self.assertTrue(side.dtype==self.f1.dtype)
+        self.assertTrue(so.dtype==self.f1.dtype)
 
-    #     self.assertEqual(sv.shape[1], 3)
-    #     self.assertEqual(sf.shape[1], 3)
-    #     self.assertEqual(gv.shape[1], 3)
-    #     self.assertEqual(so.shape[1], 3)
+        self.assertTrue(sv.shape[1]==3)
+        self.assertTrue(sf.shape[1]==3)
+        self.assertTrue(gv.shape[1]==3)
 
-    #     self.assertEqual(gv.shape, so.shape)
+
+        self.assertTrue(gv.shape[0] == so.shape[0])
+
 
     def test_biharmonic_coordinates(self):
        w = igl.biharmonic_coordinates(self.v1, self.f1, [[0]])
@@ -1160,7 +1161,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(b2.shape == self.f1.shape)
         self.assertTrue(b3.shape == self.f1.shape)
 
-    def test_zz_cross_field(self):
+    def test_zz_cross_fields(self):
         V, F = igl.read_triangle_mesh(os.path.join(self.test_path, "3holes.off"))
 
         B = igl.barycenter(V, F)
