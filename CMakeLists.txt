@@ -34,7 +34,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 		string(TOUPPER ${config} config)
 		string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
     string(REPLACE /MD /MT CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
-    LIST(APPEND CMAKE_CXX_FLAGS_${config} "/Zm")
+    # LIST(APPEND CMAKE_CXX_FLAGS_${config} "/Zm")
 	endforeach()
 endif()
 

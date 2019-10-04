@@ -50,7 +50,7 @@ class CMakeBuild(build_ext):
             if os.environ.get('CMAKE_GENERATOR') != "NMake Makefiles":
                 if sys.maxsize > 2**32:
                     cmake_args += ['-A', 'x64']
-                build_args += ['--', '/m']
+                # build_args += ['--', '/m']
         else:
             build_args += ['--', '-j2']
 
