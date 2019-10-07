@@ -1270,6 +1270,25 @@ class TestBasic(unittest.TestCase):
         #tested in test_cross_filed
         pass
 
+    def test_directed_edge_orientations(self):
+        v = np.array([[0.0, 0.0, 0.], [1.0, 0.0, 0.], [1.0, 1.0, 0.], [0.0, 1.0, 0.]])
+        e = np.array([[0, 1], [1, 2], [2, 3], [3, 0]])
+
+        q = igl.directed_edge_orientations(v, e)
+        self.assertTrue(q.flags.c_contiguous)
+        self.assertTrue(q.dtype == v.dtype)
+        self.assertTrue(q.shape[0] == e.shape[0])
+        self.assertTrue(q.shape[1] == 4)
+
+    def test_lbs_matrix(self):
+        V, _ = igl.read_triangle_mesh(os.path.join(self.test_path, "arm.obj"))
+        W = igl.read_dmat(os.path.join(self.test_path, "arm-weights.dmat"))
+        M = igl.lbs_matrix(V, W)
+        self.assertTrue(M.flags.c_contiguous)
+        self.assertTrue(M.dtype == V.dtype)
+        self.assertTrue(M.shape[0] == V.shape[0])
+        self.assertTrue(M.shape[1] == W.shape[1]*4)
+
 
 if __name__ == '__main__':
     unittest.main()
