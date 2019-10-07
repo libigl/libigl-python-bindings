@@ -1289,6 +1289,36 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(M.shape[0] == V.shape[0])
         self.assertTrue(M.shape[1] == W.shape[1]*4)
 
+    def test_point_mesh_squared_distance(self):
+        dist, i, c = igl.point_mesh_squared_distance(np.array([0., 0., 0.]), self.v1, self.f1)
+
+        self.assertTrue(dist.flags.c_contiguous)
+        self.assertTrue(i.flags.c_contiguous)
+        self.assertTrue(c.flags.c_contiguous)
+
+        self.assertTrue(dist.dtype == self.v1.dtype)
+        self.assertTrue(i.dtype == self.f1.dtype)
+        self.assertTrue(c.dtype == self.v1.dtype)
+
+        self.assertTrue(dist.shape == ())
+        self.assertTrue(i.shape == ())
+        self.assertTrue(c.shape == (3,))
+        #########################
+        dist, i, c = igl.point_mesh_squared_distance(np.array([[0., 0., 0.], [0., 0., 0.]]), self.v1, self.f1)
+
+        self.assertTrue(dist.flags.c_contiguous)
+        self.assertTrue(i.flags.c_contiguous)
+        self.assertTrue(c.flags.c_contiguous)
+
+        self.assertTrue(dist.dtype == self.v1.dtype)
+        self.assertTrue(i.dtype == self.f1.dtype)
+        self.assertTrue(c.dtype == self.v1.dtype)
+
+        self.assertTrue(dist.shape[0] == 2)
+        self.assertTrue(i.shape[0] == 2)
+        self.assertTrue(c.shape[0] == 2)
+        self.assertTrue(c.shape[1] == 3)
+
 
 if __name__ == '__main__':
     unittest.main()
