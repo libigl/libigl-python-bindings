@@ -1319,6 +1319,37 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(c.shape[0] == 2)
         self.assertTrue(c.shape[1] == 3)
 
+    def test_dual_quat_skinning(self):
+        V, _ = igl.read_triangle_mesh(os.path.join(self.test_path, "arm.obj"))
+        U = np.copy(V)
+        W = igl.read_dmat(os.path.join(self.test_path, "arm-weights.dmat"))
+        _, C, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_path, "arm.tgf"))
+        P = igl.directed_edge_parents(BE)
+        rest_pose = igl.directed_edge_orientations(C, BE)
+
+        M = igl.lbs_matrix(V, W)
+
+        vQ, vT = igl.forward_kinematics(C, BE, P, rest_pose, np.array([]))
+        self.assertTrue(vQ.flags.c_contiguous)
+        self.assertTrue(vT.flags.c_contiguous)
+        self.assertTrue(vQ.shape[1] == 4)
+        self.assertTrue(vT.shape[1] == 3)
+        self.assertTrue(vQ.shape[0] == BE.shape[0])
+        self.assertTrue(vT.shape[0] == BE.shape[0])
+
+
+        U = igl.dqs(V, W, vQ, vT)
+        self.assertTrue(U.flags.c_contiguous)
+        self.assertTrue(U.shape == V.shape)
+
+    def test_dqs(self):
+        # tested in test_dual_quat_skinning
+        pass
+
+    def test_forward_kinematics(self):
+        # tested in test_dual_quat_skinning
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
