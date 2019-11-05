@@ -1,34 +1,30 @@
-# Python package
-# Create and test a Python package on multiple Python versions.
-# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/python
-
 trigger:
 - master
 
 
-timeoutInMinutes: 0
-
-strategy:
-  matrix:
-    mac35:
-      imageName: 'macos-10.13'
-      python.version: '3.5'
-    mac36:
-      imageName: 'macos-10.13'
-      python.version: '3.6'
-    mac37:
-      imageName: 'macos-10.13'
-      python.version: '3.7'
-    windows35:
-      imageName: 'vs2017-win2016'
-      python.version: '3.5'
-    windows36:
-      imageName: 'vs2017-win2016'
-      python.version: '3.6'
-    windows37:
-      imageName: 'vs2017-win2016'
-      python.version: '3.7'
+jobs:
+- job: Main
+  timeoutInMinutes: 0
+  strategy:
+    matrix:
+      mac35:
+        imageName: 'macos-10.13'
+        python.version: '3.5'
+      mac36:
+        imageName: 'macos-10.13'
+        python.version: '3.6'
+      mac37:
+        imageName: 'macos-10.13'
+        python.version: '3.7'
+      windows35:
+        imageName: 'vs2017-win2016'
+        python.version: '3.5'
+      windows36:
+        imageName: 'vs2017-win2016'
+        python.version: '3.6'
+      windows37:
+        imageName: 'vs2017-win2016'
+        python.version: '3.7'
 
 pool:
   vmImage: $(imageName)
