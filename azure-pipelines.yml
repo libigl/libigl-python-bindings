@@ -42,7 +42,7 @@ jobs:
     displayName: 'Install dependencies'
 
   - script: |
-      python setup.py install
+      python -m pip install . --no-deps -vv
     displayName: 'build'
 
   - script: |
