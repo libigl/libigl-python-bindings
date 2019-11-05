@@ -45,7 +45,11 @@ endif()
 option(LIBIGL_USE_STATIC_LIBRARY    "Use libigl as static library" OFF)
 option(LIBIGL_WITH_ANTTWEAKBAR      "Use AntTweakBar"    OFF)
 option(LIBIGL_WITH_CGAL             "Use CGAL"           OFF)
+if(WIN32)
+option(LIBIGL_WITH_COMISO           "Use CoMiso"         OFF)
+else()
 option(LIBIGL_WITH_COMISO           "Use CoMiso"         ON)
+endif()
 option(LIBIGL_WITH_CORK             "Use Cork"           OFF)
 option(LIBIGL_WITH_EMBREE           "Use Embree"         OFF)
 option(LIBIGL_WITH_LIM              "Use LIM"            OFF)
@@ -70,6 +74,10 @@ endif()
 
 # A module for writing bindings with our framework
 file(GLOB PYIGL_SOURCES src/*.cpp)
+if(NOT LIBIGL_WITH_COMISO)
+  get_filename_component(remove_comiso ${CMAKE_CURRENT_SOURCE_DIR}/src/comiso_nrosy.cpp ABSOLUTE)
+  list(REMOVE_ITEM PYIGL_SOURCES "${remove_comiso}")
+endif()
 npe_add_module(pyigl
   BINDING_SOURCES
   ${PYIGL_SOURCES})
