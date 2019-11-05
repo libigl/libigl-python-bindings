@@ -37,14 +37,26 @@ jobs:
 
   - script: |
       python -m pip install --upgrade pip
-      python -m pip install numpy
-      python -m pip install scipy
+      pip install numpy
+      pip install scipy
     displayName: 'Install dependencies'
 
   - script: |
-      python -m pip install . --no-deps -vv
+      pip install -ve .
     displayName: 'build'
 
+  - script: env
+    displayName: 'print env'
+
   - script: |
-      python tests/test_basic.py
+      env
+      pip install pytest
+      pip install pytest-cov
+      pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
     displayName: 'testing'
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: '**/test-*.xml'
+      testRunTitle: 'Publish test results for Python $(python.version)'
