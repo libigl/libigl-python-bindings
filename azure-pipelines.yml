@@ -8,17 +8,29 @@ trigger:
 
 strategy:
   matrix:
-    linux:
+    linux35:
       imageName: 'ubuntu-16.04'
-    mac:
-      imageName: 'macos-10.13'
-    windows:
-      imageName: 'vs2017-win2016'
-    Python35:
       python.version: '3.5'
-    Python36:
+    linux37:
+      imageName: 'ubuntu-16.04'
+      python.version: '3.7'
+    mac35:
+      imageName: 'macos-10.13'
+      python.version: '3.5'
+    mac36:
+      imageName: 'macos-10.13'
       python.version: '3.6'
-    Python37:
+    mac37:
+      imageName: 'macos-10.13'
+      python.version: '3.7'
+    windows35:
+      imageName: 'vs2017-win2016'
+      python.version: '3.5'
+    windows36:
+      imageName: 'vs2017-win2016'
+      python.version: '3.6'
+    windows37:
+      imageName: 'vs2017-win2016'
       python.version: '3.7'
 
 pool:
