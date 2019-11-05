@@ -6,9 +6,8 @@
 trigger:
 - master
 
-jobs:
-  - job: Main
-    timeoutInMinutes: 0
+
+timeoutInMinutes: 0
 
 strategy:
   matrix:
