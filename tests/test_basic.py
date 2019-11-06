@@ -1356,6 +1356,33 @@ class TestBasic(unittest.TestCase):
         # tested in test_dual_quat_skinning
         pass
 
+    def test_active_set(self):
+        V, F = igl.read_triangle_mesh(os.path.join(self.test_path, "cheburashka.off"))
+
+        b = np.array([2556])
+        bc = np.array([1.0])
+
+        L = igl.cotmatrix(V, F)
+        M = igl.massmatrix(V, F, igl.MASSMATRIX_TYPE_VORONOI)
+        Minv = sp.sparse.csr_matrix(M)
+        Minv.setdiag(1./M.diagonal())
+        Q = L.T * (Minv * L)
+        B = np.zeros((V.shape[0], 1))
+        lx = np.zeros((V.shape[0], 1))
+        ux = np.ones((V.shape[0], 1))
+
+        Beq = np.array([0.08])
+        Aeq = sp.sparse.csr_matrix(M.diagonal())
+
+        Aieq = sp.sparse.csr_matrix((0, 0))
+        Bieq = np.zeros((0, 0))
+
+        status, Z = igl.active_set(Q, B, b, bc, Aeq, Beq, Aieq, Bieq, lx, ux, max_iter=5)
+
+        self.assertTrue(status != 2)
+        self.assertTrue(Z.shape[0] == Q.shape[0])
+        self.assertTrue(Z.dtype == V.dtype)
+
 
 if __name__ == '__main__':
     unittest.main()
