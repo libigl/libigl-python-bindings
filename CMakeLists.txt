@@ -30,8 +30,6 @@ include(CXXFeatures)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  set_target_properties(pyigl PROPERTIES LINK_FLAGS "/LTCG")
-
 	foreach(config ${CMAKE_CONFIGURATION_TYPES})
 		string(TOUPPER ${config} config)
 		string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
@@ -93,6 +91,10 @@ target_include_directories(pyigl PRIVATE "src/include")
 # if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 #   target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
 # endif()
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  set_target_properties(pyigl PROPERTIES LINK_FLAGS "/LTCG")
+endif()
 
 add_library(pyigl_classes MODULE classes/classes.cpp)
 target_link_libraries(pyigl_classes PRIVATE npe igl::core)
