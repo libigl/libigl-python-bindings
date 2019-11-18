@@ -30,6 +30,8 @@ include(CXXFeatures)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  set_target_properties(pyigl PROPERTIES LINK_FLAGS "/LTCG")
+
 	foreach(config ${CMAKE_CONFIGURATION_TYPES})
 		string(TOUPPER ${config} config)
 		string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
