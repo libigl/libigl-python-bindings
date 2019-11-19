@@ -93,7 +93,7 @@ target_include_directories(pyigl PRIVATE "src/include")
 # endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  set_target_properties(pyigl PROPERTIES LINK_FLAGS "/LTCG")
+  set_target_properties(pyigl PROPERTIES LINK_FLAGS "/GL-")
 endif()
 
 add_library(pyigl_classes MODULE classes/classes.cpp)
