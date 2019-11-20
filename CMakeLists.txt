@@ -92,10 +92,6 @@ target_include_directories(pyigl PRIVATE "src/include")
 #   target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
 # endif()
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  set_target_properties(pyigl PROPERTIES LINK_FLAGS "/GL-")
-endif()
-
 add_library(pyigl_classes MODULE classes/classes.cpp)
 target_link_libraries(pyigl_classes PRIVATE npe igl::core)
 target_link_libraries(pyigl_classes PRIVATE pybind11::module)

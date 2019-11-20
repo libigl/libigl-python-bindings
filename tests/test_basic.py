@@ -1174,7 +1174,7 @@ class TestBasic(unittest.TestCase):
             S = np.load(os.path.join(self.test_path, "S.npy"))
         else:
             # FIXME!
-            X1, S = igl.nrosy(V, F, b, bc, np.array([[]], dtype=b.dtype), np.array([[]]), np.array([[]]), 4, 0.5)
+            X1, S = igl.nrosy(V, F, b, bc, np.array([], dtype=b.dtype), np.array([]), np.array([]), 4, 0.5)
 
 
         self.assertTrue(X1.flags.c_contiguous)
