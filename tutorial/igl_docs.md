@@ -1,4 +1,20 @@
 ## Functions
+### active_set
+**`active_set(A: sparse_matrix, B: array, known: array, Y: array, Aeq: sparse_matrix, Beq: array, Aieq: sparse_matrix, Bieq: array, lx: array, ux: array, Auu_pd: bool = False, max_iter: int = 100, inactive_threshold: float = 1e-14, constraint_threshold: float = 1e-14, solution_diff_threshold: float = 1e-14)`**
+
+ACTIVE_SET Minimize quadratic energy
+0.5*Z'*A*Z + Z'*B + C with constraints
+that Z(known) = Y, optionally also subject to the constraints Aeq*Z = Beq,
+and further optionally subject to the linear inequality constraints that
+Aieq*Z <= Bieq and constant inequality constraints lx <= x <= ux
+
+| | |
+|-|-|
+|Parameters| A  n by n matrix of quadratic coefficients</br>B  n by 1 column of linear coefficients</br>known  list of indices to known rows in Z</br>Y  list of fixed values corresponding to known rows in Z</br>Aeq  meq by n list of linear equality constraint coefficients</br>Beq  meq by 1 list of linear equality constraint constant values</br>Aieq  mieq by n list of linear inequality constraint coefficients</br>Bieq  mieq by 1 list of linear inequality constraint constant values</br>lx  n by 1 list of lower bounds [] implies -Inf</br>ux  n by 1 list of upper bounds [] implies Inf</br>params  struct of additional parameters (see below)</br>Z  if not empty, is taken to be an n by 1 list of initial guess values (see output) |
+|Returns| Z n by 1 list of solution values</br>Returns SOLVER_STATUS_CONVERGED = 0, SOLVER_STATUS_MAX_ITER = 1, SOLVER_STATUS_ERROR = 2, |
+|Notes| For a harmonic solve on a mesh with 325K facets, matlab 2.2 secs, igl / min_quad_with_fixed.h 7.1 secs</br>Known Bugs : rows of[Aeq; Aieq] **must **be linearly independent.Should be using QR decomposition otherwise : http : //www.okstate.edu/sas/v8/sashtml/ormp/chap5/sect32.htm |
+
+
 ### adjacency_list
 **`adjacency_list(f: array)`**
 
@@ -271,7 +287,7 @@ ff, c = igl.bfs_orient(f)
 
 
 ### biharmonic_coordinates
-**`biharmonic_coordinates(v: array, t: array, s: vector<vector<int>>, k: int = 2)`**
+**`biharmonic_coordinates(v: array, t: array, s: List[List[int]], k: int = 2)`**
 
 Compute "discrete biharmonic generalized barycentric coordinates" as
 described in "Linear Subspace Design for Real-Time Shape Deformation"
@@ -464,6 +480,57 @@ Section 4.2. But for our purposes we don't care about this criteria.
 |Returns| FF  \#FF by 3 list of triangle indices into V |
 
 
+### comb_cross_field
+**`comb_cross_field(v: array, f: array, pd1in: array, pd2in: array)`**
+
+
+| | |
+|-|-|
+|Parameters| V          \#V by 3 eigen Matrix of mesh vertex 3D positions</br>F          \#F by 3 eigen Matrix of face indices</br>PD1in      \#F by 3 eigen Matrix of the first per face cross field vector</br>PD2in      \#F by 3 eigen Matrix of the second per face cross field vector |
+|Returns| PD1out      \#F by 3 eigen Matrix of the first combed cross field vector</br>PD2out      \#F by 3 eigen Matrix of the second combed cross field vector |
+
+
+### comb_frame_field
+**`comb_frame_field(v: array, f: array, pd1: array, pd2: array, bis1_combed: array, bis2_combed: array)`**
+
+
+| | |
+|-|-|
+|Parameters| V            \#V by 3 eigen Matrix of mesh vertex 3D positions</br>F            \#F by 3 eigen Matrix of face indices</br>PD1          \#F by 3 eigen Matrix of the first per face cross field vector</br>PD2          \#F by 3 eigen Matrix of the second per face cross field vector</br>BIS1_combed  \#F by 3 eigen Matrix of the first combed bisector field vector</br>BIS2_combed  \#F by 3 eigen Matrix of the second combed bisector field vector |
+|Returns| PD1_combed  \#F by 3 eigen Matrix of the first combed cross field vector</br>PD2_combed  \#F by 3 eigen Matrix of the second combed cross field vector |
+
+
+### comb_line_field
+**`comb_line_field(v: array, f: array, pd1in: array)`**
+
+
+| | |
+|-|-|
+|Parameters| V          \#V by 3 eigen Matrix of mesh vertex 3D positions</br>F          \#F by 3 eigen Matrix of face indices</br>PD1in      \#F by 3 eigen Matrix of the first per face cross field vector |
+|Returns| PD1out      \#F by 3 eigen Matrix of the first combed cross field vector |
+
+
+### compute_frame_field_bisectors
+**`compute_frame_field_bisectors(v: array, f: array, b1: array, b2: array, pd1: array, pd2: array)`**
+
+Compute bisectors of a frame field defined on mesh faces
+
+| | |
+|-|-|
+|Parameters| V     \#V by 3 eigen Matrix of mesh vertex 3D positions</br>F     \#F by 3 eigen Matrix of face (triangle) indices</br>B1    \#F by 3 eigen Matrix of face (triangle) base vector 1</br>B2    \#F by 3 eigen Matrix of face (triangle) base vector 2</br>PD1   \#F by 3 eigen Matrix of the first per face frame field vector</br>PD2   \#F by 3 eigen Matrix of the second per face frame field vector |
+|Returns| BIS1  \#F by 3 eigen Matrix of the first per face frame field bisector</br>BIS2  \#F by 3 eigen Matrix of the second per face frame field bisector |
+
+
+### compute_frame_field_bisectors_no_basis
+**`compute_frame_field_bisectors_no_basis(v: array, f: array, pd1: array, pd2: array)`**
+
+Wrapper without given basis vectors.
+
+| | |
+|-|-|
+|Parameters|  |
+
+
 ### connect_boundary_to_infinity
 **`connect_boundary_to_infinity(f: array)`**
 
@@ -523,6 +590,16 @@ COTMATRIX_ENTRIES compute the cotangents of each angle in mesh (V,F)
 |-|-|
 |Parameters| V  \#V by dim list of rest domain positions</br>F  \#F by {34} list of {triangletetrahedra} indices into V |
 |Returns| C  \#F by 3 list of 1/2*cotangents corresponding angles</br>for triangles, columns correspond to edges [1,2],[2,0],[0,1]</br>OR</br>C  \#F by 6 list of 1/6*cotangents of dihedral angles*edge lengths</br>for tets, columns along edges [1,2],[2,0],[0,1],[3,0],[3,1],[3,2] |
+
+
+### cross_field_mismatch
+**`cross_field_mismatch(v: array, f: array, pd1: array, pd2: array, is_combed: bool)`**
+
+
+| | |
+|-|-|
+|Parameters| V         \#V by 3 eigen Matrix of mesh vertex 3D positions</br>F         \#F by 3 eigen Matrix of face indices</br>PD1       \#F by 3 eigen Matrix of the first per face cross field vector</br>PD2       \#F by 3 eigen Matrix of the second per face cross field vector</br>isCombed  boolean, specifying whether the field is combed (i.e. matching has been precomputed.</br>If not, the field is combed first. |
+|Returns| Handle_MMatch    \#F by 3 eigen Matrix containing the integer mismatch of the cross field</br>across all face edges |
 
 
 ### crouzeix_raviart_cotmatrix
@@ -628,6 +705,17 @@ merged vertex placement functions {edge length, edge midpoint}.
 |Returns| U  \#U by dim list of output vertex posistions (can be same ref as V)</br>G  \#G by 3 list of output face indices into U (can be same ref as G)</br>J  \#G list of indices into F of birth face</br>I  \#U list of indices into V of birth vertices</br>Returns true if m was reached (otherwise \#G > m) |
 
 
+### deform_skeleton
+**`deform_skeleton(c: array, be: array, t: array)`**
+
+Deform a skeleton.
+
+| | |
+|-|-|
+|Parameters| C  \#C by 3 list of joint positions</br>BE \#BE by 2 list of bone edge indices</br>T  \#BE*4 by 3 list of stacked transformation matrix |
+|Returns| CT  \#BE*2 by 3 list of deformed joint positions</br>BET  \#BE by 2 list of bone edge indices (maintains order) |
+
+
 ### dihedral_angles
 **`dihedral_angles(v: array, t: array)`**
 
@@ -649,6 +737,18 @@ theta, cos_theta = dihedral_angles(v, t)
 **`dihedral_angles_intrinsic(l: array, a: array)`**
 
 See dihedral_angles for the documentation.
+### directed_edge_orientations
+**`directed_edge_orientations(c: array, e: array)`**
+
+Determine rotations that take each edge from the x-axis to its given rest
+orientation.
+
+| | |
+|-|-|
+|Parameters| C  \#C by 3 list of edge vertex positions</br>E  \#E by 2 list of directed edges |
+|Returns| Q  \#E list of quaternions |
+
+
 ### directed_edge_parents
 **`directed_edge_parents(e: array)`**
 
@@ -684,6 +784,17 @@ dbl_area = doublearea(v, f)
 ```
 
 
+### dqs
+**`dqs(v: array, w: array, v_q: array, v_t: array)`**
+
+Dual quaternion skinning
+
+| | |
+|-|-|
+|Parameters| V  \#V by 3 list of rest positions</br>W  \#W by \#C list of weights</br>vQ  \#C list of rotation quaternions</br>vT  \#C list of translation vectors |
+|Returns| U  \#V by 3 list of new positions |
+
+
 ### ears
 **`ears(f: array)`**
 
@@ -698,6 +809,18 @@ FIND_EARS  Find all ears (faces with two boundary edges) in a given mesh
 ```python
 ears,ear_opp = find_ears(F)
 ```
+
+
+### edge_lengths
+**`edge_lengths(v: array, f: array)`**
+
+Constructs a list of lengths of edges opposite each index in a face
+(triangle/tet) list
+
+| | |
+|-|-|
+|Parameters| V  eigen matrix \#V by 3</br>F  \#F by 2 list of mesh edges or</br>F  \#F by 3 list of mesh faces (must be triangles) or</br>T  \#T by 4 list of mesh elements (must be tets) |
+|Returns| L  \#F by {136} list of edge lengths</br>for edges, column of lengths</br>for triangles, columns correspond to edges [1,2],[2,0],[0,1]</br>for tets, columns correspond to edges</br>[3 0],[3 1],[3 2],[1 2],[2 0],[0 1] |
 
 
 ### edge_topology
@@ -779,6 +902,29 @@ Compute connected components of facets based on edge-edge adjacency,
 |See also| vertex_components</br>vertex_components_from_adjacency_matrix |
 
 
+### find_cross_field_singularities
+**`find_cross_field_singularities(v: array, f: array, handle_m_match: array)`**
+
+Computes singularities of a cross field, assumed combed
+
+| | |
+|-|-|
+|Parameters| V                \#V by 3 eigen Matrix of mesh vertex 3D positions</br>F                \#F by 3 eigen Matrix of face indices</br>Handle_MMatch    \#F by 3 eigen Matrix containing the integer missmatch of the cross field</br>across all face edges |
+|Returns| isSingularity    \#V by 1 boolean eigen Vector indicating the presence of a singularity on a vertex</br>singularityIndex \#V by 1 integer eigen Vector containing the singularity indices |
+
+
+### find_cross_field_singularities_from_field
+**`find_cross_field_singularities_from_field(v: array, f: array, pd1: array, pd2: array, is_combed: bool = False)`**
+
+Wrapper that calculates the missmatch if it is not provided.
+Note that the field in PD1 and PD2 MUST BE combed (see igl::comb_cross_field).
+
+| | |
+|-|-|
+|Parameters| V                \#V by 3 eigen Matrix of mesh vertex 3D positions</br>F                \#F by 3 eigen Matrix of face (quad) indices</br>PD1              \#F by 3 eigen Matrix of the first per face cross field vector</br>PD2              \#F by 3 eigen Matrix of the second per face  cross field vector |
+|Returns| isSingularity    \#V by 1 boolean eigen Vector indicating the presence of a singularity on a vertex</br>singularityIndex \#V by 1 integer eigen Vector containing the singularity indices |
+
+
 ### fit_plane
 **`fit_plane(v: array)`**
 
@@ -804,6 +950,17 @@ Supports both triangle and tet meshes.
 |-|-|
 |Parameters| F         \#F by 3 / 4 list of mesh faces or tets</br>cur_v     \#V by dim list of variables</br>dst_v     \#V by dim list of target vertices. This mesh may have flipped triangles</br>energy    A function to compute the mesh-based energy (return an energy that is bigger than 0)</br>cur_energy(OPTIONAL)         The energy at the given point. Helps save redundant c  omputations. This is optional. If not specified, the function will compute it. |
 |Returns| cur_v     \#V by dim list of variables at the new location</br>Returns the energy at the new point |
+
+
+### forward_kinematics
+**`forward_kinematics(c: array, be: array, p: array, d_q: array, d_t: array)`**
+
+Given a skeleton and a set of relative bone rotations compute absolute rigid transformations for each bone.
+
+| | |
+|-|-|
+|Parameters| C  \#C by dim list of joint positions</br>BE  \#BE by 2 list of bone edge indices</br>P  \#BE list of parent indices into BE</br>dQ  \#BE list of relative rotations</br>dT  \#BE list of relative translations |
+|Returns| vQ  \#BE list of absolute rotations</br>vT  \#BE list of absolute translations |
 
 
 ### gaussian_curvature
@@ -966,6 +1123,37 @@ Constructs isolines for a function z given on a mesh (V,F)
 |Returns| isoV  \#isoV by dim list of isoline vertex positions</br>isoE  \#isoE by 2 list of isoline edge positions |
 
 
+### lbs_matrix
+**`lbs_matrix(v: array, w: array)`**
+
+LBS_MATRIX Linear blend skinning can be expressed by V' = M * T where V' is
+a #V by dim matrix of deformed vertex positions (one vertex per row), M is a #V by (dim+1)*#T (composed of weights and rest positions) and T is a #T*(dim+1) by dim matrix of #T stacked transposed transformation matrices.
+See equations (1) and (2) in "Fast Automatic Skinning Transformations" [Jacobson et al 2012]
+
+| | |
+|-|-|
+|Parameters| V  \#V by dim list of rest positions</br>W  \#V+ by \#T  list of weights |
+|Returns| M  \#V by \#T*(dim+1) |
+
+**Examples**
+```python
+In MATLAB:
+kron(ones(1,size(W,2)),[V ones(size(V,1),1)]).*kron(W,ones(1,size(V,2)+1))
+```
+
+
+### local_basis
+**`local_basis(v: array, f: array)`**
+
+Compute a local orthogonal reference system for each triangle in the given mesh.
+
+| | |
+|-|-|
+|Parameters| v : \#v by 3 vertex array</br>f : \#f by 3 array of mesh faces (must be triangles) |
+|Returns| b1 : \#f by 3 array, each vector is tangent to the triangle</br>b2 : \#f by 3 array, each vector is tangent to the triangle and perpendicular to B1</br>b3 : \#f by 3 array, normal of the triangle |
+|See also| adjacency_matrix |
+
+
 ### loop
 **`loop(v: array, f: array, number_of_subdivs: int = 1)`**
 
@@ -1015,6 +1203,23 @@ Map the vertices whose indices are in a given boundary loop (bnd) on the unit ci
 |Returns| uv : \#w by 2 list of 2D positions on the unit circle for the vertices in b |
 
 
+### marching_tets
+**`marching_tets(TV: array, TT: array, S: array, isovalue: float)`**
+
+performs the marching tetrahedra algorithm on a tet mesh defined by TV and
+TT with scalar values defined at each vertex in TV. The output is a
+triangle mesh approximating the isosurface coresponding to the value
+isovalue.
+
+| | |
+|-|-|
+|Parameters| TV  \#tet_vertices x 3 array -- The vertices of the tetrahedral mesh</br>TT  \#tets x 4 array --  The indexes of each tet in the tetrahedral mesh</br>S  \#tet_vertices x 1 array -- The values defined on each tet vertex</br>isovalue  scalar -- The isovalue of the level set we want to compute |
+|Returns| SV  \#SV x 3 array -- The vertices of the output level surface mesh</br>SF  \#SF x 3 array -- The face indexes of the output level surface mesh |
+
+
+### marching_tets
+**`marching_tets( TV, TT, S, isovalue, SV, SF)`**
+
 ### massmatrix
 **`massmatrix(v: array, f: array, type: int = 1)`**
 
@@ -1040,6 +1245,29 @@ Aeq*Z = Beq
 |-|-|
 |Parameters| A  n by n matrix of quadratic coefficients</br>B  n by 1 column of linear coefficients</br>known list of indices to known rows in Z</br>Y  list of fixed values corresponding to known rows in Z</br>Aeq  m by n list of linear equality constraint coefficients</br>Beq  m by 1 list of linear equality constraint constant values</br>is_A_pd  flag specifying whether A(unknown,unknown) is positive definite |
 |Returns| Z  n by k solution |
+
+
+### nrosy
+**`nrosy(v: array, f: array, b: array, bc: array, b_soft: array, w_soft: array, bc_soft: array, n: int, soft: float)`**
+
+Generate a N-RoSy field from a sparse set of constraints.
+
+| | |
+|-|-|
+|Parameters| v : \#v by 3 array of mesh vertex coordinates</br>f : \#f by 3 array of mesh faces (must be triangles)</br>b : \#b by 1 array of constrained face indices</br>bc : \#b by 3 array of representative vectors for the constrained faces</br>b_soft : \#s by 1 b for soft constraints</br>w_soft : \#s by 1 weight for the soft constraints (0-1)</br>bc_soft : \#s by 3 bc for soft constraints</br>n : the degree of the N-RoSy vector field</br>soft : the strength of the soft constraints w.r.t. smoothness (0 -> smoothness only, 1->constraints only) |
+|Returns| r : \#f by 3 the representative vectors of the interpolated field</br>S : \#v by 1 the singularity index for each vertex (0 = regular) |
+
+
+### offset_surface
+**`offset_surface(v: array, f: array, isolevel: int, s: int, signed_distance_type: int)`**
+
+Compute a triangulated offset surface using matching cubes on a grid of
+signed distance values from the input triangle mesh.
+
+| | |
+|-|-|
+|Parameters| V  \#V by 3 list of mesh vertex positions</br>F  \#F by 3 list of mesh triangle indices into V</br>isolevel  iso level to extract (signed distance: negative inside)</br>s  number of grid cells along longest side (controls resolution)</br>signed_distance_type  type of signing to use one of SIGNED_DISTANCE_TYPE_PSEUDONORMAL, SIGNED_DISTANCE_TYPE_WINDING_NUMBER, SIGNED_DISTANCE_TYPE_DEFAULT, SIGNED_DISTANCE_TYPE_UNSIGNED |
+|Returns| SV  \#SV by 3 list of output surface mesh vertex positions</br>SF  \#SF by 3 list of output mesh triangle indices into SV</br>GV  \#GV=side(0)*side(1)*side(2) by 3 list of grid cell centers</br>side  list of number of grid cells in x, y, and z directions</br>So  \#GV by 3 list of signed distance values _near_ `isolevel` ("far" from `isolevel` these values are incorrect) |
 
 
 ### orientable_patches
@@ -1145,6 +1373,29 @@ resolve all -intersections in `(V,F) -> (SV,SF)` (i.e. what the
 |-|-|
 |Parameters| F  \#F by 3 list of triangle indices into some (abstract) list of</br>vertices V |
 |Returns| Returns true if the mesh _combinatorially_ induces a piecewise constant</br>winding number field. |
+
+
+### planarize_quad_mesh
+**`planarize_quad_mesh(v: array, f: array, max_iter: int, threshold: float)`**
+
+Planarize a quad mesh.
+
+| | |
+|-|-|
+|Parameters| v : \#v by 3 array of mesh vertex 3D positions</br>f : \#f by 4 array of face (quad) indices</br>max_iter : maximum numbers of iterations</br>threshold : minimum allowed threshold for non-planarity |
+|Returns| out : \#v by 3 array of planar mesh vertex 3D positions |
+
+
+### point_mesh_squared_distance
+**`point_mesh_squared_distance(p: array, v: array, ele: array)`**
+
+Compute distances from a set of points P to a triangle mesh (V,F)
+
+| | |
+|-|-|
+|Parameters| P  \#P by 3 list of query point positions</br>V  \#V by 3 list of vertex positions</br>Ele  \#Ele by (321) list of (triangleedgepoint) indices |
+|Returns| sqrD  \#P list of smallest squared distances</br>I  \#P list of primitive indices corresponding to smallest distances</br>C  \#P by 3 list of closest points |
+|Notes| Known bugs: This only computes distances to given primitivess. So</br>unreferenced vertices are ignored. However, degenerate primitives are</br>handled correctly: triangle [1 2 2] is treated as a segment [1 2], and</br>triangle [1 1 1] is treated as a point. So one _could_ add extra</br>combinatorially degenerate rows to Ele for all unreferenced vertices to</br>also get distances to points. |
 
 
 ### principal_curvature
@@ -1281,6 +1532,23 @@ v, f, n, c = read_off("my_model.off")
 ```
 
 
+### read_tgf
+**`read_tgf(tgf_filename: str)`**
+
+Read a graph from a .tgf file
+
+| | |
+|-|-|
+|Parameters| filename  .tgf file name |
+|Returns| V  \# vertices by 3 list of vertex positions</br>E  \# edges by 2 list of edge indices</br>P  \# point-handles list of point handle indices</br>BE \# bone-edges by 2 list of bone-edge indices</br>CE \# cage-edges by 2 list of cage-edge indices</br>PE \# pseudo-edges by 2 list of pseudo-edge indices |
+|Notes| Assumes that graph vertices are 3 dimensional |
+
+**Examples**
+```python
+V,E,P,BE,CE,PE = igl.read_tgf(filename)
+```
+
+
 ### read_triangle_mesh
 **`read_triangle_mesh(filename: str, dtypef: dtype = 'float')`**
 
@@ -1361,6 +1629,17 @@ An exception will be thrown.
 |-|-|
 |Parameters| F1  \#F1 by 3 array of input faces. |
 |Returns| F2  \#F2 by 3 array of output faces without duplicated faces.</br>J   \#F2 list of indices into F1. |
+
+
+### rotate_vectors
+**`rotate_vectors(v: array, a: array, b1: array, b2: array)`**
+
+Rotate the vectors V by A radiants on the tangent plane spanned by B1 and B2
+
+| | |
+|-|-|
+|Parameters| V     \#V by 3 eigen Matrix of vectors</br>A     \#V eigen vector of rotation angles or a single angle to be applied to all vectors</br>B1    \#V by 3 eigen Matrix of base vector 1</br>B2    \#V by 3 eigen Matrix of base vector 2 |
+|Returns| Returns the rotated vectors |
 
 
 ### segments_intersect
@@ -1509,7 +1788,7 @@ Reimplementation of gluUnproject
 
 
 ### unproject_in_mesh
-**`unproject_in_mesh(pos: numpy.ndarray[float32[2, 1]], model: numpy.ndarray[float32[4, 4]], proj: numpy.ndarray[float32[4, 4]], viewport: numpy.ndarray[float32[4, 1]], v: array, f: array)`**
+**`unproject_in_mesh(pos: array, model: array, proj: array, viewport: array, v: array, f: array)`**
 
 Unproject a screen location (using current opengl viewport, projection, and
 model view) to a 3D position _inside_ a given mesh. If the ray through the

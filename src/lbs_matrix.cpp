@@ -5,11 +5,8 @@
 
 const char *ds_lbs_matrix = R"igl_Qu8mg5v7(
 LBS_MATRIX Linear blend skinning can be expressed by V' = M * T where V' is
-   a #V by dim matrix of deformed vertex positions (one vertex per row), M is a
-   #V by (dim+1)*#T (composed of weights and rest positions) and T is a
-   #T*(dim+1) by dim matrix of #T stacked transposed transformation matrices.
-   See equations (1) and (2) in "Fast Automatic Skinning Transformations"
-   [Jacobson et al 2012]
+   a #V by dim matrix of deformed vertex positions (one vertex per row), M is a #V by (dim+1)*#T (composed of weights and rest positions) and T is a #T*(dim+1) by dim matrix of #T stacked transposed transformation matrices.
+   See equations (1) and (2) in "Fast Automatic Skinning Transformations" [Jacobson et al 2012]
 
 Parameters
 ----------
