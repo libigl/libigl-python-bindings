@@ -52,7 +52,7 @@ npe_begin_code()
 
   EigenDenseLike<npe_Matrix_TV> SV;
   EigenDenseLike<npe_Matrix_TT> SF;
-  Eigen::VectorXi J;
+  Eigen::Matrix<typename npe_Matrix_TT::Scalar, Eigen::Dynamic, 1> J;
   EigenSparseLike<npe_Matrix_TV> BC;
   igl::marching_tets(TV, TT, S, isovalue, SV, SF, J, BC);
   return std::make_tuple(npe::move(SV), npe::move(SF), npe::move(J), npe::move(BC));

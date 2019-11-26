@@ -1086,9 +1086,10 @@ class TestBasic(unittest.TestCase):
         TT = np.array([[0, 1, 2, 3]])
         S = np.array([0., 1., 1., 1.])
 
-        v, f = igl.marching_tets(TV, TT, S, 0.5)
+        v, f, j, bc = igl.marching_tets(TV, TT, S, 0.5)
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(j.flags.c_contiguous)
 
         self.assertTrue(v.dtype == TV.dtype)
         self.assertTrue(v.shape[0] >= 3)
@@ -1096,6 +1097,13 @@ class TestBasic(unittest.TestCase):
 
         self.assertTrue(f.dtype == TT.dtype)
         self.assertTrue(f.shape[0] == 3)
+
+        self.assertTrue(j.dtype == TT.dtype)
+        self.assertTrue(j.shape[0] == f.shape[0])
+
+        self.assertTrue(bc.dtype == TV.dtype)
+        self.assertTrue(bc.shape[0] == v.shape[0])
+        self.assertTrue(bc.shape[1] == TV.shape[0])
 
     def test_read_tgf(self):
         filename = os.path.join(self.test_path, "hand.tgf")
