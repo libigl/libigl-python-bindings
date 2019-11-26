@@ -4,7 +4,7 @@
 #include <igl/marching_tets.h>
 
 const char *ds_marching_tets = R"igl_Qu8mg5v7(
-performs the marching tetrahedra algorithm on a tet mesh defined by TV and
+Performs the marching tetrahedra algorithm on a tet mesh defined by TV and
 TT with scalar values defined at each vertex in TV. The output is a
 triangle mesh approximating the isosurface coresponding to the value
 isovalue.
@@ -18,8 +18,10 @@ isovalue  scalar -- The isovalue of the level set we want to compute
 
 Returns
 -------
-SV  #SV x 3 array -- The vertices of the output level surface mesh
-SF  #SF x 3 array -- The face indexes of the output level surface mesh
+SV : #SV x 3 array -- The vertices of the output level surface mesh
+SF : #SF x 3 array -- The face indexes of the output level surface mesh
+J : #SF list of indices into TT revealing which tet each face comes from
+BC : #SV x #TV list of barycentric coordinates so that SV = BC*TV
 
 See also
 --------
@@ -31,7 +33,7 @@ None
 
 Examples
 --------
-marching_tets( TV, TT, S, isovalue, SV, SF)
+sv, sf, j, bc = igl.marching_tets(tv, tt, s, isovalue)
 
 )igl_Qu8mg5v7";
 
@@ -50,7 +52,9 @@ npe_begin_code()
 
   EigenDenseLike<npe_Matrix_TV> SV;
   EigenDenseLike<npe_Matrix_TT> SF;
-  igl::marching_tets(TV, TT, S, isovalue, SV, SF);
-  return std::make_tuple(npe::move(SV), npe::move(SF));
+  Eigen::Matrix<typename npe_Matrix_TT::Scalar, Eigen::Dynamic, 1> J;
+  EigenSparseLike<npe_Matrix_TV> BC;
+  igl::marching_tets(TV, TT, S, isovalue, SV, SF, J, BC);
+  return std::make_tuple(npe::move(SV), npe::move(SF), npe::move(J), npe::move(BC));
 
 npe_end_code()

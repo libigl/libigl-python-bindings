@@ -20,11 +20,17 @@ PYBIND11_MODULE(pyigl_classes, m) {
                  }
 
                  std::unique_ptr<igl::ARAPData> adata(new igl::ARAPData());
-                 igl::arap_precomputation(v, f, dim, b, *adata);
+                 if(b.cols() == 1)
+                  igl::arap_precomputation(v, f, dim, b, *adata);
+                 else if (b.rows() == 1)
+                   igl::arap_precomputation(v, f, dim, b.transpose().eval(), *adata);
+                 else
+                 throw pybind11::value_error("Invalid dimension for b, must be a vector, got " + std::to_string(b.rows()) + "x" + std::to_string(b.cols()));
                  return adata;
         }))
         .def("solve", [](igl::ARAPData& self, Eigen::MatrixXd bc, Eigen::MatrixXd initial_guess) {
-          assert_cols_equals(bc, self.dim, "bc");
+          if(bc.size() > 0)
+            assert_cols_equals(bc, self.dim, "bc");
           assert_rows_match(bc, self.b, "bc", "self.b");
           assert_rows_match(initial_guess, (int)self.n, 3, std::string("initial_guess"), std::string("self.v"));
           assert_cols_equals(initial_guess, self.dim, "initial_guess");

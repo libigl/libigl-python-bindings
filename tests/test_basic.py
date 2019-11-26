@@ -155,6 +155,17 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.flags.c_contiguous)
         self.assertTrue(n.flags.c_contiguous)
 
+    def test_read_mesh(self):
+        v, t, f = igl.read_mesh(os.path.join(self.test_path, "octopus-low.mesh"))
+        self.assertTrue(type(v) == type(t) == type(f) == np.ndarray)
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(t.flags.c_contiguous)
+        self.assertTrue(f.flags.c_contiguous)
+
+        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(t.dtype == self.f1.dtype)
+        self.assertTrue(f.dtype == self.f1.dtype)
+
     def test_read_triangle_mesh(self):
         v, f = igl.read_triangle_mesh(self.test_path + "octopus-low.mesh")
         #print(v.shape, f.shape)
@@ -173,17 +184,17 @@ class TestBasic(unittest.TestCase):
         d = igl.exact_geodesic(v, f, vs, vt)
         self.assertTrue(d.dtype == v.dtype)
 
-    def test_triangulate(self):
-        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
-        e = np.array([[0, 1], [1, 2], [2, 3], [3, 0]], dtype="int32")
-        h = np.array([[]])
-        #print("v.dtype = %s, h.dtype = %s" % (v.dtype, h.dtype))
-        v2, f2 = igl.triangulate(v, e, h, flags="a0.005qQ")
-        self.assertTrue(v2.dtype == v.dtype)
-        self.assertTrue(f2.dtype == e.dtype)
-        self.assertTrue(type(v2) == type(f2) == np.ndarray)
-        self.assertTrue(v2.flags.c_contiguous)
-        self.assertTrue(f2.flags.c_contiguous)
+    # def test_triangulate(self):
+    #     v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
+    #     e = np.array([[0, 1], [1, 2], [2, 3], [3, 0]], dtype="int32")
+    #     h = np.array([[]])
+    #     #print("v.dtype = %s, h.dtype = %s" % (v.dtype, h.dtype))
+    #     v2, f2 = igl.triangulate(v, e, h, flags="a0.005qQ")
+    #     self.assertTrue(v2.dtype == v.dtype)
+    #     self.assertTrue(f2.dtype == e.dtype)
+    #     self.assertTrue(type(v2) == type(f2) == np.ndarray)
+    #     self.assertTrue(v2.flags.c_contiguous)
+    #     self.assertTrue(f2.flags.c_contiguous)
 
     def test_write_obj(self):
         suc = igl.write_obj("test.obj", self.v, self.f)
@@ -426,20 +437,20 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(a.shape[0], a.shape[1])
         self.assertEqual(a.shape[0], self.v.shape[0]*2)
 
-    def test_tetrahedralize(self):
-        status, tv, tt, tf = igl.tetrahedralize(self.v2, self.f2)
+    # def test_tetrahedralize(self):
+    #     status, tv, tt, tf = igl.tetrahedralize(self.v2, self.f2)
 
-        self.assertEqual(status, 0)
-        self.assertEqual(tv.dtype, self.v1.dtype)
-        self.assertEqual(tt.dtype, self.f1.dtype)
-        self.assertEqual(tf.dtype, self.f1.dtype)
+    #     self.assertEqual(status, 0)
+    #     self.assertEqual(tv.dtype, self.v1.dtype)
+    #     self.assertEqual(tt.dtype, self.f1.dtype)
+    #     self.assertEqual(tf.dtype, self.f1.dtype)
 
-        self.assertEqual(tv.shape[1], 3)
-        self.assertEqual(tf.shape[1], 3)
-        self.assertEqual(tt.shape[1], 4)
-        self.assertTrue(tv.flags.c_contiguous)
-        self.assertTrue(tt.flags.c_contiguous)
-        self.assertTrue(tf.flags.c_contiguous)
+    #     self.assertEqual(tv.shape[1], 3)
+    #     self.assertEqual(tf.shape[1], 3)
+    #     self.assertEqual(tt.shape[1], 4)
+    #     self.assertTrue(tv.flags.c_contiguous)
+    #     self.assertTrue(tt.flags.c_contiguous)
+    #     self.assertTrue(tf.flags.c_contiguous)
 
     def test_hausdorff(self):
         dist = igl.hausdorff(self.v, self.f, self.v1, self.f1)
@@ -838,7 +849,8 @@ class TestBasic(unittest.TestCase):
         r = thetas / (2 * np.pi)
         boundary = np.concatenate([r * np.cos(thetas), np.sin(thetas), np.zeros([num_b, 1])], axis=1)
         edges = np.array([(i, (i + 1) % boundary.shape[0]) for i in range(boundary.shape[0])])
-        v, f = igl.triangulate(boundary[:, :2], edges, np.zeros([0, 0]))
+        v = np.load(os.path.join(self.test_path, "test_arap2_v.npy"))
+        f = np.load(os.path.join(self.test_path, "test_arap2_f.npy"))
         v = np.concatenate([v, np.zeros([v.shape[0], 1])], axis=1)
         b = igl.boundary_loop(f)
 
@@ -851,6 +863,21 @@ class TestBasic(unittest.TestCase):
         v2 = arap.solve(circle_b[:, :2], v0[:, :2])
         self.assertEqual(v2.shape[0], v0.shape[0])
         self.assertTrue(v2.flags.c_contiguous)
+
+    def test_arap3(self):
+        v, f = igl.read_triangle_mesh(os.path.join(self.test_path, "camelhead.off"))
+
+        ## Find the open boundary
+        bnd = igl.boundary_loop(f)
+
+        ## Map the boundary to a circle, preserving edge proportions
+        bnd_uv = igl.map_vertices_to_circle(v, bnd)
+
+        ## Harmonic parametrization for the internal vertices
+        uv = igl.harmonic_weights(v, f, bnd, bnd_uv, 1)
+
+        arap = igl.ARAP(v, f, 2, np.zeros((0)))
+        uva = arap.solve(np.zeros((0, 0)), uv)
 
     def test_slim(self):
         v, f, _ = igl.read_off("data/camelhead.off")
@@ -1086,9 +1113,10 @@ class TestBasic(unittest.TestCase):
         TT = np.array([[0, 1, 2, 3]])
         S = np.array([0., 1., 1., 1.])
 
-        v, f = igl.marching_tets(TV, TT, S, 0.5)
+        v, f, j, bc = igl.marching_tets(TV, TT, S, 0.5)
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(j.flags.c_contiguous)
 
         self.assertTrue(v.dtype == TV.dtype)
         self.assertTrue(v.shape[0] >= 3)
@@ -1096,6 +1124,13 @@ class TestBasic(unittest.TestCase):
 
         self.assertTrue(f.dtype == TT.dtype)
         self.assertTrue(f.shape[0] == 3)
+
+        self.assertTrue(j.dtype == TT.dtype)
+        self.assertTrue(j.shape[0] == f.shape[0])
+
+        self.assertTrue(bc.dtype == TV.dtype)
+        self.assertTrue(bc.shape[0] == v.shape[0])
+        self.assertTrue(bc.shape[1] == TV.shape[0])
 
     def test_read_tgf(self):
         filename = os.path.join(self.test_path, "hand.tgf")
