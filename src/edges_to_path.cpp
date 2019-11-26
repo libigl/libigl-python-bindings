@@ -1,7 +1,5 @@
-//static assertion failed: THIS_COEFFICIENT_ACCESSOR_TAKING_ONE_ACCESS_IS_ONLY_FOR_EXPRESSIONS_ALLOWING_LINEAR_ACCESS
-//edges_to_path.cpp:24:14
-
 #include <npe.h>
+#include <common.h>
 #include <typedefs.h>
 #include <igl/edges_to_path.h>
 
@@ -21,7 +19,7 @@ I  #E+1 list of nodes in order tracing the chain (loop), if the output
   is a loop then I(1) == I(end)
 J  #I-1 list of indices into E of edges tracing I
 K  #I-1 list of indices into columns of E {1,2} so that K(i) means that
-  E(i,K(i)) comes before the other (i.e., E(i,3-K(i)) ). This means that 
+  E(i,K(i)) comes before the other (i.e., E(i,3-K(i)) ). This means that
   I(i) == E(J(i),K(i)) for i<#I, or
   I == E(sub2ind(size(E),J([1:end end]),[K;3-K(end)]))))
 
@@ -37,8 +35,8 @@ None
 Examples
 --------
 
-  
-   
+
+
 )igl_Qu8mg5v7";
 
 npe_function(edges_to_path)
@@ -48,11 +46,20 @@ npe_arg(e, dense_int, dense_long, dense_longlong)
 
 
 npe_begin_code()
+  assert_nonzero_rows(e, "e");
+  assert_cols_equals(e, 2, "e");
 
-  npe_Matrix_e i;
-  npe_Matrix_e j;
-  npe_Matrix_e k;
-  igl::edges_to_path(e, i, j, k);
+  Eigen::MatrixXi e_copy = e.template cast<int>();
+  Eigen::VectorXi i_copy;
+  Eigen::VectorXi j_copy;
+  Eigen::VectorXi k_copy;
+
+  igl::edges_to_path(e_copy, i_copy, j_copy, k_copy);
+
+  EigenDenseLike<npe_Matrix_e> i = i_copy.template cast<typename npe_Matrix_e::Scalar>();
+  EigenDenseLike<npe_Matrix_e> j = i_copy.template cast<typename npe_Matrix_e::Scalar>();
+  EigenDenseLike<npe_Matrix_e> k = i_copy.template cast<typename npe_Matrix_e::Scalar>();
+
   return std::make_tuple(npe::move(i), npe::move(j), npe::move(k));
 
 npe_end_code()

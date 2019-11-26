@@ -8,6 +8,7 @@ build
 
 tutorial/data
 tutorial/.ipynb_*
+tutorial-old/.ipynb_*
 
 test.obj
 pyigl.cpython*
@@ -25,3 +26,6 @@ site
 
 
 ttt.py
+*coverage*
+htmlcov
+junit
