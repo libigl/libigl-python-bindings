@@ -155,16 +155,16 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.flags.c_contiguous)
         self.assertTrue(n.flags.c_contiguous)
 
-    def test_read_obj(self):
-        v, t, f = igl.read_mesh(self.test_path + "octopus-low.mesh")
+    def test_read_mesh(self):
+        v, t, f = igl.read_mesh(os.path.join(self.test_path, "octopus-low.mesh"))
         self.assertTrue(type(v) == type(t) == type(f) == np.ndarray)
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(t.flags.c_contiguous)
         self.assertTrue(f.flags.c_contiguous)
 
         self.assertTrue(v.dtype == np.float64)
-        self.assertTrue(t.dtype == self.t.dtype)
-        self.assertTrue(f.dtype == self.f.dtype)
+        self.assertTrue(t.dtype == self.f1.dtype)
+        self.assertTrue(f.dtype == self.f1.dtype)
 
     def test_read_triangle_mesh(self):
         v, f = igl.read_triangle_mesh(self.test_path + "octopus-low.mesh")
