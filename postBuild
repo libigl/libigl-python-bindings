@@ -1,0 +1,7 @@
+#!/bin/bash
+set -ex
+
+wget https://github.com/libigl/libigl-tutorial-data/archive/master.zip
+unzip master.zip
+mv libigl-tutorial-data-master data
+rm master.zip
