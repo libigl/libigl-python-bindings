@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 project(pyigl)
 
 
-if (NOT DEFINED ${LIBIGL_EXTERNAL})
-  set(LIBIGL_EXTERNAL ${CMAKE_CURRENT_SOURCE_DIR}/external)
+if (NOT DEFINED ${PYLIBIGL_EXTERNAL})
+  set(PYLIBIGL_EXTERNAL ${CMAKE_CURRENT_SOURCE_DIR}/external)
 endif()
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -13,7 +13,7 @@ include(UseColors)
 include(PyiglDependencies)
 
 # NumpyEigen
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LIBIGL_EXTERNAL}/numpyeigen/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PYLIBIGL_EXTERNAL}/numpyeigen/cmake)
 # Generate position independent code by default
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(numpyeigen)
@@ -60,11 +60,11 @@ option(LIBIGL_WITH_OPENGL           "Use OpenGL"         OFF)
 option(LIBIGL_WITH_OPENGL_GLFW      "Use GLFW"           OFF)
 option(LIBIGL_WITH_PNG              "Use PNG"            OFF)
 option(LIBIGL_WITH_PYTHON           "Use Python"         OFF)
-option(LIBIGL_WITH_TETGEN           "Use Tetgen"         ON)
-option(LIBIGL_WITH_TRIANGLE         "Use Triangle"       ON)
+option(LIBIGL_WITH_TETGEN           "Use Tetgen"         OFF)
+option(LIBIGL_WITH_TRIANGLE         "Use Triangle"       OFF)
 option(LIBIGL_WITH_VIEWER           "Use OpenGL viewer"  OFF)
 option(LIBIGL_WITH_XML              "Use XML"            OFF)
-option(LIBIGL_PYTHON_TESTS          "Run Python tests"   ON)
+option(PY_IGL_PYTHON_TESTS          "Run Python tests"   ON)
 
 
 if(NOT TARGET igl::core)
@@ -83,16 +83,12 @@ npe_add_module(pyigl
   ${PYIGL_SOURCES})
 
  #TODO move additional libs to variable
-target_link_libraries(pyigl PRIVATE igl::core igl::triangle igl::tetgen)
+target_link_libraries(pyigl PRIVATE igl::core)
 if(LIBIGL_WITH_COMISO)
   target_link_libraries(pyigl PRIVATE igl::comiso)
 endif()
 target_include_directories(pyigl PRIVATE "src/include")
-# if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-#   target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
-# endif()
 
-pyigl_download_tutorial_data()
 
 add_library(pyigl_classes MODULE classes/classes.cpp)
 target_link_libraries(pyigl_classes PRIVATE npe igl::core)
@@ -101,8 +97,6 @@ set_target_properties(pyigl_classes PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}" 
 target_include_directories(pyigl_classes PRIVATE "src/include")
 target_include_directories(pyigl_classes PRIVATE "external/numpyeigen/src")
 
-#pybind11_add_module(pyigl_classes classes/classes.cpp)
-#target_link_libraries(pyigl_classes PRIVATE igl::core)
 
 # set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)
 # find_package(PythonLibs REQUIRED)
@@ -113,8 +107,7 @@ target_include_directories(pyigl_classes PRIVATE "external/numpyeigen/src")
 # set_target_properties(pyigl PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -msse2")
 # set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/igl")
 
-
-if(${LIBIGL_PYTHON_TESTS})
+if(${PY_IGL_PYTHON_TESTS})
   pyigl_download_test_data()
   enable_testing()
   add_subdirectory(tests)

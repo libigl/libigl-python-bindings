@@ -13,8 +13,8 @@ endif()
 function(pyigl_download_project name)
     download_project(
         PROJ         ${name}
-        SOURCE_DIR   ${LIBIGL_EXTERNAL}/${name}
-        DOWNLOAD_DIR ${LIBIGL_EXTERNAL}/.cache/${name}
+        SOURCE_DIR   ${PYLIBIGL_EXTERNAL}/${name}
+        DOWNLOAD_DIR ${PYLIBIGL_EXTERNAL}/.cache/${name}
         QUIET
         ${pyigl_EXTRA_OPTIONS}
         ${ARGN}
@@ -44,8 +44,8 @@ endfunction()
 ## Test data
 function(pyigl_download_test_data)
 	pyigl_download_project(test_data
-		"${LIBIGL_EXTERNAL}/../data"
-		GIT_REPOSITORY https://github.com/libigl/libigl-tests-data
+		SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../data"
+		GIT_REPOSITORY https://github.com/libigl/libigl-tests-data.git
 		GIT_TAG        ce4cd11e37026ba7160c48888dfddec90a5999dd
 	)
 endfunction()
@@ -53,8 +53,8 @@ endfunction()
 ## Tutorial data
 function(pyigl_download_tutorial_data)
 	pyigl_download_project(tutorial_data
-		"${LIBIGL_EXTERNAL}/../tutorial/data"
-		GIT_REPOSITORY https://github.com/libigl/libigl-tutorial-data
+		SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../tutorial/data"
+		GIT_REPOSITORY https://github.com/libigl/libigl-tutorial-data.git
 		GIT_TAG        38bbed76692710af038b90c69bf33d6d0f99476d
 	)
 endfunction()
