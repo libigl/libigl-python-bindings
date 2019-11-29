@@ -24,6 +24,8 @@ test.off
 data/*
 site
 
+**/meshplot
+
 
 ttt.py
 *coverage*
