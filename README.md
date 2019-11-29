@@ -1,7 +1,6 @@
 # *New* LibIGL Python Bindings
-[![Build Status](https://travis-ci.com/geometryprocessing/libigl-python-bindings.svg?branch=master)](https://travis-ci.com/geometryprocessing/libigl-python-bindings)
-<!-- [![Build status](https://ci.appveyor.com/api/projects/status/gti6d6encnc6akvr?svg=true)](https://ci.appveyor.com/project/teseoch/libigl-python-bindings) -->
-[![Build Status](https://dev.azure.com/geometryprocessing/igl-python/_apis/build/status/geometryprocessing.libigl-python-bindings?branchName=master)](https://dev.azure.com/geometryprocessing/igl-python/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://travis-ci.com/libigl/libigl-python-bindings.svg?branch=master)](https://travis-ci.com/libigl/libigl-python-bindings)
+[![Build Status](https://dev.azure.com/libigl/Libigl/_apis/build/status/libigl.libigl-python-bindings?branchName=master)](https://dev.azure.com/libigl/Libigl/_build/latest?definitionId=1&branchName=master)
 
 This repository contains the source code for the new and improved LibIGL Python bindings. These bindings are fully compatible with NumPy and SciPy and offer a convenient interface similar to functions in those libraries.
 
@@ -23,9 +22,9 @@ python setup.py install
 
 **NOTE:** We will not provide support for installations done in this way, since there is a lot of variation between systems. For a consistent experience, use conda.
 
-## [Help/Documentation](https://geometryprocessing.github.io/libigl-python-bindings/tutorials/)
-* A *temporary* tutorial on how to use the bindings can be found [here](https://geometryprocessing.github.io/libigl-python-bindings/tutorials/)
-* A *temporary* function reference can be found [here](https://geometryprocessing.github.io/libigl-python-bindings/igl_docs/)
+## [Help/Documentation](https://libigl.github.io/libigl-python-bindings/)
+* A *temporary* tutorial on how to use the bindings can be found [here](https://libigl.github.io/libigl-python-bindings/tutorials/)
+* A *temporary* function reference can be found [here](https://libigl.github.io/libigl-python-bindings/igl_docs/)
 
 
 ## Compiling and modifying the bindiings

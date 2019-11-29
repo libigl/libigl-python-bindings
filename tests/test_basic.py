@@ -22,7 +22,7 @@ class TestBasic(unittest.TestCase):
         np.random.seed(42)
         self.test_path = os.path.join(os.path.dirname(
             os.path.realpath(__file__)), "../data/")
-        self.v1, self.f1 = igl.read_triangle_mesh(os.path.join(self.test_path, "bunny.off"))
+        self.v1, self.f1 = igl.read_triangle_mesh(os.path.join(self.test_path, "bunny_small.off"))
         self.v2, self.f2 = igl.read_triangle_mesh(os.path.join(self.test_path, "fertility.off"))
 
         self.v = np.random.rand(10, 3).astype(self.v1.dtype)
@@ -144,11 +144,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(n.flags.c_contiguous)
 
     def test_read_off(self):
-        v, f, n = igl.read_off(self.test_path + "bunny.off")
+        v, f, n = igl.read_off(self.test_path + "bunny_small.off")
         self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
         self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
         self.assertTrue(v.dtype == np.float64)
-        v, f, n = igl.read_off(self.test_path + "bunny.off", read_normals=False, dtype="float32")
+        v, f, n = igl.read_off(self.test_path + "bunny_small.off", read_normals=False, dtype="float32")
         self.assertTrue(v.shape == (3485, 3) and n.shape == (0, 0) and f.shape == (6966, 3))
         self.assertTrue(v.dtype == np.float32)
         self.assertTrue(v.flags.c_contiguous)
@@ -171,7 +171,7 @@ class TestBasic(unittest.TestCase):
         #print(v.shape, f.shape)
         v, f = igl.read_triangle_mesh(self.test_path + "face.obj")
         #print(v.shape, f.shape)
-        v, f = igl.read_triangle_mesh(self.test_path + "bunny.off")
+        v, f = igl.read_triangle_mesh(self.test_path + "bunny_small.off")
         #print(v.shape, f.shape)
         self.assertTrue(f.dtype == self.f.dtype)
         self.assertTrue(v.flags.c_contiguous)
@@ -826,7 +826,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(tti.flags.c_contiguous)
 
     def test_arap1(self):
-        v, f, _ = igl.read_off("data/camelhead.off")
+        v, f, _ = igl.read_off(os.path.join(self.test_path, "camelhead.off"))
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
@@ -880,7 +880,7 @@ class TestBasic(unittest.TestCase):
         uva = arap.solve(np.zeros((0, 0)), uv)
 
     def test_slim(self):
-        v, f, _ = igl.read_off("data/camelhead.off")
+        v, f, _ = igl.read_off(os.path.join(self.test_path, "camelhead.off"))
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
@@ -1204,12 +1204,12 @@ class TestBasic(unittest.TestCase):
         b = np.array([0])
         bc = np.array([[1., 0., 0.]])
 
-        if platform.system() == "Windows":
-            X1 = np.load(os.path.join(self.test_path, "X1.npy"))
-            S = np.load(os.path.join(self.test_path, "S.npy"))
-        else:
+        # if platform.system() == "Windows":
+        X1 = np.load(os.path.join(self.test_path, "X1.npy"))
+        S = np.load(os.path.join(self.test_path, "S.npy"))
+        # else:
             # FIXME!
-            X1, S = igl.nrosy(V, F, b, bc, np.array([], dtype=b.dtype), np.array([]), np.array([]), 4, 0.5)
+            # X1, S = igl.nrosy(V, F, b, bc, np.array([], dtype=b.dtype), np.array([]), np.array([]), 4, 0.5)
 
 
         self.assertTrue(X1.flags.c_contiguous)

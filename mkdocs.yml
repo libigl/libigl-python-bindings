@@ -1,7 +1,7 @@
 site_name: igl
 site_url: 'https://libigl.github.io/'
 repo_name: 'libigl-python-bindings'
-repo_url: 'https://github.com/geometryprocessing/libigl-python-bindings'
+repo_url: 'https://github.com/libigl/libigl-python-bindings'
 site_description: "Simple Python geometry processing library"
 # strict: true
 docs_dir: 'tutorial'
@@ -17,7 +17,7 @@ theme:
 extra:
   social:
     - type: 'github'
-      link: 'https://github.com/geometryprocessing/libigl-python-bindings'
+      link: 'https://github.com/libigl/libigl-python-bindings'
 markdown_extensions:
   - codehilite
   - footnotes
