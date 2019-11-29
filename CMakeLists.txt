@@ -92,6 +92,8 @@ target_include_directories(pyigl PRIVATE "src/include")
 #   target_compile_definitions(pyigl PUBLIC -DIGL_PARALLEL_FOR_FORCE_SERIAL)
 # endif()
 
+pyigl_download_tutorial_data()
+
 add_library(pyigl_classes MODULE classes/classes.cpp)
 target_link_libraries(pyigl_classes PRIVATE npe igl::core)
 target_link_libraries(pyigl_classes PRIVATE pybind11::module)
@@ -113,6 +115,7 @@ target_include_directories(pyigl_classes PRIVATE "external/numpyeigen/src")
 
 
 if(${LIBIGL_PYTHON_TESTS})
+  pyigl_download_test_data()
   enable_testing()
   add_subdirectory(tests)
 endif()

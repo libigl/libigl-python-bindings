@@ -41,6 +41,24 @@ function(pyigl_download_numpyeigen)
 endfunction()
 
 
+## Test data
+function(pyigl_download_test_data)
+	pyigl_download_project(test_data
+		"${LIBIGL_EXTERNAL}/../data"
+		GIT_REPOSITORY https://github.com/libigl/libigl-tests-data
+		GIT_TAG        ce4cd11e37026ba7160c48888dfddec90a5999dd
+	)
+endfunction()
+
+## Tutorial data
+function(pyigl_download_tutorial_data)
+	pyigl_download_project(tutorial_data
+		"${LIBIGL_EXTERNAL}/../tutorial/data"
+		GIT_REPOSITORY https://github.com/libigl/libigl-tutorial-data
+		GIT_TAG        38bbed76692710af038b90c69bf33d6d0f99476d
+	)
+endfunction()
+
 
 # ## Sanitizers
 # function(pyigl_download_sanitizers)
