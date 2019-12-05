@@ -29,7 +29,7 @@ Notes
 
 Examples
 --------
-     
+
 )igl_Qu8mg5v7";
 
 npe_function(barycentric_coordinates_tet)
@@ -95,6 +95,13 @@ npe_arg(a, npe_matches(p))
 npe_arg(b, npe_matches(p))
 npe_arg(c, npe_matches(p))
 npe_begin_code()
+    assert_rows_match(p, a, "p", "a");
+    assert_rows_match(p, b, "p", "b");
+    assert_rows_match(p, c, "p", "c");
+    assert_cols_equals(p, 3, "p");
+    assert_cols_equals(a, 3, "a");
+    assert_cols_equals(b, 3, "b");
+    assert_cols_equals(c, 3, "c");
 
     EigenDenseLike<npe_Matrix_p> l;
     igl::barycentric_coordinates(p, a, b, c, l);
