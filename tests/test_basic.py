@@ -1450,6 +1450,13 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.shape[0] == self.f.shape[0])
         self.assertTrue(len(r.shape) == 1)
 
+    def test_is_border_vertex(self):
+        res = igl.is_border_vertex(self.v, self.f)
+
+        self.assertTrue(len(res) == self.v.shape[0])
+        self.assertTrue(type(res) == list)
+        self.assertTrue(type(res[0]) == bool)
+
 
 if __name__ == '__main__':
     unittest.main()

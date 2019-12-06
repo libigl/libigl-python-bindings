@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/inradius.h>
@@ -35,7 +36,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 
 npe_begin_code()
-
+  assert_valid_23d_tri_mesh(v, f);
   EigenDenseLike<npe_Matrix_v> r;
   igl::inradius(v, f, r);
   return npe::move(r);
