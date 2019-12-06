@@ -1418,10 +1418,24 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(Z.shape[0] == Q.shape[0])
         self.assertTrue(Z.dtype == V.dtype)
 
-    def test_face_occurence(self):
+    def test_face_occurrences(self):
         c = igl.face_occurrences(self.f)
         self.assertTrue(c.flags.c_contiguous)
+        self.assertTrue(c.dtype == self.f.dtype)
         self.assertTrue(c.shape[0] == self.f.shape[0])
+
+    def test_false_barycentric_subdivision(self):
+        vd, fd = igl.false_barycentric_subdivision(self.v, self.f)
+        self.assertTrue(vd.flags.c_contiguous)
+        self.assertTrue(fd.flags.c_contiguous)
+
+        self.assertTrue(vd.dtype == self.v.dtype)
+        self.assertTrue(fd.dtype == self.f.dtype)
+
+        self.assertTrue(vd.shape[0] == self.v.shape[0]+self.f.shape[0])
+        self.assertTrue(vd.shape[1] == self.v.shape[1])
+        self.assertTrue(fd.shape[1] == self.f.shape[1])
+        self.assertTrue(fd.shape[0] == self.f.shape[0]*3)
 
 
 if __name__ == '__main__':
