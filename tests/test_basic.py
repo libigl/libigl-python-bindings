@@ -1418,6 +1418,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(Z.shape[0] == Q.shape[0])
         self.assertTrue(Z.dtype == V.dtype)
 
+    def test_face_occurence(self):
+        c = igl.face_occurrences(self.f)
+        self.assertTrue(c.flags.c_contiguous)
+        self.assertTrue(c.shape[0] == self.f.shape[0])
+
 
 if __name__ == '__main__':
     unittest.main()
