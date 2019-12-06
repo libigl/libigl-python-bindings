@@ -1437,6 +1437,12 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(fd.shape[1] == self.f.shape[1])
         self.assertTrue(fd.shape[0] == self.f.shape[0]*3)
 
+    def test_flipped_triangles(self):
+        flipped = igl.flipped_triangles(self.v[:, :2], self.f)
+        self.assertTrue(flipped.flags.c_contiguous)
+        self.assertTrue(flipped.dtype == self.f.dtype)
+        self.assertTrue(len(flipped.shape) == 1)
+
 
 if __name__ == '__main__':
     unittest.main()

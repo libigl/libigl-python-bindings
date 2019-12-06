@@ -1,3 +1,4 @@
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/flipped_triangles.h>
@@ -36,7 +37,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
   assert_valid_2d_tri_mesh(v, f);
-  EigenLikeDense<npe_Scalar_f> x;
+  EigenDenseLike<npe_Matrix_f> x;
   igl::flipped_triangles(v, f, x);
   return npe::move(x);
 
