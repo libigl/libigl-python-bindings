@@ -2,15 +2,17 @@
 #include <typedefs.h>
 #include <igl/inradius.h>
 
-const char* ds_inradius = R"igl_Qu8mg5v7(
+const char *ds_inradius = R"igl_Qu8mg5v7(
+ Compute the inradius of each triangle in a mesh (V,F)
 
 Parameters
 ----------
-
+  V  #V by dim list of mesh vertex positions
+  F  #F by 3 list of triangle indices into V
 
 Returns
 -------
-
+R  #F list of inradii
 
 See also
 --------
@@ -23,26 +25,18 @@ None
 Examples
 --------
 
- Compute the inradius of each triangle in a mesh (V,F)
-  
-   Inputs:
-     V  #V by dim list of mesh vertex positions
-     F  #F by 3 list of triangle indices into V
-   Outputs:
-     R  #F list of inradii
-  
 )igl_Qu8mg5v7";
 
 npe_function(inradius)
 npe_doc(ds_inradius)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long, dense_longlong)
 
 
 npe_begin_code()
 
-  EigenDense<npe_Scalar_> r;
+  EigenDenseLike<npe_Matrix_v> r;
   igl::inradius(v, f, r);
   return npe::move(r);
 

@@ -1443,6 +1443,13 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(flipped.dtype == self.f.dtype)
         self.assertTrue(len(flipped.shape) == 1)
 
+    def test_inradius(self):
+        r = igl.inradius(self.v, self.f)
+        self.assertTrue(r.flags.c_contiguous)
+        self.assertTrue(r.dtype == self.v.dtype)
+        self.assertTrue(r.shape[0] == self.f.shape[0])
+        self.assertTrue(len(r.shape) == 1)
+
 
 if __name__ == '__main__':
     unittest.main()
