@@ -59,12 +59,19 @@ option(LIBIGL_WITH_NANOGUI          "Use Nanogui menu"   OFF)
 option(LIBIGL_WITH_OPENGL           "Use OpenGL"         OFF)
 option(LIBIGL_WITH_OPENGL_GLFW      "Use GLFW"           OFF)
 option(LIBIGL_WITH_PNG              "Use PNG"            OFF)
-option(LIBIGL_WITH_PYTHON           "Use Python"         OFF)
 option(LIBIGL_WITH_TETGEN           "Use Tetgen"         OFF)
 option(LIBIGL_WITH_TRIANGLE         "Use Triangle"       OFF)
 option(LIBIGL_WITH_VIEWER           "Use OpenGL viewer"  OFF)
 option(LIBIGL_WITH_XML              "Use XML"            OFF)
+
 option(PY_IGL_PYTHON_TESTS          "Run Python tests"   ON)
+option(PY_IGL_COPYLEFT              "Builds Copyleft"    OFF)
+
+if(PY_IGL_COPYLEFT)
+  SET(LIBIGL_WITH_TETGEN ON CACHE BOOL "" FORCE)
+  SET(LIBIGL_WITH_TRIANGLE ON CACHE BOOL "" FORCE)
+endif()
+
 
 
 if(NOT TARGET igl::core)
@@ -78,14 +85,23 @@ if(NOT LIBIGL_WITH_COMISO)
   get_filename_component(remove_comiso ${CMAKE_CURRENT_SOURCE_DIR}/src/comiso_nrosy.cpp ABSOLUTE)
   list(REMOVE_ITEM PYIGL_SOURCES "${remove_comiso}")
 endif()
+
+if(PY_IGL_COPYLEFT)
+  file(GLOB PYIGL_SOURCES_COPYLEFT copyleft/*.cpp)
+endif()
+
 npe_add_module(pyigl
   BINDING_SOURCES
-  ${PYIGL_SOURCES})
+  ${PYIGL_SOURCES}
+  ${PYIGL_SOURCES_COPYLEFT})
 
  #TODO move additional libs to variable
 target_link_libraries(pyigl PRIVATE igl::core)
 if(LIBIGL_WITH_COMISO)
   target_link_libraries(pyigl PRIVATE igl::comiso)
+endif()
+if(PY_IGL_COPYLEFT)
+  target_link_libraries(pyigl PRIVATE igl::triangle igl::tetgen)
 endif()
 target_include_directories(pyigl PRIVATE "src/include")
 
@@ -95,7 +111,7 @@ target_link_libraries(pyigl_classes PRIVATE npe igl::core)
 target_link_libraries(pyigl_classes PRIVATE pybind11::module)
 set_target_properties(pyigl_classes PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}" SUFFIX "${PYTHON_MODULE_EXTENSION}")
 target_include_directories(pyigl_classes PRIVATE "src/include")
-target_include_directories(pyigl_classes PRIVATE "external/numpyeigen/src")
+target_include_directories(pyigl_classes PRIVATE "${PYLIBIGL_EXTERNAL}/numpyeigen/src")
 
 
 # set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)

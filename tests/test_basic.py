@@ -1457,6 +1457,30 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(type(res) == list)
         self.assertTrue(type(res[0]) == bool)
 
+    def test_extract_manifold_patches(self):
+        n, p = igl.extract_manifold_patches(self.f2)
+        self.assertTrue(p.flags.c_contiguous)
+        self.assertTrue(p.dtype == self.f2.dtype)
+        self.assertTrue(len(p.shape) == 1)
+        self.assertTrue(p.shape[0] == self.f2.shape[0])
+        self.assertTrue(type(n) == int)
+        self.assertTrue(n == 1)
+
+    def test_faces_first(self):
+        RV,RF,IM = igl.faces_first(self.v, self.f)
+        self.assertTrue(RV.flags.c_contiguous)
+        self.assertTrue(RF.flags.c_contiguous)
+        self.assertTrue(IM.flags.c_contiguous)
+
+        self.assertTrue(RV.dtype == self.v.dtype)
+        self.assertTrue(RF.dtype == self.f.dtype)
+        self.assertTrue(IM.dtype == self.f.dtype)
+
+        self.assertTrue(RV.shape[0] == self.v.shape[0])
+        self.assertTrue(RF.shape[0] == self.f.shape[0])
+        self.assertTrue(IM.shape[0] == self.v.shape[0])
+        self.assertTrue(len(IM.shape) == 1)
+
 
 if __name__ == '__main__':
     unittest.main()

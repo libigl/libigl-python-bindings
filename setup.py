@@ -36,8 +36,7 @@ class CMakeBuild(build_ext):
         extdir = os.path.join(os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name))),"igl")
 
         cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
-                      '-DPYTHON_EXECUTABLE=' + sys.executable,
-                      '-DLIBIGL_PYTHON_TESTS=OFF']
+                      '-DPYTHON_EXECUTABLE=' + sys.executable]
 
 
         cfg = 'Debug' if self.debug else 'Release'
@@ -71,13 +70,13 @@ with open("README.md", "r") as fh:
 
 setup(
     name="igl",
-    version="0.4.1",
+    version="0.5",
     author="libigl",
     author_email="",
     description="libigl Python Bindings",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://libigl.github.io/",
+    url="https://libigl.github.io/libigl-python-bindings/",
     ext_modules=[CMakeExtension('pyigl')],
     cmdclass=dict(build_ext=CMakeBuild),
     packages=find_packages(),
