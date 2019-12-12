@@ -1523,6 +1523,26 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.dtype == self.f.dtype)
         self.assertTrue(f.shape[1] == 3)
 
+    def test_edges_to_path(self):
+        e = igl.edges(self.f1)
+        e = e[:1, :]
+        i, j, k = igl.edges_to_path(e)
+
+        self.assertTrue(i.flags.c_contiguous)
+        self.assertTrue(j.flags.c_contiguous)
+        self.assertTrue(k.flags.c_contiguous)
+
+        self.assertTrue(i.dtype == e.dtype)
+        self.assertTrue(j.dtype == e.dtype)
+        self.assertTrue(k.dtype == e.dtype)
+
+    def test_exterior_edges(self):
+        e = igl.exterior_edges(self.f1)
+
+        self.assertTrue(e.flags.c_contiguous)
+        self.assertTrue(e.dtype == self.f1.dtype)
+        self.assertTrue(e.shape[1] == 2)
+
 
 if __name__ == '__main__':
     unittest.main()

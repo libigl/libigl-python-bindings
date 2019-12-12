@@ -35,8 +35,8 @@ None
 Examples
 --------
 
-  
-  
+
+
 )igl_Qu8mg5v7";
 
 npe_function(exterior_edges)
@@ -45,12 +45,13 @@ npe_doc(ds_exterior_edges)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
+  assert_valid_tet_or_tri_mesh_faces(f);
 
-  npe_Matrix_f e;
-  Eigen::MatrixXi e_copy = e.template cast<int>();
+  Eigen::MatrixXi e_copy;
   Eigen::MatrixXi f_copy = f.template cast<int>();
   igl::exterior_edges(f_copy, e_copy);
-  return npe::move(e_copy);
+  EigenDenseLike<npe_Matrix_f> e = e_copy.template cast<typename npe_Matrix_f::Scalar>();
+  return npe::move(e);
 
 npe_end_code()
 
