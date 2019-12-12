@@ -9,14 +9,6 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # Color output
 include(UseColors)
 
-
-# NumpyEigen
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PYLIBIGL_EXTERNAL}/numpyeigen/cmake)
-# Generate position independent code by default
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-include(numpyeigen)
-
-
 # Extra warnings
 include(Warnings)
 
@@ -64,6 +56,13 @@ include(PyiglDependencies)
 if(NOT TARGET igl::core)
   include(libigl)
 endif()
+
+
+# NumpyEigen
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PYLIBIGL_EXTERNAL}/numpyeigen/cmake)
+# Generate position independent code by default
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+include(numpyeigen)
 
 
 # A module for writing bindings with our framework
