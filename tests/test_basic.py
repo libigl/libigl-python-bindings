@@ -1513,8 +1513,15 @@ class TestBasic(unittest.TestCase):
         pd = np.array([0.0, 0.0, 1.])
         pe = np.array([0.15, 0.15, 0.15])
         r = igl.insphere(pa, pb, pc, pd, pe)
+        #TODO: should be 1?
         self.assertTrue(r == -1)
 
+    def test_delaunay_triangulation(self):
+        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0, 0], [0, -1]])
+        f = igl.delaunay_triangulation(v)
+        self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(f.dtype == self.f.dtype)
+        self.assertTrue(f.shape[1] == 3)
 
 
 if __name__ == '__main__':
