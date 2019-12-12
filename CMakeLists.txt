@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 project(pyigl)
 
-
 if (NOT DEFINED ${PYLIBIGL_EXTERNAL})
   set(PYLIBIGL_EXTERNAL ${CMAKE_CURRENT_SOURCE_DIR}/external)
 endif()
@@ -10,7 +9,6 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # Color output
 include(UseColors)
 
-include(PyiglDependencies)
 
 # NumpyEigen
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PYLIBIGL_EXTERNAL}/numpyeigen/cmake)
@@ -24,19 +22,6 @@ include(Warnings)
 
 # Use C++11/14
 include(CXXFeatures)
-
-
-# Sort projects inside the solution
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	foreach(config ${CMAKE_CONFIGURATION_TYPES})
-		string(TOUPPER ${config} config)
-		string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
-    string(REPLACE /MD /MT CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
-    # LIST(APPEND CMAKE_CXX_FLAGS_${config} "/Zm")
-	endforeach()
-endif()
 
 
 
@@ -61,6 +46,7 @@ option(LIBIGL_WITH_OPENGL_GLFW      "Use GLFW"           OFF)
 option(LIBIGL_WITH_PNG              "Use PNG"            OFF)
 option(LIBIGL_WITH_TETGEN           "Use Tetgen"         OFF)
 option(LIBIGL_WITH_TRIANGLE         "Use Triangle"       OFF)
+option(LIBIGL_WITH_PREDICATES       "Use exact predicates"   ON)
 option(LIBIGL_WITH_VIEWER           "Use OpenGL viewer"  OFF)
 option(LIBIGL_WITH_XML              "Use XML"            OFF)
 
@@ -72,6 +58,7 @@ if(PY_IGL_COPYLEFT)
   SET(LIBIGL_WITH_TRIANGLE ON CACHE BOOL "" FORCE)
 endif()
 
+include(PyiglDependencies)
 
 
 if(NOT TARGET igl::core)
@@ -95,8 +82,8 @@ npe_add_module(pyigl
   ${PYIGL_SOURCES}
   ${PYIGL_SOURCES_COPYLEFT})
 
- #TODO move additional libs to variable
-target_link_libraries(pyigl PRIVATE igl::core)
+#TODO move additional libs to variable
+target_link_libraries(pyigl PRIVATE igl::core igl::predicates)
 if(LIBIGL_WITH_COMISO)
   target_link_libraries(pyigl PRIVATE igl::comiso)
 endif()
@@ -112,6 +99,20 @@ target_link_libraries(pyigl_classes PRIVATE pybind11::module)
 set_target_properties(pyigl_classes PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}" SUFFIX "${PYTHON_MODULE_EXTENSION}")
 target_include_directories(pyigl_classes PRIVATE "src/include")
 target_include_directories(pyigl_classes PRIVATE "${PYLIBIGL_EXTERNAL}/numpyeigen/src")
+
+
+
+# Sort projects inside the solution
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	foreach(config ${CMAKE_CONFIGURATION_TYPES})
+		string(TOUPPER ${config} config)
+		string(REPLACE /MD /MT CMAKE_C_FLAGS_${config} "${CMAKE_C_FLAGS_${config}}")
+    string(REPLACE /MD /MT CMAKE_CXX_FLAGS_${config} "${CMAKE_CXX_FLAGS_${config}}")
+    # LIST(APPEND CMAKE_CXX_FLAGS_${config} "/Zm")
+	endforeach()
+endif()
 
 
 # set(Python_ADDITIONAL_VERSIONS 3.4 3.5 3.6)

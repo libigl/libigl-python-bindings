@@ -1482,5 +1482,40 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(len(IM.shape) == 1)
 
 
+    def test_orient2d(self):
+        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0, 0], [0, -1]])
+        r = igl.orient2d(v[0, :], v[1, :], v[2, :])
+        self.assertTrue(r == 1)
+
+        r = igl.orient2d(v[0, :], v[1, :], v[3, :])
+        self.assertTrue(r == 0)
+
+        r = igl.orient2d(v[0, :], v[1, :], v[4, :])
+        self.assertTrue(r == -1)
+
+    def test_orient3d(self):
+        pa = np.array([0.0, 0.0, 0.])
+        pb = np.array([1.0, 0.0, 0.])
+        pc = np.array([1.0, 1.0, 0.])
+        pd = np.array([0.0, 0.0, 1.])
+        r = igl.orient3d(pa, pb, pc, pd)
+        self.assertTrue(r == -1)
+
+    def test_incircle(self):
+        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.25, 0.25]])
+        r = igl.incircle(v[0, :], v[1, :], v[2, :], v[3, :])
+        self.assertTrue(r == 1)
+
+    def test_insphere(self):
+        pa = np.array([0.0, 0.0, 0.])
+        pb = np.array([1.0, 0.0, 0.])
+        pc = np.array([1.0, 1.0, 0.])
+        pd = np.array([0.0, 0.0, 1.])
+        pe = np.array([0.15, 0.15, 0.15])
+        r = igl.insphere(pa, pb, pc, pd, pe)
+        self.assertTrue(r == -1)
+
+
+
 if __name__ == '__main__':
     unittest.main()

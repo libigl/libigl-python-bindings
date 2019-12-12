@@ -34,6 +34,14 @@ void assert_rows_equals(const T& mat, int rows, std::string name) {
 }
 
 template <typename T>
+void assert_size_equals(const T& mat, int size, std::string name) {
+    if (mat.size() != size) {
+        throw pybind11::value_error("Parameter " + name + " has invalid size expected " + name + ".size() = " + std::to_string(size) +
+                                    " but got " + name + ".shape = [" + std::to_string(mat.rows()) + ", " + std::to_string(mat.cols()) + "]");
+    }
+}
+
+template <typename T>
 void assert_shape_equals(const T& mat, int rows, int cols, std::string name) {
     if (mat.rows() != rows || mat.cols() != cols) {
         throw pybind11::value_error("Parameter " + name + " has invalid shape, expected " + name + ".shape = [" + std::to_string(rows) + ", " + std::to_string(cols) +

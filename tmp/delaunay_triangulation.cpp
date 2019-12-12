@@ -1,12 +1,8 @@
-//TODO: __example
-//TODO: incircle and orient2d shoudnt be parameters
-
+#include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
-
-
-
+#include <igl/predicates/predicates.h>
 
 
 #include <igl/delaunay_triangulation.h>
@@ -17,15 +13,6 @@ Given a set of points in 2D, return a Delaunay triangulation of these
 Parameters
 ----------
 V  #V by 2 list of vertex positions
-orient2D  A functor such that orient2D(pa, pb, pc) returns
-            1 if pa,pb,pc forms a conterclockwise triangle.
-          -1 if pa,pb,pc forms a clockwise triangle.
-            0 if pa,pb,pc are collinear.
-          where the argument pa,pb,pc are of type Scalar[2].
-incircle  A functor such that incircle(pa, pb, pc, pd) returns
-            1 if pd is on the positive size of circumcirle of (pa,pb,pc)
-          -1 if pd is on the positive size of circumcirle of (pa,pb,pc)
-            0 if pd is cocircular with pa, pb, pc.
 
 Returns
 -------
@@ -52,12 +39,17 @@ npe_arg(v, dense_float, dense_double)
 
 
 npe_begin_code()
+  assert_nonzero_rows(v, "v");
+  assert_cols_equals(v, 2, "v");
 
-  Orient2D orient2_d;
-  InCircle incircle;
-  EigenDense<npe_Scalar_> f;
+  typedef Eigen::Matrix<typename npe_Matrix_v::Scalar, 1, 2> Point;
+
+  const auto orient2_d = [](const Point &pa, const Point &pb, const Point &pc) { return igl::predicates::orient2d(pa, pb, pc); };
+  const auto incircle = [](const Point &pa, const Point &pb, const Point &pc, const Point &pd) { return igl::predicates::incircle(pa, pb, pc, pd); };
+
+  EigenDenseInt f;
   igl::delaunay_triangulation(v, orient2_d, incircle, f);
-  return std::make_tuple(npe::move(orient2_d), npe::move(incircle), npe::move(f));
+  return npe::move(f);
 
 npe_end_code()
 
