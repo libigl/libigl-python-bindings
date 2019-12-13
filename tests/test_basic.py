@@ -1550,6 +1550,19 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(d.dtype == self.v1.dtype)
         self.assertTrue(type(d) == csc.csc_matrix)
 
+    def test_orient_outward(self):
+        c, _ = igl.orientable_patches(self.f)
+        ff, i = igl.orient_outward(self.v, self.f, c)
+
+        self.assertTrue(ff.flags.c_contiguous)
+        self.assertTrue(i.flags.c_contiguous)
+        self.assertTrue(ff.dtype == self.f.dtype)
+        self.assertTrue(i.dtype == self.f.dtype)
+        self.assertTrue(ff.shape[0] == self.f.shape[0])
+        self.assertTrue(ff.shape[1] == 3)
+        self.assertTrue(len(i.shape) == 1)
+        self.assertTrue(i.shape[0] == np.max(c)+1)
+
 
 if __name__ == '__main__':
     unittest.main()
