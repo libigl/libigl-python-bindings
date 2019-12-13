@@ -1543,6 +1543,13 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(e.dtype == self.f1.dtype)
         self.assertTrue(e.shape[1] == 2)
 
+    def test_normal_derivative(self):
+        d = igl.normal_derivative(self.v1, self.f1)
+
+        self.assertTrue(d.shape == (self.f1.shape[0]*3, self.v1.shape[0]))
+        self.assertTrue(d.dtype == self.v1.dtype)
+        self.assertTrue(type(d) == csc.csc_matrix)
+
 
 if __name__ == '__main__':
     unittest.main()
