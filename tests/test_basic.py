@@ -1586,5 +1586,23 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(len(j.shape) == 1)
 
 
+    def test_unique_simplices(self):
+        fa, ia, ic = igl.unique_simplices(self.f1)
+
+        self.assertTrue(fa.flags.c_contiguous)
+        self.assertTrue(ia.flags.c_contiguous)
+        self.assertTrue(ic.flags.c_contiguous)
+
+        self.assertTrue(fa.dtype == self.f1.dtype)
+        self.assertTrue(ia.dtype == self.f1.dtype)
+        self.assertTrue(ic.dtype == self.f1.dtype)
+
+        self.assertTrue(fa.shape[1] == self.f1.shape[1])
+        self.assertTrue(ia.shape[0] == ia.shape[0])
+        self.assertTrue(ic.shape[0] == self.f1.shape[0])
+        self.assertTrue(len(ic.shape) == 1)
+        self.assertTrue(len(ia.shape) == 1)
+
+
 if __name__ == '__main__':
     unittest.main()
