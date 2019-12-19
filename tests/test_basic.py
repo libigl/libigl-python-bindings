@@ -1570,6 +1570,21 @@ class TestBasic(unittest.TestCase):
         p = np.array(self.v1[10, :])
         d = igl.solid_angle(v0, v1, v2, p)
 
+    def test_simplify_polyhedron(self):
+        v, f, j = igl.simplify_polyhedron(self.v1, self.f1)
+
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(j.flags.c_contiguous)
+
+        self.assertTrue(v.dtype == self.v1.dtype)
+        self.assertTrue(f.dtype == self.f1.dtype)
+        self.assertTrue(j.dtype == self.f1.dtype)
+
+        self.assertTrue(v.shape[1] == self.v1.shape[1])
+        self.assertTrue(f.shape[1] == self.f1.shape[1])
+        self.assertTrue(len(j.shape) == 1)
+
 
 if __name__ == '__main__':
     unittest.main()

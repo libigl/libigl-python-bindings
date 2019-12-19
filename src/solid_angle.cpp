@@ -49,7 +49,7 @@ npe_begin_code()
 
   using Scalar = typename npe_Matrix_a::Scalar;
   using MatType = Eigen::Matrix<Scalar, 3, 1>;
-
+  //fixme whit eigen flag
   Eigen::Map<MatType> a_tmp(&a(0, 0), a.size());
   Eigen::Map<MatType> b_tmp(&b(0, 0), b.size());
   Eigen::Map<MatType> c_tmp(&c(0, 0), c.size());
