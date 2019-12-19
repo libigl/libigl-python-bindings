@@ -1563,6 +1563,13 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(len(i.shape) == 1)
         self.assertTrue(i.shape[0] == np.max(c)+1)
 
+    def test_solid_angle(self):
+        v0 = np.array(self.v1[self.f1[0, 0], :])
+        v1 = np.array(self.v1[self.f1[0, 1], :])
+        v2 = np.array(self.v1[self.f1[0, 2], :])
+        p = np.array(self.v1[10, :])
+        d = igl.solid_angle(v0, v1, v2, p)
+
 
 if __name__ == '__main__':
     unittest.main()

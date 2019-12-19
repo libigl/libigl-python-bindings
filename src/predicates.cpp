@@ -216,6 +216,7 @@ npe_begin_code()
     using Scalar = typename npe_Matrix_pa::Scalar;
     using MatType = Eigen::Matrix<Scalar, 3, 1>;
 
+    //fixme whit eigen flag
     Eigen::Map<MatType> pa_tmp(&pa(0, 0), pa.size());
     Eigen::Map<MatType> pb_tmp(&pb(0, 0), pb.size());
     Eigen::Map<MatType> pc_tmp(&pc(0, 0), pc.size());
