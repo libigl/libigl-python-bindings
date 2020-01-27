@@ -1622,6 +1622,21 @@ class TestBasic(unittest.TestCase):
         H = igl.hessian(self.v1, self.f1)
         self.assertTrue(H.dtype == self.v1.dtype)
 
+    def test_snap_points(self):
+        I, minD, VI = igl.snap_points(self.v1, self.v)
+
+        self.assertTrue(I.flags.c_contiguous)
+        self.assertTrue(minD.flags.c_contiguous)
+        self.assertTrue(VI.flags.c_contiguous)
+
+        self.assertTrue(I.dtype == self.f1.dtype)
+        self.assertTrue(minD.dtype == self.v1.dtype)
+        self.assertTrue(VI.dtype == self.v1.dtype)
+
+        self.assertTrue(I.shape == (self.v1.shape[0], ))
+        self.assertTrue(I.shape == (self.v1.shape[0], ))
+        self.assertTrue(VI.shape == (self.v1.shape[0], 3))
+
 
 if __name__ == '__main__':
     unittest.main()
