@@ -1604,5 +1604,24 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(len(ia.shape) == 1)
 
 
+    def test_swept_volume_bounding_box(self):
+        func = lambda i, t: (1-t)*self.v1[self.f1[0, i], :] + t*self.v1[self.f1[1, i], :]
+
+        bmin, bmax = igl.swept_volume_bounding_box(3, func, 3)
+        self.assertTrue(bmin.flags.c_contiguous)
+        self.assertTrue(bmax.flags.c_contiguous)
+
+        self.assertTrue(bmin.dtype == self.v1.dtype)
+        self.assertTrue(bmax.dtype == self.v1.dtype)
+
+        self.assertTrue(bmin.shape == (3,))
+        self.assertTrue(bmax.shape == (3,))
+
+
+    def test_hessian(self):
+        H = igl.hessian(self.v1, self.f1)
+        self.assertTrue(H.dtype == self.v1.dtype)
+
+
 if __name__ == '__main__':
     unittest.main()
