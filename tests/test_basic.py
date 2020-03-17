@@ -1637,6 +1637,19 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(I.shape == (self.v1.shape[0], ))
         self.assertTrue(VI.shape == (self.v1.shape[0], 3))
 
+    def test_ray_box_intersect(self):
+        bmin = np.array([0., 0., 0.])
+        bmax = np.array([1., 1., 1.])
+
+        source = np.array([-1., -1, -1])
+        dire = np.array([1., 1., 1.])
+
+        hit, tmin, tmax = igl.ray_box_intersect(source, dire, bmin, bmax, 0, 100)
+
+        self.assertTrue(hit)
+        self.assertTrue(tmin > 0)
+        self.assertTrue(tmax < 100)
+
 
 if __name__ == '__main__':
     unittest.main()
