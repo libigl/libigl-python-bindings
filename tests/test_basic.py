@@ -1659,6 +1659,17 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(len(hits) > 0)
         self.assertTrue(len(hits[0]) == 5)
 
+    def test_ray_sphere_intersect(self):
+        center = np.array([1., 1., 1.])
+
+        source = np.array([-1., -1, -1])
+        dire = np.array([1., 1., 1.])
+
+        hits, tmin, tmax = igl.ray_sphere_intersect(
+            source, dire, center, 1)
+
+        self.assertTrue(hits == 2)
+
 
 if __name__ == '__main__':
     unittest.main()
