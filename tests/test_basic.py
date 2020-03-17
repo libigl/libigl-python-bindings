@@ -1650,6 +1650,15 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(tmin > 0)
         self.assertTrue(tmax < 100)
 
+    def test_ray_mesh_intersect(self):
+        source = np.array([-1., -1, -1])
+        dire = np.array([1., 1., 1.])
+
+        hits = igl.ray_mesh_intersect(source, dire, self.v1, self.f1)
+
+        self.assertTrue(len(hits) > 0)
+        self.assertTrue(len(hits[0]) == 5)
+
 
 if __name__ == '__main__':
     unittest.main()
