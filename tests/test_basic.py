@@ -892,6 +892,26 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(v2.shape[0], v.shape[0])
         self.assertTrue(v2.flags.c_contiguous)
 
+    def test_bbw(self):
+        V, T, F = igl.read_mesh(os.path.join(self.test_path, "hand.mesh"))
+        _, C, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_path, "hand.tgf"))
+
+        ok, b, bc = igl.boundary_conditions(V, T, C, np.array([], dtype=T.dtype), BE, np.array([], dtype=T.dtype))
+        self.assertTrue(ok)
+        self.assertTrue(b.flags.c_contiguous)
+        self.assertTrue(bc.flags.c_contiguous)
+        self.assertTrue(b.dtype == T.dtype)
+        self.assertTrue(bc.dtype == V.dtype)
+
+        bbw = igl.BBW(0, 2)
+        W = bbw.solve(V, T, b, bc)
+        self.assertTrue(W.dtype == V.dtype)
+        self.assertTrue(W.flags.c_contiguous)
+
+    def test_boundary_conditions(self):
+        #tested in test bbw
+        pass
+
     def test_harmonic_weights(self):
         #tested in test_slim, test_arap2, and test_arap1
         pass

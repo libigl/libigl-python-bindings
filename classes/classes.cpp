@@ -94,33 +94,52 @@ PYBIND11_MODULE(pyigl_classes, m) {
           return self.energy;
         });
 
-    // TODO: Test this and add better asserts
-//    py::class_<igl::BBWData>(m, "BBW")
-//        .def(py::init([](int verbosity=0) {
-//          std::unique_ptr<igl::BBWData> bdata(new igl::BBWData());
-//          bdata->verbosity = verbosity;
-//          return bdata;
-//        }))
-//        .def("solve", [](igl::BBWData& self, Eigen::MatrixXd V, Eigen::MatrixXi F,
-//          Eigen::VectorXi b, Eigen::MatrixXd bc) {
-//          if (V.cols() != 3) {
-//            throw pybind11::value_error("Invalid dimension. Argument V must have shape (#vertices, 3)");
-//          }
-//          if (F.cols() != 3) {
-//            throw pybind11::value_error("Invalid dimension. Argument F must have shape (#faces, 3)");
-//          }
-//          if (F.rows() <= 0) {
-//            throw pybind11::value_error("Invalid argument F has zero rows. Cannot have zero faces.");
-//          }
-//          if (V.rows() <= 0) {
-//            throw pybind11::value_error("Invalid argument V has zero rows. Cannot have zero faces.");
-//          }
-//          if (bc.rows() != b.size()) {
-//            throw pybind11::value_error("Invalid argument bc.shape[0] must equal len(b) has zero rows. Cannot have zero faces.");
-//          }
 
-//          Eigen::MatrixXd W;
-//          igl::bbw(V, F, b, bc, self, W);
-//          return npe::move(W);
-//        });
+   py::class_<igl::BBWData>(m, "BBW")
+       .def(py::init([](int verbosity=0, int max_iter=100) {
+         std::unique_ptr<igl::BBWData> bdata(new igl::BBWData());
+         bdata->verbosity = verbosity;
+         bdata->active_set_params.max_iter = max_iter;
+         return bdata;
+       }))
+       .def("solve", [](igl::BBWData& self, Eigen::MatrixXd V, Eigen::MatrixXi F,
+         Eigen::VectorXi b, Eigen::MatrixXd bc) {
+         if (V.cols() != 3) {
+           throw pybind11::value_error("Invalid dimension. Argument V must have shape (#vertices, 3)");
+         }
+         // Triangle mesh
+         if (F.cols() == 3)
+         {
+           if (V.cols() != 2)
+           {
+             throw pybind11::value_error("Invalid dimension for argument v_init. Must have shape (#vertices, 2) for triangle mesh inputs. You passed in V with shape (" + std::to_string(V.rows()) + std::string(", ") + std::to_string(V.cols()) + std::string(")"));
+           }
+           // Tet mesh
+         }
+         else if (F.cols() == 4)
+         {
+           if (V.cols() != 3)
+           {
+             throw pybind11::value_error("Invalid dimension for argument V. Must have shape (#vertices, 3) for tet mesh inputs. You passed in V with shape (" + std::to_string(V.rows()) + std::string(", ") + std::to_string(V.cols()) + std::string(")"));
+           }
+         }
+         else
+         {
+           throw pybind11::value_error("WTF File a github issue");
+         }
+         if (F.rows() <= 0) {
+           throw pybind11::value_error("Invalid argument F has zero rows. Cannot have zero faces.");
+         }
+         if (V.rows() <= 0) {
+           throw pybind11::value_error("Invalid argument V has zero rows. Cannot have zero faces.");
+         }
+         if (bc.rows() != b.size()) {
+           throw pybind11::value_error("Invalid argument bc.shape[0] must equal len(b) has zero rows. Cannot have zero faces.");
+         }
+
+         Eigen::MatrixXd W;
+         igl::bbw(V, F, b, bc, self, W);
+         Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> W_row_major = W;
+         return npe::move(W_row_major);
+       });
 }

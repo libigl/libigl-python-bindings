@@ -46,7 +46,7 @@ function(pyigl_download_test_data)
 	pyigl_download_project(test_data
 		SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../data"
 		GIT_REPOSITORY https://github.com/libigl/libigl-tests-data
-		GIT_TAG        fe1530cbbb892da8215dc5011fca3f2b17bdca8c
+		GIT_TAG        2305487ac09bc80c401511a799ad9736ee4e7854
 	)
 endfunction()
 
