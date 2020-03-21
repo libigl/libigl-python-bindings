@@ -908,6 +908,28 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(W.dtype == V.dtype)
         self.assertTrue(W.flags.c_contiguous)
 
+    def test_shapeup(self):
+        VQC, FQC, _ = igl.read_off(os.path.join(self.test_path, "halftunnel.off"))
+        array_of_fours = np.ones((FQC.shape[0], 1), dtype="int32")*4
+
+        E = np.zeros((FQC.shape[0]*FQC.shape[1], 2), dtype="int32")
+        E[:, 0] =  np.concatenate((FQC[:, 0], FQC[:, 1], FQC[:, 2], FQC[:, 3]))
+        E[:, 1] =  np.concatenate((FQC[:, 1], FQC[:, 2], FQC[:, 3], FQC[:, 0]))
+
+        b = np.array([0])
+        wShape = np.ones((FQC.shape[0], 1))
+        wSmooth = np.ones((E.shape[0], 1))
+
+        shapeup = igl.shapeup(VQC, array_of_fours, FQC, E, b, wShape, wSmooth, maxIterations=3)
+
+
+        bc = VQC[0, :]
+        func = 'regular_face_projection'
+        P = shapeup.solve(bc, VQC, local_projection=func)
+
+        self.assertTrue(P.flags.c_contiguous)
+        self.assertTrue(P.dtype == VQC.dtype)
+
     def test_boundary_conditions(self):
         #tested in test bbw
         pass
