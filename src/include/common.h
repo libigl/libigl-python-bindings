@@ -258,23 +258,23 @@ void assert_valid_23d_tri_mesh(const TV &v, const TF &f, std::string v_name = "v
 }
 
 template <typename TV, typename TF>
-void assert_valid_tet_mesh(const TV& v, const TF& f, std::string v_name="v", std::string f_name="f") {
+void assert_valid_tet_mesh(const TV& v, const TF& t, std::string v_name="v", std::string t_name="t") {
     if (v.rows() <= 0) {
         throw pybind11::value_error("Invalid mesh vertices, " + v_name + " has zero rows (" + v_name +
                                     ".shape = [" + std::to_string(v.rows()) + ", " + std::to_string(v.cols()) + "]) ");
     }
-    if (f.rows() <= 0) {
-        throw pybind11::value_error("Invalid mesh indices, " + f_name + " has zero rows (" + f_name + ".shape = [" +
-                                    std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]) ");
+    if (t.rows() <= 0) {
+        throw pybind11::value_error("Invalid mesh indices, " + t_name + " has zero rows (" + t_name + ".shape = [" +
+                                    std::to_string(t.rows()) + ", " + std::to_string(t.cols()) + "]) ");
     }
 
     if (v.cols() != 3) {
         throw pybind11::value_error("Invalid mesh vertices, " + v_name + " must have shape [#vertices, 3] but got " + v_name +
                                     ".shape = [" + std::to_string(v.rows()) + ", " + std::to_string(v.cols()) + "]");
     }
-    if (f.cols() != 4) {
-        throw pybind11::value_error("Invalid mesh tets, " + f_name + " must have shape [#tets, 4] but got " + f_name +
-                                    ".shape = [" + std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]");
+    if (t.cols() != 4) {
+        throw pybind11::value_error("Invalid mesh tets, " + t_name + " must have shape [#tets, 4] but got " + t_name +
+                                    ".shape = [" + std::to_string(t.rows()) + ", " + std::to_string(t.cols()) + "]");
     }
 }
 

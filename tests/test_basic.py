@@ -1712,6 +1712,36 @@ class TestBasic(unittest.TestCase):
 
         self.assertTrue(hits == 2)
 
+    def test_volume(self):
+        v, t, f = igl.read_mesh(os.path.join(self.test_path, "octopus-low.mesh"))
+        vol = igl.volume(v, t)
+        self.assertTrue(vol.flags.c_contiguous)
+        self.assertTrue(vol.dtype == v.dtype)
+        self.assertTrue(len(vol.shape) == 1)
+        self.assertTrue(vol.shape[0] == t.shape[0])
+
+        a = v[t[:, 0], :]
+        b = v[t[:, 1], :]
+        c = v[t[:, 2], :]
+        d = v[t[:, 3], :]
+
+        vol = igl.volume_from_vertices(a, b, c, d)
+        self.assertTrue(vol.flags.c_contiguous)
+        self.assertTrue(vol.dtype == v.dtype)
+        self.assertTrue(len(vol.shape) == 1)
+        self.assertTrue(vol.shape[0] == a.shape[0])
+
+
+        vol = igl.volume_single(a[0, :], b[0, :], c[0, :], d[0, :])
+
+    def test_volume_from_vertices(self):
+        #tested in volume
+        pass
+
+    def test_volume_single(self):
+        #tested in volume
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
