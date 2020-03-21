@@ -1742,6 +1742,17 @@ class TestBasic(unittest.TestCase):
         #tested in volume
         pass
 
+    def test_mvc(self):
+        pts = np.random.rand(10, 2)
+        poly = np.array([[0., 0.], [1., 1.], [2., 2.], [0., 3.]])
+        w = igl.mvc(pts, poly)
+
+        self.assertTrue(w.flags.c_contiguous)
+        self.assertTrue(w.dtype == pts.dtype)
+        self.assertTrue(w.shape[0] == pts.shape[0])
+        self.assertTrue(w.shape[1] == poly.shape[0])
+
+
 
 if __name__ == '__main__':
     unittest.main()
