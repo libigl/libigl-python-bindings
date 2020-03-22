@@ -1150,12 +1150,14 @@ class TestBasic(unittest.TestCase):
             [0., 0., 0.],
             [1., 0., 0.],
             [0., 1., 0.],
-            [0., 0., 1.]
+            [0., 0., 1.],
+            [0., 0., -1.]
         ])
-        TT = np.array([[0, 1, 2, 3]])
-        S = np.array([0., 1., 1., 1.])
+        TT = np.array([[0, 1, 2, 3], [0, 1, 2, 4]])
+        S = np.array([0., 1., 1., 1., 1.])
 
         v, f, j, bc = igl.marching_tets(TV, TT, S, 0.5)
+
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(f.flags.c_contiguous)
         self.assertTrue(j.flags.c_contiguous)
@@ -1165,7 +1167,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.shape[1] == 3)
 
         self.assertTrue(f.dtype == TT.dtype)
-        self.assertTrue(f.shape[0] == 3)
+        self.assertTrue(f.shape[1] == 3)
 
         self.assertTrue(j.dtype == TT.dtype)
         self.assertTrue(j.shape[0] == f.shape[0])
