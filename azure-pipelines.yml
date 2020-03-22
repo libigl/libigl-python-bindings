@@ -8,13 +8,13 @@ jobs:
   strategy:
     matrix:
       mac35:
-        imageName: 'macos-10.13'
+        imageName: 'macos-10.14'
         python.version: '3.5'
       mac36:
-        imageName: 'macos-10.13'
+        imageName: 'macos-10.14'
         python.version: '3.6'
       mac37:
-        imageName: 'macos-10.13'
+        imageName: 'macos-10.14'
         python.version: '3.7'
       windows35:
         imageName: 'vs2017-win2016'
