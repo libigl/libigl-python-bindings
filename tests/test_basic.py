@@ -1771,6 +1771,16 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(t.flags.c_contiguous)
         self.assertTrue(t.dtype == self.f.dtype)
 
+    def test_line_segment_in_rectangle(self):
+        s = np.array([0., 0.])
+        d = np.array([10., 10.])
+
+        A  = np.array([1., 1.])
+        B  = np.array([2., 2.])
+
+        inter = igl.line_segment_in_rectangle(s, d, A, B)
+        self.assertTrue(inter)
+
 
 if __name__ == '__main__':
     unittest.main()
