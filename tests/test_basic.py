@@ -1753,6 +1753,18 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(w.shape[1] == poly.shape[0])
 
 
+    def test_all_pairs_distances(self):
+        u = np.random.rand(10, 2)
+        v = np.random.rand(5, 2)
+
+        d = igl.all_pairs_distances(u, v, True)
+        self.assertTrue(d.flags.c_contiguous)
+        self.assertTrue(d.dtype == u.dtype)
+        self.assertTrue(d.shape[0] == u.shape[0])
+        self.assertTrue(d.shape[1] == v.shape[0])
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
