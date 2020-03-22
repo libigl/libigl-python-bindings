@@ -1764,6 +1764,12 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(d.shape[1] == v.shape[0])
 
 
+    def test_lexicographic_triangulation(self):
+        pts = np.random.rand(10, 2)
+
+        t = igl.lexicographic_triangulation(pts)
+        self.assertTrue(t.flags.c_contiguous)
+        self.assertTrue(t.dtype == self.f.dtype)
 
 
 if __name__ == '__main__':
