@@ -1781,6 +1781,18 @@ class TestBasic(unittest.TestCase):
         inter = igl.line_segment_in_rectangle(s, d, A, B)
         self.assertTrue(inter)
 
+    def test_look_at(self):
+        eye = np.random.rand(3, 1)
+        center = np.random.rand(3, 1)
+        up = np.random.rand(3, 1)
+
+        R = igl.look_at(eye, center, up)
+
+        self.assertTrue(R.flags.c_contiguous)
+        self.assertTrue(R.dtype == eye.dtype)
+        self.assertTrue(R.shape[0] == 4)
+        self.assertTrue(R.shape[1] == 4)
+
 
 if __name__ == '__main__':
     unittest.main()
