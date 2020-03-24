@@ -1800,15 +1800,39 @@ class TestBasic(unittest.TestCase):
         v, a = igl.outer_vertex(self.v1, self.f1, np.zeros((1,1), dtype=self.f1.dtype))
 
         self.assertTrue(a.flags.c_contiguous)
+        self.assertTrue(a.dtype == self.f1.dtype)
 
     def test_outer_edge(self):
         v1, v2, a = igl.outer_edge(self.v1, self.f1, np.zeros((1,1), dtype=self.f1.dtype))
 
         self.assertTrue(a.flags.c_contiguous)
+        self.assertTrue(a.dtype == self.f1.dtype)
 
     def test_outer_facet(self):
         n = igl.per_face_normals(self.v1, self.f1, self.v1)
         index, flipped = igl.outer_facet(self.v1, self.f1, n, np.zeros((1,1), dtype=self.f1.dtype))
+
+
+    def test_partition(self):
+        g, s, d = igl.partition(self.v1, 3)
+
+        self.assertTrue(g.flags.c_contiguous)
+        self.assertTrue(s.flags.c_contiguous)
+        self.assertTrue(d.flags.c_contiguous)
+
+        self.assertTrue(g.dtype == self.f1.dtype)
+        self.assertTrue(s.dtype == self.f1.dtype)
+        self.assertTrue(d.dtype == self.v1.dtype)
+
+        self.assertTrue(g.shape[0] == self.v1.shape[0])
+        self.assertTrue(s.shape[0] == 3)
+        self.assertTrue(d.shape[0] == self.v1.shape[0])
+
+        self.assertTrue(len(g.shape) == 1)
+        self.assertTrue(len(s.shape) == 1)
+        self.assertTrue(len(d.shape) == 1)
+
+
 
 
 if __name__ == '__main__':
