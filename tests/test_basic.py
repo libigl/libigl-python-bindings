@@ -1796,5 +1796,20 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(R.shape[1] == 4)
 
 
+    def test_outer_vertex(self):
+        v, a = igl.outer_vertex(self.v1, self.f1, np.zeros((1,1), dtype=self.f1.dtype))
+
+        self.assertTrue(a.flags.c_contiguous)
+
+    def test_outer_edge(self):
+        v1, v2, a = igl.outer_edge(self.v1, self.f1, np.zeros((1,1), dtype=self.f1.dtype))
+
+        self.assertTrue(a.flags.c_contiguous)
+
+    def test_outer_facet(self):
+        n = igl.per_face_normals(self.v1, self.f1, self.v1)
+        index, flipped = igl.outer_facet(self.v1, self.f1, n, np.zeros((1,1), dtype=self.f1.dtype))
+
+
 if __name__ == '__main__':
     unittest.main()
