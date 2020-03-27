@@ -22,11 +22,7 @@ include(CXXFeatures)
 option(LIBIGL_USE_STATIC_LIBRARY    "Use libigl as static library" OFF)
 option(LIBIGL_WITH_ANTTWEAKBAR      "Use AntTweakBar"    OFF)
 option(LIBIGL_WITH_CGAL             "Use CGAL"           OFF)
-if(WIN32)
 option(LIBIGL_WITH_COMISO           "Use CoMiso"         OFF)
-else()
-option(LIBIGL_WITH_COMISO           "Use CoMiso"         ON)
-endif()
 option(LIBIGL_WITH_CORK             "Use Cork"           OFF)
 option(LIBIGL_WITH_EMBREE           "Use Embree"         OFF)
 option(LIBIGL_WITH_LIM              "Use LIM"            OFF)
@@ -67,10 +63,6 @@ include(numpyeigen)
 
 # A module for writing bindings with our framework
 file(GLOB PYIGL_SOURCES src/*.cpp)
-if(NOT LIBIGL_WITH_COMISO)
-  get_filename_component(remove_comiso ${CMAKE_CURRENT_SOURCE_DIR}/src/comiso_nrosy.cpp ABSOLUTE)
-  list(REMOVE_ITEM PYIGL_SOURCES "${remove_comiso}")
-endif()
 
 if(PY_IGL_COPYLEFT)
   file(GLOB PYIGL_SOURCES_COPYLEFT copyleft/*.cpp)
@@ -83,9 +75,6 @@ npe_add_module(pyigl
 
 #TODO move additional libs to variable
 target_link_libraries(pyigl PRIVATE igl::core igl::predicates)
-if(LIBIGL_WITH_COMISO)
-  target_link_libraries(pyigl PRIVATE igl::comiso)
-endif()
 if(PY_IGL_COPYLEFT)
   target_link_libraries(pyigl PRIVATE igl::triangle igl::tetgen)
 endif()
