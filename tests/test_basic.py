@@ -1824,7 +1824,8 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(len(s.shape) == 1)
         self.assertTrue(len(d.shape) == 1)
 
-
+    def test_point_in_circle(self):
+        igl.point_in_circle(1,2,3,4,1)
 
 
 if __name__ == '__main__':
