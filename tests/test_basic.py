@@ -1830,6 +1830,18 @@ class TestBasic(unittest.TestCase):
     def test_point_in_poly(self):
         inside = igl.point_in_poly([[3,4], [4,5], [5, 2], [6, 0]], 0, 0)
 
+    def test_point_simplex_squared_distance(self):
+        dist, pt, bary = igl.point_simplex_squared_distance(np.array([3., 3, 1.]), self.v1, self.f1, 0)
+
+        self.assertTrue(pt.flags.c_contiguous)
+        self.assertTrue(bary.flags.c_contiguous)
+
+        self.assertTrue(pt.dtype == self.v1.dtype)
+        self.assertTrue(bary.dtype == self.v1.dtype)
+
+        self.assertTrue(pt.shape[0] == 3)
+        self.assertTrue(bary.shape[0] == 3)
+
 
 if __name__ == '__main__':
     unittest.main()
