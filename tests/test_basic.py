@@ -1241,7 +1241,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(b2.shape == self.f1.shape)
         self.assertTrue(b3.shape == self.f1.shape)
 
-    def test_zz_cross_fields(self):
+    def test_cross_fields(self):
         V, F = igl.read_triangle_mesh(os.path.join(self.test_path, "3holes.off"))
 
         B = igl.barycenter(V, F)
@@ -1251,10 +1251,6 @@ class TestBasic(unittest.TestCase):
         # if platform.system() == "Windows":
         X1 = np.load(os.path.join(self.test_path, "X1.npy"))
         S = np.load(os.path.join(self.test_path, "S.npy"))
-        # else:
-            # FIXME!
-            # X1, S = igl.nrosy(V, F, b, bc, np.array([], dtype=b.dtype), np.array([]), np.array([]), 4, 0.5)
-
 
         self.assertTrue(X1.flags.c_contiguous)
         self.assertTrue(S.flags.c_contiguous)
@@ -1316,43 +1312,39 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(X2_combed.dtype == V.dtype)
 
     def test_comb_cross_field(self):
-        #tested in test_cross_field
+        #tested in test_cross_fields
         pass
 
     def test_comb_frame_field(self):
-        #tested in test_cross_field
+        #tested in test_cross_fields
         pass
 
     def test_comb_line_field(self):
-        #tested in test_cross_field
+        #tested in test_cross_fields
         pass
 
     def test_compute_frame_field_bisectors(self):
-        #tested in test_cross_filed
+        #tested in test_cross_fields
         pass
 
     def test_compute_frame_field_bisectors_no_basis(self):
-        #tested in test_cross_filed
+        #tested in test_cross_fields
         pass
 
     def test_cross_field_mismatch(self):
-        #tested in test_cross_filed
+        #tested in test_cross_fields
         pass
 
     def test_find_cross_field_singularities(self):
-        #tested in test_cross_filed
+        #tested in test_cross_fields
         pass
 
     def test_find_cross_field_singularities_from_field(self):
-        #tested in test_cross_filed
-        pass
-
-    def test_nrosy(self):
-        #tested in test_cross_filed
+        #tested in test_cross_fields
         pass
 
     def test_rotate_vectors(self):
-        #tested in test_cross_filed
+        #tested in test_cross_fields
         pass
 
     def test_directed_edge_orientations(self):
