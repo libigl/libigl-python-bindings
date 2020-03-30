@@ -1858,5 +1858,23 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.shape[1] == 3)
         self.assertTrue(t.shape[1] == 3)
 
+
+    def test_polygon_mesh_to_triangle_mesh_from_list(self):
+        faces = [[0, 1, 2, 3], [2, 3, 4, 5, 6]]
+        tris = igl.polygon_mesh_to_triangle_mesh_from_list(faces)
+
+        self.assertTrue(tris.flags.c_contiguous)
+        self.assertTrue(tris.dtype == self.f1.dtype)
+        self.assertTrue(tris.shape[1] == 3)
+
+    def test_polygon_mesh_to_triangle_mesh(self):
+        _, faces, _ = igl.read_off(os.path.join(self.test_path, "halftunnel.off"))
+        tris = igl.polygon_mesh_to_triangle_mesh(faces)
+
+        self.assertTrue(tris.flags.c_contiguous)
+        self.assertTrue(tris.dtype == self.f1.dtype)
+        self.assertTrue(tris.shape[1] == 3)
+
+
 if __name__ == '__main__':
     unittest.main()
