@@ -1842,6 +1842,21 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(pt.shape[0] == 3)
         self.assertTrue(bary.shape[0] == 3)
 
+    def test_polar_dec(self):
+        A = np.random.rand(3,3)
+
+        r, t = igl.polar_dec(A)
+
+        self.assertTrue(r.flags.c_contiguous)
+        self.assertTrue(t.flags.c_contiguous)
+
+        self.assertTrue(r.dtype == self.v1.dtype)
+        self.assertTrue(t.dtype == self.v1.dtype)
+
+        self.assertTrue(r.shape[0] == 3)
+        self.assertTrue(t.shape[0] == 3)
+        self.assertTrue(r.shape[1] == 3)
+        self.assertTrue(t.shape[1] == 3)
 
 if __name__ == '__main__':
     unittest.main()
