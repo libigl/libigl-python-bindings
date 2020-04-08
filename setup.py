@@ -78,6 +78,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://libigl.github.io/libigl-python-bindings/",
     ext_modules=[CMakeExtension('pyigl')],
+    install_requires=[ 'numpy', 'scipy' ],
     cmdclass=dict(build_ext=CMakeBuild),
     packages=find_packages(),
     classifiers=[
