@@ -50,7 +50,7 @@ npe_begin_code()
   assert_valid_tet_or_tri_mesh_23d(v, f);
   EigenDenseLike<npe_Matrix_v> nv;
   EigenDenseLike<npe_Matrix_f> nf, i, j;
-  igl::remove_unreferenced(v, f, nv, nf, i);
+  igl::remove_unreferenced(v, f, nv, nf, i, j);
   return std::make_tuple(npe::move(nv), npe::move(nf), npe::move(i), npe::move(j));
 
 npe_end_code()
