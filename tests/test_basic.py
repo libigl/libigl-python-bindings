@@ -1884,6 +1884,21 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(proj.shape, self.v.shape)
         self.assertTrue(proj.flags.c_contiguous)
 
+    def test_project_isometrically_to_plane(self):
+        U, UF, I = igl.project_isometrically_to_plane(self.v1, self.f1)
+
+        self.assertEqual(U.dtype, self.v1.dtype)
+        self.assertEqual(U.shape, (3*self.f1.shape[0], 2))
+        self.assertTrue(U.flags.c_contiguous)
+
+        self.assertEqual(UF.dtype, self.f1.dtype)
+        self.assertEqual(UF.shape, self.f1.shape)
+        self.assertTrue(UF.flags.c_contiguous)
+
+        self.assertEqual(I.dtype, self.f1.dtype)
+        self.assertEqual(I.shape, (self.v1.shape[0], 3*self.f1.shape[0]))
+        self.assertTrue(type(I) == csc.csc_matrix)
+
 
 if __name__ == '__main__':
     unittest.main()
