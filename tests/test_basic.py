@@ -1875,6 +1875,15 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(tris.dtype == self.f1.dtype)
         self.assertTrue(tris.shape[1] == 3)
 
+    def test_project(self):
+        model = np.random.rand(4, 4)
+        proj = np.random.rand(4, 4)
+        viewport = np.random.rand(4, 1)
+        proj = igl.project(self.v, model, proj, viewport)
+        self.assertEqual(proj.dtype, self.v.dtype)
+        self.assertEqual(proj.shape, self.v.shape)
+        self.assertTrue(proj.flags.c_contiguous)
+
 
 if __name__ == '__main__':
     unittest.main()
