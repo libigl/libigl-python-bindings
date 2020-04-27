@@ -1899,6 +1899,36 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(I.shape, (self.v1.shape[0], 3*self.f1.shape[0]))
         self.assertTrue(type(I) == csc.csc_matrix)
 
+    def test_project_to_line(self):
+        pts = np.random.rand(10, 3)
+        s = np.random.rand(1, 3)
+        d = np.random.rand(1, 3)
+        t, sqrt_d = igl.project_to_line(pts, s, d)
+
+        self.assertTrue(t.flags.c_contiguous)
+        self.assertTrue(t.dtype == pts.dtype)
+        self.assertTrue(t.shape[0] == pts.shape[0])
+
+        self.assertTrue(sqrt_d.flags.c_contiguous)
+        self.assertTrue(sqrt_d.dtype == pts.dtype)
+        self.assertTrue(sqrt_d.shape[0] == pts.shape[0])
+
+    def test_project_to_line_segment(self):
+        pts = np.random.rand(10, 3)
+        s = np.random.rand(1, 3)
+        d = np.random.rand(1, 3)
+        t, sqrt_d = igl.project_to_line_segment(pts, s, d)
+
+        self.assertTrue(t.flags.c_contiguous)
+        self.assertTrue(t.dtype == pts.dtype)
+        self.assertTrue(t.shape[0] == pts.shape[0])
+
+        self.assertTrue(sqrt_d.flags.c_contiguous)
+        self.assertTrue(sqrt_d.dtype == pts.dtype)
+        self.assertTrue(sqrt_d.shape[0] == pts.shape[0])
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
