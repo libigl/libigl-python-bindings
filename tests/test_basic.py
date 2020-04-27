@@ -1927,7 +1927,21 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(sqrt_d.dtype == pts.dtype)
         self.assertTrue(sqrt_d.shape[0] == pts.shape[0])
 
+    def test_ramer_douglas_peucker(self):
+        pts = np.random.rand(10, 3)
+        s, j, q = igl.ramer_douglas_peucker(pts, 1e-1)
 
+        self.assertTrue(s.flags.c_contiguous)
+        self.assertTrue(s.dtype == pts.dtype)
+        self.assertTrue(s.shape[1] == pts.shape[1])
+
+        self.assertTrue(j.flags.c_contiguous)
+        self.assertTrue(j.dtype == self.f1.dtype)
+        self.assertTrue(j.shape[0] == s.shape[0])
+
+        self.assertTrue(q.flags.c_contiguous)
+        self.assertTrue(q.dtype == pts.dtype)
+        self.assertTrue(q.shape == pts.shape)
 
 
 if __name__ == '__main__':
