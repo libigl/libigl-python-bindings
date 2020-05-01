@@ -21,7 +21,7 @@ out.obj
 test.off
 .vscode
 
-data/*
+data
 site
 
 **/meshplot
