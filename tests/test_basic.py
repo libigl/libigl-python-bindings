@@ -1971,6 +1971,15 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(quat.dtype == down_quat.dtype)
         self.assertTrue(quat.shape[0] == 4)
 
+    def test_triangle_fan(self):
+        _, f = igl.read_triangle_mesh(os.path.join(self.test_path, "camelhead.off"))
+        e = igl.exterior_edges(self.f)
+        cap = igl.triangle_fan(e)
+
+        self.assertTrue(cap.flags.c_contiguous)
+        self.assertTrue(cap.dtype == e.dtype)
+        self.assertTrue(cap.shape[1] == 3)
+
 
 if __name__ == '__main__':
     unittest.main()

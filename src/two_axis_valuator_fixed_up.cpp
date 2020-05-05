@@ -15,7 +15,7 @@ Applies a two-axis valuator drag rotation (as seen in Maya/Studio max) to a give
 
 Parameters
 ----------
- w  width of the trackball context
+w  width of the trackball context
 h  height of the trackball context
 speed  controls how fast the trackball feels, 1 is normal
 down_quat  rotation at mouse down, i.e. the rotation we're applying the
