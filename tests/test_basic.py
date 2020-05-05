@@ -894,10 +894,10 @@ class TestBasic(unittest.TestCase):
 
     def test_bbw(self):
         V, T, F = igl.read_mesh(os.path.join(self.test_path, "hand.mesh"))
-        _, C, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_path, "hand.tgf"))
+        C, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_path, "hand.tgf"))
 
         ok, b, bc = igl.boundary_conditions(V, T, C, np.array([], dtype=T.dtype), BE, np.array([], dtype=T.dtype))
-        self.assertTrue(ok)
+
         self.assertTrue(b.flags.c_contiguous)
         self.assertTrue(bc.flags.c_contiguous)
         self.assertTrue(b.dtype == T.dtype)
@@ -1181,8 +1181,8 @@ class TestBasic(unittest.TestCase):
         tf = np.array([1.])
         ti = np.array([1])
 
-        ok, V, E, P, BE, CE, PE = igl.read_tgf(filename)
-        self.assertTrue(ok)
+        V, E, P, BE, CE, PE = igl.read_tgf(filename)
+
         self.assertTrue(V.flags.c_contiguous)
         self.assertTrue(E.flags.c_contiguous)
         self.assertTrue(P.flags.c_contiguous)
@@ -1199,7 +1199,7 @@ class TestBasic(unittest.TestCase):
 
     def test_deform_skeleton(self):
         hand_file = os.path.join(self.test_path, "hand.tgf")
-        _, C, BE, _, _, _, _ = igl.read_tgf(hand_file)
+        C, BE, _, _, _, _ = igl.read_tgf(hand_file)
 
         T = np.zeros((BE.shape[0]*4, 3))
         I = np.eye(3)
@@ -1400,7 +1400,7 @@ class TestBasic(unittest.TestCase):
         V, _ = igl.read_triangle_mesh(os.path.join(self.test_path, "arm.obj"))
         U = np.copy(V)
         W = igl.read_dmat(os.path.join(self.test_path, "arm-weights.dmat"))
-        _, C, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_path, "arm.tgf"))
+        C, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_path, "arm.tgf"))
         P = igl.directed_edge_parents(BE)
         rest_pose = igl.directed_edge_orientations(C, BE)
 

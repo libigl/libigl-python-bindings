@@ -51,6 +51,10 @@ npe_begin_code()
   Eigen::MatrixXi ce;
   Eigen::MatrixXi pe;
   bool ok = igl::readTGF(tgf_filename, v, e, p, be, ce, pe);
+  if (!ok)
+  {
+    throw std::invalid_argument("File '" + tgf_filename + "' not found.");
+  }
 
   EigenDenseFloat v_row_major = v.template cast<typename EigenDenseFloat::Scalar>();
   EigenDenseInt e_row_major = e.template cast<typename EigenDenseInt::Scalar>();
@@ -59,6 +63,6 @@ npe_begin_code()
   EigenDenseInt ce_row_major = ce.template cast<typename EigenDenseInt::Scalar>();
   EigenDenseInt pe_row_major = pe.template cast<typename EigenDenseInt::Scalar>();
 
-  return std::make_tuple(ok, npe::move(v_row_major), npe::move(e_row_major), npe::move(p_row_major), npe::move(be_row_major), npe::move(ce_row_major), npe::move(pe_row_major));
+  return std::make_tuple(npe::move(v_row_major), npe::move(e_row_major), npe::move(p_row_major), npe::move(be_row_major), npe::move(ce_row_major), npe::move(pe_row_major));
 
 npe_end_code()
