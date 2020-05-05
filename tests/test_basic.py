@@ -1943,6 +1943,16 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(q.dtype == pts.dtype)
         self.assertTrue(q.shape == pts.shape)
 
+    def test_sample_edges(self):
+        e = igl.edges(self.f1)
+        s = igl.sample_edges(self.v1, e, 4)
+        print(e.shape, s.shape)
+
+        self.assertTrue(s.flags.c_contiguous)
+        self.assertTrue(s.dtype == self.v1.dtype)
+        self.assertTrue(s.shape[0] < e.shape[0]*6)
+        self.assertTrue(s.shape[1] == self.v1.shape[1])
+
 
 if __name__ == '__main__':
     unittest.main()
