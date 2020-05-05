@@ -1962,6 +1962,15 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.dtype == np.float64)
         self.assertTrue(t.dtype == self.f1.dtype)
 
+    def test_two_axis_valuator_fixed_up(self):
+        down_quat = np.random.rand(4, 1)
+
+        quat = igl.two_axis_valuator_fixed_up(20, 20, 1, down_quat, 10, 10, 9, 9)
+
+        self.assertTrue(quat.flags.c_contiguous)
+        self.assertTrue(quat.dtype == down_quat.dtype)
+        self.assertTrue(quat.shape[0] == 4)
+
 
 if __name__ == '__main__':
     unittest.main()
