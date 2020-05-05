@@ -1953,6 +1953,15 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(s.shape[0] < e.shape[0]*6)
         self.assertTrue(s.shape[1] == self.v1.shape[1])
 
+    def test_read_msh(self):
+        v, t = igl.read_msh(os.path.join(self.test_path, "car.msh"))
+        self.assertTrue(type(v) == type(t) == np.ndarray)
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(t.flags.c_contiguous)
+
+        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(t.dtype == self.f1.dtype)
+
 
 if __name__ == '__main__':
     unittest.main()
