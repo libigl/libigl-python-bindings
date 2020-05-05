@@ -1980,6 +1980,15 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(cap.dtype == e.dtype)
         self.assertTrue(cap.shape[1] == 3)
 
+    def test_triangles_from_strip(self):
+        s = self.f[:, 0]
+        f = igl.triangles_from_strip(s)
+
+        self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(f.dtype == self.f.dtype)
+        self.assertTrue(f.shape[0] == self.f.shape[0]-2)
+        self.assertTrue(f.shape[1] == 3)
+
 
 if __name__ == '__main__':
     unittest.main()
