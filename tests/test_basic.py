@@ -1989,6 +1989,35 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.shape[0] == self.f.shape[0]-2)
         self.assertTrue(f.shape[1] == 3)
 
+    def test_signed_angle(self):
+        a = np.random.rand(2, 1)
+        b = np.random.rand(2, 1)
+        p = np.random.rand(2, 1)
+
+        angle = igl.signed_angle(a, b, p)
+
+        a = np.random.rand(1, 2)
+        b = np.random.rand(1, 2)
+        p = np.random.rand(1, 2)
+
+        angle = igl.signed_angle(a, b, p)
+
+
+    def test_unique_edge_map(self):
+        E, uE, EMAP, uE2E = igl.unique_edge_map(self.f1)
+
+        self.assertTrue(E.flags.c_contiguous)
+        self.assertTrue(uE.flags.c_contiguous)
+        self.assertTrue(EMAP.flags.c_contiguous)
+
+        self.assertTrue(E.dtype == self.f1.dtype)
+        self.assertTrue(uE.dtype == self.f1.dtype)
+        self.assertTrue(EMAP.dtype == self.f1.dtype)
+
+        self.assertTrue(E.shape == (self.f1.shape[0]*3, 2))
+        self.assertTrue(uE.shape[1] == 2)
+        self.assertTrue(E.shape[0] == self.f1.shape[0]*3)
+
 
 if __name__ == '__main__':
     unittest.main()
