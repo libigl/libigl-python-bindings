@@ -76,6 +76,13 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(l.shape == (self.v.shape[0], self.v.shape[0]))
         self.assertTrue(l.dtype == self.v.dtype)
         self.assertTrue(type(l) == csc.csc_matrix)
+        
+    def test_cotmatrix_intrinsic(self):
+        el = igl.edge_lengths(self.v, self.f)
+        l = igl.cotmatrix_intrinsic(el, self.f)
+        self.assertTrue(l.shape == (self.v.shape[0], self.v.shape[0]))
+        self.assertTrue(l.dtype == el.dtype)
+        self.assertTrue(type(l) == csc.csc_matrix)
 
     def test_ears(self):
         ears, ears_opp = igl.ears(self.f1)
@@ -93,6 +100,12 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(g.flags.c_contiguous)
 
     # sparse matrix, no flag attribute
+    def test_grad_intrinsic(self):
+        el = igl.edge_lengths(self.v, self.f)
+        g = igl.grad_intrinsic(el, self.f)
+        self.assertTrue(g.shape == (self.f.shape[0] * 2, self.v.shape[0]))
+        self.assertTrue(type(g) == csc.csc_matrix)
+
     def test_grad(self):
         g = igl.grad(self.v, self.f)
         h = igl.grad(self.v, self.f, uniform=True)
@@ -104,6 +117,16 @@ class TestBasic(unittest.TestCase):
     def test_massmatrix(self):
         a = igl.massmatrix(self.v, self.f)
         b = igl.massmatrix(self.v, self.f, type=igl.MASSMATRIX_TYPE_BARYCENTRIC)
+        self.assertTrue(a.shape == (self.v.shape[0], self.v.shape[0]))
+        self.assertTrue(b.shape == (self.v.shape[0], self.v.shape[0]))
+        self.assertTrue(b.dtype == np.float64)
+        self.assertTrue(a.dtype == np.float64)
+        self.assertTrue(type(a) == type(b) == csc.csc_matrix)
+
+    def test_massmatrix_intrinsic(self):
+        el = igl.edge_lengths(self.v, self.f)
+        a = igl.massmatrix_intrinsic(el, self.f)
+        b = igl.massmatrix_intrinsic(el, self.f, type=igl.MASSMATRIX_TYPE_BARYCENTRIC)
         self.assertTrue(a.shape == (self.v.shape[0], self.v.shape[0]))
         self.assertTrue(b.shape == (self.v.shape[0], self.v.shape[0]))
         self.assertTrue(b.dtype == np.float64)
@@ -372,14 +395,6 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(p.dtype == self.v.dtype)
         self.assertEqual(p.shape[0], self.g.shape[0])
         self.assertTrue(p.flags.c_contiguous)
-
-    # def test_circulation(self):
-    #    difficult data
-    #    _, e, emap = igl.crouzeix_raviart_cotmatrix(self.v1, self.f1)
-    #    ret = igl.circulation(0, False, emap, e, e)
-    #    self.assertTrue(type(ret) == list)
-    #    self.assertTrue(type(ret[0]) == int)
-
 
     def test_collapse_small_triangles(self):
         ff = igl.collapse_small_triangles(self.v, self.f, 0.5)
@@ -1017,6 +1032,13 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(d.dtype, self.v1.dtype)
         self.assertTrue(d.flags.c_contiguous)
 
+    def test_heat_geodesic(self):
+        vs = np.array([0])
+        d = igl.heat_geodesic(self.v1, self.f1, 1.0, vs)
+        # TODO: Should this not return distances for all sources?
+        self.assertEqual(d.dtype, self.v1.dtype)
+        self.assertTrue(d.flags.c_contiguous)
+
     def test_cut_mesh(self):
        cuts = np.random.randint(0, 2, size=self.f1.shape, dtype=self.f1.dtype)
        vcut, fcut = igl.cut_mesh(self.v1, self.f1, cuts)
@@ -1556,6 +1578,49 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.flags.c_contiguous)
         self.assertTrue(f.dtype == self.f.dtype)
         self.assertTrue(f.shape[1] == 3)
+        
+    def test_is_delaunay(self):
+        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0, 0], [0, -1]])
+        f = igl.delaunay_triangulation(v)
+        d = igl.is_delaunay(v, f)
+        self.assertTrue(d.flags.c_contiguous)
+        self.assertTrue(d.dtype == np.bool)
+        self.assertTrue(d.shape == f.shape)
+        self.assertTrue(np.all(d)) 
+        
+        d1 = igl.is_delaunay(self.v1, self.f1)
+        self.assertTrue(d1.flags.c_contiguous)
+        self.assertTrue(d1.dtype == np.bool)
+        self.assertTrue(d1.shape == self.f1.shape)
+        self.assertFalse(np.all(d1)) 
+        
+
+        v = np.hstack([v, np.zeros((v.shape[0], 1))])
+        el = igl.edge_lengths(v, f)
+        d2 = igl.is_intrinsic_delaunay(el, f)
+        self.assertTrue(d2.flags.c_contiguous)
+        self.assertTrue(d2.dtype == np.bool)
+        self.assertTrue(d2.shape == f.shape)
+        #self.assertTrue(np.all(d2))  #TODO: Why?
+
+    def test_is_intrinsic_delaunay(self):
+        # Tested above
+        pass  
+
+    def test_intrinsic_delaunay_triangulation(self):
+        el = igl.edge_lengths(self.v, self.f)
+        l, f = igl.intrinsic_delaunay_triangulation(el, self.f)
+        print(l, f)
+        self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(f.dtype == self.f.dtype)
+        self.assertTrue(f.shape[1] == 3)
+
+    def test_intrinsic_delaunay_triangulation_edges(self):
+        el = igl.edge_lengths(self.v, self.f)
+        l, f, e, u_e, emap, ue2e = igl.intrinsic_delaunay_triangulation_edges(el, self.f)
+        #self.assertTrue(f.flags.c_contiguous)
+        #self.assertTrue(f.dtype == self.f.dtype)
+        #self.assertTrue(f.shape[1] == 3)
 
     def test_edges_to_path(self):
         e = igl.edges(self.f1)
@@ -1569,6 +1634,17 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(i.dtype == e.dtype)
         self.assertTrue(j.dtype == e.dtype)
         self.assertTrue(k.dtype == e.dtype)
+        
+    def test_path_to_edges(self):
+        e1 = igl.path_to_edges(np.array(range(20)), False)
+        e2 = igl.path_to_edges(np.array(range(20)), True)
+        r2 = np.vstack([np.array(range(20)), np.array(range(1,21))]).T
+        r2[19, 1] = 0
+        self.assertTrue(np.allclose(e2, r2))
+        self.assertTrue(e1.flags.c_contiguous)
+        self.assertTrue(e2.flags.c_contiguous)
+        self.assertTrue(e1.dtype == np.int)
+        self.assertTrue(e2.dtype == np.int)
 
     def test_exterior_edges(self):
         e = igl.exterior_edges(self.f1)
@@ -2105,11 +2181,66 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(len(curves) == 1)
         self.assertTrue(curves[0][0] == 0)
         
+    def test_intrinsic_delaunay_cotmatrix(self):
+        l, l_int, f_int = igl.intrinsic_delaunay_cotmatrix(self.v, self.f)
+        print(l.shape, l_lint.shape, f_int.shape)
+        self.assertTrue(l.shape == (self.v.shape[0], self.v.shape[0]))
+        self.assertTrue(l.dtype == self.v.dtype)
+        self.assertTrue(type(l) == csc.csc_matrix)
+        
+    def test_cut_to_disk(self):
+        cuts = igl.cut_to_disk(self.f)
+        self.assertTrue(len(cuts) == 9)
+        
+    def test_iterative_closest_point(self):
+        # This crashes in libigl
+        #r, t = igl.iterative_closest_point(self.v, self.f, self.v1, self.f1, 10, 20)
+        r, t = igl.iterative_closest_point(self.v, self.f, self.v1, self.f1, 3, 20)
+        self.assertEqual(r.shape, (3, 3))
+        self.assertEqual(t.shape, (3,))
+        self.assertTrue(r.flags.c_contiguous)
+        self.assertTrue(t.flags.c_contiguous)
+        self.assertTrue(r.dtype == t.dtype == self.v.dtype)
+
+    def test_rigid_alignment(self):
+        n = igl.per_vertex_normals(self.v, self.f)
+        r, t = igl.rigid_alignment(self.v, self.v+1, n)
+        self.assertTrue(np.allclose(r, np.eye(3)))
+        self.assertTrue(np.allclose(t, np.ones(3)))
+        self.assertEqual(r.shape, (3, 3))
+        self.assertEqual(t.shape, (3,))
+        self.assertTrue(r.flags.c_contiguous)
+        self.assertTrue(t.flags.c_contiguous)
+        self.assertTrue(r.dtype == t.dtype == self.v.dtype)
+
+    def test_quad_grid(self):
+        v, q, e = igl.quad_grid(3, 3)
+        self.assertTrue(v.shape == (3*3, 2)) # TODO: IGL Function has wrong arguments, fix in igl
+        self.assertTrue(q.shape == (2*2, 4))
+        print(v, q, e)
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(q.flags.c_contiguous)
+        self.assertTrue(v.dtype == np.float)
+        self.assertTrue(q.dtype == np.int)
+        self.assertTrue(e.dtype == np.int)
+        
     def test_flip_avoiding_line_search(self):
         #def fun(v):
         #    return 0.5
         #energy, vr = igl.flip_avoiding_line_search(self.f1, self.v1, -self.v1, fun, 10.0)
         # TODO: fix function assertion fail
+        pass
+        
+    def test_circulation(self):
+        pass
+    #    difficult data
+    #    _, e, emap = igl.crouzeix_raviart_cotmatrix(self.v1, self.f1)
+    #    ret = igl.circulation(0, False, emap, e, e)
+    #    self.assertTrue(type(ret) == list)
+    #    self.assertTrue(type(ret[0]) == int)
+        
+    def test_edge_collapse_is_valid(self):
+        # Dummy test
         pass
 
 
