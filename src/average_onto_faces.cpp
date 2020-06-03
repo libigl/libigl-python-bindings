@@ -2,6 +2,8 @@
 #include <npe.h>
 #include <typedefs.h>
 
+#include <igl/average_onto_faces.h>
+
 const char* doccc_faces_avg = R"igl_Qu8mg5v7(
 Move a scalar field defined on vertices to faces by averaging
 
@@ -34,13 +36,14 @@ npe_arg(s, dense_float, dense_double)
 
 npe_begin_code()
   assert_valid_tet_or_tri_mesh_faces(f);
-  //TODO: wierd behavior
   EigenDenseLike<npe_Matrix_s> SF;
-  SF.setConstant(f.rows(), s.cols(), 0);
-  for (int i = 0; i < f.rows(); ++i)
-    for (int j = 0; j < f.cols(); ++j)
-      SF.row(i) += s.row(f(i, j));
-  SF.array() /= s.cols();
+  igl::average_onto_faces(f, s, SF);
+
+  // SF.setConstant(f.rows(), s.cols(), 0);
+  // for (int i = 0; i < f.rows(); ++i)
+  //   for (int j = 0; j < f.cols(); ++j)
+  //     SF.row(i) += s.row(f(i, j));
+  // SF.array() /= s.cols();
   return npe::move(SF);
 
 npe_end_code()

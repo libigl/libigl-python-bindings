@@ -48,7 +48,8 @@ npe_begin_code()
   // TODO: remove __copy
   //copy is necessary for the ply library
   Eigen::MatrixXi f_copy = f.template cast<int>();
-  bool ok = igl::write_triangle_mesh(str, v, f_copy, force_ascii);
+  Eigen::MatrixXd v_copy = v.template cast<double>();
+  bool ok = igl::write_triangle_mesh(str, v_copy, f_copy, force_ascii);
   return ok;
 
 npe_end_code()
