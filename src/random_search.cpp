@@ -1,8 +1,7 @@
 #include <npe.h>
 #include <typedefs.h>
 
-
-
+#include <pybind11/stl.h>
 
 
 

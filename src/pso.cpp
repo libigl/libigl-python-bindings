@@ -1,6 +1,7 @@
 #include <npe.h>
 #include <common.h>
 #include <typedefs.h>
+#include <pybind11/stl.h>
 #include <igl/pso.h>
 
 const char *ds_pso = R"igl_Qu8mg5v7ss(
