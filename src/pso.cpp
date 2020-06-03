@@ -1,5 +1,6 @@
 #include <npe.h>
 #include <common.h>
+#include <pybind11/functional.h>
 #include <typedefs.h>
 #include <pybind11/stl.h>
 #include <igl/pso.h>
@@ -113,5 +114,3 @@ npe_begin_code()
   return std::make_tuple(obj, npe::move(x));
 
 npe_end_code()
-
-

@@ -1081,7 +1081,7 @@ class TestBasic(unittest.TestCase):
         max_v = np.max(self.v1, axis=0)
         n = 16
         g = np.mgrid[min_v[0]:max_v[0]:complex(n), min_v[1]:max_v[1]:complex(n), min_v[2]:max_v[2]:complex(n)]
-        p = np.vstack(map(np.ravel, g)).T
+        p = np.vstack(list(map(np.ravel, g))).T
         s, i, c = igl.signed_distance(p, self.v1, self.f1)
 
         self.assertEqual(s.shape[0], p.shape[0])
@@ -2029,6 +2029,21 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(k.dtype == self.f1.dtype)
 
         self.assertTrue(c.shape[0] == a.shape[0])
+        
+    def test_pso(self):
+        def banana(x):
+            x1 = x[0]
+            x2 = x[1]
+            return x1**4 - 2*x2*x1**2 + x2**2 + x1**2 - 2*x1 + 5
+
+        lb = np.array([-3.0, -1.0])
+        ub = np.array([2.0, 6.0])
+
+        fopt, xopt = igl.pso(banana, lb, ub, max_iters=10, population=10)
+        
+        self.assertTrue(xopt.flags.c_contiguous)
+        self.assertTrue(xopt.dtype == lb.dtype)
+        self.assertTrue(xopt.shape == (2, ))
 
 
 if __name__ == '__main__':
