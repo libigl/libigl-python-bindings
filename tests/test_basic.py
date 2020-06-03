@@ -2203,15 +2203,27 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.dtype == t.dtype == self.v.dtype)
 
     def test_rigid_alignment(self):
-        n = igl.per_vertex_normals(self.v, self.f)
-        r, t = igl.rigid_alignment(self.v, self.v+1, n)
+        n = igl.per_vertex_normals(self.v1, self.f1)
+        r, t = igl.rigid_alignment(self.v1, self.v1+1, n)
         self.assertTrue(np.allclose(r, np.eye(3)))
         self.assertTrue(np.allclose(t, np.ones(3)))
         self.assertEqual(r.shape, (3, 3))
         self.assertEqual(t.shape, (3,))
         self.assertTrue(r.flags.c_contiguous)
         self.assertTrue(t.flags.c_contiguous)
-        self.assertTrue(r.dtype == t.dtype == self.v.dtype)
+        self.assertTrue(r.dtype == t.dtype == self.v1.dtype)
+
+    def test_sharp_edges(self):
+        # TODO IGL documentation misses second return parameter e, fix in igl
+        se, e, ue, emap, ue2e, sharp = igl.sharp_edges(self.v1, self.f1, np.pi*0.11)
+        self.assertTrue(se.shape[1] == 2)
+        self.assertTrue(ue.shape[1] == 2)
+        self.assertTrue(emap.shape[0] == self.f1.shape[0]*3)
+        self.assertTrue(se.shape[0] == len(sharp))
+        self.assertTrue(se.flags.c_contiguous)
+        self.assertTrue(e.flags.c_contiguous)
+        self.assertTrue(ue.flags.c_contiguous)
+        self.assertTrue(emap.flags.c_contiguous)
 
     def test_quad_grid(self):
         v, q, e = igl.quad_grid(3, 3)
@@ -2223,6 +2235,21 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.dtype == np.float)
         self.assertTrue(q.dtype == np.int)
         self.assertTrue(e.dtype == np.int)
+        
+    def test_sparse_voxel_grid(self):
+        pass
+    
+    def test_topological_hole_fill(self):
+        pass
+        
+    def test_triangulated_grid(self):
+        pass
+    
+    def test_unproject_on_line(self):
+        pass
+    
+    def test_unproject_on_plane(self):
+        pass
         
     def test_flip_avoiding_line_search(self):
         #def fun(v):
