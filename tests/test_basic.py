@@ -1989,6 +1989,18 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.shape[0] == self.f.shape[0]-2)
         self.assertTrue(f.shape[1] == 3)
 
+    def test_signed_angle(self):
+        a = np.random.rand(2, 1)
+        b = np.random.rand(2, 1)
+        p = np.random.rand(2, 1)
+
+        angle = igl.signed_angle(a, b, p)
+
+        a = np.random.rand(1, 2)
+        b = np.random.rand(1, 2)
+        p = np.random.rand(1, 2)
+
+        angle = igl.signed_angle(a, b, p)
 
 if __name__ == '__main__':
     unittest.main()
