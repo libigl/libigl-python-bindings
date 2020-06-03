@@ -1946,7 +1946,7 @@ class TestBasic(unittest.TestCase):
     def test_sample_edges(self):
         e = igl.edges(self.f1)
         s = igl.sample_edges(self.v1, e, 4)
-        print(e.shape, s.shape)
+        # print(e.shape, s.shape)
 
         self.assertTrue(s.flags.c_contiguous)
         self.assertTrue(s.dtype == self.v1.dtype)
