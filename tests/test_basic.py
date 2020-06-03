@@ -2018,6 +2018,18 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(uE.shape[1] == 2)
         self.assertTrue(E.shape[0] == self.f1.shape[0]*3)
 
+    def test_connected_components(self):
+        a = igl.adjacency_matrix(self.f)
+        comps, c, k = igl.connected_components(a)
+
+        self.assertTrue(c.flags.c_contiguous)
+        self.assertTrue(k.flags.c_contiguous)
+
+        self.assertTrue(c.dtype == self.f1.dtype)
+        self.assertTrue(k.dtype == self.f1.dtype)
+
+        self.assertTrue(c.shape[0] == a.shape[0])
+
 
 if __name__ == '__main__':
     unittest.main()
