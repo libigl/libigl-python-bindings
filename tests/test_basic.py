@@ -1727,6 +1727,17 @@ class TestBasic(unittest.TestCase):
 
 
         vol = igl.volume_single(a[0, :], b[0, :], c[0, :], d[0, :])
+        
+        l = igl.edge_lengths(v, t)
+        vol = igl.volume_from_edges(l)
+        self.assertTrue(vol.flags.c_contiguous)
+        self.assertTrue(vol.dtype == v.dtype)
+        self.assertTrue(len(vol.shape) == 1)
+        self.assertTrue(vol.shape[0] == t.shape[0])
+        
+    def test_volume_from_edges(self):
+        #tested in volume
+        pass   
 
     def test_volume_from_vertices(self):
         #tested in volume
@@ -2058,7 +2069,8 @@ class TestBasic(unittest.TestCase):
         
         self.assertTrue(xopt.flags.c_contiguous)
         self.assertTrue(xopt.dtype == lb.dtype)
-        self.assertTrue(xopt.shape == (2, ))        
+        self.assertTrue(xopt.shape == (2, ))       
+        
 
 
 if __name__ == '__main__':
