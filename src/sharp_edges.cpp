@@ -1,7 +1,7 @@
 #include <npe.h>
 #include <common.h>
 #include <typedefs.h>
-
+#include <pybind11/stl.h>
 
 #include <igl/sharp_edges.h>
 
