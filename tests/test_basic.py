@@ -2235,22 +2235,28 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.dtype == np.float)
         self.assertTrue(q.dtype == np.int)
         self.assertTrue(e.dtype == np.int)
-        
+
     def test_sparse_voxel_grid(self):
         pass
-    
+
     def test_topological_hole_fill(self):
         pass
-        
+
     def test_triangulated_grid(self):
         pass
-    
+
     def test_unproject_on_line(self):
         pass
-    
+
     def test_unproject_on_plane(self):
         pass
-        
+
+    def test_fast_winding_number_for_points(self):
+        pass
+
+    def test_fast_winding_number_for_meshes(self):
+        pass
+
     def test_flip_avoiding_line_search(self):
         #def fun(v):
         #    return 0.5
