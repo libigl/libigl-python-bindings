@@ -1,6 +1,6 @@
 #include <npe.h>
 #include <typedefs.h>
-
+#include <pybind11/functional.h>
 #include <pybind11/stl.h>
 
 
@@ -25,8 +25,8 @@ iters  number of iterations
 
 Returns
 -------
+f(X)
 X  #X optimal parameter vector
-Returns f(X)
 
 See also
 --------
@@ -57,4 +57,3 @@ npe_begin_code()
   return std::make_tuple(obj, npe::move(x));
 
 npe_end_code()
-

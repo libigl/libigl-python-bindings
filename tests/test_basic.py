@@ -2045,6 +2045,21 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(xopt.dtype == lb.dtype)
         self.assertTrue(xopt.shape == (2, ))
 
+    def test_random_search(self):
+        def banana(x):
+            x1 = x[0]
+            x2 = x[1]
+            return x1**4 - 2*x2*x1**2 + x2**2 + x1**2 - 2*x1 + 5
+
+        lb = np.array([-3.0, -1.0])
+        ub = np.array([2.0, 6.0])
+
+        fopt, xopt = igl.random_search(banana, lb, ub, iters=10)
+        
+        self.assertTrue(xopt.flags.c_contiguous)
+        self.assertTrue(xopt.dtype == lb.dtype)
+        self.assertTrue(xopt.shape == (2, ))        
+
 
 if __name__ == '__main__':
     unittest.main()

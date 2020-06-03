@@ -24,8 +24,9 @@ population  number of particles in swarm
 
 Returns
 -------
+f(X) objective corresponding to best particle seen so far
 X  best particle seen so far
-Returns objective corresponding to best particle seen so far
+
 
 See also
 --------
