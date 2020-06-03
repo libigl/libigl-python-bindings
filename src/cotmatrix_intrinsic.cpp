@@ -24,10 +24,10 @@ L  #V by #V sparse Laplacian matrix
 See also
 --------
 
+cotmatrix, intrinsic_delaunay_cotmatrix
 
 Notes
 -----
-See also: cotmatrix, intrinsic_delaunay_cotmatrix
 
 Examples
 --------

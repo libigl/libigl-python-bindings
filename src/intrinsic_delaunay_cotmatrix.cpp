@@ -24,11 +24,10 @@ F_intrinsic  #F by 3 list of intrinsic face indices used to compute L
 
 See also
 --------
-
+intrinsic_delaunay_triangulation, cotmatrix, cotmatrix_intrinsic
 
 Notes
 -----
-See also: intrinsic_delaunay_triangulation, cotmatrix, cotmatrix_intrinsic
 
 Examples
 --------
