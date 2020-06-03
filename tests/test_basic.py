@@ -76,7 +76,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(l.shape == (self.v.shape[0], self.v.shape[0]))
         self.assertTrue(l.dtype == self.v.dtype)
         self.assertTrue(type(l) == csc.csc_matrix)
-        
+
     def test_cotmatrix_intrinsic(self):
         el = igl.edge_lengths(self.v, self.f)
         l = igl.cotmatrix_intrinsic(el, self.f)
@@ -1578,7 +1578,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.flags.c_contiguous)
         self.assertTrue(f.dtype == self.f.dtype)
         self.assertTrue(f.shape[1] == 3)
-        
+
     def test_is_delaunay(self):
         v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0, 0], [0, -1]])
         f = igl.delaunay_triangulation(v)
@@ -1586,14 +1586,14 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(d.flags.c_contiguous)
         self.assertTrue(d.dtype == np.bool)
         self.assertTrue(d.shape == f.shape)
-        self.assertTrue(np.all(d)) 
-        
+        self.assertTrue(np.all(d))
+
         d1 = igl.is_delaunay(self.v1, self.f1)
         self.assertTrue(d1.flags.c_contiguous)
         self.assertTrue(d1.dtype == np.bool)
         self.assertTrue(d1.shape == self.f1.shape)
-        self.assertFalse(np.all(d1)) 
-        
+        self.assertFalse(np.all(d1))
+
 
         v = np.hstack([v, np.zeros((v.shape[0], 1))])
         el = igl.edge_lengths(v, f)
@@ -1605,14 +1605,14 @@ class TestBasic(unittest.TestCase):
 
     def test_is_intrinsic_delaunay(self):
         # Tested above
-        pass  
+        pass
 
     def test_intrinsic_delaunay_triangulation(self):
-        el = igl.edge_lengths(self.v, self.f)
-        l, f = igl.intrinsic_delaunay_triangulation(el, self.f)
-        print(l, f)
+        el = igl.edge_lengths(self.v1, self.f1)
+        l, f = igl.intrinsic_delaunay_triangulation(el, self.f1)
+        # print(l, f)
         self.assertTrue(f.flags.c_contiguous)
-        self.assertTrue(f.dtype == self.f.dtype)
+        self.assertTrue(f.dtype == self.f1.dtype)
         self.assertTrue(f.shape[1] == 3)
 
     def test_intrinsic_delaunay_triangulation_edges(self):
@@ -1634,7 +1634,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(i.dtype == e.dtype)
         self.assertTrue(j.dtype == e.dtype)
         self.assertTrue(k.dtype == e.dtype)
-        
+
     def test_path_to_edges(self):
         e1 = igl.path_to_edges(np.array(range(20)), False)
         e2 = igl.path_to_edges(np.array(range(20)), True)
@@ -1801,17 +1801,17 @@ class TestBasic(unittest.TestCase):
 
 
         vol = igl.volume_single(a[0, :], b[0, :], c[0, :], d[0, :])
-        
+
         l = igl.edge_lengths(v, t)
         vol = igl.volume_from_edges(l)
         self.assertTrue(vol.flags.c_contiguous)
         self.assertTrue(vol.dtype == v.dtype)
         self.assertTrue(len(vol.shape) == 1)
         self.assertTrue(vol.shape[0] == t.shape[0])
-        
+
     def test_volume_from_edges(self):
         #tested in volume
-        pass   
+        pass
 
     def test_volume_from_vertices(self):
         #tested in volume
@@ -2114,7 +2114,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(k.dtype == self.f1.dtype)
 
         self.assertTrue(c.shape[0] == a.shape[0])
-        
+
     def test_pso(self):
         def banana(x):
             x1 = x[0]
@@ -2125,7 +2125,7 @@ class TestBasic(unittest.TestCase):
         ub = np.array([2.0, 6.0])
 
         fopt, xopt = igl.pso(banana, lb, ub, max_iters=10, population=10)
-        
+
         self.assertTrue(xopt.flags.c_contiguous)
         self.assertTrue(xopt.dtype == lb.dtype)
         self.assertTrue(xopt.shape == (2, ))
@@ -2140,11 +2140,11 @@ class TestBasic(unittest.TestCase):
         ub = np.array([2.0, 6.0])
 
         fopt, xopt = igl.random_search(banana, lb, ub, iters=10)
-        
+
         self.assertTrue(xopt.flags.c_contiguous)
         self.assertTrue(xopt.dtype == lb.dtype)
-        self.assertTrue(xopt.shape == (2, ))       
-    
+        self.assertTrue(xopt.shape == (2, ))
+
     def test_bijective_composite_harmonic_mapping(self):
         v, f, _ = igl.read_off(os.path.join(self.test_path, "camelhead.off"))
         b = igl.boundary_loop(f)
@@ -2155,43 +2155,43 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(ret0)
         self.assertTrue(mapping0.flags.c_contiguous)
         self.assertTrue(mapping0.dtype == v2d.dtype)
-        self.assertTrue(mapping0.shape == v2d.shape)  
-               
+        self.assertTrue(mapping0.shape == v2d.shape)
+
         ret1, mapping1 = igl.bijective_composite_harmonic_mapping_with_steps(v2d, f, b, bc, min_steps=1, max_steps=5, num_inner_iters=2, test_for_flips=True)
         self.assertTrue(ret1)
         self.assertTrue(mapping1.flags.c_contiguous)
         self.assertTrue(mapping1.dtype == v2d.dtype)
-        self.assertTrue(mapping1.shape == v2d.shape)  
-        
+        self.assertTrue(mapping1.shape == v2d.shape)
+
         ret2, mapping2 = igl.bijective_composite_harmonic_mapping_with_steps(v2d, f, b, bc, min_steps=1, max_steps=5, num_inner_iters=2, test_for_flips=False)
         self.assertTrue(ret2)
         self.assertTrue(mapping2.flags.c_contiguous)
         self.assertTrue(mapping2.dtype == v2d.dtype)
         self.assertTrue(mapping2.shape == v2d.shape)
-        
+
         self.assertTrue(np.allclose(mapping0, mapping1))
 
     def test_bijective_composite_harmonic_mapping_with_steps(self):
         # Tested above
         pass
-        
+
     def test_extract_non_manifold_edge_curves(self):
         _ = igl.extract_non_manifold_edge_curves(self.f1, [])
         curves = igl.extract_non_manifold_edge_curves(self.f1, [range(10)])
         self.assertTrue(len(curves) == 1)
         self.assertTrue(curves[0][0] == 0)
-        
+
     def test_intrinsic_delaunay_cotmatrix(self):
-        l, l_int, f_int = igl.intrinsic_delaunay_cotmatrix(self.v, self.f)
-        print(l.shape, l_lint.shape, f_int.shape)
-        self.assertTrue(l.shape == (self.v.shape[0], self.v.shape[0]))
-        self.assertTrue(l.dtype == self.v.dtype)
+        l, l_int, f_int = igl.intrinsic_delaunay_cotmatrix(self.v1, self.f1)
+        # print(l.shape, l_int.shape, f_int.shape)
+        self.assertTrue(l.shape == (self.v1.shape[0], self.v1.shape[0]))
+        self.assertTrue(l.dtype == self.v1.dtype)
         self.assertTrue(type(l) == csc.csc_matrix)
-        
+
     def test_cut_to_disk(self):
         cuts = igl.cut_to_disk(self.f)
         self.assertTrue(len(cuts) == 9)
-        
+
     def test_iterative_closest_point(self):
         # This crashes in libigl
         #r, t = igl.iterative_closest_point(self.v, self.f, self.v1, self.f1, 10, 20)
@@ -2223,14 +2223,14 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.dtype == np.float)
         self.assertTrue(q.dtype == np.int)
         self.assertTrue(e.dtype == np.int)
-        
+
     def test_flip_avoiding_line_search(self):
         #def fun(v):
         #    return 0.5
         #energy, vr = igl.flip_avoiding_line_search(self.f1, self.v1, -self.v1, fun, 10.0)
         # TODO: fix function assertion fail
         pass
-        
+
     def test_circulation(self):
         pass
     #    difficult data
@@ -2238,7 +2238,7 @@ class TestBasic(unittest.TestCase):
     #    ret = igl.circulation(0, False, emap, e, e)
     #    self.assertTrue(type(ret) == list)
     #    self.assertTrue(type(ret[0]) == int)
-        
+
     def test_edge_collapse_is_valid(self):
         # Dummy test
         pass
