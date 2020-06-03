@@ -3,6 +3,8 @@
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
+#include <pybind11/functional.h>
+#include <pybind11/stl.h>
 
 
 
@@ -15,10 +17,10 @@ const char* ds_flip_avoiding_line_search = R"igl_Qu8mg5v7(
 
 A bisection line search for a mesh based energy that avoids triangle flips as suggested in
 "Bijective Parameterization with Free Boundaries" (Smith J. and Schaefer S., 2015).
-  
+
 The user specifies an initial vertices position (that has no flips) and target one (that my have flipped triangles).
 This method first computes the largest step in direction of the destination vertices that does not incur flips, and then minimizes a given energy using this maximal step and a bisection linesearch (see igl::line_search).
-  
+
 Supports both triangle and tet meshes.
 
 Parameters
@@ -47,7 +49,7 @@ None
 Examples
 --------
 
-  
+
 )igl_Qu8mg5v7";
 
 npe_function(flip_avoiding_line_search)
@@ -72,5 +74,3 @@ npe_begin_code()
   return std::make_tuple(ret_energy, npe::move(cur_v_row_major));
 
 npe_end_code()
-
-

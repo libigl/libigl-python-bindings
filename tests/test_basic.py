@@ -209,8 +209,6 @@ class TestBasic(unittest.TestCase):
     def test_adjacency_list(self):
         a = igl.adjacency_list(self.f1)
         self.assertEqual(len(a), self.v1.shape[0])
-        #FIXME: list object has no attribute 'flags'
-        #self.assertTrue(a.flags.c_contiguous)
 
     # all are sparse matrices
     def test_arap_linear_block(self):
@@ -2070,7 +2068,49 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(xopt.flags.c_contiguous)
         self.assertTrue(xopt.dtype == lb.dtype)
         self.assertTrue(xopt.shape == (2, ))       
+    
+    def test_bijective_composite_harmonic_mapping(self):
+        v, f, _ = igl.read_off(os.path.join(self.test_path, "camelhead.off"))
+        b = igl.boundary_loop(f)
+        thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
+        bc = np.concatenate([np.cos(thetas), np.sin(thetas)], axis=1)
+        v2d = igl.harmonic_weights(v, f, b, bc, 1)[:,:2]
+        ret0, mapping0 = igl.bijective_composite_harmonic_mapping(v2d, f, b, bc)
+        self.assertTrue(ret0)
+        self.assertTrue(mapping0.flags.c_contiguous)
+        self.assertTrue(mapping0.dtype == v2d.dtype)
+        self.assertTrue(mapping0.shape == v2d.shape)  
+               
+        ret1, mapping1 = igl.bijective_composite_harmonic_mapping_with_steps(v2d, f, b, bc, min_steps=1, max_steps=5, num_inner_iters=2, test_for_flips=True)
+        self.assertTrue(ret1)
+        self.assertTrue(mapping1.flags.c_contiguous)
+        self.assertTrue(mapping1.dtype == v2d.dtype)
+        self.assertTrue(mapping1.shape == v2d.shape)  
         
+        ret2, mapping2 = igl.bijective_composite_harmonic_mapping_with_steps(v2d, f, b, bc, min_steps=1, max_steps=5, num_inner_iters=2, test_for_flips=False)
+        self.assertTrue(ret2)
+        self.assertTrue(mapping2.flags.c_contiguous)
+        self.assertTrue(mapping2.dtype == v2d.dtype)
+        self.assertTrue(mapping2.shape == v2d.shape)
+        
+        self.assertTrue(np.allclose(mapping0, mapping1))
+
+    def test_bijective_composite_harmonic_mapping_with_steps(self):
+        # Tested above
+        pass
+        
+    def test_extract_non_manifold_edge_curves(self):
+        _ = igl.extract_non_manifold_edge_curves(self.f1, [])
+        curves = igl.extract_non_manifold_edge_curves(self.f1, [range(10)])
+        self.assertTrue(len(curves) == 1)
+        self.assertTrue(curves[0][0] == 0)
+        
+    def test_flip_avoiding_line_search(self):
+        #def fun(v):
+        #    return 0.5
+        #energy, vr = igl.flip_avoiding_line_search(self.f1, self.v1, -self.v1, fun, 10.0)
+        # TODO: fix function assertion fail
+        pass
 
 
 if __name__ == '__main__':
