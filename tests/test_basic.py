@@ -2260,13 +2260,36 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(ff.shape[0] != f.shape[0])
 
     def test_triangulated_grid(self):
-        pass
+        v, f = igl.triangulated_grid(10, 10)
+        self.assertTrue(v.shape == (100, 2))
+        self.assertTrue(f.shape == (162, 3))
+        self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(v.flags.c_contiguous)
+        self.assertTrue(v.dtype == np.float)
+        self.assertTrue(f.dtype == np.int)
 
     def test_unproject_on_line(self):
-        pass
+       pos = np.array([10., 10.])
+       eye = np.eye(4)
+       viewport = np.array([0., 0., 100., 100.])
+       p = np.array([15.0, 20.0, 13.0])
+       d = np.array([0.1, 0.2, 1.0]) 
+       t, z = igl.unproject_on_line(pos, eye, viewport, p, d)
+       
+       self.assertTrue(z.flags.c_contiguous)
+       self.assertTrue(z.shape == (3, ))
+       self.assertTrue(z.dtype == np.float)
 
     def test_unproject_on_plane(self):
-        pass
+       pos = np.array([10., 10.])
+       eye = np.eye(4)
+       viewport = np.array([0., 0., 100., 100.])
+       p = np.array([1.0, 2.0, 3.0, 2.0])
+       z = igl.unproject_on_plane(pos, eye, viewport, p)
+       
+       self.assertTrue(z.flags.c_contiguous)
+       self.assertTrue(z.shape == (3, ))
+       self.assertTrue(z.dtype == np.float)
 
     def test_fast_winding_number_for_points(self):
         pass
