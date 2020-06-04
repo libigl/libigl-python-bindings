@@ -17,6 +17,7 @@ angle  dihedral angle considered to sharp (e.g., igl::PI * 0.11)
 Returns
 -------
 SE  #SE by 2 list of edge indices into V
+E   #e by 2 list of edges in no particular order
 uE  #uE by 2 list of unique undirected edges
 EMAP #F*3 list of indices into uE, mapping each directed edge to unique
 undirected edge so that uE(EMAP(f+#F*c)) is the unique edge

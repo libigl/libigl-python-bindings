@@ -1,6 +1,7 @@
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
+#include <pybind11/stl.h>
 #include <igl/intrinsic_delaunay_triangulation.h>
 
 const char *ds_intrinsic_delaunay_triangulation = R"igl_Qu8mg5v7(

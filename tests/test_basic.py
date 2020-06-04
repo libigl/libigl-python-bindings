@@ -30,6 +30,16 @@ class TestBasic(unittest.TestCase):
         self.f = np.random.randint(0, 10, size=(20, 3), dtype=self.f1.dtype)
         self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
 
+    def tearDown(self):
+        vv1, ff1 = igl.read_triangle_mesh(os.path.join(self.test_path, "bunny_small.off"))
+        vv2, ff2 = igl.read_triangle_mesh(os.path.join(self.test_path, "fertility.off"))
+        self.assertTrue((vv1 == self.v1).all())
+        self.assertTrue((ff1 == self.f1).all())
+
+        self.assertTrue((vv2 == self.v2).all())
+        self.assertTrue((ff2 == self.f2).all())
+
+
     def test_z_module(self):
         # Extract all implemented functions from the module
         funcs = []
@@ -1616,11 +1626,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.shape[1] == 3)
 
     def test_intrinsic_delaunay_triangulation_edges(self):
-        el = igl.edge_lengths(self.v, self.f)
-        l, f, e, u_e, emap, ue2e = igl.intrinsic_delaunay_triangulation_edges(el, self.f)
-        #self.assertTrue(f.flags.c_contiguous)
-        #self.assertTrue(f.dtype == self.f.dtype)
-        #self.assertTrue(f.shape[1] == 3)
+        el = igl.edge_lengths(self.v1, self.f1)
+        l, f, e, u_e, emap, ue2e = igl.intrinsic_delaunay_triangulation_edges(el, self.f1)
+        self.assertTrue(f.flags.c_contiguous)
+        self.assertTrue(f.dtype == self.f.dtype)
+        self.assertTrue(f.shape[1] == 3)
 
     def test_edges_to_path(self):
         e = igl.edges(self.f1)
@@ -2214,7 +2224,6 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.dtype == t.dtype == self.v1.dtype)
 
     def test_sharp_edges(self):
-        # TODO IGL documentation misses second return parameter e, fix in igl
         se, e, ue, emap, ue2e, sharp = igl.sharp_edges(self.v1, self.f1, np.pi*0.11)
         self.assertTrue(se.shape[1] == 2)
         self.assertTrue(ue.shape[1] == 2)
