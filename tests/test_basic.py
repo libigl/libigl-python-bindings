@@ -2320,10 +2320,11 @@ class TestBasic(unittest.TestCase):
 
     def test_flip_avoiding_line_search(self):
         def fun(v):
-           return 0.5
-        energy, vr = igl.flip_avoiding_line_search(self.f1, self.v1, -self.v1, fun, 10.0)
-        # TODO: fix function assertion fail
-        pass
+           return np.random.rand(1)
+
+        energy, vr = igl.flip_avoiding_line_search(self.f1, self.v1[:, :2], self.v1[:, :2], fun, 10.0)
+        self.assertTrue(vr.shape == (self.v1.shape[0], 2))
+        self.assertTrue(vr.flags.c_contiguous)
 
     def test_edge_flaps(self):
         e, emap, ef, ei = igl.edge_flaps(self.f2)
@@ -2339,14 +2340,16 @@ class TestBasic(unittest.TestCase):
 
     def test_circulation(self):
         pass
-    #    e, emap, ef, ei = igl.edge_flaps(self.f2)
-    #    ret = igl.circulation(0, False, emap, ef, ei)
-    #    self.assertTrue(type(ret) == list)
-    #    self.assertTrue(type(ret[0]) == int)
+        #e, emap, ef, ei = igl.edge_flaps(self.f2)
+        #fac = igl.circulation(667, True, emap, ef, ei)
+        #print(fac)
 
     def test_edge_collapse_is_valid(self):
-        # Dummy test
         pass
+        #e, emap, ef, ei = igl.edge_flaps(self.f2)
+        #emap = emap.reshape(-1, 3)
+        #val = igl.edge_collapse_is_valid(0, self.f2, e, emap, ef, ei)
+        #print(val)
 
 
 if __name__ == '__main__':
