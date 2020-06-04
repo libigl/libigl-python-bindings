@@ -9,7 +9,6 @@
 
 const char *ds_sparse_voxel_grid = R"igl_Qu8mg5v7(
 
-sparse_voxel_grid( p0, scalarFunc, eps, CV, CS, CI )
 Given a point, p0, on an isosurface, construct a shell of epsilon sized cubes surrounding the surface.
 These cubes can be used as the input to marching cubes.
 

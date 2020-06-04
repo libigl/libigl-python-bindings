@@ -26,7 +26,11 @@ pattens_to_skip = [
 	"the number of positively",
 	"trace(",
 	"Z(known,:)",
-	"kron(ones("
+	"kron(ones(",
+	"E(i,K(i))",
+	"I(i) == E(J(i),K(i",
+	"FF(I,:) = ",
+	"f(X)"
 ]
 
 def format_data(data):
