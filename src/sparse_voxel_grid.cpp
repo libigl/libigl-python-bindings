@@ -53,11 +53,18 @@ npe_arg(expected_number_of_cubes, int)
 
 
 npe_begin_code()
+  assert_size_equals(p0, 3, "p0");
 
   EigenDenseFloat cs;
   EigenDenseFloat cv;
   EigenDenseInt ci;
-  igl::sparse_voxel_grid(p0, scalar_func, eps, expected_number_of_cubes, cs, cv, ci);
+  Eigen::Matrix<typename EigenDenseFloat::Scalar, 1, 3> p0_copy;
+  if(p0.cols() == 1)
+    p0_copy = p0.transpose();
+  else
+    p0_copy = p0;
+
+  igl::sparse_voxel_grid(p0_copy, scalar_func, eps, expected_number_of_cubes, cs, cv, ci);
   return std::make_tuple(npe::move(cs), npe::move(cv), npe::move(ci));
 
 npe_end_code()
