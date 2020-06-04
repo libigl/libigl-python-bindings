@@ -2247,8 +2247,13 @@ class TestBasic(unittest.TestCase):
             return np.sqrt(point[0]**2 + point[1]**2 + point[2]**2) - 1.0
         point = np.array([1.0, 0.0, 0.0])
         cs, cv, ci = igl.sparse_voxel_grid(point, sphere1, 1.0, 100)
-        #print(cs, cv, ci)
-
+        self.assertTrue(cv.flags.c_contiguous)
+        self.assertTrue(cv.dtype == np.float)
+        self.assertTrue(cv.shape == (len(cs), 3))
+        self.assertTrue(ci.flags.c_contiguous)
+        self.assertTrue(ci.dtype == np.int)
+        self.assertTrue(ci.shape[1] == 8)
+        
     def test_topological_hole_fill(self):
         f = self.f1
         b = np.array(range(10))
