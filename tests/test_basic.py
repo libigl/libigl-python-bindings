@@ -2243,10 +2243,21 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(e.dtype == np.int)
 
     def test_sparse_voxel_grid(self):
-        pass
+        def sphere1(point):
+            return np.sqrt(point[0]**2 + point[1]**2 + point[2]**2) - 1.0
+        point = np.array([1.0, 0.0, 0.0])
+        cs, cv, ci = igl.sparse_voxel_grid(point, sphere1, 1.0, 100)
+        #print(cs, cv, ci)
 
     def test_topological_hole_fill(self):
-        pass
+        f = self.f1
+        b = np.array(range(10))
+        h = [range(10, 20)]
+        ff = igl.topological_hole_fill(f, b, h)
+        self.assertTrue(ff.flags.c_contiguous)
+        self.assertTrue(ff.shape[1] == 3)
+        self.assertTrue(ff.dtype == np.int)
+        self.assertTrue(ff.shape[0] != f.shape[0])
 
     def test_triangulated_grid(self):
         pass

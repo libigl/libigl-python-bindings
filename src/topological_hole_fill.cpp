@@ -40,7 +40,7 @@ npe_function(topological_hole_fill)
 npe_doc(ds_topological_hole_fill)
 
 npe_arg(f, dense_int, dense_long, dense_longlong)
-npe_arg(b, dense_float, dense_double)
+npe_arg(b, dense_int, dense_long, dense_longlong)
 npe_arg(holes, std::vector<std::vector<int>>)
 
 
@@ -51,5 +51,3 @@ npe_begin_code()
   return npe::move(f_filled);
 
 npe_end_code()
-
-
