@@ -2296,11 +2296,27 @@ class TestBasic(unittest.TestCase):
        self.assertTrue(z.shape == (3, ))
        self.assertTrue(z.dtype == np.float)
 
-    def test_fast_winding_number_for_points(self):
-        pass
+    def test_fast_winding_number_for_points(self):       
+        xs = np.linspace(-5.0, 5.0, 10)
+        grid = np.meshgrid(xs, xs, xs, indexing='ij')
+        grid = np.stack(grid).reshape(3, -1, order='F').T
+        n = igl.per_vertex_normals(self.v1, self.f1)
+        a = np.ones((n.shape[0], )) / n.shape[0]
+        
+        wn = igl.fast_winding_number_for_points(self.v1, n, a, grid)
+        self.assertTrue(wn.flags.c_contiguous)
+        self.assertTrue(wn.shape == (grid.shape[0], ))
+        self.assertTrue(wn.dtype == np.float)
 
     def test_fast_winding_number_for_meshes(self):
-        pass
+        xs = np.linspace(-5.0, 5.0, 10)
+        grid = np.meshgrid(xs, xs, xs, indexing='ij')
+        grid = np.stack(grid).reshape(3, -1, order='F').T
+        
+        wn = igl.fast_winding_number_for_meshes(self.v1, self.f1, grid)
+        self.assertTrue(wn.flags.c_contiguous)
+        self.assertTrue(wn.shape == (grid.shape[0], ))
+        self.assertTrue(wn.dtype == np.float)
 
     def test_flip_avoiding_line_search(self):
         def fun(v):
