@@ -2298,17 +2298,21 @@ class TestBasic(unittest.TestCase):
         pass
 
     def test_flip_avoiding_line_search(self):
-        #def fun(v):
-        #    return 0.5
-        #energy, vr = igl.flip_avoiding_line_search(self.f1, self.v1, -self.v1, fun, 10.0)
+        def fun(v):
+           return 0.5
+        energy, vr = igl.flip_avoiding_line_search(self.f1, self.v1, -self.v1, fun, 10.0)
         # TODO: fix function assertion fail
+        pass
+
+    def test_edge_flaps(self):
+        # TODO
+        e, emap, ef, ei = igl.edge_flaps(self.f2)
         pass
 
     def test_circulation(self):
         pass
-    #    difficult data
-    #    _, e, emap = igl.crouzeix_raviart_cotmatrix(self.v1, self.f1)
-    #    ret = igl.circulation(0, False, emap, e, e)
+    #    e, emap, ef, ei = igl.edge_flaps(self.f2)
+    #    ret = igl.circulation(0, False, emap, ef, ei)
     #    self.assertTrue(type(ret) == list)
     #    self.assertTrue(type(ret[0]) == int)
 

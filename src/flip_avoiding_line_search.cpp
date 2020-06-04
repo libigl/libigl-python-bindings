@@ -64,6 +64,16 @@ npe_arg(cur_energy, double)
 npe_begin_code()
   assert_shapes_match(cur_v, dst_v, "cur_v", "dst_v");
   assert_valid_tet_or_tri_mesh_faces(f);
+  if(f.cols() == 3)
+  {
+    assert_cols_equals(cur_v, 2, "cur_v");
+    assert_cols_equals(dst_v, 2, "dst_v");
+  }
+  else
+  {
+    assert_cols_equals(cur_v, 3, "cur_v");
+    assert_cols_equals(dst_v, 3, "dst_v");
+  }
 
   //TODO: remove __copy
   Eigen::MatrixXi f_copy = f.template cast<int>();
