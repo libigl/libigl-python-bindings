@@ -22,4 +22,4 @@ install:
   - pip install scipy
 script:
   - python setup.py build --debug install
-  - python tests/test_basic.py
+  - python tests/test_basic.py -v
