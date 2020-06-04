@@ -2203,9 +2203,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(len(cuts) == 9)
 
     def test_iterative_closest_point(self):
-        # This crashes in libigl
-        #r, t = igl.iterative_closest_point(self.v, self.f, self.v1, self.f1, 10, 20)
-        r, t = igl.iterative_closest_point(self.v, self.f, self.v1, self.f1, 3, 20)
+        r, t = igl.iterative_closest_point(self.v1, self.f1, self.v1, self.f1, 3, 20)
         self.assertEqual(r.shape, (3, 3))
         self.assertEqual(t.shape, (3,))
         self.assertTrue(r.flags.c_contiguous)
@@ -2236,9 +2234,8 @@ class TestBasic(unittest.TestCase):
 
     def test_quad_grid(self):
         v, q, e = igl.quad_grid(3, 3)
-        self.assertTrue(v.shape == (3*3, 2)) # TODO: IGL Function has wrong arguments, fix in igl
+        self.assertTrue(v.shape == (3*3, 2))
         self.assertTrue(q.shape == (2*2, 4))
-        print(v, q, e)
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(q.flags.c_contiguous)
         self.assertTrue(v.dtype == np.float)

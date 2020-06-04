@@ -47,7 +47,7 @@ npe_begin_code()
   EigenDenseFloat gv;
   EigenDenseInt gf;
   EigenDenseInt e;
-  igl::quad_grid(nx, ny, gv, gf);
+  igl::quad_grid(nx, ny, gv, gf, e);
   return std::make_tuple(npe::move(gv), npe::move(gf), npe::move(e));
 
 npe_end_code()
