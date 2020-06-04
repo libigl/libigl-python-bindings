@@ -2326,9 +2326,16 @@ class TestBasic(unittest.TestCase):
         pass
 
     def test_edge_flaps(self):
-        # TODO
         e, emap, ef, ei = igl.edge_flaps(self.f2)
-        pass
+        self.assertTrue(e.shape[1] == ef.shape[1] == ei.shape[1] == 2)
+        self.assertTrue(e.shape[0] == ef.shape[0] == ei.shape[0])
+        self.assertTrue(emap.shape[0] == self.f2.shape[0] * 3)
+        self.assertTrue(np.min(e) >= 0 and np.max(e) < self.v2.shape[0])
+        self.assertTrue(e.flags.c_contiguous)
+        self.assertTrue(emap.flags.c_contiguous)
+        self.assertTrue(ef.flags.c_contiguous)
+        self.assertTrue(ei.flags.c_contiguous)
+        self.assertTrue(e.dtype == emap.dtype == ef.dtype == ei.dtype == np.int)
 
     def test_circulation(self):
         pass
