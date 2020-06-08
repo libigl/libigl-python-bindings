@@ -2361,7 +2361,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(e.flags.c_contiguous)
         self.assertTrue(emap.flags.c_contiguous)
         self.assertTrue(ue.flags.c_contiguous)
-        self.assertTrue(e.dtype == emap.dtype == np.int)
+        self.assertTrue(e.dtype == emap.dtype == self.f1.dtype)
 
 
 if __name__ == '__main__':
