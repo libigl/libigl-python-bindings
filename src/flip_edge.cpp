@@ -46,11 +46,11 @@ Examples
 npe_function(flip_edge)
 npe_doc(ds_flip_edge)
 
-npe_arg(f, dense_long)
+npe_arg(f, dense_longlong)
 npe_arg(e, npe_matches(f))
 npe_arg(u_e, npe_matches(f))
 npe_arg(emap, npe_matches(f))
-npe_arg(u_e2_e, std::vector<std::vector<long> >)
+npe_arg(u_e2_e, std::vector<std::vector<typename EigenDenseInt::Scalar> >)
 npe_arg(uei, size_t)
 
 npe_begin_code()
