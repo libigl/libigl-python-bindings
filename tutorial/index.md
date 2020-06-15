@@ -16,7 +16,7 @@ All these functionalities are now available trough python and can be easily inst
 conda install -c conda-forge igl
 ```
 
-We provide a complete jupyter version of the [tutorial](tutorials.ipynb) and the full [documentation](igl_docs.md).
+We provide a complete jupyter version of the tutorials and the full [documentation](igl_docs.md).
 
 The full tutorial can be interactively run trough mybinder
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/libigl/libigl-python-bindings/master?filepath=tutorial%2Ftutorials.ipynb)

@@ -50,9 +50,17 @@ plugins:
       execute: true
       preamble: "tutorial/plot_to_md.py"
       timeout: -1
+  - exclude:
+      glob:
+        - data/*
+        - "tutorials.ipynb"
 extra_javascript:
   - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
 nav:
   - Home: index.md
-  - Tutorial: tutorials.ipynb
+  - Tutorial:
+    - Chapter 0: tut-chapter0.ipynb
+    - Chapter 1: tut-chapter1.ipynb
+    - Chapter 2: tut-chapter2.ipynb
+    - Chapter 3: tut-chapter3.ipynb
   - Docs: igl_docs.md
