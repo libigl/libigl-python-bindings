@@ -39,7 +39,7 @@ None
 Examples
 --------
 % Mesh in (V,F)
-[SV,SVI,SVJ] = remove_duplicate_vertices(V,F,1e-7);
+[SV,SVI,SVJ,SF] = remove_duplicate_vertices(V,F,1e-7);
 % remap faces
 SF = SVJ(F);
   
