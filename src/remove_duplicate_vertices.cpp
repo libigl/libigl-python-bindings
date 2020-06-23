@@ -26,7 +26,7 @@ Returns
 SV  #SV by dim new list of vertex positions
 SVI #V by 1 list of indices so SV = V(SVI,:) 
 SVJ #SV by 1 list of indices so V = SV(SVJ,:)
-Wrapper that also remaps given faces (F) --> (SF) so that SF index SV
+SF  #SF by dim new list of faces so SF = F(SVJ,:)
 
 See also
 --------
@@ -39,7 +39,7 @@ None
 Examples
 --------
 % Mesh in (V,F)
-[SV,SVI,SVJ] = remove_duplicate_vertices(V,1e-7);
+[SV,SVI,SVJ,SF] = remove_duplicate_vertices(V,F,1e-7);
 % remap faces
 SF = SVJ(F);
   
