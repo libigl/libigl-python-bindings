@@ -26,7 +26,7 @@ Returns
 SV  #SV by dim new list of vertex positions
 SVI #V by 1 list of indices so SV = V(SVI,:) 
 SVJ #SV by 1 list of indices so V = SV(SVJ,:)
-SF  #SF by 1 dim new list of faces so SF = F(SVJ,:)
+SF  #SF by dim new list of faces so SF = F(SVJ,:)
 
 See also
 --------
