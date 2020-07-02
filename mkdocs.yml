@@ -67,3 +67,4 @@ nav:
     - Chapter 5: tut-chapter5.ipynb
     - Chapter 6: tut-chapter6.ipynb
   - Docs: igl_docs.md
+  - Contributing: contributing.md
