@@ -551,6 +551,12 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(l.dtype, self.f.dtype)
         self.assertTrue(l.flags.c_contiguous)
 
+    def test_all_boundary_loop(self):
+        l = igl.all_boundary_loop(self.f)
+        self.assertEqual(type(l), type([]))
+        self.assertTrue(len(l) > 0)
+
+
     def test_bounding_box_diagonal(self):
         length = igl.bounding_box_diagonal(self.v1)
         self.assertEqual(type(length), float)
@@ -2253,7 +2259,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(ci.flags.c_contiguous)
         self.assertTrue(ci.dtype == np.int)
         self.assertTrue(ci.shape[1] == 8)
-        
+
     def test_topological_hole_fill(self):
         f = self.f1
         b = np.array(range(10))
@@ -2278,9 +2284,9 @@ class TestBasic(unittest.TestCase):
        eye = np.eye(4)
        viewport = np.array([0., 0., 100., 100.])
        p = np.array([15.0, 20.0, 13.0])
-       d = np.array([0.1, 0.2, 1.0]) 
+       d = np.array([0.1, 0.2, 1.0])
        t, z = igl.unproject_on_line(pos, eye, viewport, p, d)
-       
+
        self.assertTrue(z.flags.c_contiguous)
        self.assertTrue(z.shape == (3, ))
        self.assertTrue(z.dtype == np.float)
@@ -2291,18 +2297,18 @@ class TestBasic(unittest.TestCase):
        viewport = np.array([0., 0., 100., 100.])
        p = np.array([1.0, 2.0, 3.0, 2.0])
        z = igl.unproject_on_plane(pos, eye, viewport, p)
-       
+
        self.assertTrue(z.flags.c_contiguous)
        self.assertTrue(z.shape == (3, ))
        self.assertTrue(z.dtype == np.float)
 
-    def test_fast_winding_number_for_points(self):       
+    def test_fast_winding_number_for_points(self):
         xs = np.linspace(-5.0, 5.0, 10)
         grid = np.meshgrid(xs, xs, xs, indexing='ij')
         grid = np.stack(grid).reshape(3, -1, order='F').T
         n = igl.per_vertex_normals(self.v1, self.f1)
         a = np.ones((n.shape[0], )) / n.shape[0]
-        
+
         wn = igl.fast_winding_number_for_points(self.v1, n, a, grid)
         self.assertTrue(wn.flags.c_contiguous)
         self.assertTrue(wn.shape == (grid.shape[0], ))
@@ -2312,7 +2318,7 @@ class TestBasic(unittest.TestCase):
         xs = np.linspace(-5.0, 5.0, 10)
         grid = np.meshgrid(xs, xs, xs, indexing='ij')
         grid = np.stack(grid).reshape(3, -1, order='F').T
-        
+
         wn = igl.fast_winding_number_for_meshes(self.v1, self.f1, grid)
         self.assertTrue(wn.flags.c_contiguous)
         self.assertTrue(wn.shape == (grid.shape[0], ))
