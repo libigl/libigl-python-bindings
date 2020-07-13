@@ -24,6 +24,7 @@ epsilon   minimal distance to consider two vertices identical
 Returns
 -------
 NV, NF    new mesh without duplicate vertices
+I         counts of duplicates for each input face
 
 See also
 --------
