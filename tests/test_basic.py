@@ -711,6 +711,12 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(n.dtype, self.v1.dtype)
         self.assertTrue(n.flags.c_contiguous)
 
+    def test_per_corner_normals(self):
+        n = igl.per_corner_normals(self.v1, self.f1, 80)
+        self.assertEqual(n.shape, (self.f1.shape[0]*3, 3))
+        self.assertEqual(n.dtype, self.v1.dtype)
+        self.assertTrue(n.flags.c_contiguous)
+
     def test_per_vertex_attribute_smoothing(self):
         aout = igl.per_vertex_attribute_smoothing(self.v1, self.f1)
         self.assertEqual(aout.shape, self.v1.shape)
