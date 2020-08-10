@@ -914,6 +914,16 @@ class TestBasic(unittest.TestCase):
         arap = igl.ARAP(v, f, 2, np.zeros((0)))
         uva = arap.solve(np.zeros((0, 0)), uv)
 
+    def test_arap4(self):
+        v, f = igl.read_triangle_mesh(os.path.join(self.test_path, "camelhead.off"))
+        b = igl.boundary_loop(f)
+        thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
+        bc = np.concatenate([np.cos(thetas), np.sin(thetas), np.zeros_like(thetas)], axis=1)
+        uv_initial_guess = igl.harmonic_weights(v, f, b, bc, 1)
+
+        arap = igl.ARAP(v, f, 3, b, igl.ARAP_ENERGY_TYPE_SPOKES)
+        uva = arap.solve(bc, uv_initial_guess)
+
     def test_slim(self):
         v, f, _ = igl.read_off(os.path.join(self.test_path, "camelhead.off"))
         b = igl.boundary_loop(f)

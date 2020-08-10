@@ -12,7 +12,7 @@ namespace py = pybind11;
 PYBIND11_MODULE(pyigl_classes, m)
 {
   py::class_<igl::ARAPData>(m, "ARAP")
-      .def(py::init([](Eigen::MatrixXd &v, Eigen::MatrixXi &f, int dim, Eigen::MatrixXi &b) {
+      .def(py::init([](Eigen::MatrixXd &v, Eigen::MatrixXi &f, int dim, Eigen::MatrixXi &b, const int energy_type) {
              if (dim == 3)
              {
                assert_valid_tet_or_tri_mesh(v, f);
@@ -25,8 +25,14 @@ PYBIND11_MODULE(pyigl_classes, m)
              {
                throw pybind11::value_error("Invalid dimension must be 2 or 3 but got " + std::to_string(dim));
              }
+             if (energy_type >= igl::NUM_ARAP_ENERGY_TYPES)
+             {
+                 throw pybind11::value_error("Invalid Energy Type. Must be one of igl.ARAP_ENERGY_TYPE_*");
+             }
 
              std::unique_ptr<igl::ARAPData> adata = std::make_unique<igl::ARAPData>();
+             adata->energy = static_cast<igl::ARAPEnergyType>(energy_type);
+
              if (b.cols() == 1)
                igl::arap_precomputation(v, f, dim, b, *adata);
              else if (b.rows() == 1)
@@ -35,7 +41,7 @@ PYBIND11_MODULE(pyigl_classes, m)
                throw pybind11::value_error("Invalid dimension for b, must be a vector, got " + std::to_string(b.rows()) + "x" + std::to_string(b.cols()));
              return adata;
            }),
-           py::arg("v"), py::arg("f"), py::arg("dim"), py::arg("b"))
+          py::arg("v"), py::arg("f"), py::arg("dim"), py::arg("b"), py::arg("energy_type") = 3)
       .def(
           "solve", [](igl::ARAPData &self, Eigen::MatrixXd &bc, Eigen::MatrixXd &initial_guess) {
             if (bc.size() > 0)
