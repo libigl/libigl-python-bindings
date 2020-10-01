@@ -1071,8 +1071,8 @@ Assumes the input mesh have all -intersection resolved.  See ``igl::cgal::remesh
 |Returns| curves  An array of arries of unique edge indices. |
 
 
-### face_components
-**`face_components(f: array)`**
+### facet_components
+**`facet_components(f: array)`**
 
 Compute connected components of facets based on edge-edge adjacency,
 
@@ -2912,7 +2912,7 @@ Compute connected components of the vertices of a mesh given the mesh' face indi
 |-|-|
 |Parameters| f : \#f x dim array of face indices |
 |Returns| An array of component ids (starting with 0) |
-|See also| vertex_components_from_adjacency_matrix</br>face_components_from_faces |
+|See also| vertex_components_from_adjacency_matrix</br>facet_components |
 
 
 ### vertex_components_from_adjacency_matrix
@@ -2925,7 +2925,7 @@ matrix.
 |-|-|
 |Parameters| a : n by n sparse adjacency matrix |
 |Returns| A tuple (c, counts) where c is an array of component ids (starting with 0)</br>and counts is a \#components array of counts for each component |
-|See also| vertex_components</br>face_components |
+|See also| vertex_components</br>facet_components |
 
 
 ### vertex_triangle_adjacency

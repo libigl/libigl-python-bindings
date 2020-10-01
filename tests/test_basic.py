@@ -307,8 +307,8 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(c.shape[0], self.v1.shape[0])
         self.assertTrue(c.flags.c_contiguous)
 
-    def test_face_components(self):
-        c = igl.face_components(self.f1)
+    def test_facet_components(self):
+        c = igl.facet_components(self.f1)
         self.assertEqual(c.shape, (self.f1.shape[0],))
         self.assertTrue(np.array_equal(c, np.zeros_like(c)))
         self.assertTrue(c.flags.c_contiguous)
