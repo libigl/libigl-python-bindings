@@ -1134,17 +1134,42 @@ class TestBasic(unittest.TestCase):
         n = 16
         g = np.mgrid[min_v[0]:max_v[0]:complex(n), min_v[1]:max_v[1]:complex(n), min_v[2]:max_v[2]:complex(n)]
         p = np.vstack(list(map(np.ravel, g))).T
+        
+        # test default type
         s, i, c = igl.signed_distance(p, self.v1, self.f1)
 
         self.assertEqual(s.shape[0], p.shape[0])
         self.assertEqual(i.shape[0], p.shape[0])
         self.assertEqual(c.shape, p.shape)
 
+        # test return_normals, default changes to psuedonormal
         s, i, c, n = igl.signed_distance(p, self.v1, self.f1, return_normals=True)
         self.assertEqual(s.shape[0], p.shape[0])
         self.assertEqual(i.shape[0], p.shape[0])
         self.assertEqual(c.shape, p.shape)
         self.assertEqual(n.shape, p.shape)
+
+        signTypes = [
+                        igl.SIGNED_DISTANCE_TYPE_PSEUDONORMAL, 
+                        igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, 
+                        igl.SIGNED_DISTANCE_TYPE_DEFAULT, 
+                        igl.SIGNED_DISTANCE_TYPE_UNSIGNED, 
+                        igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER
+        ]
+
+        # test each specific type. 
+        for signType in signTypes:
+            s, i, c, n = igl.signed_distance(p, self.v1, self.f1, sign_type=signType)
+            self.assertEqual(s.shape[0], p.shape[0])
+            self.assertEqual(i.shape[0], p.shape[0])
+            self.assertEqual(c.shape, p.shape)
+            self.assertEqual(n.shape, p.shape)
+
+        # ensure error raised when trying param other than pseudonormal for normals
+        self.assertRaises(
+            igl.signed_distance(p, self.v1, self.f1, sign_type=igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, return_normals=True)
+        )
+
 
     def test_offset_surface(self):
         sv, sf, gv, side, so = igl.offset_surface(self.v1, self.f1, 1, 10, igl.SIGNED_DISTANCE_TYPE_DEFAULT)
