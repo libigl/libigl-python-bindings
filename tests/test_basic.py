@@ -2373,6 +2373,23 @@ class TestBasic(unittest.TestCase):
         #val = igl.edge_collapse_is_valid(0, self.f2, e, emap, ef, ei)
         #print(val)
 
+    def test_flip_edge(self):
+        e, ue, emap, ue2e = igl.unique_edge_map(self.f1)
+        f, e, ue, emap, ue2e = igl.flip_edge(self.f1, e, ue, emap, ue2e, 1)
+
+        self.assertTrue(f.shape == self.f1.shape)
+        self.assertTrue(e.shape[1] == ue.shape[1] == np.array(ue2e).shape[1] == 2)
+        self.assertTrue(emap.shape[0] == self.f1.shape[0] * 3)
+
+        self.assertTrue(np.min(e) >= 0 and np.max(e) < self.v2.shape[0])
+
+        self.assertTrue(e.flags.c_contiguous)
+        self.assertTrue(emap.flags.c_contiguous)
+        self.assertTrue(ue.flags.c_contiguous)
+
+        self.assertTrue(f.dtype == e.dtype == ue.dtype == emap.dtype == self.f1.dtype)
+        self.assertTrue(np.array(ue2e).dtype == self.f1.dtype)
+
 
 if __name__ == '__main__':
     unittest.main()
