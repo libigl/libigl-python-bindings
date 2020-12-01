@@ -1159,16 +1159,16 @@ class TestBasic(unittest.TestCase):
 
         # test each specific type. 
         for signType in signTypes:
-            s, i, c, n = igl.signed_distance(p, self.v1, self.f1, sign_type=signType)
+            s, i, c = igl.signed_distance(p, self.v1, self.f1, sign_type=signType)
             self.assertEqual(s.shape[0], p.shape[0])
             self.assertEqual(i.shape[0], p.shape[0])
             self.assertEqual(c.shape, p.shape)
             self.assertEqual(n.shape, p.shape)
 
         # ensure error raised when trying param other than pseudonormal for normals
-        self.assertRaises(
+        with self.assertRaises(ValueError):
             igl.signed_distance(p, self.v1, self.f1, sign_type=igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, return_normals=True)
-        )
+        
 
 
     def test_offset_surface(self):
