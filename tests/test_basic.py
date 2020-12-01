@@ -1168,6 +1168,10 @@ class TestBasic(unittest.TestCase):
         # ensure error raised when trying param other than pseudonormal for normals
         with self.assertRaises(ValueError):
             igl.signed_distance(p, self.v1, self.f1, sign_type=igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, return_normals=True)
+
+        # ensure error raise when invalid param given 
+        with self.assertRaises(ValueError):
+            igl.signed_distance(p, self.v1, self.f1, sign_type=345)
         
 
 
