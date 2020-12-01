@@ -35,7 +35,7 @@ Notes
 
 Examples
 --------
->>> S, I, C = signed_distance(P, V, F, sign_type=SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER, return_normals=False)
+>>> S, I, C = signed_distance(P, V, F, sign_type=igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER, return_normals=False)
 >>> S, I, C, N = signed_distance(P, V, F, return_normals=True)
 
 )igl_Qu8mg5v7";
