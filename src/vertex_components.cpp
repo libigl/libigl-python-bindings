@@ -17,7 +17,7 @@ An array of component ids (starting with 0)
 See also
 --------
 vertex_components_from_adjacency_matrix
-face_components_from_faces
+facet_components
 
 Notes
 -----
@@ -54,7 +54,7 @@ and counts is a #components array of counts for each component
 See also
 --------
 vertex_components
-face_components
+facet_components
 
 Notes
 -----
