@@ -35,7 +35,8 @@ Notes
 
 Examples
 --------
->>> S, I, C = signed_distance(P, V, F, sign_type=SIGNED_DISTANCE_TYPE_PSEUDONORMAL, return_normals=False)
+>>> S, I, C = signed_distance(P, V, F, sign_type=SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER, return_normals=False)
+>>> S, I, C, N = signed_distance(P, V, F, return_normals=True)
 
 )igl_Qu8mg5v7";
 
@@ -45,12 +46,26 @@ npe_doc(ds_signed_distance)
 npe_arg(p, dense_float, dense_double)
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long, dense_longlong)
-npe_default_arg(sign_type, int, int(igl::SIGNED_DISTANCE_TYPE_DEFAULT)) 
+npe_default_arg(sign_type, int, int(igl::SIGNED_DISTANCE_TYPE_DEFAULT))
+npe_default_arg(return_normals, bool, false)
 
 npe_begin_code()
     assert_cols_equals(p, 3, "p");
     assert_nonzero_rows(p, "p");
     assert_valid_3d_tri_mesh(v, f, "v", "f");
+
+    // ensure valid sign_type given
+    if ((sign_type < 0) || (sign_type >= igl::NUM_SIGNED_DISTANCE_TYPE)) {
+        //NOTE: compiler concats adjacent string literals. 
+        throw pybind11::value_error(
+            "Parameter sign_type invalid, must be one of:"
+            "\n\t0: Use fast pseudo-normal test [Bærentzen & Aanæs 2005]"
+            "\n\t1: Use winding number [Jacobson, Kavan Sorking-Hornug 2013]"
+            "\n\t2: Default (pseudo-normal)"
+            "\n\t3: Unsigned"
+            "\n\t4: Use Fast winding number [Barill, Dickson, Schmidt, Levin, Jacobson 2018]\n"
+        );
+    }
 
     //Ensure if normals requested, sign type is also SIGNED_DISTANCE_TYPE_PSEUDONORMAL
     if (return_normals) {
