@@ -1142,13 +1142,6 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(i.shape[0], p.shape[0])
         self.assertEqual(c.shape, p.shape)
 
-        # test return_normals, default changes to psuedonormal
-        s, i, c, n = igl.signed_distance(p, self.v1, self.f1, return_normals=True)
-        self.assertEqual(s.shape[0], p.shape[0])
-        self.assertEqual(i.shape[0], p.shape[0])
-        self.assertEqual(c.shape, p.shape)
-        self.assertEqual(n.shape, p.shape)
-
         signTypes = [
             igl.SIGNED_DISTANCE_TYPE_PSEUDONORMAL, 
             igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, 
@@ -1163,7 +1156,18 @@ class TestBasic(unittest.TestCase):
             self.assertEqual(s.shape[0], p.shape[0])
             self.assertEqual(i.shape[0], p.shape[0])
             self.assertEqual(c.shape, p.shape)
-            self.assertEqual(n.shape, p.shape)
+            self.assertTrue(s.flags.c_contiguous)
+            self.assertTrue(i.flags.c_contiguous)
+            self.assertTrue(c.flags.c_contiguous)
+
+            self.assertTrue(s.dtype == c.dtype == np.float64)
+            self.assertTrue(i.dtype == np.int)
+
+        # test return_normals, default changes to psuedonormal
+        s, i, c, n = igl.signed_distance(p, self.v1, self.f1, return_normals=True)
+        self.assertEqual(n.shape, p.shape)
+        self.assertTrue(n.flags.c_contiguous)
+        self.assertTrue(n.dtype == np.float64)
 
         # ensure error raised when trying param other than pseudonormal for normals
         with self.assertRaises(ValueError):
@@ -1172,6 +1176,7 @@ class TestBasic(unittest.TestCase):
         # ensure error raise when invalid param given 
         with self.assertRaises(ValueError):
             igl.signed_distance(p, self.v1, self.f1, sign_type=345)
+
         
 
 
