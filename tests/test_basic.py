@@ -1160,8 +1160,9 @@ class TestBasic(unittest.TestCase):
             self.assertTrue(i.flags.c_contiguous)
             self.assertTrue(c.flags.c_contiguous)
 
-            self.assertTrue(s.dtype == c.dtype == np.float64)
-            self.assertTrue(i.dtype == np.int)
+            self.assertTrue(s.dtype == np.float64)
+            self.assertTrue(c.dtype == self.v1.dtype)
+            self.assertTrue(i.dtype == self.f1.dtype)
 
         # test return_normals, default changes to psuedonormal
         s, i, c, n = igl.signed_distance(p, self.v1, self.f1, return_normals=True)
