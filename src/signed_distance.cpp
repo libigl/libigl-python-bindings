@@ -55,7 +55,7 @@ npe_begin_code()
     assert_valid_3d_tri_mesh(v, f, "v", "f");
 
     // ensure valid sign_type given
-    if ((sign_type < 0) || (sign_type >= igl::NUM_SIGNED_DISTANCE_TYPE)) {
+    if ((sign_type < 0) || (sign_type > igl::NUM_SIGNED_DISTANCE_TYPE)) {
         //NOTE: compiler concats adjacent string literals. 
         throw pybind11::value_error(
             "Parameter sign_type invalid, must be one of:"

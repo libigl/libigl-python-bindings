@@ -1150,11 +1150,11 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(n.shape, p.shape)
 
         signTypes = [
-                        igl.SIGNED_DISTANCE_TYPE_PSEUDONORMAL, 
-                        igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, 
-                        igl.SIGNED_DISTANCE_TYPE_DEFAULT, 
-                        igl.SIGNED_DISTANCE_TYPE_UNSIGNED, 
-                        igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER
+            igl.SIGNED_DISTANCE_TYPE_PSEUDONORMAL, 
+            igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, 
+            igl.SIGNED_DISTANCE_TYPE_DEFAULT, 
+            igl.SIGNED_DISTANCE_TYPE_UNSIGNED, 
+            igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER
         ]
 
         # test each specific type. 
