@@ -36,9 +36,7 @@ None
 Examples
 --------
 % Mesh in (V,F)
-[SV,SVI, SF] = remove_duplicate_vertices(V,F,1e-7);
-% remap faces
-SF = SVJ(F);
+[SV,SVI, I] = remove_duplicate(V,F,1e-7)
 
 )igl_Qu8mg5v7";
 
