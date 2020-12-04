@@ -40,7 +40,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
   assert_valid_23d_tri_mesh(v, f);
-  const auto res = igl::is_border_vertex(v, f);
+  const auto res = igl::is_border_vertex(f);
   return res;
 
 npe_end_code()

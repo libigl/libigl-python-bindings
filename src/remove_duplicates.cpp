@@ -1,34 +1,33 @@
-// TODO: __example
-
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 
-
-
-
-
-
-#include <igl/remove_duplicates.h>
+#include <igl/remove_duplicate_vertices.h>
 
 
 const char* ds_remove_duplicates = R"igl_Qu8mg5v7(
 
-Merge the duplicate vertices from V, fixing the topology accordingly
+REMOVE_DUPLICATES Remove duplicate vertices upto a uniqueness
+  tolerance (epsilon)
 
 Parameters
 ----------
-V,F       mesh description
-epsilon   minimal distance to consider two vertices identical
+V  #V by dim list of vertex positions
+F  #F by 3 list of triangle indices
+epsilon  uniqueness tolerance (significant digit), can probably think of
+  this as a tolerance on L1 distance
+
 
 Returns
 -------
-NV, NF    new mesh without duplicate vertices
-I         counts of duplicates for each input face
+SV  #SV by dim new list of vertex positions
+SF  #SF by dim new list of faces so SF = F(SVJ,:)
+I   #SF counts of duplicates for each input face (TODO: I don
+t think this is true!)
 
 See also
 --------
-
+remove_duplicate_vertices
 
 Notes
 -----
@@ -36,6 +35,10 @@ None
 
 Examples
 --------
+% Mesh in (V,F)
+[SV,SVI, SF] = remove_duplicate_vertices(V,F,1e-7);
+% remap faces
+SF = SVJ(F);
 
 )igl_Qu8mg5v7";
 
@@ -50,18 +53,15 @@ npe_arg(epsilon, double)
 npe_begin_code()
 
   assert_valid_tet_or_tri_mesh_23d(v, f);
-  // remove __copy
+  assert_nonzero_rows(v, "v");
+
   Eigen::MatrixXd v_copy = v.template cast<double>();
-  Eigen::MatrixXi f_copy = f.template cast<int>();
-  Eigen::MatrixXd nv;
-  Eigen::MatrixXi nf;
-  Eigen::VectorXi i;
-  igl::remove_duplicates(v_copy, f_copy, nv, nf, i, epsilon);
-  EigenDenseFloat nv_row_major = nv;
-  EigenDenseInt nf_row_major = nf.template cast<typename EigenDenseInt::Scalar>();
-  // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
-  Eigen::Matrix<typename EigenDenseInt::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor> i_row_major = i.template cast<typename EigenDenseInt::Scalar>();
-  return std::make_tuple(npe::move(nv_row_major), npe::move(nf_row_major), npe::move(i_row_major));
+  Eigen::MatrixXd sv;
+  EigenDenseLike<npe_Matrix_f> svi, svj, sf;
+  igl::remove_duplicate_vertices(v_copy, f, epsilon, sv, svi, svj, sf);
+  EigenDenseFloat sv_row_major = sv;
+
+  return std::make_tuple(npe::move(sv_row_major), npe::move(sf), npe::move(svi));
 
 npe_end_code()
 

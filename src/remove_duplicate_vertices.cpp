@@ -2,11 +2,6 @@
 #include <npe.h>
 #include <typedefs.h>
 
-
-
-
-
-
 #include <igl/remove_duplicate_vertices.h>
 
 const char* ds_remove_duplicate_vertices = R"igl_Qu8mg5v7(
@@ -17,6 +12,7 @@ REMOVE_DUPLICATE_VERTICES Remove duplicate vertices upto a uniqueness
 Parameters
 ----------
 V  #V by dim list of vertex positions
+F  #F by 3 list of triangle indices
 epsilon  uniqueness tolerance (significant digit), can probably think of
   this as a tolerance on L1 distance
 
