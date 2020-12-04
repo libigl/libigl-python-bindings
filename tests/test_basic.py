@@ -767,14 +767,13 @@ class TestBasic(unittest.TestCase):
 
     def test_remove_duplicates(self):
         epsilon = 1e-6
-        nv, nf, i = igl.remove_duplicates(self.v1, self.f1, epsilon)
+        nv, nf= igl.remove_duplicates(self.v1, self.f1, epsilon)
         self.assertEqual(nv.dtype, self.v1.dtype)
         self.assertEqual(nf.dtype, self.f1.dtype)
         self.assertTrue(nv.shape[0] > 0 and nv.shape[1] > 0)
         self.assertTrue(nf.shape[0] > 0)
         self.assertTrue(nv.flags.c_contiguous)
         self.assertTrue(nf.flags.c_contiguous)
-        self.assertTrue(i.flags.c_contiguous)
 
     def test_remove_unreferenced(self):
         nv, nf, i, j = igl.remove_unreferenced(self.v1, self.f1)
@@ -1134,17 +1133,52 @@ class TestBasic(unittest.TestCase):
         n = 16
         g = np.mgrid[min_v[0]:max_v[0]:complex(n), min_v[1]:max_v[1]:complex(n), min_v[2]:max_v[2]:complex(n)]
         p = np.vstack(list(map(np.ravel, g))).T
+
+        # test default type
         s, i, c = igl.signed_distance(p, self.v1, self.f1)
 
         self.assertEqual(s.shape[0], p.shape[0])
         self.assertEqual(i.shape[0], p.shape[0])
         self.assertEqual(c.shape, p.shape)
 
+        signTypes = [
+            igl.SIGNED_DISTANCE_TYPE_PSEUDONORMAL,
+            igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER,
+            igl.SIGNED_DISTANCE_TYPE_DEFAULT,
+            igl.SIGNED_DISTANCE_TYPE_UNSIGNED,
+            igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER
+        ]
+
+        # test each specific type.
+        for signType in signTypes:
+            s, i, c = igl.signed_distance(p, self.v1, self.f1, sign_type=signType)
+            self.assertEqual(s.shape[0], p.shape[0])
+            self.assertEqual(i.shape[0], p.shape[0])
+            self.assertEqual(c.shape, p.shape)
+            self.assertTrue(s.flags.c_contiguous)
+            self.assertTrue(i.flags.c_contiguous)
+            self.assertTrue(c.flags.c_contiguous)
+
+            self.assertTrue(s.dtype == np.float64)
+            self.assertTrue(c.dtype == self.v1.dtype)
+            self.assertTrue(i.dtype == self.f1.dtype)
+
+        # test return_normals, default changes to psuedonormal
         s, i, c, n = igl.signed_distance(p, self.v1, self.f1, return_normals=True)
-        self.assertEqual(s.shape[0], p.shape[0])
-        self.assertEqual(i.shape[0], p.shape[0])
-        self.assertEqual(c.shape, p.shape)
         self.assertEqual(n.shape, p.shape)
+        self.assertTrue(n.flags.c_contiguous)
+        self.assertTrue(n.dtype == np.float64)
+
+        # ensure error raised when trying param other than pseudonormal for normals
+        with self.assertRaises(ValueError):
+            igl.signed_distance(p, self.v1, self.f1, sign_type=igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, return_normals=True)
+
+        # ensure error raise when invalid param given
+        with self.assertRaises(ValueError):
+            igl.signed_distance(p, self.v1, self.f1, sign_type=345)
+
+
+
 
     def test_offset_surface(self):
         sv, sf, gv, side, so = igl.offset_surface(self.v1, self.f1, 1, 10, igl.SIGNED_DISTANCE_TYPE_DEFAULT)

@@ -1,11 +1,5 @@
 #include <npe.h>
 #include <typedefs.h>
-
-
-
-
-
-
 #include <igl/readMSH.h>
 
 const char *ds_read_msh = R"igl_Qu8mg5v7(
@@ -26,7 +20,6 @@ T  #T by ss list of 3D ss-element indices into V (e.g., ss=4 for tets)
 See also
 --------
 
-
 Notes
 -----
 None
@@ -44,25 +37,26 @@ npe_arg(filename, std::string)
 npe_default_arg(dtypef, npe::dtype, "float")
 
 npe_begin_code()
-  if (dtypef.type() == npe::type_f32) {
-    EigenDenseF32 v;
-    EigenDenseInt t;
-    bool ret = igl::readMSH(filename, v, t);
-    if (!ret) {
-      throw std::invalid_argument("File '" + filename + "' not found.");
-    }
-    return std::make_tuple(npe::move(v), npe::move(t));
-  } else if (dtypef.type() == npe::type_f64) {
-    EigenDenseF64 v;
-    EigenDenseInt t;
-    bool ret = igl::readMSH(filename, v, t);
-    if (!ret) {
-      throw std::invalid_argument("File '" + filename + "' not found.");
-    }
-    return std::make_tuple(npe::move(v), npe::move(t));
-  } else {
-    throw pybind11::type_error("Only float32 and float64 dtypes are supported.");
+  Eigen::MatrixXd v;
+  Eigen::MatrixXi t;
+
+  //NOTE: readMSH only support vertices as matrix of doubles. We instead cast the output accordingly.
+  bool ret = igl::readMSH(filename, v, t);
+  if (!ret) {
+    throw std::invalid_argument("File '" + filename + "' not found.");
   }
+  
+  EigenDenseInt t_row_maj = t.template cast<typename EigenDenseInt::Scalar>();
+
+  if (dtypef.type() == npe::type_f32) {
+    EigenDenseF32 v_row_maj = v.template cast <typename EigenDenseF32::Scalar>();
+    return std::make_tuple(npe::move(v_row_maj ), npe::move(t_row_maj));
+  } else if (dtypef.type() == npe::type_f64) {
+    EigenDenseF64 v_row_maj = v.template cast <typename EigenDenseF64::Scalar>();
+    return std::make_tuple(npe::move(v_row_maj ), npe::move(t_row_maj));
+  }
+  
+  throw pybind11::type_error("Only float32 and float64 dtypes are supported.");
 
 npe_end_code()
 
