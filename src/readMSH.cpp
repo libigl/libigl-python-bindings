@@ -36,7 +36,6 @@ npe_doc(ds_read_msh)
 npe_arg(filename, std::string)
 npe_default_arg(dtypef, npe::dtype, "float")
 
-// change induced by: https://github.com/libigl/libigl/commit/8c95d1044ed509112108d168653ce7a1839c1508#diff-14358970970f78facdd59d4179315761ff7f7a3114d962c272fe7237a987b8b2
 npe_begin_code()
   Eigen::MatrixXd v;
   Eigen::MatrixXi t;
