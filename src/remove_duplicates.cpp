@@ -22,8 +22,6 @@ Returns
 -------
 SV  #SV by dim new list of vertex positions
 SF  #SF by dim new list of faces so SF = F(SVJ,:)
-I   #SF counts of duplicates for each input face (TODO: I don
-t think this is true!)
 
 See also
 --------
@@ -59,7 +57,7 @@ npe_begin_code()
   igl::remove_duplicate_vertices(v_copy, f, epsilon, sv, svi, svj, sf);
   EigenDenseFloat sv_row_major = sv;
 
-  return std::make_tuple(npe::move(sv_row_major), npe::move(sf), npe::move(svi));
+  return std::make_tuple(npe::move(sv_row_major), npe::move(sf));
 
 npe_end_code()
 
