@@ -3,7 +3,7 @@
 // copy is necessary since the winding number only supports matrices
 
 #include <common.h>
-#include <igl/copyleft/offset_surface.h>
+#include <igl/offset_surface.h>
 #include <npe.h>
 #include <typedefs.h>
 
