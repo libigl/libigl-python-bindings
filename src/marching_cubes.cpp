@@ -1,6 +1,7 @@
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
+
 #include <igl/marching_cubes.h>
 
 const char* ds_marching_cubes = R"igl_Qu8mg5v7(
@@ -12,6 +13,13 @@ Parameters
 ----------
 S   nx*ny*nz list of values at each grid corner i.e. S(x + y*xres + z*xres*yres) for corner (x,y,z)
 GV  nx*ny*nz by 3 array of corresponding grid corner vertex locations
+        points, ordered in x,y,z order:
+        points[index] = the point at (x,y,z) where :
+            x = (index % (xres -1),
+            y = (index / (xres-1)) %(yres-1),
+            z = index / (xres -1) / (yres -1) ).
+            where x,y,z index x, y, z dimensions
+            i.e. index = x + y*xres + z*xres*yres
 nx  resolutions of the grid in x dimension
 ny  resolutions of the grid in y dimension
 nz  resolutions of the grid in z dimension
@@ -33,7 +41,11 @@ None
 
 Examples
 --------
-
+>> import numpy as np
+>> K = np.linspace( -1.0, 1.0, 64)
+>> pts = np.array([[x,y,z] for x in K for y in K for z in K])
+>> S = signed_distance(pts, v, f)
+>> v, f = marching_cubes(S, pts, nx, ny, nz, 0.0)
 
 )igl_Qu8mg5v7";
 
@@ -44,14 +56,21 @@ npe_arg(gv, dense_float, dense_double)
 npe_arg(nx, int)
 npe_arg(ny, int)
 npe_arg(nz, int)
-npe_default_arg(isovalue, float, 0.0f)
+npe_default_arg(isovalue, double, 0.0)
 
 npe_begin_code()
     
-    EigenDenseLike<npe_Matrix_v> nv;
-    EigenDenseLike<npe_Matric_f> nf;
+    // vertices and faces of marched iso surface
+    Eigen::MatrixXd SV;
+    Eigen::MatrixXi SF; 
 
-    igl::marching_cubes(s, gv, nx, ny, nz, isovalue, nv, nf);
+    Eigen::MatrixXd s_copy = s.template cast<double>();
+    Eigen::MatrixXd gv_copy = gv.template cast<double>();
 
-    return std::make_tuple(npe::move(nv), npe::move(nf));
+    igl::marching_cubes(s_copy, gv_copy, nx, ny, nz, isovalue, SV, SF);
+
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> svRowMajor = SV; 
+    Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> sfRowMajor = SF;
+
+    return std::make_tuple(npe::move(svRowMajor), npe::move(sfRowMajor));
 npe_end_code()
