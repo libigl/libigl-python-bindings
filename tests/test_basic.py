@@ -787,14 +787,13 @@ class TestBasic(unittest.TestCase):
 
     def test_remove_duplicates(self):
         epsilon = 1e-6
-        nv, nf, i = igl.remove_duplicates(self.v1, self.f1, epsilon)
+        nv, nf= igl.remove_duplicates(self.v1, self.f1, epsilon)
         self.assertEqual(nv.dtype, self.v1.dtype)
         self.assertEqual(nf.dtype, self.f1.dtype)
         self.assertTrue(nv.shape[0] > 0 and nv.shape[1] > 0)
         self.assertTrue(nf.shape[0] > 0)
         self.assertTrue(nv.flags.c_contiguous)
         self.assertTrue(nf.flags.c_contiguous)
-        self.assertTrue(i.flags.c_contiguous)
 
     def test_remove_unreferenced(self):
         nv, nf, i, j = igl.remove_unreferenced(self.v1, self.f1)
@@ -1154,7 +1153,6 @@ class TestBasic(unittest.TestCase):
         n = 16
         g = np.mgrid[min_v[0]:max_v[0]:complex(n), min_v[1]:max_v[1]:complex(n), min_v[2]:max_v[2]:complex(n)]
         p = np.vstack(list(map(np.ravel, g))).T
-        
         # test default type
         s, i, c = igl.signed_distance(p, self.v1, self.f1)
 
@@ -1163,14 +1161,14 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(c.shape, p.shape)
 
         signTypes = [
-            igl.SIGNED_DISTANCE_TYPE_PSEUDONORMAL, 
-            igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, 
-            igl.SIGNED_DISTANCE_TYPE_DEFAULT, 
-            igl.SIGNED_DISTANCE_TYPE_UNSIGNED, 
+            igl.SIGNED_DISTANCE_TYPE_PSEUDONORMAL,
+            igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER,
+            igl.SIGNED_DISTANCE_TYPE_DEFAULT,
+            igl.SIGNED_DISTANCE_TYPE_UNSIGNED,
             igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER
         ]
 
-        # test each specific type. 
+        # test each specific type.
         for signType in signTypes:
             s, i, c = igl.signed_distance(p, self.v1, self.f1, sign_type=signType)
             self.assertEqual(s.shape[0], p.shape[0])
@@ -1194,11 +1192,11 @@ class TestBasic(unittest.TestCase):
         with self.assertRaises(ValueError):
             igl.signed_distance(p, self.v1, self.f1, sign_type=igl.SIGNED_DISTANCE_TYPE_WINDING_NUMBER, return_normals=True)
 
-        # ensure error raise when invalid param given 
+        # ensure error raise when invalid param given
         with self.assertRaises(ValueError):
             igl.signed_distance(p, self.v1, self.f1, sign_type=345)
 
-        
+
 
 
     def test_offset_surface(self):
