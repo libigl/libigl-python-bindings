@@ -20,7 +20,7 @@ PYBIND11_MODULE(pyigl_classes, m)
              }
              else if (dim == 2)
              {
-               assert_valid_3d_tri_mesh(v, f);
+               assert_valid_2d_tri_mesh(v, f);
              }
              else
              {
@@ -201,7 +201,7 @@ PYBIND11_MODULE(pyigl_classes, m)
            py::arg("P"), py::arg("SC"), py::arg("S"), py::arg("E"), py::arg("b"), py::arg("wShape"), py::arg("wSmooth"), py::arg("maxIterations") = 50, py::arg("pTolerance") = 1e-6)
       .def(
           "solve", [](igl::ShapeupData &self, Eigen::MatrixXd bc, const Eigen::MatrixXd &P0, const std::string &local_projection, const bool quietIterations) {
-            if(bc.size() == 3 && bc.rows() == 3)
+            if (bc.size() == 3 && bc.rows() == 3)
               bc.transposeInPlace();
             assert_cols_equals(bc, 3, "bc");
             assert_cols_equals(P0, 3, "P0");
