@@ -8,7 +8,7 @@
 #include <typedefs.h>
 
 const char *ds_offset_surface = R"igl_Qu8mg5v7(
-Compute a triangulated offset surface using matching cubes on a grid of
+Compute a triangulated offset surface using marching cubes on a grid of
 signed distance values from the input triangle mesh.
 
 Parameters

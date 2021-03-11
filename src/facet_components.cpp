@@ -3,7 +3,7 @@
 #include <typedefs.h>
 #include <igl/facet_components.h>
 
-const char* ds_face_components = R"igl_Qu8mg5v7(
+const char* ds_facet_components = R"igl_Qu8mg5v7(
 Compute connected components of facets based on edge-edge adjacency,
 
 Parameters
@@ -27,8 +27,8 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(face_components)
-npe_doc(ds_face_components)
+npe_function(facet_components)
+npe_doc(ds_facet_components)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
     assert_valid_tri_mesh_faces(f);
