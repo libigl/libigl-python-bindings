@@ -20,7 +20,7 @@ PYBIND11_MODULE(pyigl_classes, m)
              }
              else if (dim == 2)
              {
-               assert_valid_2d_tri_mesh(v, f);
+               assert_valid_23d_tri_mesh(v, f);
              }
              else
              {
