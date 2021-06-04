@@ -134,18 +134,14 @@ PYBIND11_MODULE(pyigl_classes, m)
            py::arg("verbosity") = 0, py::arg("max_iter") = 100)
       .def(
           "solve", [](igl::BBWData &self, Eigen::MatrixXd &V, Eigen::MatrixXi &F, Eigen::VectorXi &b, Eigen::MatrixXd &bc) {
-            if (V.cols() != 3)
-            {
-              throw pybind11::value_error("Invalid dimension. Argument V must have shape (#vertices, 3)");
-            }
             // Triangle mesh
             if (F.cols() == 3)
             {
-              if (V.cols() != 2)
-              {
-                throw pybind11::value_error("Invalid dimension for argument v_init. Must have shape (#vertices, 2) for triangle mesh inputs. You passed in V with shape (" + std::to_string(V.rows()) + std::string(", ") + std::to_string(V.cols()) + std::string(")"));
-              }
               // Tet mesh
+              if (V.cols() != 2 && V.cols() != 3)
+              {
+                throw pybind11::value_error("Invalid dimension. Argument V must have shape (#vertices, 2) or (#vertices, 3) for tri mesh inputs. You passed in V with shape (" + std::to_string(V.rows()) + std::string(", ") + std::to_string(V.cols()) + std::string(")"));
+              }
             }
             else if (F.cols() == 4)
             {
