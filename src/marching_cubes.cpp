@@ -59,7 +59,11 @@ npe_arg(nz, int)
 npe_default_arg(isovalue, double, 0.0)
 
 npe_begin_code()
-    
+    // input checks
+    assert_rows_match(s, gv, "S", "GV");
+    assert_cols_equals(s, 1, "S");
+    assert_cols_equals(gv, 3, "GV");
+
     // vertices and faces of marched iso surface
     Eigen::MatrixXd SV;
     Eigen::MatrixXi SF; 
@@ -69,8 +73,8 @@ npe_begin_code()
 
     igl::marching_cubes(s_copy, gv_copy, nx, ny, nz, isovalue, SV, SF);
 
-    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> svRowMajor = SV; 
-    Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> sfRowMajor = SF;
+    EigenDenseLike<npe_Matrix_gv> svRowMajor = SV.template cast<typename npe_Matrix_gv::Scalar>();
+    EigenDenseLike<EigenDenseInt> sfRowMajor = SF.template cast<typename EigenDenseInt::Scalar>();
 
     return std::make_tuple(npe::move(svRowMajor), npe::move(sfRowMajor));
 npe_end_code()
