@@ -719,7 +719,9 @@ class TestBasic(unittest.TestCase):
         sphereField = np.linalg.norm(pts, axis=1) - 1 
         V,F = igl.marching_cubes(sphereField, pts, n, n, n, 0.0)
 
-        # make sure we get "something" (TODO: should we confirm this something is a sphere?)
+        self.assertTrue(V.dtype == pts.dtype)
+        self.assertTrue(F.dtype == np.int)
+
         self.assertNotEqual(V.shape, (0,3))
         self.assertNotEqual(F.shape, (0,3))
         self.assertTrue(F.flags.c_contiguous)
