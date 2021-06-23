@@ -737,6 +737,28 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(uv.shape, (bnd.shape[0], 2))
         self.assertTrue(uv.flags.c_contiguous)
 
+    def test_marching_cubes(self):
+        #test empty level set.
+        n = 50
+        emptyField = np.zeros((n*n*n,1))
+        K = np.linspace( -1.0, 1.0, n)
+        pts = np.array([[x,y,z] for x in K for y in K for z in K])
+        V,F = igl.marching_cubes(emptyField, pts, n, n, n, 0.0)
+        self.assertEqual(V.shape, (0, 3))
+        self.assertEqual(F.shape, (0, 3))
+
+        #test marching over a sphere 
+        sphereField = np.linalg.norm(pts, axis=1) - 1 
+        V,F = igl.marching_cubes(sphereField, pts, n, n, n, 0.0)
+
+        self.assertTrue(V.dtype == pts.dtype)
+        self.assertTrue(F.dtype == np.int)
+
+        self.assertNotEqual(V.shape, (0,3))
+        self.assertNotEqual(F.shape, (0,3))
+        self.assertTrue(F.flags.c_contiguous)
+        self.assertTrue(F.flags.c_contiguous)
+
     def test_per_vertex_normals(self):
         n = igl.per_vertex_normals(self.v1, self.f1, 0)
         self.assertEqual(n.shape, (self.v1.shape[0], 3))
@@ -1181,7 +1203,6 @@ class TestBasic(unittest.TestCase):
         g = np.mgrid[min_v[0]:max_v[0]:complex(
             n), min_v[1]:max_v[1]:complex(n), min_v[2]:max_v[2]:complex(n)]
         p = np.vstack(list(map(np.ravel, g))).T
-
         # test default type
         s, i, c = igl.signed_distance(p, self.v1, self.f1)
 

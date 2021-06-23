@@ -26,6 +26,7 @@ site
 
 **/meshplot
 
+.DS_Store
 
 ttt.py
 *coverage*

@@ -3,7 +3,7 @@
 // copy is necessary since the winding number only supports matrices
 
 #include <common.h>
-#include <igl/copyleft/offset_surface.h>
+#include <igl/offset_surface.h>
 #include <npe.h>
 #include <typedefs.h>
 
@@ -59,7 +59,7 @@ npe_begin_code()
     Eigen::MatrixXi side_copy;
     Eigen::MatrixXi so_copy;
 
-    igl::copyleft::offset_surface(v_copy, f_copy, isolevel, s, igl::SignedDistanceType(signed_distance_type), sv_copy, sf_copy, gv_copy, side_copy, so_copy);
+    igl::offset_surface(v_copy, f_copy, isolevel, s, igl::SignedDistanceType(signed_distance_type), sv_copy, sf_copy, gv_copy, side_copy, so_copy);
 
     EigenDenseLike<npe_Matrix_v> sv = sv_copy.template cast<typename npe_Matrix_v::Scalar>();
     EigenDenseLike<npe_Matrix_f> sf = sf_copy.template cast<typename npe_Matrix_f::Scalar>();
