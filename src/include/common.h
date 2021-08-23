@@ -121,6 +121,19 @@ void assert_valid_tet_or_tri_mesh_faces(const TF& f, std::string f_name="f") {
 }
 
 template <typename TF>
+void assert_valid_simplex_idxs(const TF& f, std::string f_name="f") {
+    if (f.rows() <= 0) {
+        throw pybind11::value_error("Invalid simplex indices, " + f_name + " has zero rows (" + f_name + ".shape = [" +
+                                    std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]) ");
+    }
+
+    if (f.cols() < 2) {
+        throw pybind11::value_error("Invalid simplex indices, " + f_name + " must have shape [#faces, #edges] with #edges >= 2 for a valid simplex." +
+                                    "but got " + f_name + ".shape = [" + std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]");
+    }
+}
+
+template <typename TF>
 void assert_valid_tri_mesh_faces(const TF &f, std::string f_name = "f")
 {
     if (f.rows() <= 0)
