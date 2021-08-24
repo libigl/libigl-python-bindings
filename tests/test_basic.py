@@ -76,9 +76,13 @@ class TestBasic(unittest.TestCase):
     # sparse matrix, no flag attribute
     def test_adjacency_matrix(self):
         a = igl.adjacency_matrix(self.f)
+        b = igl.adjacency_matrix(self.f[:,:2]) # Test with edges only
         self.assertTrue(a.shape == (self.v.shape[0], self.v.shape[0]))
+        self.assertTrue(b.shape == (self.v.shape[0], self.v.shape[0]))
         self.assertTrue(a.dtype == self.f.dtype)
+        self.assertTrue(b.dtype == self.f.dtype)
         self.assertTrue(type(a) == csc.csc_matrix)
+        self.assertTrue(type(b) == csc.csc_matrix)
 
     def test_avg_edge_length(self):
         l = igl.avg_edge_length(self.v1, self.f1)
