@@ -17,7 +17,7 @@ Parameters
    F  #F by 3 list of mesh triangle indices into V
    isolevel  iso level to extract (signed distance: negative inside)
    s  number of grid cells along longest side (controls resolution)
-   signed_distance_type  type of signing to use one of SIGNED_DISTANCE_TYPE_PSEUDONORMAL, SIGNED_DISTANCE_TYPE_WINDING_NUMBER, SIGNED_DISTANCE_TYPE_DEFAULT, SIGNED_DISTANCE_TYPE_UNSIGNED
+   signed_distance_type  type of signing to use one of SIGNED_DISTANCE_TYPE_PSEUDONORMAL, SIGNED_DISTANCE_TYPE_WINDING_NUMBER, SIGNED_DISTANCE_TYPE_DEFAULT, SIGNED_DISTANCE_TYPE_UNSIGNED, SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER
 
 Returns
 -------
@@ -44,12 +44,13 @@ npe_doc(ds_offset_surface)
 
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long, dense_longlong)
-npe_arg(isolevel, int)
+npe_arg(isolevel, double)
 npe_arg(s, int)
 npe_arg(signed_distance_type, int)
 npe_begin_code()
     assert_valid_3d_tri_mesh(v, f);
 
+    // Alec: I don't understand why all these copies are needed here.
     Eigen::MatrixXd v_copy = v.template cast<double>();
     Eigen::MatrixXi f_copy = f.template cast<int>();
 
@@ -57,7 +58,7 @@ npe_begin_code()
     Eigen::MatrixXi sf_copy;
     Eigen::MatrixXd gv_copy;
     Eigen::MatrixXi side_copy;
-    Eigen::MatrixXi so_copy;
+    Eigen::MatrixXd so_copy;
 
     igl::offset_surface(v_copy, f_copy, isolevel, s, igl::SignedDistanceType(signed_distance_type), sv_copy, sf_copy, gv_copy, side_copy, so_copy);
 
