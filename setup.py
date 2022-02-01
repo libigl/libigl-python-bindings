@@ -58,8 +58,10 @@ class CMakeBuild(build_ext):
 
         print(cmake_args)
         tmp = os.getenv('CMAKE_ARGS')
-        print("tmp", tmp)
+
         if tmp:
+            tmp = tmp.split(" ")
+            print("tmp", tmp)
             cmake_args += tmp
         print(cmake_args)
 
