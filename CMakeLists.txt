@@ -16,6 +16,8 @@ include(Warnings)
 include(CXXFeatures)
 
 
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+
 
 
 # LibIGL
