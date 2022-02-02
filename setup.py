@@ -55,6 +55,15 @@ class CMakeBuild(build_ext):
 
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get('CXXFLAGS', ''),self.distribution.get_version())
+        tmp = os.getenv('CC_FOR_BUILD')
+        if tmp:
+            print("Setting c compiler to", tmp)
+            cmake_args += ["-DCMAKE_C_COMPILER", tmp]
+
+        tmp = os.getenv('CXX_FOR_BUILD')
+        if tmp:
+            print("Setting cxx compiler to", tmp)
+            cmake_args += ["-DCMAKE_CXX_COMPILER", tmp]
 
         # print(cmake_args)
         # tmp = os.getenv('CMAKE_ARGS')
