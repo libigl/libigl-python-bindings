@@ -63,6 +63,8 @@ class CMakeBuild(build_ext):
             tmp = tmp.split(" ")
             print("tmp", tmp)
             cmake_args += tmp
+
+        cmake_args += ["-DCMAKE_OSX_ARCHITECTURES" , "arm64"]
         print(cmake_args)
 
         if not os.path.exists(self.build_temp):
