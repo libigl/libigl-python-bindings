@@ -56,16 +56,16 @@ class CMakeBuild(build_ext):
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get('CXXFLAGS', ''),self.distribution.get_version())
 
-        print(cmake_args)
-        tmp = os.getenv('CMAKE_ARGS')
+        # print(cmake_args)
+        # tmp = os.getenv('CMAKE_ARGS')
 
-        if tmp:
-            tmp = tmp.split(" ")
-            print("tmp", tmp)
-            cmake_args += tmp
+        # if tmp:
+        #     tmp = tmp.split(" ")
+        #     print("tmp", tmp)
+        #     cmake_args += tmp
 
-        cmake_args += ["-DCMAKE_OSX_ARCHITECTURES" , "arm64"]
-        print(cmake_args)
+        # cmake_args += ["-DCMAKE_OSX_ARCHITECTURES" , "arm64"]
+        # print(cmake_args)
 
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
