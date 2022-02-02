@@ -58,12 +58,19 @@ class CMakeBuild(build_ext):
         tmp = os.getenv('CC_FOR_BUILD')
         if tmp:
             print("Setting c compiler to", tmp)
-            cmake_args += ["-DCMAKE_C_COMPILER", tmp]
+            cmake_args += ["-DCMAKE_C_COMPILER=" + tmp]
 
         tmp = os.getenv('CXX_FOR_BUILD')
         if tmp:
             print("Setting cxx compiler to", tmp)
-            cmake_args += ["-DCMAKE_CXX_COMPILER", tmp]
+            cmake_args += ["-DCMAKE_CXX_COMPILER="+ tmp]
+
+
+        tmp = os.getenv("target_platform")
+        if tmp:
+            print("target platfrom", tmp)
+            if "arm" in tmp:
+                cmake_args += ["-DCMAKE_OSX_ARCHITECTURES=arm64"]
 
         # print(cmake_args)
         # tmp = os.getenv('CMAKE_ARGS')
