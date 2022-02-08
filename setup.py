@@ -55,11 +55,19 @@ class CMakeBuild(build_ext):
 
         tmp = os.environ.get("AR")
         if "arm64-apple" in tmp:
-            print("MACOS ARM!!!!")
             tmp = os.environ.get("CMAKE_ARGS")
-            print("heheheeh", tmp)
             if tmp:
                 cmake_args += tmp.split(" ")
+
+            tmp = os.environ.get("CC")
+            print("C compiler", tmp)
+            if tmp:
+                cmake_args += ["-DCMAKE_C_COMPILER={}".format(tmp)]
+
+            tmp = os.environ.get("CXX")
+            print("CXX compiler", tmp)
+            if tmp:
+                cmake_args += ["-DCMAKE_CXX_COMPILER={}".format(tmp)]
 
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get('CXXFLAGS', ''),self.distribution.get_version())
