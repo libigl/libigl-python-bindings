@@ -7,9 +7,6 @@ jobs:
   timeoutInMinutes: 0
   strategy:
     matrix:
-      mac35:
-        imageName: 'macos-10.15'
-        python.version: '3.5'
       mac36:
         imageName: 'macos-10.15'
         python.version: '3.6'
