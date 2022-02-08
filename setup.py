@@ -46,12 +46,20 @@ class CMakeBuild(build_ext):
 
         if platform.system() == "Windows":
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
-            if os.environ.get('CMAKE_GENERATOR') != "NMake Makefiles" and os.environ.get('CMAKE_GENERATOR') != "Ninja":
+            if os.environ.get('CMAKE_GENERATOR') != "NMake Makefiles" and "Ninja" not in os.environ.get('CMAKE_GENERATOR'):
                 if sys.maxsize > 2**32:
                     cmake_args += ['-A', 'x64']
                 # build_args += ['--', '/m']
         else:
             build_args += ['--', '-j2']
+
+        tmp = os.environ.get("AR")
+        if "arm64-apple" in tmp:
+            print("MACOS ARM!!!!")
+            tmp = os.environ.get("CMAKE_ARGS")
+            print("heheheeh", tmp)
+            if tmp:
+                cmake_args += tmp.split(" ")
 
         env = os.environ.copy()
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(env.get('CXXFLAGS', ''),self.distribution.get_version())
