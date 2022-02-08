@@ -54,28 +54,28 @@ class CMakeBuild(build_ext):
         else:
             build_args += ['--', '-j2']
 
-        tmp = os.environ.get("AR")
+        tmp = os.environ.get("AR", "")
         if "arm64-apple" in tmp:
-            tmp = os.environ.get("CMAKE_ARGS")
+            tmp = os.environ.get("CMAKE_ARGS", "")
             if tmp:
                 cmake_args += tmp.split(" ")
 
-            tmp = os.environ.get("CC")
+            tmp = os.environ.get("CC", "")
             print("C compiler", tmp)
             if tmp:
                 cmake_args += ["-DCMAKE_C_COMPILER={}".format(tmp)]
 
-            tmp = os.environ.get("CXX")
+            tmp = os.environ.get("CXX", "")
             print("CXX compiler", tmp)
             if tmp:
                 cmake_args += ["-DCMAKE_CXX_COMPILER={}".format(tmp)]
         else:
-            tmp = os.getenv('CC_FOR_BUILD')
+            tmp = os.getenv('CC_FOR_BUILD', '')
             if tmp:
                 print("Setting c compiler to", tmp)
                 cmake_args += ["-DCMAKE_C_COMPILER=" + tmp]
 
-            tmp = os.getenv('CXX_FOR_BUILD')
+            tmp = os.getenv('CXX_FOR_BUILD', '')
             if tmp:
                 print("Setting cxx compiler to", tmp)
                 cmake_args += ["-DCMAKE_CXX_COMPILER="+ tmp]
@@ -85,14 +85,14 @@ class CMakeBuild(build_ext):
 
 
 
-        tmp = os.getenv("target_platform")
+        tmp = os.getenv("target_platform", "")
         if tmp:
             print("target platfrom", tmp)
             if "arm" in tmp:
                 cmake_args += ["-DCMAKE_OSX_ARCHITECTURES=arm64"]
 
         # print(cmake_args)
-        # tmp = os.getenv('CMAKE_ARGS')
+        # tmp = os.getenv('CMAKE_ARGS', '')
 
         # if tmp:
         #     tmp = tmp.split(" ")
