@@ -33,3 +33,6 @@ ttt.py
 htmlcov
 junit
 .ipynb_checkpoints/tutorials-checkpoint.ipynb
+.*.un~
+.*.swp
+.*.swo

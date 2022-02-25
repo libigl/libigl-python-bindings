@@ -54,7 +54,7 @@ class CMakeBuild(build_ext):
             build_args += ['--', '-j2']
 
         tmp = os.environ.get("AR")
-        if "arm64-apple" in tmp:
+        if tmp and "arm64-apple" in tmp:
             tmp = os.environ.get("CMAKE_ARGS")
             if tmp:
                 cmake_args += tmp.split(" ")
