@@ -28,7 +28,7 @@ python setup.py install
 
 
 ## Compiling and modifying the bindiings
-After cloning this repository and installing numpy, you can compile the bindings from scratch by running:
+After cloning this repository and installing numpy and pybind11, you can compile the bindings from scratch by running:
 ```
 python setup.py develop
 ```
