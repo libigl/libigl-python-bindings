@@ -16,9 +16,12 @@ include(Warnings)
 include(CXXFeatures)
 
 option(PY_IGL_PYTHON_TESTS          "Run Python tests"   ON)
+message(STATUS "PY_IGL_PYTHON_TESTS: ${PY_IGL_PYTHON_TESTS}")
 
+
+option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       ON)
+# libigl options must come before include(PyiglDependencies)
 include(PyiglDependencies)
-
 if(NOT TARGET igl::core)
   include(libigl)
 endif()
@@ -31,15 +34,22 @@ include(numpyeigen)
 
 # A module for writing bindings with our framework
 file(GLOB PYIGL_SOURCES src/*.cpp)
-
 npe_add_module(pyigl
   BINDING_SOURCES
-  ${PYIGL_SOURCES}
-  ${PYIGL_SOURCES_COPYLEFT})
-
-#TODO move additional libs to variable
+  ${PYIGL_SOURCES})
 target_link_libraries(pyigl PRIVATE igl::core)
 target_include_directories(pyigl PRIVATE "src/include")
+
+if(LIBIGL_COPYLEFT_CGAL)
+  file(GLOB PYIGL_COPYLEFT_CGAL_SOURCES src/copyleft/cgal/*.cpp)
+  npe_add_module(pyigl_copyleft_cgal
+    BINDING_SOURCES
+    ${PYIGL_COPYLEFT_CGAL_SOURCES})
+  target_link_libraries(pyigl_copyleft_cgal PRIVATE igl::core igl_copyleft::cgal)
+  target_include_directories(pyigl_copyleft_cgal PRIVATE "src/include")
+  target_link_libraries(pyigl INTERFACE pyigl_copyleft_cgal)
+endif()
+
 
 add_library(pyigl_classes MODULE classes/classes.cpp)
 target_link_libraries(pyigl_classes PRIVATE npe igl::core)
