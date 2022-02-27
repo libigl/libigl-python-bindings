@@ -39,16 +39,39 @@ npe_add_module(pyigl
   ${PYIGL_SOURCES})
 target_link_libraries(pyigl PRIVATE igl::core)
 target_include_directories(pyigl PRIVATE "src/include")
+set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
-if(LIBIGL_COPYLEFT_CGAL)
-  file(GLOB PYIGL_COPYLEFT_CGAL_SOURCES src/copyleft/cgal/*.cpp)
-  npe_add_module(pyigl_copyleft_cgal
-    BINDING_SOURCES
-    ${PYIGL_COPYLEFT_CGAL_SOURCES})
-  target_link_libraries(pyigl_copyleft_cgal PRIVATE igl::core igl_copyleft::cgal)
-  target_include_directories(pyigl_copyleft_cgal PRIVATE "src/include")
-  target_link_libraries(pyigl INTERFACE pyigl_copyleft_cgal)
-endif()
+# don't need to worry about nested modules (opengl/** are the only ones and
+# those probably aren't ever getting python bindings)
+#
+# prefix is either "", "copyleft", or "restricted"
+function(pyigl_include prefix name)
+  string(TOUPPER "${prefix}" prefix_uc)
+  string(TOUPPER "${name}" name_uc)
+  if(prefix_uc)
+      string(PREPEND prefix_uc _)
+  endif()
+  string(TOLOWER "${prefix_uc}" prefix_lc)
+  if(LIBIGL${prefix_uc}_${name_uc})
+    if(${prefix} STREQUAL "copyleft")
+      set(subpath "copyleft/${name}")
+    else() # "" or "restricted"
+      set(subpath "${name}")
+    endif()
+    file(GLOB sources src/${subpath}/*.cpp)
+    set(target_name "pyigl${prefix_lc}_${name}")
+    npe_add_module(                            ${target_name} BINDING_SOURCES ${sources})
+    target_link_libraries(                     ${target_name} PRIVATE igl::core igl${prefix_lc}::${name})
+    target_include_directories(                ${target_name} PRIVATE "src/include")
+    set(output_dir "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${subpath}")
+    file(MAKE_DIRECTORY ${output_dir})
+    file(WRITE "${output_dir}/__init__.py" "from .${target_name} import *")
+    set_target_properties(${target_name} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${output_dir}")
+    target_link_libraries(     pyigl INTERFACE ${target_name})
+  endif()
+endfunction()
+
+pyigl_include("copyleft" "cgal")
 
 
 add_library(pyigl_classes MODULE classes/classes.cpp)
