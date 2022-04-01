@@ -1,4 +1,4 @@
-# *New* LibIGL Python Bindings
+# libigl Python Bindings
 [![Build Status](https://travis-ci.com/libigl/libigl-python-bindings.svg?branch=master)](https://travis-ci.com/libigl/libigl-python-bindings)
 [![Build Status](https://dev.azure.com/libigl/Libigl/_apis/build/status/libigl.libigl-python-bindings?branchName=master)](https://dev.azure.com/libigl/Libigl/_build/latest?definitionId=1&branchName=master)
 
