@@ -27,7 +27,7 @@ python setup.py install
 * A *temporary* function reference can be found [here](https://libigl.github.io/libigl-python-bindings/igl_docs/)
 
 
-## Compiling and modifying the bindiings
+## Compiling and modifying the bindings
 After cloning this repository, you can compile the bindings from scratch by running:
 ```
 python setup.py develop
@@ -44,6 +44,5 @@ To run the tests:
 ```
 python setup.py test
 ```
-
 
 
