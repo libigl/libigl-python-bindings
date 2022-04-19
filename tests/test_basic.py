@@ -1683,70 +1683,6 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(IM.shape[0] == self.v.shape[0])
         self.assertTrue(len(IM.shape) == 1)
 
-    def test_orient2d(self):
-        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0, 0], [0, -1]])
-        r = igl.orient2d(v[0, :], v[1, :], v[2, :])
-        self.assertTrue(r == 1)
-
-        r = igl.orient2d(v[0, :], v[1, :], v[3, :])
-        self.assertTrue(r == 0)
-
-        r = igl.orient2d(v[0, :], v[1, :], v[4, :])
-        self.assertTrue(r == -1)
-
-    def test_orient3d(self):
-        pa = np.array([0.0, 0.0, 0.])
-        pb = np.array([1.0, 0.0, 0.])
-        pc = np.array([1.0, 1.0, 0.])
-        pd = np.array([0.0, 0.0, 1.])
-        r = igl.orient3d(pa, pb, pc, pd)
-        self.assertTrue(r == -1)
-
-    def test_incircle(self):
-        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.25, 0.25]])
-        r = igl.incircle(v[0, :], v[1, :], v[2, :], v[3, :])
-        self.assertTrue(r == 1)
-
-    def test_insphere(self):
-        pa = np.array([0.0, 0.0, 0.])
-        pb = np.array([1.0, 0.0, 0.])
-        pc = np.array([1.0, 1.0, 0.])
-        pd = np.array([0.0, 0.0, 1.])
-        pe = np.array([0.15, 0.15, 0.15])
-        r = igl.insphere(pa, pb, pc, pd, pe)
-        # TODO: should be 1?
-        self.assertTrue(r == -1)
-
-    def test_delaunay_triangulation(self):
-        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0, 0], [0, -1]])
-        f = igl.delaunay_triangulation(v)
-        self.assertTrue(f.flags.c_contiguous)
-        self.assertTrue(f.dtype == self.f.dtype)
-        self.assertTrue(f.shape[1] == 3)
-
-    def test_is_delaunay(self):
-        v = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0, 0], [0, -1]])
-        f = igl.delaunay_triangulation(v)
-        d = igl.is_delaunay(v, f)
-        self.assertTrue(d.flags.c_contiguous)
-        self.assertTrue(d.dtype == np.bool)
-        self.assertTrue(d.shape == f.shape)
-        self.assertTrue(np.all(d))
-
-        d1 = igl.is_delaunay(self.v1, self.f1)
-        self.assertTrue(d1.flags.c_contiguous)
-        self.assertTrue(d1.dtype == np.bool)
-        self.assertTrue(d1.shape == self.f1.shape)
-        self.assertFalse(np.all(d1))
-
-        v = np.hstack([v, np.zeros((v.shape[0], 1))])
-        el = igl.edge_lengths(v, f)
-        d2 = igl.is_intrinsic_delaunay(el, f)
-        self.assertTrue(d2.flags.c_contiguous)
-        self.assertTrue(d2.dtype == np.bool)
-        self.assertTrue(d2.shape == f.shape)
-        # self.assertTrue(np.all(d2))  #TODO: Why?
-
     def test_is_intrinsic_delaunay(self):
         # Tested above
         pass
@@ -1985,13 +1921,6 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(d.shape[0] == u.shape[0])
         self.assertTrue(d.shape[1] == v.shape[0])
 
-    def test_lexicographic_triangulation(self):
-        pts = np.random.rand(10, 2)
-
-        t = igl.lexicographic_triangulation(pts)
-        self.assertTrue(t.flags.c_contiguous)
-        self.assertTrue(t.dtype == self.f.dtype)
-
     def test_line_segment_in_rectangle(self):
         s = np.array([0., 0.])
         d = np.array([10., 10.])
@@ -2055,9 +1984,6 @@ class TestBasic(unittest.TestCase):
     def test_point_in_circle(self):
         inside = igl.point_in_circle(1, 2, 3, 4, 1)
 
-    def test_point_in_poly(self):
-        inside = igl.point_in_poly([[3, 4], [4, 5], [5, 2], [6, 0]], 0, 0)
-
     def test_point_simplex_squared_distance(self):
         dist, pt, bary = igl.point_simplex_squared_distance(
             np.array([3., 3, 1.]), self.v1, self.f1, 0)
@@ -2086,23 +2012,6 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(t.shape[0] == 3)
         self.assertTrue(r.shape[1] == 3)
         self.assertTrue(t.shape[1] == 3)
-
-    def test_polygon_mesh_to_triangle_mesh_from_list(self):
-        faces = [[0, 1, 2, 3], [2, 3, 4, 5, 6]]
-        tris = igl.polygon_mesh_to_triangle_mesh_from_list(faces)
-
-        self.assertTrue(tris.flags.c_contiguous)
-        self.assertTrue(tris.dtype == self.f1.dtype)
-        self.assertTrue(tris.shape[1] == 3)
-
-    def test_polygon_mesh_to_triangle_mesh(self):
-        _, faces, _ = igl.read_off(os.path.join(
-            self.test_path, "halftunnel.off"))
-        tris = igl.polygon_mesh_to_triangle_mesh(faces)
-
-        self.assertTrue(tris.flags.c_contiguous)
-        self.assertTrue(tris.dtype == self.f1.dtype)
-        self.assertTrue(tris.shape[1] == 3)
 
     def test_project(self):
         model = np.random.rand(4, 4)

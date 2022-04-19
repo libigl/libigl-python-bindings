@@ -23,15 +23,6 @@ endfunction()
 
 ################################################################################
 
-## libigl
-function(pyigl_download_igl)
-    pyigl_download_project(libigl
-        GIT_REPOSITORY https://github.com/libigl/libigl.git
-        GIT_TAG        c60a948e7d1434b8ab7b792cdb606095ad7cd894
-    )
-endfunction()
-
-
 ## numpyeigen
 function(pyigl_download_numpyeigen)
     pyigl_download_project(numpyeigen
