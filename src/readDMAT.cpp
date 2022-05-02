@@ -9,7 +9,7 @@
 #include <igl/readDMAT.h>
 
 const char* ds_read_dmat = R"igl_Qu8mg5v7(
-Read a matrix from an ascii dmat file, a simple ascii matrix file type, defined as follows. The first line is always:
+Read a matrix from an ascii/binary dmat file, a simple ascii matrix file type, defined as follows. The first line is always:
 <#columns> <#rows>
 Then the coefficients of the matrix are given separated by whitespace with columns running fastest.
 
