@@ -2,6 +2,9 @@
 #include <common.h>
 #include <typedefs.h>
 #include <igl/fit_cubic_bezier.h>
+#include <pybind11/stl_bind.h>
+#include <pybind11/stl.h>
+
 
 const char *ds_fit_cubic_bezier = R"igl_Qu8mg5v7(
 Fit a cubic bezier spline (G1 continuous) to an ordered list of input
@@ -34,6 +37,9 @@ npe_begin_code()
   std::vector<EigenDenseLike<npe_Matrix_d>> c(c_cpy.size());
   std::transform (c_cpy.begin(), c_cpy.end(), c.begin(),
       [](const Eigen::MatrixXd & ci){ return ci.cast<npe_Scalar_d>();});
+  // numpyeigen's pybind11 fork `numpy_hacks_stable` is printing "Encapsulate move!"
+  // https://github.com/fwilliams/numpyeigen/issues/58
   return pybind11::detail::type_caster<decltype(c)>::cast(c, pybind11::return_value_policy::move, pybind11::none());
+
 npe_end_code()
 
