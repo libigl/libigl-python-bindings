@@ -16,8 +16,14 @@ include(PyiglDownloadExternal)
 
 SET(NPE_WITH_EIGEN ${PYLIBIGL_EXTERNAL}/libigl/external/eigen)
 
-pyigl_download_igl()
-find_package(LIBIGL REQUIRED)
+include(FetchContent)
+FetchContent_Declare(
+    libigl
+    GIT_REPOSITORY https://github.com/libigl/libigl.git
+    GIT_TAG 238a607032d725cbf1b99cad2077516b1ee066d8
+)
+FetchContent_MakeAvailable(libigl)
+
 pyigl_download_numpyeigen()
 pyigl_download_tutorial_data()
 

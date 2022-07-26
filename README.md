@@ -1,4 +1,4 @@
-# *New* LibIGL Python Bindings
+# libigl Python Bindings
 [![Build Status](https://travis-ci.com/libigl/libigl-python-bindings.svg?branch=master)](https://travis-ci.com/libigl/libigl-python-bindings)
 [![Build Status](https://dev.azure.com/libigl/Libigl/_apis/build/status/libigl.libigl-python-bindings?branchName=master)](https://dev.azure.com/libigl/Libigl/_build/latest?definitionId=1&branchName=master)
 
@@ -26,9 +26,9 @@ python setup.py install
 * A *temporary* tutorial on how to use the bindings can be found [here](https://libigl.github.io/libigl-python-bindings/tutorials/)
 * A *temporary* function reference can be found [here](https://libigl.github.io/libigl-python-bindings/igl_docs/)
 
-
 ## Compiling and modifying the bindiings
 After installing numpy & scipy and then cloning this repository, you can compile the bindings from scratch by running:
+
 ```
 python setup.py develop
 ```
@@ -44,6 +44,5 @@ To run the tests:
 ```
 python setup.py test
 ```
-
 
 
