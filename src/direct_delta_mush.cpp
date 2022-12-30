@@ -50,10 +50,11 @@ npe_begin_code()
   std::vector<Eigen::Affine3d, Eigen::aligned_allocator<Eigen::Affine3d>> 
       t_affine(t_copy.rows() / 4);
   
-  for(int bone = 0; bone < t_copy.rows(); bone += 4)
+  for(int bone = 0; bone < t_affine.size(); ++bone)
   {
     Eigen::Matrix4d t_bone;
-    t_bone << t_copy.block(bone, 0, 4, 3).transpose(), 0.0, 0.0, 0.0, 0.0;
+    t_bone << t_copy.block(bone * 4, 0, 4, 3).transpose(), 0.0, 0.0, 0.0, 0.0;
+    
     Eigen::Affine3d a_bone;
     a_bone.matrix() = t_bone;
 
