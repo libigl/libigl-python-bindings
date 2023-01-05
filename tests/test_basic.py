@@ -756,7 +756,7 @@ class TestBasic(unittest.TestCase):
         V,F = igl.marching_cubes(sphereField, pts, n, n, n, 0.0)
 
         self.assertTrue(V.dtype == pts.dtype)
-        self.assertTrue(F.dtype == np.int)
+        self.assertTrue(F.dtype == np.int32)
 
         self.assertNotEqual(V.shape, (0,3))
         self.assertNotEqual(F.shape, (0,3))
@@ -1724,8 +1724,8 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(np.allclose(e2, r2))
         self.assertTrue(e1.flags.c_contiguous)
         self.assertTrue(e2.flags.c_contiguous)
-        self.assertTrue(e1.dtype == np.int)
-        self.assertTrue(e2.dtype == np.int)
+        self.assertTrue(e1.dtype == np.int32)
+        self.assertTrue(e2.dtype == np.int32)
 
     def test_exterior_edges(self):
         e = igl.exterior_edges(self.f1)
@@ -2288,8 +2288,8 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(q.flags.c_contiguous)
         self.assertTrue(v.dtype == np.float64)
-        self.assertTrue(q.dtype == np.int)
-        self.assertTrue(e.dtype == np.int)
+        self.assertTrue(q.dtype == np.int32)
+        self.assertTrue(e.dtype == np.int32)
 
     def test_sparse_voxel_grid(self):
         def sphere1(point):
@@ -2300,7 +2300,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(cv.dtype == np.float64)
         self.assertTrue(cv.shape == (len(cs), 3))
         self.assertTrue(ci.flags.c_contiguous)
-        self.assertTrue(ci.dtype == np.int)
+        self.assertTrue(ci.dtype == np.int32)
         self.assertTrue(ci.shape[1] == 8)
 
     def test_topological_hole_fill(self):
@@ -2387,7 +2387,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(ef.flags.c_contiguous)
         self.assertTrue(ei.flags.c_contiguous)
         self.assertTrue(e.dtype == emap.dtype ==
-                        ef.dtype == ei.dtype == np.int)
+                        ef.dtype == ei.dtype == np.int32)
 
     def test_circulation(self):
         pass
