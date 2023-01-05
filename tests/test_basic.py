@@ -2287,7 +2287,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(q.shape == (2*2, 4))
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(q.flags.c_contiguous)
-        self.assertTrue(v.dtype == np.float)
+        self.assertTrue(v.dtype == np.float64)
         self.assertTrue(q.dtype == np.int)
         self.assertTrue(e.dtype == np.int)
 
@@ -2297,7 +2297,7 @@ class TestBasic(unittest.TestCase):
         point = np.array([1.0, 0.0, 0.0])
         cs, cv, ci = igl.sparse_voxel_grid(point, sphere1, 1.0, 100)
         self.assertTrue(cv.flags.c_contiguous)
-        self.assertTrue(cv.dtype == np.float)
+        self.assertTrue(cv.dtype == np.float64)
         self.assertTrue(cv.shape == (len(cs), 3))
         self.assertTrue(ci.flags.c_contiguous)
         self.assertTrue(ci.dtype == np.int)
@@ -2310,7 +2310,7 @@ class TestBasic(unittest.TestCase):
         ff = igl.topological_hole_fill(f, b, h)
         self.assertTrue(ff.flags.c_contiguous)
         self.assertTrue(ff.shape[1] == 3)
-        self.assertTrue(ff.dtype == np.int)
+        self.assertTrue(ff.dtype == int)
         self.assertTrue(ff.shape[0] != f.shape[0])
 
     def test_triangulated_grid(self):
@@ -2319,8 +2319,8 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.shape == (162, 3))
         self.assertTrue(f.flags.c_contiguous)
         self.assertTrue(v.flags.c_contiguous)
-        self.assertTrue(v.dtype == np.float)
-        self.assertTrue(f.dtype == np.int)
+        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(f.dtype == int)
 
     def test_unproject_on_line(self):
         pos = np.array([10., 10.])
@@ -2355,7 +2355,7 @@ class TestBasic(unittest.TestCase):
         wn = igl.fast_winding_number_for_points(self.v1, n, a, grid)
         self.assertTrue(wn.flags.c_contiguous)
         self.assertTrue(wn.shape == (grid.shape[0], ))
-        self.assertTrue(wn.dtype == np.float)
+        self.assertTrue(wn.dtype == np.float64)
 
     def test_fast_winding_number_for_meshes(self):
         xs = np.linspace(-5.0, 5.0, 10)
@@ -2365,7 +2365,7 @@ class TestBasic(unittest.TestCase):
         wn = igl.fast_winding_number_for_meshes(self.v1, self.f1, grid)
         self.assertTrue(wn.flags.c_contiguous)
         self.assertTrue(wn.shape == (grid.shape[0], ))
-        self.assertTrue(wn.dtype == np.float)
+        self.assertTrue(wn.dtype == np.float64)
 
     def test_flip_avoiding_line_search(self):
         def fun(v):
