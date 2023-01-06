@@ -32,6 +32,9 @@ class TestBasic(unittest.TestCase):
         self.f = np.random.randint(0, 10, size=(20, 3), dtype=self.f1.dtype)
         self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
 
+        self.default_int = np.array(range(2)).dtype
+        self.default_float = np.zeros((2,2)).dtype
+
     def tearDown(self):
         vv1, ff1 = igl.read_triangle_mesh(
             os.path.join(self.test_path, "bunny_small.off"))
@@ -186,7 +189,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
         self.assertTrue(v.shape == (25905, 3) and n.shape ==
                         (0, 0) and f.shape == (51712, 3))
-        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(v.dtype == self.default_float)
         self.assertTrue(f.dtype == self.f.dtype)
         v, _, n, f, _, _ = igl.read_obj(
             self.test_path + "face.obj", dtype="float32")
@@ -202,7 +205,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
         self.assertTrue(v.shape == (3485, 3) and n.shape ==
                         (0, 0) and f.shape == (6966, 3))
-        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(v.dtype == self.default_float)
         v, f, n = igl.read_off(
             self.test_path + "bunny_small.off", read_normals=False, dtype="float32")
         self.assertTrue(v.shape == (3485, 3) and n.shape ==
@@ -220,7 +223,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(t.flags.c_contiguous)
         self.assertTrue(f.flags.c_contiguous)
 
-        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(v.dtype == self.default_float)
         self.assertTrue(t.dtype == self.f1.dtype)
         self.assertTrue(f.dtype == self.f1.dtype)
 
@@ -756,7 +759,7 @@ class TestBasic(unittest.TestCase):
         V,F = igl.marching_cubes(sphereField, pts, n, n, n, 0.0)
 
         self.assertTrue(V.dtype == pts.dtype)
-        self.assertTrue(F.dtype == np.int64)
+        self.assertTrue(F.dtype == self.default_int)
 
         self.assertNotEqual(V.shape, (0,3))
         self.assertNotEqual(F.shape, (0,3))
@@ -2098,7 +2101,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(t.flags.c_contiguous)
 
-        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(v.dtype == self.default_float)
         self.assertTrue(t.dtype == self.f1.dtype)
 
     def test_two_axis_valuator_fixed_up(self):
@@ -2288,9 +2291,9 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(q.shape == (2*2, 4))
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(q.flags.c_contiguous)
-        self.assertTrue(v.dtype == np.float64)
-        self.assertTrue(q.dtype == np.int64)
-        self.assertTrue(e.dtype == np.int64)
+        self.assertTrue(v.dtype == self.default_float)
+        self.assertTrue(q.dtype == self.default_int)
+        self.assertTrue(e.dtype == self.default_int)
 
     def test_sparse_voxel_grid(self):
         def sphere1(point):
@@ -2298,10 +2301,10 @@ class TestBasic(unittest.TestCase):
         point = np.array([1.0, 0.0, 0.0])
         cs, cv, ci = igl.sparse_voxel_grid(point, sphere1, 1.0, 100)
         self.assertTrue(cv.flags.c_contiguous)
-        self.assertTrue(cv.dtype == np.float64)
+        self.assertTrue(cv.dtype == self.default_float)
         self.assertTrue(cv.shape == (len(cs), 3))
         self.assertTrue(ci.flags.c_contiguous)
-        self.assertTrue(ci.dtype == np.int64)
+        self.assertTrue(ci.dtype == self.default_int)
         self.assertTrue(ci.shape[1] == 8)
 
     def test_topological_hole_fill(self):
@@ -2320,8 +2323,8 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.shape == (162, 3))
         self.assertTrue(f.flags.c_contiguous)
         self.assertTrue(v.flags.c_contiguous)
-        self.assertTrue(v.dtype == np.float64)
-        self.assertTrue(f.dtype == np.int64)
+        self.assertTrue(v.dtype == self.default_float)
+        self.assertTrue(f.dtype == self.default_int)
 
     def test_unproject_on_line(self):
         pos = np.array([10., 10.])
