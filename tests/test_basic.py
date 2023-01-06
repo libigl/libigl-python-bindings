@@ -1554,6 +1554,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(U.shape[0] == V.shape[0])
         self.assertTrue(U.shape[1] == 3)
         self.assertTrue(U.dtype == V.dtype)
+        self.assertFalse(np.isnan(U).any())
     
     def test_direct_delta_mush_precomputation(self):
         # covered in test_direct_delta_mush

@@ -34,9 +34,9 @@ Examples
 npe_function(direct_delta_mush)
 npe_doc(ds_direct_delta_mush)
 
-npe_arg(v, dense_float, dense_double)
-npe_arg(t, dense_float, dense_double)
-npe_arg(omega, dense_float, dense_double)
+npe_arg(v, dense_double)
+npe_arg(t, dense_double)
+npe_arg(omega, dense_double)
 
 npe_begin_code()
   assert_cols_equals(v, 3, "v");
@@ -52,16 +52,11 @@ npe_begin_code()
   
   for(int bone = 0; bone < t_affine.size(); ++bone)
   {
-    Eigen::Matrix4d t_bone;
-    t_bone << t_copy.block(bone * 4, 0, 4, 3).transpose(), 0.0, 0.0, 0.0, 0.0;
-    
-    Eigen::Affine3d a_bone;
-    a_bone.matrix() = t_bone;
-
-    t_affine[bone] = a_bone;
+    t_affine[bone] = Eigen::Affine3d::Identity();
+    t_affine[bone].matrix().block(0, 0, 3, 4) = t_copy.block(bone * 4, 0, 4, 3).transpose();
   }
 
-  Eigen::MatrixXd u;
+  EigenDenseLike<npe_Matrix_v> u;
   igl::direct_delta_mush(v_copy, t_affine, omega_copy, u);
   return npe::move(u);
 
@@ -99,7 +94,7 @@ Examples
 npe_function(direct_delta_mush_precomputation)
 npe_doc(ds_direct_delta_mush_precomp)
 
-npe_arg(v, dense_float, dense_double)
+npe_arg(v, dense_double)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_arg(w, npe_matches(v))
 npe_arg(p, int)
@@ -114,7 +109,7 @@ npe_begin_code()
   Eigen::MatrixXd w_copy = w.template cast<double>();
   Eigen::MatrixXi f_copy = f.template cast<int>();
 
-  Eigen::MatrixXd omega;
+  EigenDenseLike<npe_Matrix_v> omega;
   igl::direct_delta_mush_precomputation(v_copy, f_copy, w_copy, p, lambda, kappa, alpha, omega);
   return npe::move(omega);
   
