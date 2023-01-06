@@ -5,7 +5,7 @@ import platform
 import igl
 import numpy as np
 import scipy as sp
-import scipy.sparse.csc as csc
+import scipy.sparse as csc
 import math
 
 
@@ -31,6 +31,9 @@ class TestBasic(unittest.TestCase):
         self.t = np.random.rand(10, 4)
         self.f = np.random.randint(0, 10, size=(20, 3), dtype=self.f1.dtype)
         self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
+
+        self.default_int = np.array(range(2)).dtype
+        self.default_float = np.zeros((2,2)).dtype
 
     def tearDown(self):
         vv1, ff1 = igl.read_triangle_mesh(
@@ -140,8 +143,8 @@ class TestBasic(unittest.TestCase):
             self.v, self.f, type=igl.MASSMATRIX_TYPE_BARYCENTRIC)
         self.assertTrue(a.shape == (self.v.shape[0], self.v.shape[0]))
         self.assertTrue(b.shape == (self.v.shape[0], self.v.shape[0]))
-        self.assertTrue(b.dtype == np.float64)
-        self.assertTrue(a.dtype == np.float64)
+        self.assertTrue(b.dtype == self.v.dtype)
+        self.assertTrue(a.dtype == self.v.dtype)
         self.assertTrue(type(a) == type(b) == csc.csc_matrix)
 
     def test_massmatrix_intrinsic(self):
@@ -151,8 +154,8 @@ class TestBasic(unittest.TestCase):
             el, self.f, type=igl.MASSMATRIX_TYPE_BARYCENTRIC)
         self.assertTrue(a.shape == (self.v.shape[0], self.v.shape[0]))
         self.assertTrue(b.shape == (self.v.shape[0], self.v.shape[0]))
-        self.assertTrue(b.dtype == np.float64)
-        self.assertTrue(a.dtype == np.float64)
+        self.assertTrue(b.dtype == el.dtype)
+        self.assertTrue(a.dtype == el.dtype)
         self.assertTrue(type(a) == type(b) == csc.csc_matrix)
 
     def test_principal_curvature(self):
@@ -164,12 +167,12 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(pv1.shape == qv1.shape == pv2.shape ==
                         qv2.shape == (self.v.shape[0],))
         self.assertTrue(pd1.dtype == pd2.dtype ==
-                        pv1.dtype == pv2.dtype == np.float64)
+                        pv1.dtype == pv2.dtype == self.v.dtype)
         v = self.v.copy()
 
         pd1, pd2, pv1, pv2 = igl.principal_curvature(v, self.f)
         self.assertTrue(pd1.dtype == pd2.dtype ==
-                        pv1.dtype == pv2.dtype == np.float64)
+                        pv1.dtype == pv2.dtype == v.dtype)
         self.assertTrue(type(pd1) == type(pd2) == type(pv1)
                         == type(pv2) == np.ndarray)
         self.assertTrue(pd1.flags.c_contiguous)
@@ -186,7 +189,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
         self.assertTrue(v.shape == (25905, 3) and n.shape ==
                         (0, 0) and f.shape == (51712, 3))
-        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(v.dtype == self.default_float)
         self.assertTrue(f.dtype == self.f.dtype)
         v, _, n, f, _, _ = igl.read_obj(
             self.test_path + "face.obj", dtype="float32")
@@ -202,7 +205,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
         self.assertTrue(v.shape == (3485, 3) and n.shape ==
                         (0, 0) and f.shape == (6966, 3))
-        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(v.dtype == self.default_float)
         v, f, n = igl.read_off(
             self.test_path + "bunny_small.off", read_normals=False, dtype="float32")
         self.assertTrue(v.shape == (3485, 3) and n.shape ==
@@ -220,7 +223,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(t.flags.c_contiguous)
         self.assertTrue(f.flags.c_contiguous)
 
-        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(v.dtype == self.default_float)
         self.assertTrue(t.dtype == self.f1.dtype)
         self.assertTrue(f.dtype == self.f1.dtype)
 
@@ -751,12 +754,12 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(V.shape, (0, 3))
         self.assertEqual(F.shape, (0, 3))
 
-        #test marching over a sphere 
-        sphereField = np.linalg.norm(pts, axis=1) - 1 
+        #test marching over a sphere
+        sphereField = np.linalg.norm(pts, axis=1) - 1
         V,F = igl.marching_cubes(sphereField, pts, n, n, n, 0.0)
 
         self.assertTrue(V.dtype == pts.dtype)
-        self.assertTrue(F.dtype == np.int)
+        self.assertTrue(F.dtype == self.default_int)
 
         self.assertNotEqual(V.shape, (0,3))
         self.assertNotEqual(F.shape, (0,3))
@@ -1233,7 +1236,7 @@ class TestBasic(unittest.TestCase):
             self.assertTrue(i.flags.c_contiguous)
             self.assertTrue(c.flags.c_contiguous)
 
-            self.assertTrue(s.dtype == np.float64)
+            self.assertTrue(s.dtype == self.v1.dtype)
             self.assertTrue(c.dtype == self.v1.dtype)
             self.assertTrue(i.dtype == self.f1.dtype)
 
@@ -1242,7 +1245,7 @@ class TestBasic(unittest.TestCase):
             p, self.v1, self.f1, return_normals=True)
         self.assertEqual(n.shape, p.shape)
         self.assertTrue(n.flags.c_contiguous)
-        self.assertTrue(n.dtype == np.float64)
+        self.assertTrue(n.dtype == self.v1.dtype)
 
         # ensure error raised when trying param other than pseudonormal for normals
         with self.assertRaises(ValueError):
@@ -1717,15 +1720,16 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(k.dtype == e.dtype)
 
     def test_path_to_edges(self):
-        e1 = igl.path_to_edges(np.array(range(20)), False)
-        e2 = igl.path_to_edges(np.array(range(20)), True)
-        r2 = np.vstack([np.array(range(20)), np.array(range(1, 21))]).T
+        v_indices = np.array(range(20))
+        e1 = igl.path_to_edges(v_indices, False)
+        e2 = igl.path_to_edges(v_indices, True)
+        r2 = np.vstack([v_indices, np.array(range(1, 21))]).T
         r2[19, 1] = 0
         self.assertTrue(np.allclose(e2, r2))
         self.assertTrue(e1.flags.c_contiguous)
         self.assertTrue(e2.flags.c_contiguous)
-        self.assertTrue(e1.dtype == np.int)
-        self.assertTrue(e2.dtype == np.int)
+        self.assertTrue(e1.dtype == v_indices.dtype)
+        self.assertTrue(e2.dtype == v_indices.dtype)
 
     def test_exterior_edges(self):
         e = igl.exterior_edges(self.f1)
@@ -2097,7 +2101,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(t.flags.c_contiguous)
 
-        self.assertTrue(v.dtype == np.float64)
+        self.assertTrue(v.dtype == self.default_float)
         self.assertTrue(t.dtype == self.f1.dtype)
 
     def test_two_axis_valuator_fixed_up(self):
@@ -2287,9 +2291,9 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(q.shape == (2*2, 4))
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(q.flags.c_contiguous)
-        self.assertTrue(v.dtype == np.float)
-        self.assertTrue(q.dtype == np.int)
-        self.assertTrue(e.dtype == np.int)
+        self.assertTrue(v.dtype == self.default_float)
+        self.assertTrue(q.dtype == self.default_int)
+        self.assertTrue(e.dtype == self.default_int)
 
     def test_sparse_voxel_grid(self):
         def sphere1(point):
@@ -2297,10 +2301,10 @@ class TestBasic(unittest.TestCase):
         point = np.array([1.0, 0.0, 0.0])
         cs, cv, ci = igl.sparse_voxel_grid(point, sphere1, 1.0, 100)
         self.assertTrue(cv.flags.c_contiguous)
-        self.assertTrue(cv.dtype == np.float)
+        self.assertTrue(cv.dtype == self.default_float)
         self.assertTrue(cv.shape == (len(cs), 3))
         self.assertTrue(ci.flags.c_contiguous)
-        self.assertTrue(ci.dtype == np.int)
+        self.assertTrue(ci.dtype == self.default_int)
         self.assertTrue(ci.shape[1] == 8)
 
     def test_topological_hole_fill(self):
@@ -2310,7 +2314,7 @@ class TestBasic(unittest.TestCase):
         ff = igl.topological_hole_fill(f, b, h)
         self.assertTrue(ff.flags.c_contiguous)
         self.assertTrue(ff.shape[1] == 3)
-        self.assertTrue(ff.dtype == np.int)
+        self.assertTrue(ff.dtype == f.dtype)
         self.assertTrue(ff.shape[0] != f.shape[0])
 
     def test_triangulated_grid(self):
@@ -2319,8 +2323,8 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.shape == (162, 3))
         self.assertTrue(f.flags.c_contiguous)
         self.assertTrue(v.flags.c_contiguous)
-        self.assertTrue(v.dtype == np.float)
-        self.assertTrue(f.dtype == np.int)
+        self.assertTrue(v.dtype == self.default_float)
+        self.assertTrue(f.dtype == self.default_int)
 
     def test_unproject_on_line(self):
         pos = np.array([10., 10.])
@@ -2332,7 +2336,7 @@ class TestBasic(unittest.TestCase):
 
         self.assertTrue(z.flags.c_contiguous)
         self.assertTrue(z.shape == (3, ))
-        self.assertTrue(z.dtype == np.float)
+        self.assertTrue(z.dtype == pos.dtype)
 
     def test_unproject_on_plane(self):
         pos = np.array([10., 10.])
@@ -2343,7 +2347,7 @@ class TestBasic(unittest.TestCase):
 
         self.assertTrue(z.flags.c_contiguous)
         self.assertTrue(z.shape == (3, ))
-        self.assertTrue(z.dtype == np.float)
+        self.assertTrue(z.dtype == pos.dtype)
 
     def test_fast_winding_number_for_points(self):
         xs = np.linspace(-5.0, 5.0, 10)
@@ -2355,7 +2359,7 @@ class TestBasic(unittest.TestCase):
         wn = igl.fast_winding_number_for_points(self.v1, n, a, grid)
         self.assertTrue(wn.flags.c_contiguous)
         self.assertTrue(wn.shape == (grid.shape[0], ))
-        self.assertTrue(wn.dtype == np.float)
+        self.assertTrue(wn.dtype == self.v1.dtype)
 
     def test_fast_winding_number_for_meshes(self):
         xs = np.linspace(-5.0, 5.0, 10)
@@ -2365,7 +2369,7 @@ class TestBasic(unittest.TestCase):
         wn = igl.fast_winding_number_for_meshes(self.v1, self.f1, grid)
         self.assertTrue(wn.flags.c_contiguous)
         self.assertTrue(wn.shape == (grid.shape[0], ))
-        self.assertTrue(wn.dtype == np.float)
+        self.assertTrue(wn.dtype == self.v1.dtype)
 
     def test_flip_avoiding_line_search(self):
         def fun(v):
@@ -2387,7 +2391,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(ef.flags.c_contiguous)
         self.assertTrue(ei.flags.c_contiguous)
         self.assertTrue(e.dtype == emap.dtype ==
-                        ef.dtype == ei.dtype == np.int)
+                        ef.dtype == ei.dtype == self.f2.dtype)
 
     def test_circulation(self):
         pass
