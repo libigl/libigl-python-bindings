@@ -37,7 +37,7 @@ function(pyigl_download_test_data)
 	pyigl_download_project(test_data
 		SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../data"
 		GIT_REPOSITORY https://github.com/libigl/libigl-tests-data
-		GIT_TAG        fa8ee953a64a560f24553dd8bda0c6cd4fbb5353
+		GIT_TAG        19cedf96d70702d8b3a83eb27934780c542356fe
 	)
 endfunction()
 
@@ -46,7 +46,7 @@ function(pyigl_download_tutorial_data)
 	pyigl_download_project(tutorial_data
 		SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../tutorial/data"
 		GIT_REPOSITORY https://github.com/libigl/libigl-tutorial-data
-		GIT_TAG        38bbed76692710af038b90c69bf33d6d0f99476d
+		GIT_TAG        c1f9ede366d02e3531ecbaec5e3769312f31cccd
 	)
 endfunction()
 
