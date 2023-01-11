@@ -1546,6 +1546,7 @@ class TestBasic(unittest.TestCase):
 
         self.assertTrue(omega.shape[0] == V.shape[0])
         self.assertTrue(omega.shape[1] == BE.shape[0] * 10)
+        self.assertTrue(omega.dtype == np.double)
 
         T = np.zeros((BE.shape[0]*4, 3))
         I = np.eye(3)
@@ -1556,7 +1557,7 @@ class TestBasic(unittest.TestCase):
 
         self.assertTrue(U.shape[0] == V.shape[0])
         self.assertTrue(U.shape[1] == 3)
-        self.assertTrue(U.dtype == V.dtype)
+        self.assertTrue(U.dtype == np.double)
         self.assertFalse(np.isnan(U).any())
     
     def test_direct_delta_mush_precomputation(self):
