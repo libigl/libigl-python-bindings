@@ -100,11 +100,10 @@ npe_arg(alpha, double)
 npe_begin_code()
   assert_valid_3d_tri_mesh(v, f);
 
-  Eigen::MatrixXi f_copy = f.template cast<int>();
   Eigen::MatrixXd w_copy = w.template cast<double>();
 
   EigenDenseLike<npe_Matrix_v> omega;
-  igl::direct_delta_mush_precomputation(v, f_copy, w_copy, p, lambda, kappa, alpha, omega);
+  igl::direct_delta_mush_precomputation(v, f, w_copy, p, lambda, kappa, alpha, omega);
   return npe::move(omega);
   
 npe_end_code()
