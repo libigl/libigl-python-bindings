@@ -11,7 +11,6 @@ Computes Direct Delta Mesh Skinning (Variant 0) from
 Parameters
 ----------
 v  #V by 3 list of rest pose vertex positions
-e  #E Number of bones
 t  #E*4 by 3 list of bone pose transformations
 omega #V by #E*10 list of precomputated matrix values
 
@@ -43,21 +42,17 @@ npe_begin_code()
   assert_valid_bone_transforms(t, "t");
   assert_rows_equals(t, (omega.cols() * 4) / 10, "t");
 
-  Eigen::MatrixXd v_copy = v.template cast<double>();
-  Eigen::MatrixXd t_copy = t.template cast<double>();
-  Eigen::MatrixXd omega_copy = omega.template cast<double>();
-
   std::vector<Eigen::Affine3d, Eigen::aligned_allocator<Eigen::Affine3d>> 
-      t_affine(t_copy.rows() / 4);
+      t_affine(t.rows() / 4);
   
   for(int bone = 0; bone < t_affine.size(); ++bone)
   {
     t_affine[bone] = Eigen::Affine3d::Identity();
-    t_affine[bone].matrix().block(0, 0, 3, 4) = t_copy.block(bone * 4, 0, 4, 3).transpose();
+    t_affine[bone].matrix().block(0, 0, 3, 4) = t.block(bone * 4, 0, 4, 3).transpose();
   }
 
   EigenDenseLike<npe_Matrix_v> u;
-  igl::direct_delta_mush(v_copy, t_affine, omega_copy, u);
+  igl::direct_delta_mush(v, t_affine, omega, u);
   return npe::move(u);
 
 npe_end_code()
@@ -105,12 +100,11 @@ npe_arg(alpha, double)
 npe_begin_code()
   assert_valid_3d_tri_mesh(v, f);
 
-  Eigen::MatrixXd v_copy = v.template cast<double>();
-  Eigen::MatrixXd w_copy = w.template cast<double>();
   Eigen::MatrixXi f_copy = f.template cast<int>();
+  Eigen::MatrixXd w_copy = w.template cast<double>();
 
   EigenDenseLike<npe_Matrix_v> omega;
-  igl::direct_delta_mush_precomputation(v_copy, f_copy, w_copy, p, lambda, kappa, alpha, omega);
+  igl::direct_delta_mush_precomputation(v, f_copy, w_copy, p, lambda, kappa, alpha, omega);
   return npe::move(omega);
   
 npe_end_code()
