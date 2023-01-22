@@ -14,7 +14,7 @@ on:
 env:
   #CIBW_TEST_COMMAND: pytest {project}/tests
   #CIBW_TEST_REQUIRES: pytest
-  CIBW_SKIP: "*-win32 *_i686 pp* cp36* cp311*" # Skip 32-bit buildsa and PyPy, and 3.6(scipy) and 3.11(numpy)
+  CIBW_SKIP: "*-win32 *_i686 pp* cp36* cp311* pp* *musllinux*" # Skip 32-bit buildsa and PyPy, and 3.6(scipy) and 3.11(numpy) *musllinux*(scipy)
   CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET=10.14
 
 jobs:
