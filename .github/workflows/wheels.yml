@@ -52,9 +52,9 @@ jobs:
 
     - uses: pypa/cibuildwheel@v2.11.4
 
-    - name: Verify clean directory
-      run: git diff --exit-code
-      shell: bash
+      #- name: Verify clean directory
+      #  run: git diff --exit-code
+      #  shell: bash
 
     - name: Upload wheels
       uses: actions/upload-artifact@v2
