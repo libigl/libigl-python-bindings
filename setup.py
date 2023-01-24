@@ -116,7 +116,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="igl",
+    name="libigl_alecjacobson",
     version="2.2.1",
     author="libigl",
     author_email="",
