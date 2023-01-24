@@ -63,7 +63,10 @@ jobs:
       with:
         python-version: '3.10'
 
-    - uses: pypa/cibuildwheel@v2.12.0
+    - name: Install cibuildwheel
+       run: |
+          python -m pip install --upgrade pip
+          python -m pip install cibuildwheel==2.12.0
 
     - name: Configure cibuildwheel
       shell: bash
