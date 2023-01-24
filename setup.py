@@ -8,6 +8,8 @@ from packaging.version import Version
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 
+__version__ = '0.0.1'
+
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
         Extension.__init__(self, name, sources=[])
@@ -115,9 +117,21 @@ class CMakeBuild(build_ext):
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+
+# https://stackoverflow.com/a/7071358/148668
+import re
+VERSIONFILE="igl/_version.py"
+verstrline = open(VERSIONFILE, "rt").read()
+VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
+mo = re.search(VSRE, verstrline, re.M)
+if mo:
+    verstr = mo.group(1)
+else:
+    raise RuntimeError("Unable to find version string in %s." % (VERSIONFILE,))
+
 setup(
-    name="libigl_alecjacobson",
-    version="2.2.3",
+    name="libigl",
+    version=verstr,
     author="libigl",
     author_email="",
     description="libigl Python Bindings",
