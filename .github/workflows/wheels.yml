@@ -25,10 +25,10 @@ jobs:
         include:
           #- runs-on: ubuntu-latest
           #  cibw-arch: manylinux_x86_64
+          #- runs-on: macos-latest
+          #  cibw-arch: macosx_x86_64
           - runs-on: macos-latest
-            cibw-arch: macosx_x86_64
-            #- runs-on: macos-latest
-            #  cibw-arch: macosx_arm64
+            cibw-arch: macosx_arm64
             ## I don't know why this doesn't work...
             ## - runs-on: macos-latest
             ##   cibw-arch: macosx_universal2
