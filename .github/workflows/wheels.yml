@@ -32,14 +32,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          #- runs-on: ubuntu-latest
-          #  cibw-arch: manylinux_x86_64
-          #- runs-on: macos-latest
-          #  cibw-arch: macosx_x86_64
+          - runs-on: ubuntu-latest
+            cibw-arch: manylinux_x86_64
+          - runs-on: macos-latest
+            cibw-arch: macosx_x86_64
           - runs-on: macos-latest
             cibw-arch: macosx_arm64
-          #- runs-on: windows-latest
-          #  cibw-arch: win_amd64
+          - runs-on: windows-latest
+            cibw-arch: win_amd64
 
     name: Build wheels ${{ matrix.cibw-arch }}
     runs-on: ${{ matrix.runs-on }}
