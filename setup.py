@@ -117,7 +117,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="libigl_alecjacobson",
-    version="2.2.2",
+    version="2.2.3",
     author="libigl",
     author_email="",
     description="libigl Python Bindings",
