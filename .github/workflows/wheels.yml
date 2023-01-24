@@ -38,8 +38,8 @@ jobs:
 
 
   build_wheels:
-    name: Wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Build wheels ${{ matrix.cibw-arch }}
+    runs-on: ${{ matrix.runs-on }}
     strategy:
       fail-fast: false
       matrix:
