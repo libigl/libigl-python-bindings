@@ -16,6 +16,7 @@ env:
   #CIBW_TEST_REQUIRES: pytest
   CIBW_SKIP: "*-win32 *_i686 pp* cp36* cp311* pp* *musllinux*" # Skip 32-bit buildsa and PyPy, and 3.6(scipy) and 3.11(numpy) *musllinux*(scipy)
   CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET=11.00
+  CIBW_ARCHS_MACOS: "arm64"
 
 jobs:
   build_sdist:
@@ -38,20 +39,12 @@ jobs:
 
 
   build_wheels:
-    name: Build wheels ${{ matrix.cibw-arch }}
-    runs-on: ${{ matrix.runs-on }}
+    name: Wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - runs-on: ubuntu-latest
-            cibw-arch: manylinux_x86_64
-          - runs-on: macos-latest
-            cibw-arch: macosx_x86_64
-          - runs-on: macos-latest
-            cibw-arch: macosx_arm64
-          - runs-on: windows-latest
-            cibw-arch: win_amd64
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v2
