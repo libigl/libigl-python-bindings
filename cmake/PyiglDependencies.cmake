@@ -13,7 +13,6 @@ list(REMOVE_DUPLICATES CMAKE_MODULE_PATH)
 # Required libraries
 ################################################################################
 
-SET(NPE_WITH_EIGEN ${PYLIBIGL_EXTERNAL}/libigl/external/eigen  CACHE INTERNAL "")
 
 include(FetchContent)
 
@@ -31,8 +30,18 @@ FetchContent_Declare(
 # NumpyEigen's CMakeLists sets NPE_PYTHON_EXECUTABLE without a way to override,
 # so we must include directly rather that using FetchContent_MakeAvailable
 #FetchContent_MakeAvailable(numpyeigen)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PYLIBIGL_EXTERNAL}/numpyeigen/cmake)
+# Check if population has already been performed
+FetchContent_GetProperties(numpyeigen)
+if(NOT numpyeigen_POPULATED)
+  # Fetch the content using previously declared details
+  FetchContent_Populate(numpyeigen)
+endif()
+# Push CMAKE_MODULE_PATH
+set(PREV_CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${numpyeigen_SOURCE_DIR}/cmake)
 include(numpyeigen)
+# Pop CMAKE_MODULE_PATH
+set(CMAKE_MODULE_PATH ${PREV_CMAKE_MODULE_PATH})
 
 if(${PY_IGL_DOWNLOAD_TEST_DATA})
   FetchContent_Declare(test_data
