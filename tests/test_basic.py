@@ -1531,6 +1531,40 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(M.shape[0] == V.shape[0])
         self.assertTrue(M.shape[1] == W.shape[1]*4)
 
+    def test_direct_delta_mush(self):
+        V, F = igl.read_triangle_mesh(os.path.join(self.test_path, "arm.obj"))
+        W = igl.read_dmat(os.path.join(self.test_path, "arm-weights.dmat"))
+        _, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_path, "arm.tgf"))
+
+        # Use same values as tutorial
+        # https://github.com/libigl/libigl/blob/main/tutorial/408_DirectDeltaMush/main.cpp
+        p = 20
+        l = 3
+        k = 1
+        a = 0.8
+        omega = igl.direct_delta_mush_precomputation(V, F,W, p, l, k, a)
+
+        self.assertTrue(omega.shape[0] == V.shape[0])
+        self.assertTrue(omega.shape[1] == BE.shape[0] * 10)
+        self.assertTrue(omega.dtype == np.double)
+
+        T = np.zeros((BE.shape[0]*4, 3))
+        I = np.eye(3)
+        for i in range(0, T.shape[0], 4):
+            T[i:i+3, :] = I
+
+        U = igl.direct_delta_mush(V, T, omega)
+
+        self.assertTrue(U.shape[0] == V.shape[0])
+        self.assertTrue(U.shape[1] == 3)
+        self.assertTrue(U.dtype == np.double)
+        self.assertFalse(np.isnan(U).any())
+    
+    def test_direct_delta_mush_precomputation(self):
+        # covered in test_direct_delta_mush
+        pass
+
+
     def test_point_mesh_squared_distance(self):
         dist, i, c = igl.point_mesh_squared_distance(
             np.array([0., 0., 0.]), self.v1, self.f1)
