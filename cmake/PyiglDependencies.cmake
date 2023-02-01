@@ -34,7 +34,7 @@ FetchContent_Declare(
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PYLIBIGL_EXTERNAL}/numpyeigen/cmake)
 include(numpyeigen)
 
-if(${PY_IGL_PYTHON_TESTS})
+if(${PY_IGL_DOWNLOAD_TEST_DATA})
   FetchContent_Declare(test_data
     SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../data"
     GIT_REPOSITORY https://github.com/libigl/libigl-tests-data.git
@@ -42,7 +42,7 @@ if(${PY_IGL_PYTHON_TESTS})
   FetchContent_MakeAvailable(test_data)
 endif()
 
-if(${PY_IGL_PYTHON_TUTORIAL})
+if(${PY_IGL_DOWNLOAD_TUTORIAL_DATA})
   FetchContent_Declare(tutorial_data
     SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../tutorial/data"
     GIT_REPOSITORY https://github.com/libigl/libigl-tutorial-data.git
