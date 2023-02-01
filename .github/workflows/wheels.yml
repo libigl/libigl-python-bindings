@@ -51,7 +51,7 @@ jobs:
       CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "python -m delvewheel repair --no-mangle-all --add-path build\\temp.win-amd64-3.6\\Release;build\\temp.win-amd64-3.6\\Release\\Release;build\\temp.win-amd64-3.6\\Release\\_deps\\gmp-src\\lib;build\\temp.win-amd64-3.6\\Release\\_deps\\mpfr-src\\lib -w {dest_dir} {wheel} "
       # CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "cd C: && cmd //c tree //F"
       CIBW_SKIP: "*-win32 *_i686 pp* cp36* cp311* *musllinux*" # Skip 32-bit buildsa and PyPy, and 3.6(scipy) and 3.11(numpy) *musllinux*(scipy)
-      CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
+      CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py {project}/data/"
 
 
     steps:

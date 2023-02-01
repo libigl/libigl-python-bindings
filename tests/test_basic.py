@@ -7,6 +7,8 @@ import numpy as np
 import scipy as sp
 import scipy.sparse as csc
 import math
+import sys
+
 
 
 DOUBLE_EPS = 1.0e-14
@@ -16,16 +18,18 @@ FLOAT_EPS_SQ = 1.0e-14
 
 
 class TestBasic(unittest.TestCase):
+    test_data_path = None
 
     def setUp(self):
         # Some global datastructures to use in the tests
         np.random.seed(42)
-        self.test_path = os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), "../data/")
+        if self.test_data_path is None:
+            self.test_data_path = os.path.join(os.path.dirname(
+                os.path.realpath(__file__)), "../data/")
         self.v1, self.f1 = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "bunny_small.off"))
+            os.path.join(self.test_data_path, "bunny_small.off"))
         self.v2, self.f2 = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "fertility.off"))
+            os.path.join(self.test_data_path, "fertility.off"))
 
         self.v = np.random.rand(10, 3).astype(self.v1.dtype)
         self.t = np.random.rand(10, 4)
@@ -37,9 +41,9 @@ class TestBasic(unittest.TestCase):
 
     def tearDown(self):
         vv1, ff1 = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "bunny_small.off"))
+            os.path.join(self.test_data_path, "bunny_small.off"))
         vv2, ff2 = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "fertility.off"))
+            os.path.join(self.test_data_path, "fertility.off"))
         self.assertTrue((vv1 == self.v1).all())
         self.assertTrue((ff1 == self.f1).all())
 
@@ -185,14 +189,14 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(qv2.flags.c_contiguous)
 
     def test_read_obj(self):
-        v, _, n, f, _, _ = igl.read_obj(self.test_path + "face.obj")
+        v, _, n, f, _, _ = igl.read_obj(self.test_data_path + "face.obj")
         self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
         self.assertTrue(v.shape == (25905, 3) and n.shape ==
                         (0, 0) and f.shape == (51712, 3))
         self.assertTrue(v.dtype == self.default_float)
         self.assertTrue(f.dtype == self.f.dtype)
         v, _, n, f, _, _ = igl.read_obj(
-            self.test_path + "face.obj", dtype="float32")
+            self.test_data_path + "face.obj", dtype="float32")
         self.assertTrue(v.shape == (25905, 3) and n.shape ==
                         (0, 0) and f.shape == (51712, 3))
         self.assertTrue(v.dtype == np.float32)
@@ -201,13 +205,13 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(n.flags.c_contiguous)
 
     def test_read_off(self):
-        v, f, n = igl.read_off(self.test_path + "bunny_small.off")
+        v, f, n = igl.read_off(self.test_data_path + "bunny_small.off")
         self.assertTrue(type(v) == type(f) == type(n) == np.ndarray)
         self.assertTrue(v.shape == (3485, 3) and n.shape ==
                         (0, 0) and f.shape == (6966, 3))
         self.assertTrue(v.dtype == self.default_float)
         v, f, n = igl.read_off(
-            self.test_path + "bunny_small.off", read_normals=False, dtype="float32")
+            self.test_data_path + "bunny_small.off", read_normals=False, dtype="float32")
         self.assertTrue(v.shape == (3485, 3) and n.shape ==
                         (0, 0) and f.shape == (6966, 3))
         self.assertTrue(v.dtype == np.float32)
@@ -217,7 +221,7 @@ class TestBasic(unittest.TestCase):
 
     def test_read_mesh(self):
         v, t, f = igl.read_mesh(os.path.join(
-            self.test_path, "octopus-low.mesh"))
+            self.test_data_path, "octopus-low.mesh"))
         self.assertTrue(type(v) == type(t) == type(f) == np.ndarray)
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(t.flags.c_contiguous)
@@ -228,18 +232,18 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.dtype == self.f1.dtype)
 
     def test_read_triangle_mesh(self):
-        v, f = igl.read_triangle_mesh(self.test_path + "octopus-low.mesh")
+        v, f = igl.read_triangle_mesh(self.test_data_path + "octopus-low.mesh")
         #print(v.shape, f.shape)
-        v, f = igl.read_triangle_mesh(self.test_path + "face.obj")
+        v, f = igl.read_triangle_mesh(self.test_data_path + "face.obj")
         #print(v.shape, f.shape)
-        v, f = igl.read_triangle_mesh(self.test_path + "bunny_small.off")
+        v, f = igl.read_triangle_mesh(self.test_data_path + "bunny_small.off")
         #print(v.shape, f.shape)
         self.assertTrue(f.dtype == self.f.dtype)
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(f.flags.c_contiguous)
 
     def test_read_triangle_mesh_type_issue(self):
-        v, f = igl.read_triangle_mesh(self.test_path + "face.obj")
+        v, f = igl.read_triangle_mesh(self.test_data_path + "face.obj")
         vs = np.array([0])
         vt = np.arange(v.shape[0])
         d = igl.exact_geodesic(v, f, vs, vt)
@@ -479,7 +483,7 @@ class TestBasic(unittest.TestCase):
 
     def test_read_dmat(self):
         # TODO: maybe a vector
-        mat = igl.read_dmat(self.test_path + "decimated-knight-selection.dmat")
+        mat = igl.read_dmat(self.test_data_path + "decimated-knight-selection.dmat")
         self.assertEqual(mat.dtype, "float64")
         self.assertTrue(mat.flags.c_contiguous)
 
@@ -925,7 +929,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(tti.flags.c_contiguous)
 
     def test_arap1(self):
-        v, f, _ = igl.read_off(os.path.join(self.test_path, "camelhead.off"))
+        v, f, _ = igl.read_off(os.path.join(self.test_data_path, "camelhead.off"))
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(
@@ -952,8 +956,8 @@ class TestBasic(unittest.TestCase):
             [r * np.cos(thetas), np.sin(thetas), np.zeros([num_b, 1])], axis=1)
         edges = np.array([(i, (i + 1) % boundary.shape[0])
                           for i in range(boundary.shape[0])])
-        v = np.load(os.path.join(self.test_path, "test_arap2_v.npy"))
-        f = np.load(os.path.join(self.test_path, "test_arap2_f.npy"))
+        v = np.load(os.path.join(self.test_data_path, "test_arap2_v.npy"))
+        f = np.load(os.path.join(self.test_data_path, "test_arap2_f.npy"))
         v = np.concatenate([v, np.zeros([v.shape[0], 1])], axis=1)
         b = igl.boundary_loop(f)
 
@@ -970,7 +974,7 @@ class TestBasic(unittest.TestCase):
 
     def test_arap3(self):
         v, f = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "camelhead.off"))
+            os.path.join(self.test_data_path, "camelhead.off"))
 
         # Find the open boundary
         bnd = igl.boundary_loop(f)
@@ -986,7 +990,7 @@ class TestBasic(unittest.TestCase):
 
     def test_arap4(self):
         v, f = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "camelhead.off"))
+            os.path.join(self.test_data_path, "camelhead.off"))
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(
@@ -997,7 +1001,7 @@ class TestBasic(unittest.TestCase):
         uva = arap.solve(bc, uv_initial_guess)
 
     def test_slim(self):
-        v, f, _ = igl.read_off(os.path.join(self.test_path, "camelhead.off"))
+        v, f, _ = igl.read_off(os.path.join(self.test_data_path, "camelhead.off"))
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(
@@ -1012,9 +1016,9 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(v2.flags.c_contiguous)
 
     def test_bbw(self):
-        V, T, F = igl.read_mesh(os.path.join(self.test_path, "hand.mesh"))
+        V, T, F = igl.read_mesh(os.path.join(self.test_data_path, "hand.mesh"))
         C, BE, _, _, _, _ = igl.read_tgf(
-            os.path.join(self.test_path, "hand.tgf"))
+            os.path.join(self.test_data_path, "hand.tgf"))
 
         ok, b, bc = igl.boundary_conditions(V, T, C, np.array(
             [], dtype=T.dtype), BE, np.array([], dtype=T.dtype))
@@ -1031,7 +1035,7 @@ class TestBasic(unittest.TestCase):
 
     def test_shapeup(self):
         VQC, FQC, _ = igl.read_off(os.path.join(
-            self.test_path, "halftunnel.off"))
+            self.test_data_path, "halftunnel.off"))
         array_of_fours = np.ones((FQC.shape[0], 1), dtype="int32")*4
 
         E = np.zeros((FQC.shape[0]*FQC.shape[1], 2), dtype="int32")
@@ -1117,7 +1121,7 @@ class TestBasic(unittest.TestCase):
 
     # this test is creating a matrix which is not spd and an assertion fails...
     # def test_bijective_composite_harmonic_mapping(self):
-    #     v, f = igl.read_triangle_mesh(os.path.join(self.test_path, "circle.obj"))
+    #     v, f = igl.read_triangle_mesh(os.path.join(self.test_data_path, "circle.obj"))
     #     f = np.array(f[:, [0, 2, 1]])
     #     v = np.array(v[:, 0:2])
     #     b = np.array([943, 1356]
@@ -1284,7 +1288,7 @@ class TestBasic(unittest.TestCase):
 
     def test_min_quad_with_fixed(self):
         v, f = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "cheburashka.off"))
+            os.path.join(self.test_data_path, "cheburashka.off"))
 
         # Two fixed points: Left hand, left foot should have values 1 and -1
         b = np.array([4331, 5957])
@@ -1339,7 +1343,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(bc.shape[1] == TV.shape[0])
 
     def test_read_tgf(self):
-        filename = os.path.join(self.test_path, "hand.tgf")
+        filename = os.path.join(self.test_data_path, "hand.tgf")
         tf = np.array([1.])
         ti = np.array([1])
 
@@ -1360,7 +1364,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(PE.dtype == ti.dtype)
 
     def test_deform_skeleton(self):
-        hand_file = os.path.join(self.test_path, "hand.tgf")
+        hand_file = os.path.join(self.test_data_path, "hand.tgf")
         C, BE, _, _, _, _ = igl.read_tgf(hand_file)
 
         T = np.zeros((BE.shape[0]*4, 3))
@@ -1406,15 +1410,15 @@ class TestBasic(unittest.TestCase):
 
     def test_cross_fields(self):
         V, F = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "3holes.off"))
+            os.path.join(self.test_data_path, "3holes.off"))
 
         B = igl.barycenter(V, F)
         b = np.array([0])
         bc = np.array([[1., 0., 0.]])
 
         # if platform.system() == "Windows":
-        X1 = np.load(os.path.join(self.test_path, "X1.npy"))
-        S = np.load(os.path.join(self.test_path, "S.npy"))
+        X1 = np.load(os.path.join(self.test_data_path, "X1.npy"))
+        S = np.load(os.path.join(self.test_data_path, "S.npy"))
 
         self.assertTrue(X1.flags.c_contiguous)
         self.assertTrue(S.flags.c_contiguous)
@@ -1523,8 +1527,8 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(q.shape[1] == 4)
 
     def test_lbs_matrix(self):
-        V, _ = igl.read_triangle_mesh(os.path.join(self.test_path, "arm.obj"))
-        W = igl.read_dmat(os.path.join(self.test_path, "arm-weights.dmat"))
+        V, _ = igl.read_triangle_mesh(os.path.join(self.test_data_path, "arm.obj"))
+        W = igl.read_dmat(os.path.join(self.test_data_path, "arm-weights.dmat"))
         M = igl.lbs_matrix(V, W)
         self.assertTrue(M.flags.c_contiguous)
         self.assertTrue(M.dtype == V.dtype)
@@ -1532,9 +1536,9 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(M.shape[1] == W.shape[1]*4)
 
     def test_direct_delta_mush(self):
-        V, F = igl.read_triangle_mesh(os.path.join(self.test_path, "arm.obj"))
-        W = igl.read_dmat(os.path.join(self.test_path, "arm-weights.dmat"))
-        _, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_path, "arm.tgf"))
+        V, F = igl.read_triangle_mesh(os.path.join(self.test_data_path, "arm.obj"))
+        W = igl.read_dmat(os.path.join(self.test_data_path, "arm-weights.dmat"))
+        _, BE, _, _, _, _ = igl.read_tgf(os.path.join(self.test_data_path, "arm.tgf"))
 
         # Use same values as tutorial
         # https://github.com/libigl/libigl/blob/main/tutorial/408_DirectDeltaMush/main.cpp
@@ -1598,11 +1602,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(c.shape[1] == 3)
 
     def test_dual_quat_skinning(self):
-        V, _ = igl.read_triangle_mesh(os.path.join(self.test_path, "arm.obj"))
+        V, _ = igl.read_triangle_mesh(os.path.join(self.test_data_path, "arm.obj"))
         U = np.copy(V)
-        W = igl.read_dmat(os.path.join(self.test_path, "arm-weights.dmat"))
+        W = igl.read_dmat(os.path.join(self.test_data_path, "arm-weights.dmat"))
         C, BE, _, _, _, _ = igl.read_tgf(
-            os.path.join(self.test_path, "arm.tgf"))
+            os.path.join(self.test_data_path, "arm.tgf"))
         P = igl.directed_edge_parents(BE)
         rest_pose = igl.directed_edge_orientations(C, BE)
 
@@ -1630,7 +1634,7 @@ class TestBasic(unittest.TestCase):
 
     def test_active_set(self):
         V, F = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "cheburashka.off"))
+            os.path.join(self.test_data_path, "cheburashka.off"))
 
         b = np.array([2556])
         bc = np.array([1.0])
@@ -1753,7 +1757,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(j.dtype == e.dtype)
         self.assertTrue(k.dtype == e.dtype)
 
-    def test_path_to_edges(self):
+    def test_data_path_to_edges(self):
         v_indices = np.array(range(20))
         e1 = igl.path_to_edges(v_indices, False)
         e2 = igl.path_to_edges(v_indices, True)
@@ -1900,7 +1904,7 @@ class TestBasic(unittest.TestCase):
 
     def test_volume(self):
         v, t, f = igl.read_mesh(os.path.join(
-            self.test_path, "octopus-low.mesh"))
+            self.test_data_path, "octopus-low.mesh"))
         vol = igl.volume(v, t)
         self.assertTrue(vol.flags.c_contiguous)
         self.assertTrue(vol.dtype == v.dtype)
@@ -2130,7 +2134,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(s.shape[1] == self.v1.shape[1])
 
     def test_read_msh(self):
-        v, t = igl.read_msh(os.path.join(self.test_path, "car.msh"))
+        v, t = igl.read_msh(os.path.join(self.test_data_path, "car.msh"))
         self.assertTrue(type(v) == type(t) == np.ndarray)
         self.assertTrue(v.flags.c_contiguous)
         self.assertTrue(t.flags.c_contiguous)
@@ -2150,7 +2154,7 @@ class TestBasic(unittest.TestCase):
 
     def test_triangle_fan(self):
         _, f = igl.read_triangle_mesh(
-            os.path.join(self.test_path, "camelhead.off"))
+            os.path.join(self.test_data_path, "camelhead.off"))
         e = igl.exterior_edges(self.f)
         cap = igl.triangle_fan(e)
 
@@ -2238,7 +2242,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(xopt.shape == (2, ))
 
     def test_bijective_composite_harmonic_mapping(self):
-        v, f, _ = igl.read_off(os.path.join(self.test_path, "camelhead.off"))
+        v, f, _ = igl.read_off(os.path.join(self.test_data_path, "camelhead.off"))
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(thetas)], axis=1)
@@ -2461,4 +2465,6 @@ class TestBasic(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        TestBasic.test_data_path = os.path.join(sys.argv.pop(),'')
     unittest.main()
