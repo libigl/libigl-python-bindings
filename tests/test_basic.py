@@ -1388,7 +1388,7 @@ class TestBasic(unittest.TestCase):
 
     def test_planarize_quad_mesh(self):
         v, f, _ = igl.read_off(os.path.join(
-            "data", "inspired_mesh_quads_Conjugate.off"))
+            self.test_data_path, "inspired_mesh_quads_Conjugate.off"))
         out = igl.planarize_quad_mesh(v, f, 1, 1e-2)
 
         self.assertTrue(out.dtype == v.dtype)
