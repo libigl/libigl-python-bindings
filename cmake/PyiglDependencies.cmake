@@ -21,6 +21,7 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/libigl/libigl.git
     GIT_TAG 238a607032d725cbf1b99cad2077516b1ee066d8
 )
+FetchContent_GetProperties(libigl)
 FetchContent_MakeAvailable(libigl)
 
 FetchContent_Declare(
@@ -39,6 +40,8 @@ endif()
 # Push CMAKE_MODULE_PATH
 set(PREV_CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${numpyeigen_SOURCE_DIR}/cmake)
+# Why isn't eigen_SOURCE_DIR defined?
+SET(NPE_WITH_EIGEN "${libigl_SOURCE_DIR}/../eigen-src/"  CACHE INTERNAL "")
 include(numpyeigen)
 # Pop CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH ${PREV_CMAKE_MODULE_PATH})
