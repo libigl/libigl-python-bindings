@@ -51,8 +51,11 @@ class CMakeBuild(build_ext):
                 if sys.maxsize > 2**32:
                     cmake_args += ['-A', 'x64']
                 # build_args += ['--', '/m']
-        else:
-            build_args += ['--', '-j2']
+        else: 
+            if "MAX_JOBS" in os.environ:
+                build_args += ['--', f"-j{os.environ['MAX_JOBS']}"]
+            else:
+                build_args += ['--', '-j8']
 
 
         tmp = os.environ.get("AR", "")
