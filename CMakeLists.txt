@@ -16,6 +16,10 @@ include(Warnings)
 include(CXXFeatures)
 
 option(PY_IGL_PYTHON_TESTS          "Run Python tests"   ON)
+option(PY_IGL_PYTHON_TUTORIAL       "Build Python tutorial"   ON)
+
+# Generate position independent code by default
+set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 
 include(PyiglDependencies)
 
@@ -23,11 +27,6 @@ if(NOT TARGET igl::core)
   include(libigl)
 endif()
 
-# NumpyEigen
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PYLIBIGL_EXTERNAL}/numpyeigen/cmake)
-# Generate position independent code by default
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-include(numpyeigen)
 
 # A module for writing bindings with our framework
 file(GLOB PYIGL_SOURCES src/*.cpp)
@@ -70,7 +69,6 @@ endif()
 # set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/igl")
 
 if(${PY_IGL_PYTHON_TESTS})
-  pyigl_download_test_data()
   enable_testing()
   add_subdirectory(tests)
 endif()
