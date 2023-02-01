@@ -52,6 +52,7 @@ jobs:
       # CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "cd C: && cmd //c tree //F"
       CIBW_SKIP: "*-win32 *_i686 pp* cp36* cp311* *musllinux*" # Skip 32-bit buildsa and PyPy, and 3.6(scipy) and 3.11(numpy) *musllinux*(scipy)
       CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py {project}/data/"
+      CIBW_TEST_SKIP: "*-macosx_arm64"
 
 
     steps:
