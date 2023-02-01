@@ -218,7 +218,7 @@ void assert_valid_3d_tri_mesh(const TV& v, const TF& f, std::string v_name="v", 
                                     ".shape = [" + std::to_string(v.rows()) + ", " + std::to_string(v.cols()) + "]");
     }
     if (f.cols() != 3) {
-        throw pybind11::value_error("Invalid mesh faces, " + f_name + " must have shape [#faces, 4] but got " + f_name +
+        throw pybind11::value_error("Invalid mesh faces, " + f_name + " must have shape [#faces, 3] but got " + f_name +
                                     ".shape = [" + std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]");
     }
 }
@@ -265,7 +265,7 @@ void assert_valid_23d_tri_mesh(const TV &v, const TF &f, std::string v_name = "v
     }
     if (f.cols() != 3)
     {
-        throw pybind11::value_error("Invalid mesh faces, " + f_name + " must have shape [#faces, 4] but got " + f_name +
+        throw pybind11::value_error("Invalid mesh faces, " + f_name + " must have shape [#faces, 3] but got " + f_name +
                                     ".shape = [" + std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]");
     }
 }
@@ -309,5 +309,23 @@ void assert_valid_2d_tri_mesh(const TV& v, const TF& f, std::string v_name="v", 
     if (f.cols() != 3) {
         throw pybind11::value_error("Invalid mesh faces, " + f_name + " must have shape [#faces, 3] but got " + f_name +
                                     ".shape = [" + std::to_string(f.rows()) + ", " + std::to_string(f.cols()) + "]");
+    }
+}
+
+template <typename TV>
+void assert_valid_bone_transforms(const TV& t, std::string t_name="t") {
+    if (t.rows() <= 0) {
+        throw pybind11::value_error("Invalid number of transforms, " + t_name + " has zero rows (" + t_name +
+                                    ".shape = [" + std::to_string(t.rows()) + ", " + std::to_string(t.cols()) + "]) ");
+    }
+    
+    if (t.cols() != 3) {
+        throw pybind11::value_error("Invalid number of cols in transforms, " + t_name + " must have shape [#bones * 4, 3] but got " + t_name +
+                                    ".shape = [" + std::to_string(t.rows()) + ", " + std::to_string(t.cols()) + "]");
+    }
+
+    if (t.rows() % 4 != 0) {
+        throw pybind11::value_error("Invalid number of rows in transforms, " + t_name + " must have shape [#bones * 4, 3] but got " + t_name +
+                                    ".shape = [" + std::to_string(t.rows()) + ", " + std::to_string(t.cols()) + "].");   
     }
 }
