@@ -58,7 +58,6 @@ class CMakeBuild(build_ext):
                 build_args += ['--', f"-j{os.environ['MAX_JOBS']}"]
             else:
                 build_args += ['--', '-j8']
-        print(f"%%%%%%%%%%%%%%%%%%%%% build_args: {build_args}")
 
 
         tmp = os.environ.get("AR", "")
