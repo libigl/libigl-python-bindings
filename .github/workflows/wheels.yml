@@ -36,6 +36,13 @@ jobs:
         # importantly, github times out after 6 hours _per job_.
         cpversion: ["cp36", "cp37", "cp38", "cp39", "cp310", "cp311"]
         os: [ { runs-on: ubuntu-latest, cibw-arch: manylinux_x86_64}, { runs-on: macos-latest, cibw-arch: macosx_x86_64}, { runs-on: macos-latest, cibw-arch: macosx_arm64}, { runs-on: windows-latest, cibw-arch: win_amd64} ]
+        exclude:
+          - os: { runs-on: macos-latest, cibw-arch: macosx_arm64}
+            cpversion: "cp36"
+          - os: { runs-on: macos-latest, cibw-arch: macosx_arm64}
+            cpversion: "cp37"
+
+
 
     name: Build wheels ${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
     runs-on: ${{ matrix.os.runs-on }}
