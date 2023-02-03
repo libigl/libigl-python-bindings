@@ -51,6 +51,7 @@ jobs:
       CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "python -m delvewheel repair --no-mangle-all --add-path build\\temp.win-amd64-3.6\\Release;build\\temp.win-amd64-3.6\\Release\\Release;build\\temp.win-amd64-3.6\\Release\\_deps\\gmp-src\\lib;build\\temp.win-amd64-3.6\\Release\\_deps\\mpfr-src\\lib -w {dest_dir} {wheel} "
       CIBW_SKIP: "*-win32 *_i686 pp* cp36* *musllinux*" # Skip 32-bit buildsa and PyPy, and 3.6(scipy) and *musllinux*(scipy)
       #CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py {project}/data/"
+      CIBW_BUILD: "*-${{ matrix.cibw-arch }}"
       CIBW_TEST_SKIP: "*-macosx_arm64"
       CIBW_ENVIRONMENT: "MAX_JOBS=2"
 
@@ -80,7 +81,6 @@ jobs:
           CMAKE_ARCH="${{ matrix.cibw-arch == 'win32' && '-A Win32' || '' }}"
           CMAKE_OSX_ARCHITECTURES=${{ matrix.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.cibw-arch == 'macosx_universal2' && '"arm64;x86_64"' || '' }}
           echo "CIBW_ARCHS_MACOS=x86_64 arm64 universal2" >> $GITHUB_ENV
-          echo "CIBW_BUILD=*-${{ matrix.cibw-arch }}" >> $GITHUB_ENV
           echo "CIBW_ENVIRONMENT_MACOS=CMAKE_OSX_ARCHITECTURES=\"$CMAKE_OSX_ARCHITECTURES\"" >> $GITHUB_ENV
 
       - name: Build wheels
