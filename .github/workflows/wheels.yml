@@ -54,6 +54,8 @@ jobs:
       CIBW_BUILD: "*-${{ matrix.cibw-arch }}"
       CIBW_TEST_SKIP: "*-macosx_arm64"
       CIBW_ENVIRONMENT: "MAX_JOBS=2"
+      # Why universal2 here? It's not included above in CIBW_BUILD
+      CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
 
 
     steps:
@@ -80,7 +82,6 @@ jobs:
         run: |
           CMAKE_ARCH="${{ matrix.cibw-arch == 'win32' && '-A Win32' || '' }}"
           CMAKE_OSX_ARCHITECTURES=${{ matrix.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.cibw-arch == 'macosx_universal2' && '"arm64;x86_64"' || '' }}
-          echo "CIBW_ARCHS_MACOS=x86_64 arm64 universal2" >> $GITHUB_ENV
           echo "CIBW_ENVIRONMENT_MACOS=CMAKE_OSX_ARCHITECTURES=\"$CMAKE_OSX_ARCHITECTURES\"" >> $GITHUB_ENV
 
       - name: Build wheels
