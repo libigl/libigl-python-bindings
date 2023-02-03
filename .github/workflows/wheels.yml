@@ -9,23 +9,23 @@ on:
       - master
 
 jobs:
-  #build_sdist:
-  #  name: Build SDist
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #  - uses: actions/checkout@v2
-  #    with:
-  #      submodules: true
+  build_sdist:
+    name: Build SDist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
 
-  #  - name: Build SDist
-  #    run: pipx run build --sdist
+    - name: Build SDist
+      run: pipx run build --sdist
 
-  #  - name: Check metadata
-  #    run: pipx run twine check dist/*
+    - name: Check metadata
+      run: pipx run twine check dist/*
 
-  #  - uses: actions/upload-artifact@v2
-  #    with:
-  #      path: dist/*.tar.gz
+    - uses: actions/upload-artifact@v2
+      with:
+        path: dist/*.tar.gz
 
   build_wheels:
     strategy:
@@ -34,17 +34,16 @@ jobs:
         # Launch separate job for each python. The build is so much longer than
         # machine configuration/setup, so parallel builds will be faster. More
         # importantly, github times out after 6 hours _per job_.
-        #cpversion: ["cp36", "cp37", "cp38", "cp39", "cp310", "cp311"]
-        cpversion: ["cp39"]
+        cpversion: ["cp36", "cp37", "cp38", "cp39", "cp310", "cp311"]
         include:
-          #- runs-on: ubuntu-latest
-          #  cibw-arch: manylinux_x86_64
-          #- runs-on: macos-latest
-          #  cibw-arch: macosx_x86_64
+          - runs-on: ubuntu-latest
+            cibw-arch: manylinux_x86_64
+          - runs-on: macos-latest
+            cibw-arch: macosx_x86_64
           - runs-on: macos-latest
             cibw-arch: macosx_arm64
-              #- runs-on: windows-latest
-              #  cibw-arch: win_amd64
+          - runs-on: windows-latest
+            cibw-arch: win_amd64
 
     name: Build wheels ${{ matrix.cpversion }}-${{ matrix.cibw-arch }}
     runs-on: ${{ matrix.runs-on }}
