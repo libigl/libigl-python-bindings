@@ -32,14 +32,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-latest
-            cibw-arch: manylinux_x86_64
-          - runs-on: macos-latest
-            cibw-arch: macosx_x86_64
+          #- runs-on: ubuntu-latest
+          #  cibw-arch: manylinux_x86_64
+          #- runs-on: macos-latest
+          #  cibw-arch: macosx_x86_64
           - runs-on: macos-latest
             cibw-arch: macosx_arm64
-          - runs-on: windows-latest
-            cibw-arch: win_amd64
+              #- runs-on: windows-latest
+              #  cibw-arch: win_amd64
 
     name: Build wheels ${{ matrix.cibw-arch }}
     runs-on: ${{ matrix.runs-on }}
@@ -77,7 +77,9 @@ jobs:
       - name: Configure cibuildwheel
         shell: bash
         run: |
+          CMAKE_ARCH="${{ matrix.cibw-arch == 'win32' && '-A Win32' || '' }}"
           CMAKE_OSX_ARCHITECTURES=${{ matrix.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.cibw-arch == 'macosx_universal2' && '"arm64;x86_64"' || '' }}
+          echo "CIBW_ARCHS_MACOS=x86_64 arm64 universal2" >> $GITHUB_ENV
           echo "CIBW_BUILD=*-${{ matrix.cibw-arch }}" >> $GITHUB_ENV
           echo "CIBW_ENVIRONMENT_MACOS=CMAKE_OSX_ARCHITECTURES=\"$CMAKE_OSX_ARCHITECTURES\"" >> $GITHUB_ENV
 
