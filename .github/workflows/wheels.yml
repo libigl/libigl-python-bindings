@@ -9,23 +9,23 @@ on:
       - master
 
 jobs:
-  build_sdist:
-    name: Build SDist
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
+  #build_sdist:
+  #  name: Build SDist
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #  - uses: actions/checkout@v2
+  #    with:
+  #      submodules: true
 
-    - name: Build SDist
-      run: pipx run build --sdist
+  #  - name: Build SDist
+  #    run: pipx run build --sdist
 
-    - name: Check metadata
-      run: pipx run twine check dist/*
+  #  - name: Check metadata
+  #    run: pipx run twine check dist/*
 
-    - uses: actions/upload-artifact@v2
-      with:
-        path: dist/*.tar.gz
+  #  - uses: actions/upload-artifact@v2
+  #    with:
+  #      path: dist/*.tar.gz
 
   build_wheels:
     strategy:
