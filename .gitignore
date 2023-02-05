@@ -16,6 +16,7 @@ pyigl_classes.cpython*
 __pycache__
 
 igl.egg-info
+libigl.egg-info
 *.code-workspace
 out.obj
 test.off
@@ -36,3 +37,4 @@ junit
 .*.un~
 .*.swp
 .*.swo
+*~
