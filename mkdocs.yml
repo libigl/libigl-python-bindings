@@ -5,6 +5,7 @@ repo_url: 'https://github.com/libigl/libigl-python-bindings'
 site_description: "Simple Python geometry processing library"
 # strict: true
 docs_dir: 'tutorial'
+edit_uri: 'edit/master/tutorial/'
 remote_branch: 'gh-pages'
 theme:
   name: material

@@ -25,9 +25,8 @@ python -m pip install ./
 * A tutorial on how to use the bindings can be found [here](https://libigl.github.io/libigl-python-bindings/tutorials/)
 * A function reference can be found [here](https://libigl.github.io/libigl-python-bindings/igl_docs/)
 
-
-## Compiling and modifying the bindings
-After cloning this repository, you can compile the bindings from scratch by running:
+## Compiling and modifying the bindiings
+After installing numpy & scipy and then cloning this repository, you can compile the bindings from scratch by running:
 
 ```
 python setup.py develop
