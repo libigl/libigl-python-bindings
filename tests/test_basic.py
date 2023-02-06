@@ -3,6 +3,7 @@ import os
 import platform
 
 import igl
+import igl.copyleft.cgal
 import numpy as np
 import scipy as sp
 import scipy.sparse as csc
@@ -490,7 +491,7 @@ class TestBasic(unittest.TestCase):
     # sparse matrix, no flag attribute
     def test_vector_area_matrix(self):
         a = igl.vector_area_matrix(self.f)
-        self.assertEqual(a.dtype, self.f.dtype)
+        self.assertEqual(a.dtype, "float64")
         self.assertEqual(a.shape[0], a.shape[1])
         self.assertEqual(a.shape[0], self.v.shape[0]*2)
 
@@ -2463,8 +2464,16 @@ class TestBasic(unittest.TestCase):
                         emap.dtype == self.f1.dtype)
         self.assertTrue(np.array(ue2e).dtype == self.f1.dtype)
 
+    # copyleft.cgal
+    def test_convex_hull(self):
+        V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype="float64")
+        F = igl.copyleft.cgal.convex_hull(V)
+        F = np.sort(F)
+        F = F[np.lexsort(F.T[::-1],axis=0)]
+        F_gt = np.array([[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]],dtype="int64")
+        self.assertTrue((F == F_gt).all())
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        TestBasic.test_data_path = os.path.join(sys.argv.pop(),'')
+    if 'TEST_DATA_PATH' in os.environ:
+        TestBasic.test_data_path = os.path.join(os.environ['TEST_DATA_PATH'],'')
     unittest.main()
