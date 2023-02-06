@@ -1,8 +1,11 @@
-// prevent termios.h from being included and defining B0 (only happening on macos with cp36)
-#define _SYS_TERMIOS_H_
 #include <npe.h>
 #include <common.h>
 #include <typedefs.h>
+// On macos with cp36, termios.h is getting included for some reason and it
+// defines B0
+#ifdef B0
+#  undef B0
+#endif
 #include <igl/fit_cubic_bezier.h>
 #include <pybind11/stl_bind.h>
 #include <pybind11/stl.h>
