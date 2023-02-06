@@ -2463,8 +2463,7 @@ class TestBasic(unittest.TestCase):
                         emap.dtype == self.f1.dtype)
         self.assertTrue(np.array(ue2e).dtype == self.f1.dtype)
 
-
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        TestBasic.test_data_path = os.path.join(sys.argv.pop(),'')
+    if 'TEST_DATA_PATH' in os.environ:
+        TestBasic.test_data_path = os.path.join(os.environ['TEST_DATA_PATH'],'')
     unittest.main()
