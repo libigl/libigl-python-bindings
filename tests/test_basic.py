@@ -3,7 +3,6 @@ import os
 import platform
 
 import igl
-import igl.copyleft.cgal
 import numpy as np
 import scipy as sp
 import scipy.sparse as csc
@@ -2464,14 +2463,6 @@ class TestBasic(unittest.TestCase):
                         emap.dtype == self.f1.dtype)
         self.assertTrue(np.array(ue2e).dtype == self.f1.dtype)
 
-    # copyleft.cgal
-    def test_convex_hull(self):
-        V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype="float64")
-        F = igl.copyleft.cgal.convex_hull(V)
-        F = np.sort(F)
-        F = F[np.lexsort(F.T[::-1],axis=0)]
-        F_gt = np.array([[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]],dtype="int64")
-        self.assertTrue((F == F_gt).all())
 
 if __name__ == '__main__':
     if 'TEST_DATA_PATH' in os.environ:
