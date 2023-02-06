@@ -1,3 +1,5 @@
+// prevent termios.h from being included and defining B0 (only happening on macos with cp36)
+#define _SYS_TERMIOS_H_
 #include <npe.h>
 #include <common.h>
 #include <typedefs.h>
