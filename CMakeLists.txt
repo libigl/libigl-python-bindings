@@ -15,9 +15,6 @@ include(Warnings)
 # Use C++11/14
 include(CXXFeatures)
 
-option(PY_IGL_DOWNLOAD_TEST_DATA          "Download test data"   ON)
-option(PY_IGL_DOWNLOAD_TUTORIAL_DATA      "Download tutorial data"   ON)
-
 # Generate position independent code by default
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 

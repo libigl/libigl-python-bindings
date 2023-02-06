@@ -8,6 +8,8 @@ import scipy as sp
 import scipy.sparse as csc
 import math
 import sys
+from git import Repo
+
 
 
 
@@ -18,14 +20,17 @@ FLOAT_EPS_SQ = 1.0e-14
 
 
 class TestBasic(unittest.TestCase):
-    test_data_path = None
 
     def setUp(self):
+        # This is called once for every sub-test.
+        
         # Some global datastructures to use in the tests
         np.random.seed(42)
-        if self.test_data_path is None:
-            self.test_data_path = os.path.join(os.path.dirname(
-                os.path.realpath(__file__)), "../data/")
+        # https://stackoverflow.com/a/45230996/148668
+        self.test_data_path = os.path.join("./data","")
+        if not os.path.isdir(self.test_data_path):
+            Repo.clone_from("https://github.com/libigl/libigl-tests-data.git", self.test_data_path)
+
         self.v1, self.f1 = igl.read_triangle_mesh(
             os.path.join(self.test_data_path, "bunny_small.off"))
         self.v2, self.f2 = igl.read_triangle_mesh(
@@ -490,7 +495,7 @@ class TestBasic(unittest.TestCase):
     # sparse matrix, no flag attribute
     def test_vector_area_matrix(self):
         a = igl.vector_area_matrix(self.f)
-        self.assertEqual(a.dtype, self.f.dtype)
+        self.assertEqual(a.dtype, "float64")
         self.assertEqual(a.shape[0], a.shape[1])
         self.assertEqual(a.shape[0], self.v.shape[0]*2)
 
@@ -2464,6 +2469,4 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(np.array(ue2e).dtype == self.f1.dtype)
 
 if __name__ == '__main__':
-    if 'TEST_DATA_PATH' in os.environ:
-        TestBasic.test_data_path = os.path.join(os.environ['TEST_DATA_PATH'],'')
     unittest.main()
