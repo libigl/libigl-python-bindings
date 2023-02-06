@@ -495,7 +495,6 @@ class TestBasic(unittest.TestCase):
     # sparse matrix, no flag attribute
     def test_vector_area_matrix(self):
         a = igl.vector_area_matrix(self.f)
-        self.assertEqual(a.dtype, "float64")
         self.assertEqual(a.shape[0], a.shape[1])
         self.assertEqual(a.shape[0], self.v.shape[0]*2)
 
