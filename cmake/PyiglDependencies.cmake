@@ -19,7 +19,7 @@ include(FetchContent)
 FetchContent_Declare(
     libigl
     GIT_REPOSITORY https://github.com/libigl/libigl.git
-    GIT_TAG 238a607032d725cbf1b99cad2077516b1ee066d8
+    GIT_TAG 4a91b88f81aa094d076ad4f1460ae663295ac518
 )
 FetchContent_GetProperties(libigl)
 FetchContent_MakeAvailable(libigl)

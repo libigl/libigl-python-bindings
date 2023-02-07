@@ -48,7 +48,7 @@ npe_begin_code()
   //assert_cols_equals(fs, 1, "fs");
   //assert_cols_equals(vt, 1, "vt");
   //assert_cols_equals(ft, 1, "ft");
-  EigenDenseLike<npe_Matrix_v> d;
+  Eigen::Matrix<typename npe_Matrix_v::Scalar,Eigen::Dynamic,1> d;
   igl::exact_geodesic(v, f, vs, fs, vt, ft, d);
   return npe::move(d);
 
