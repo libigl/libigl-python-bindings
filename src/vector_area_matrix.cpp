@@ -33,7 +33,7 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   assert_valid_tri_mesh_faces(f);
-  EigenSparseLike<npe_Matrix_f> a;
+  Eigen::SparseMatrix<double> a;
   igl::vector_area_matrix(f, a);
   return npe::move(a);
 
