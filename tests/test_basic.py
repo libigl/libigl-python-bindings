@@ -938,7 +938,7 @@ class TestBasic(unittest.TestCase):
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(
             thetas), np.zeros_like(thetas)], axis=1)
-        uv_initial_guess = igl.harmonic_weights(v, f, b, bc, 1)
+        uv_initial_guess = igl.harmonic(v, f, b, bc, 1)
 
         v2d = v[:, :2].copy()
         arap1 = igl.ARAP(v2d, f, 2, b)
@@ -969,7 +969,7 @@ class TestBasic(unittest.TestCase):
         circle_b = np.concatenate(
             [np.cos(thetas), np.sin(thetas), np.zeros([len(b), 1])], axis=1)
 
-        v0 = igl.harmonic_weights(v, f, b, circle_b, 1)
+        v0 = igl.harmonic(v, f, b, circle_b, 1)
         arap = igl.ARAP(v, f, 2, b)
 
         v2 = arap.solve(circle_b[:, :2], v0[:, :2])
@@ -987,7 +987,7 @@ class TestBasic(unittest.TestCase):
         bnd_uv = igl.map_vertices_to_circle(v, bnd)
 
         # Harmonic parametrization for the internal vertices
-        uv = igl.harmonic_weights(v, f, bnd, bnd_uv, 1)
+        uv = igl.harmonic(v, f, bnd, bnd_uv, 1)
 
         arap = igl.ARAP(v, f, 2, np.zeros((0)))
         uva = arap.solve(np.zeros((0, 0)), uv)
@@ -999,7 +999,7 @@ class TestBasic(unittest.TestCase):
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(
             thetas), np.zeros_like(thetas)], axis=1)
-        uv_initial_guess = igl.harmonic_weights(v, f, b, bc, 1)
+        uv_initial_guess = igl.harmonic(v, f, b, bc, 1)
 
         arap = igl.ARAP(v, f, 3, b, igl.ARAP_ENERGY_TYPE_SPOKES)
         uva = arap.solve(bc, uv_initial_guess)
@@ -1010,7 +1010,7 @@ class TestBasic(unittest.TestCase):
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(
             thetas), np.zeros_like(thetas)], axis=1)
-        uv_initial_guess = igl.harmonic_weights(v, f, b, bc, 1)
+        uv_initial_guess = igl.harmonic(v, f, b, bc, 1)
 
         slim = igl.SLIM(
             v, f, uv_initial_guess[:, :2], b, bc[:, :2], igl.SLIM_ENERGY_TYPE_ARAP, 0.0)
@@ -1064,28 +1064,28 @@ class TestBasic(unittest.TestCase):
         # tested in test bbw
         pass
 
-    def test_harmonic_weights(self):
+    def test_harmonic(self):
         # tested in test_slim, test_arap2, and test_arap1
         pass
 
-    def test_harmonic_weights_integrated(self):
-        Q = igl.harmonic_weights_integrated(self.v1, self.f1, 1)
+    def test_harmonic_integrated(self):
+        Q = igl.harmonic_integrated(self.v1, self.f1, 1)
         self.assertTrue(Q.dtype == self.v1.dtype)
 
-    def test_harmonic_weights_uniform_laplacian(self):
+    def test_harmonic_uniform_laplacian(self):
         b = np.array([0, 10])
         bc = np.array([
             [0, 0], [10., 10.]])
-        W = igl.harmonic_weights_uniform_laplacian(self.f1, b, bc, 1)
+        W = igl.harmonic_uniform_laplacian(self.f1, b, bc, 1)
 
         self.assertTrue(W.dtype == self.v1.dtype)
         self.assertTrue(W.flags.c_contiguous)
 
-    def test_harmonic_weights_integrated_from_laplacian_and_mass(self):
+    def test_harmonic_integrated_from_laplacian_and_mass(self):
         l = igl.cotmatrix(self.v1, self.f1)
         m = igl.massmatrix(self.v1, self.f1, igl.MASSMATRIX_TYPE_VORONOI)
 
-        Q = igl.harmonic_weights_integrated_from_laplacian_and_mass(l, m, 1)
+        Q = igl.harmonic_integrated_from_laplacian_and_mass(l, m, 1)
         self.assertTrue(Q.dtype == self.v1.dtype)
 
     # deal with igl::PerEdgeNormalsWeightingType
@@ -1116,10 +1116,10 @@ class TestBasic(unittest.TestCase):
         b = np.array([1, 2, 10, 7])
         bc = self.v1[b, :]
         k = 1
-        w = igl.harmonic_weights_from_laplacian_and_mass(l, m, b, bc, k)
+        w = igl.harmonic_from_laplacian_and_mass(l, m, b, bc, k)
         self.assertTrue(w.flags.c_contiguous)
 
-    def test_harmonic_weights_from_laplacian_and_mass(self):
+    def test_harmonic_from_laplacian_and_mass(self):
         # tested in test_harmonic
         pass
 
@@ -2250,7 +2250,7 @@ class TestBasic(unittest.TestCase):
         b = igl.boundary_loop(f)
         thetas = np.linspace(0, 2 * np.pi, len(b))[:, np.newaxis]
         bc = np.concatenate([np.cos(thetas), np.sin(thetas)], axis=1)
-        v2d = igl.harmonic_weights(v, f, b, bc, 1)[:, :2]
+        v2d = igl.harmonic(v, f, b, bc, 1)[:, :2]
         ret0, mapping0 = igl.bijective_composite_harmonic_mapping(
             v2d, f, b, bc)
         self.assertTrue(ret0)

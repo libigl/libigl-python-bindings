@@ -1280,8 +1280,8 @@ GRAD_INTRINSIC Construct an intrinsic gradient operator.
 |Returns| G  \#F*2 by \#V gradient matrix: G=[Gx;Gy] where x runs along the 23 edge and</br>y runs in the counter-clockwise 90° rotation. |
 
 
-### harmonic_weights
-**`harmonic_weights(v: array, f: array, b: array, bc: array, k: int)`**
+### harmonic
+**`harmonic(v: array, f: array, b: array, bc: array, k: int)`**
 
 Compute k-harmonic weight functions "coordinates".
 
@@ -1291,8 +1291,8 @@ Compute k-harmonic weight functions "coordinates".
 |Returns| W  \#V by \#W list of weights |
 
 
-### harmonic_weights_from_laplacian_and_mass
-**`harmonic_weights_from_laplacian_and_mass(l: sparse_matrix, m: sparse_matrix, b: array, bc: array, k: int)`**
+### harmonic_from_laplacian_and_mass
+**`harmonic_from_laplacian_and_mass(l: sparse_matrix, m: sparse_matrix, b: array, bc: array, k: int)`**
 
 Compute a harmonic map using a given Laplacian and mass matrix
 
@@ -1302,8 +1302,8 @@ Compute a harmonic map using a given Laplacian and mass matrix
 |Returns| W  \#V by \#V list of weights |
 
 
-### harmonic_weights_integrated
-**`harmonic_weights_integrated(v: array, f: array, k: int)`**
+### harmonic_integrated
+**`harmonic_integrated(v: array, f: array, k: int)`**
 
 
 | | |
@@ -1312,8 +1312,8 @@ Compute a harmonic map using a given Laplacian and mass matrix
 |Returns| Q  \#V by \#V discrete (integrated) k-Laplacian |
 
 
-### harmonic_weights_integrated_from_laplacian_and_mass
-**`harmonic_weights_integrated_from_laplacian_and_mass(l: sparse_matrix, m: sparse_matrix, k: int)`**
+### harmonic_integrated_from_laplacian_and_mass
+**`harmonic_integrated_from_laplacian_and_mass(l: sparse_matrix, m: sparse_matrix, k: int)`**
 
 Build the discrete k-harmonic operator (computing integrated quantities).
 That is, if the k-harmonic PDE is Q x = 0, then this minimizes x' Q x
@@ -1324,8 +1324,8 @@ That is, if the k-harmonic PDE is Q x = 0, then this minimizes x' Q x
 |Returns| Q  \#V by \#V discrete (integrated) k-Laplacian |
 
 
-### harmonic_weights_uniform_laplacian
-**`harmonic_weights_uniform_laplacian(f: array, b: array, bc: array, k: int)`**
+### harmonic_uniform_laplacian
+**`harmonic_uniform_laplacian(f: array, b: array, bc: array, k: int)`**
 
 Compute harmonic map using uniform laplacian operator
 
