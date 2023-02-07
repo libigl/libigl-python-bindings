@@ -50,10 +50,11 @@ jobs:
     env:
       CIBW_BUILD_VERBOSITY: 3
       # This is very dubious... It *may* work because these are just cpp libraries that should not depend on the python version. Still, super-dubious.
-      CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py {project}/data/"
+      CIBW_TEST_REQUIRES: "gitpython"
+      CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
       CIBW_BUILD: "${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}"
       CIBW_TEST_SKIP: "*-macosx_arm64"
-      CIBW_ENVIRONMENT: "MAX_JOBS=2"
+      CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }}"
       # Why universal2 here? It's not included above in CIBW_BUILD
       CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
       CIBW_ENVIRONMENT_MACOS: "CMAKE_OSX_ARCHITECTURES=\"${{ matrix.os.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.os.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.os.cibw-arch == 'macosx_universal2' && 'arm64;x86_64' || '' }}\""

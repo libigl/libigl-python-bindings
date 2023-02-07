@@ -19,7 +19,7 @@ include(FetchContent)
 FetchContent_Declare(
     libigl
     GIT_REPOSITORY https://github.com/libigl/libigl.git
-    GIT_TAG 238a607032d725cbf1b99cad2077516b1ee066d8
+    GIT_TAG 4a91b88f81aa094d076ad4f1460ae663295ac518
 )
 FetchContent_GetProperties(libigl)
 FetchContent_MakeAvailable(libigl)
@@ -45,20 +45,3 @@ SET(NPE_WITH_EIGEN "${libigl_SOURCE_DIR}/../eigen-src/"  CACHE INTERNAL "")
 include(numpyeigen)
 # Pop CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH ${PREV_CMAKE_MODULE_PATH})
-
-if(${PY_IGL_DOWNLOAD_TEST_DATA})
-  FetchContent_Declare(test_data
-    SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../data"
-    GIT_REPOSITORY https://github.com/libigl/libigl-tests-data.git
-    GIT_TAG        19cedf96d70702d8b3a83eb27934780c542356fe)
-  FetchContent_MakeAvailable(test_data)
-endif()
-
-if(${PY_IGL_DOWNLOAD_TUTORIAL_DATA})
-  FetchContent_Declare(tutorial_data
-    SOURCE_DIR "${PYLIBIGL_EXTERNAL}/../tutorial/data"
-    GIT_REPOSITORY https://github.com/libigl/libigl-tutorial-data.git
-    GIT_TAG        c1f9ede366d02e3531ecbaec5e3769312f31cccd)
-  FetchContent_MakeAvailable(tutorial_data)
-endif()
-

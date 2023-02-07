@@ -1,7 +1,7 @@
 # libigl Python Bindings
-[![PyPI version](https://badge.fury.io/py/libigl.svg)](https://badge.fury.io/py/libigl)
-[![Build Status](https://travis-ci.com/libigl/libigl-python-bindings.svg?branch=master)](https://travis-ci.com/libigl/libigl-python-bindings)
-[![Build Status](https://dev.azure.com/libigl/Libigl/_apis/build/status/libigl.libigl-python-bindings?branchName=master)](https://dev.azure.com/libigl/Libigl/_build/latest?definitionId=1&branchName=master)
+[![PyPI version](https://badge.fury.io/py/libigl.svg)](https://pypi.org/project/libigl/)
+[![buildwheels](https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml/badge.svg)](https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml?query=branch%3Amain)
+
 
 This repository contains the source code for the libigl Python bindings. These bindings are fully compatible with NumPy and SciPy and offer a convenient interface similar to functions in those libraries.
 
@@ -51,5 +51,11 @@ or
 
 ```
 python tests/test_basic.py
+```
+
+and if developing and trying to run from this directory. You could use:
+
+```
+PYTHONPATH=. python tests/test_basic.py
 ```
 

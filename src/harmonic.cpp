@@ -30,7 +30,7 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(harmonic_weights)
+npe_function(harmonic)
 npe_doc(ds_harmonic_w)
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long, dense_longlong)
@@ -78,7 +78,7 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(harmonic_weights_uniform_laplacian)
+npe_function(harmonic_uniform_laplacian)
 npe_doc(ds_harmonic_ul)
 
 npe_arg(f, dense_int, dense_long, dense_longlong)
@@ -134,7 +134,7 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(harmonic_weights_from_laplacian_and_mass)
+npe_function(harmonic_from_laplacian_and_mass)
 npe_doc(ds_harmonic)
 //TODO: l and bc need to have same type, matching missing
 npe_arg(l, sparse_float, sparse_double)
@@ -187,7 +187,7 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(harmonic_weights_integrated_from_laplacian_and_mass)
+npe_function(harmonic_integrated_from_laplacian_and_mass)
 npe_doc(ds_harmonic_int_lapl)
 
 npe_arg(l, sparse_float, sparse_double)
@@ -231,7 +231,7 @@ Examples
 
 )igl_Qu8mg5v7";
 
-npe_function(harmonic_weights_integrated)
+npe_function(harmonic_integrated)
 npe_doc(ds_harmonic_int)
 
 npe_arg(v, dense_float, dense_double)
