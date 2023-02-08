@@ -54,11 +54,13 @@ class CMakeBuild(build_ext):
                 if sys.maxsize > 2**32:
                     cmake_args += ['-A', 'x64']
                 # build_args += ['--', '/m']
-        else: 
-            if "MAX_JOBS" in os.environ:
-                build_args += ['--', f"-j{os.environ['MAX_JOBS']}"]
-            else:
-                build_args += ['--', '-j8']
+
+        if "MAX_JOBS" in os.environ:
+            MAX_JOBS = os.environ['MAX_JOBS']
+        else:
+            MAX_JOBS = 8
+
+        cmake_args += [f'-DCMAKE_BUILD_PARALLEL_LEVEL={MAX_JOBS}']
 
 
         tmp = os.environ.get("AR", "")
