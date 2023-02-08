@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.16.0)
 project(pyigl)
 
-if (NOT DEFINED ${PYLIBIGL_EXTERNAL})
+if (NOT DEFINED PYLIBIGL_EXTERNAL)
   set(PYLIBIGL_EXTERNAL ${CMAKE_CURRENT_SOURCE_DIR}/external)
+endif()
+
+message(STATUS "PYIGL_OUTPUT_DIRECTORY: ${PYIGL_OUTPUT_DIRECTORY}")
+if (NOT DEFINED PYIGL_OUTPUT_DIRECTORY)
+  message(FATAL_ERROR "PYIGL_OUTPUT_DIRECTORY must be defined externally")
 endif()
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -32,7 +37,10 @@ npe_add_module(pyigl
   ${PYIGL_SOURCES})
 target_link_libraries(pyigl PRIVATE igl::core)
 target_include_directories(pyigl PRIVATE "src/include")
-set_target_properties(pyigl PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+set_target_properties(pyigl PROPERTIES 
+  LIBRARY_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  RUNTIME_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  )
 
 # don't need to worry about nested modules (opengl/** are the only ones and
 # those probably aren't ever getting python bindings)
@@ -56,7 +64,7 @@ function(pyigl_include prefix name)
     npe_add_module(                            ${target_name} BINDING_SOURCES ${sources})
     target_link_libraries(                     ${target_name} PRIVATE igl::core igl${prefix_lc}::${name})
     target_include_directories(                ${target_name} PRIVATE "src/include")
-    set(output_dir "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${subpath}")
+    set(output_dir "${PYIGL_OUTPUT_DIRECTORY}/${subpath}")
     file(MAKE_DIRECTORY ${output_dir})
     file(WRITE "${output_dir}/__init__.py" "from .${target_name} import *")
     # https://stackoverflow.com/a/56514534/148668
@@ -76,6 +84,10 @@ target_link_libraries(pyigl_classes PRIVATE pybind11::module)
 set_target_properties(pyigl_classes PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}" SUFFIX "${PYTHON_MODULE_EXTENSION}")
 target_include_directories(pyigl_classes PRIVATE "src/include")
 target_include_directories(pyigl_classes PRIVATE "${PYLIBIGL_EXTERNAL}/numpyeigen/src")
+set_target_properties(pyigl_classes PROPERTIES 
+  LIBRARY_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  RUNTIME_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  )
 
 # Sort projects inside the solution
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
