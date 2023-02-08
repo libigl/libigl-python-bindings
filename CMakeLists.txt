@@ -40,6 +40,8 @@ target_include_directories(pyigl PRIVATE "src/include")
 set_target_properties(pyigl PROPERTIES 
   LIBRARY_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
   RUNTIME_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
   )
 
 # don't need to worry about nested modules (opengl/** are the only ones and
@@ -70,7 +72,9 @@ function(pyigl_include prefix name)
     # https://stackoverflow.com/a/56514534/148668
     set_target_properties(${target_name} PROPERTIES 
       LIBRARY_OUTPUT_DIRECTORY "${output_dir}"
-      RUNTIME_OUTPUT_DIRECTORY "${output_dir}")
+      RUNTIME_OUTPUT_DIRECTORY "${output_dir}"
+      LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
+      RUNTIME_OUTPUT_DIRECTORY_RELEASE "${output_dir}")
     target_link_libraries(     pyigl INTERFACE ${target_name})
   endif()
 endfunction()
@@ -87,6 +91,8 @@ target_include_directories(pyigl_classes PRIVATE "${PYLIBIGL_EXTERNAL}/numpyeige
 set_target_properties(pyigl_classes PROPERTIES 
   LIBRARY_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
   RUNTIME_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
   )
 
 # Sort projects inside the solution
