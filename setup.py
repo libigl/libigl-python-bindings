@@ -46,10 +46,19 @@ class CMakeBuild(build_ext):
         cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
         # cmake_args += ['-DDEBUG_TRACE=ON']
 
-        if "MAX_JOBS" in os.environ:
-            build_args += ['--', f"-j{os.environ['MAX_JOBS']}"]
-        else:
-            build_args += ['--', '-j8']
+        if platform.system() == "Windows":
+            #cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
+            cmake_generator = os.environ.get('CMAKE_GENERATOR', '')
+            print(f"cmake_generator: {cmake_generator}")
+            if cmake_generator != "NMake Makefiles" and "Ninja" not in cmake_generator:
+                if sys.maxsize > 2**32:
+                    cmake_args += ['-A', 'x64']
+                # build_args += ['--', '/m']
+        else: 
+            if "MAX_JOBS" in os.environ:
+                build_args += ['--', f"-j{os.environ['MAX_JOBS']}"]
+            else:
+                build_args += ['--', '-j8']
 
 
         tmp = os.environ.get("AR", "")
