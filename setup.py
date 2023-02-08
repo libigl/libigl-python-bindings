@@ -55,13 +55,8 @@ class CMakeBuild(build_ext):
                     cmake_args += ['-A', 'x64']
                 # build_args += ['--', '/m']
 
-        if "MAX_JOBS" in os.environ:
-            MAX_JOBS = os.environ['MAX_JOBS']
-        else:
-            MAX_JOBS = 8
-
-        cmake_args += [f'-DCMAKE_BUILD_PARALLEL_LEVEL={MAX_JOBS}']
-
+        if not "CMAKE_BUILD_PARALLEL_LEVEL" in os.environ:
+             os.environ['CMAKE_BUILD_PARALLEL_LEVEL']  = "8"
 
         tmp = os.environ.get("AR", "")
         if "arm64-apple" in tmp:
