@@ -75,7 +75,14 @@ function(pyigl_include prefix name)
       RUNTIME_OUTPUT_DIRECTORY "${output_dir}"
       LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
       RUNTIME_OUTPUT_DIRECTORY_RELEASE "${output_dir}")
+    # why do this?
     target_link_libraries(     pyigl INTERFACE ${target_name})
+  endif()
+  # https://stackoverflow.com/a/69736197/148668 
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    add_custom_command(TARGET ${target_name} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:${target_name}> $<TARGET_FILE_DIR:${target_name}>
+      COMMAND_EXPAND_LISTS)
   endif()
 endfunction()
 
