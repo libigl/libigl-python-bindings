@@ -1,3 +1,5 @@
+#include <pybind11/stl.h>
+
 #include <npe.h>
 #include <typedefs.h>
 
@@ -24,7 +26,7 @@ npe_doc(ds_triangulate)
 
 npe_arg(V, dense_float, dense_double)
 npe_arg(E, dense_int, dense_long)
-npe_arg(H, npe_matches(V))
+npe_default_arg(H, npe_matches(V) ,pybind11::array())
 npe_default_arg(flags, std::string, "")
 npe_default_arg(VM, npe_matches(E), pybind11::array())
 npe_default_arg(EM, npe_matches(E), pybind11::array())
@@ -38,24 +40,24 @@ using F2Type = decltype(F2);
 using VM2Type = decltype(VM2);
 using E2Type = decltype(E2);
 using EM2Type = decltype(EM2);
-//if(VM.size() == 0 && EM.size() == 0)
-//{
+if(VM.size() == 0 && EM.size() == 0)
+{
   igl::triangle::triangulate(V, E, H, flags, V2, F2);
   return std::list<pybind11::object>({npe::move(V2), npe::move(F2)});
-//}else
-//{
-//  igl::triangle::triangulate(V, E, H, VM, EM, flags, V2, F2, VM2, E2, EM2);
-//  if(VM.size() && EM.size())
-//  {
-//    return std::make_tuple(npe::move(V2), npe::move(F2), npe::move(VM2), npe::move(E2), npe::move(EM2));
-//  }else if(VM.size())
-//  {
-//    return std::make_tuple(npe::move(V2), npe::move(F2), npe::move(VM2));
-//  }else
-//  {
-//    return std::make_tuple(npe::move(V2), npe::move(F2), npe::move(E2), npe::move(EM2));
-//  }
-//}
+}else
+{
+  igl::triangle::triangulate(V, E, H, VM.reshaped(), EM.reshaped(), flags, V2, F2, VM2, E2, EM2);
+  if(VM.size() && EM.size())
+  {
+    return std::list<pybind11::object>({npe::move(V2), npe::move(F2), npe::move(VM2), npe::move(E2), npe::move(EM2)});
+  }else if(VM.size())
+  {
+    return std::list<pybind11::object>({npe::move(V2), npe::move(F2), npe::move(VM2)});
+  }else
+  {
+    return std::list<pybind11::object>({npe::move(V2), npe::move(F2), npe::move(E2), npe::move(EM2)});
+  }
+}
 
 npe_end_code()
 

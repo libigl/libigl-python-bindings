@@ -3,6 +3,7 @@ import os
 import platform
 
 import igl
+import igl.triangle
 import numpy as np
 import scipy as sp
 import scipy.sparse as csc
@@ -2467,6 +2468,26 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.dtype == e.dtype == ue.dtype ==
                         emap.dtype == self.f1.dtype)
         self.assertTrue(np.array(ue2e).dtype == self.f1.dtype)
+
+    def test_triangulate(self):
+        V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype='float64')
+        E = np.array([[0,1],[1,2],[2,3],[3,0]])
+        V2,F2 = igl.triangle.triangulate(V,E,flags='Q')
+        self.assertTrue(V2.shape == V.shape)
+        self.assertTrue(F2.shape == (2,3))
+        V = np.array([[0,0],[4,0],[0,4],[1,1],[1,2],[2,1]],dtype='float64')
+        E = np.array([[0,1],[1,2],[2,0],[3,4],[4,5],[5,3]])
+        H = np.array([1.1,1.1])
+        # Markers can't be 0
+        VM = 1+np.array(range(V.shape[0]))
+        EM = 1+np.array(range(E.shape[0]))
+        V2,F2,VM2,E2,EM2 = igl.triangle.triangulate(V,E,H,flags='Q',VM=VM,EM=EM)
+        self.assertTrue(V2.shape == V.shape)
+        self.assertTrue(F2.shape == (3*2,3))
+        self.assertTrue(VM2.shape == VM.shape)
+        self.assertTrue(E2.shape == E.shape)
+        self.assertTrue(EM2.shape == EM.shape)
+
 
 if __name__ == '__main__':
     unittest.main()
