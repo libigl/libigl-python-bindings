@@ -2481,8 +2481,10 @@ class TestBasic(unittest.TestCase):
         # Markers can't be 0
         VM = 1+np.array(range(V.shape[0]))
         EM = 1+np.array(range(E.shape[0]))
-        V2,F2,VM2,E2,EM2 = igl.triangle.triangulate(V,E,H,flags='Q',VM=VM,EM=EM)
+        V2,F2,VM2,E2,EM2 = igl.triangle.triangulate(V,E,H,flags='',VM=VM,EM=EM)
         self.assertTrue(V2.shape == V.shape)
+        print(V2)
+        print(F2)
         self.assertTrue(F2.shape == (3*2,3))
         self.assertTrue(VM2.shape == VM.shape)
         self.assertTrue(E2.shape == E.shape)
