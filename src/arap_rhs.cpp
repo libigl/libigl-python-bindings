@@ -4,7 +4,7 @@
 #include <igl/arap_rhs.h>
 
 const char* ds_arap_rhs = R"igl_Qu8mg5v7(
-Guild right-hand side constructor of global poisson solve for various ARAP energies
+Build right-hand side constructor of global poisson solve for various ARAP energies
   Inputs:
 
   Outputs:
