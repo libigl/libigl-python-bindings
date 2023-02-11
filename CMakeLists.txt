@@ -24,6 +24,7 @@ include(CXXFeatures)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 
 option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       ON)
+option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       ON)
 # libigl options must come before include(PyiglDependencies)
 include(PyiglDependencies)
 if(NOT TARGET igl::core)
@@ -36,6 +37,7 @@ npe_add_module(pyigl
   BINDING_SOURCES
   ${PYIGL_SOURCES})
 target_link_libraries(pyigl PRIVATE igl::core)
+target_compile_features(pyigl PRIVATE cxx_std_17)
 target_include_directories(pyigl PRIVATE "src/include")
 set_target_properties(pyigl PROPERTIES 
   LIBRARY_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
@@ -65,6 +67,7 @@ function(pyigl_include prefix name)
     set(target_name "pyigl${prefix_lc}_${name}")
     npe_add_module(                            ${target_name} BINDING_SOURCES ${sources})
     target_link_libraries(                     ${target_name} PRIVATE igl::core igl${prefix_lc}::${name})
+    target_compile_features(                   ${target_name} PRIVATE cxx_std_17)
     target_include_directories(                ${target_name} PRIVATE "src/include")
     set(output_dir "${PYIGL_OUTPUT_DIRECTORY}/${subpath}")
     file(MAKE_DIRECTORY ${output_dir})
@@ -87,10 +90,12 @@ function(pyigl_include prefix name)
 endfunction()
 
 pyigl_include("copyleft" "cgal")
+pyigl_include("restricted" "triangle")
 
 
 add_library(pyigl_classes MODULE classes/classes.cpp)
 target_link_libraries(pyigl_classes PRIVATE npe igl::core)
+target_compile_features(pyigl_classes PRIVATE cxx_std_17)
 target_link_libraries(pyigl_classes PRIVATE pybind11::module)
 set_target_properties(pyigl_classes PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}" SUFFIX "${PYTHON_MODULE_EXTENSION}")
 target_include_directories(pyigl_classes PRIVATE "src/include")
