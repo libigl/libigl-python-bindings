@@ -192,7 +192,7 @@ if __name__ == '__main__':
 
     # Parse c++ header files
     print("Parsing header files...")
-    load_headers = True
+    load_headers = False
     if load_headers:
         with open("headers.dat", 'rb') as fs:
             dicts = pickle.load(fs)
@@ -291,7 +291,7 @@ if __name__ == '__main__':
             # Write binding files
             try:
                 tpl = Template(filename='basic_function.mako')
-                #print(correct_functions)
+                print(correct_functions)
                 includes = ["<npe.h>", "<typedefs.h>"]
                 rendered = tpl.render(functions=correct_functions, enums=enums, includes=includes)
                 tpl1 = Template(filename='basic_function.mako')

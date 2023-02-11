@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.16.0)
 project(pyigl)
 
-if (NOT DEFINED ${PYLIBIGL_EXTERNAL})
+if (NOT DEFINED PYLIBIGL_EXTERNAL)
   set(PYLIBIGL_EXTERNAL ${CMAKE_CURRENT_SOURCE_DIR}/external)
+endif()
+
+message(STATUS "PYIGL_OUTPUT_DIRECTORY: ${PYIGL_OUTPUT_DIRECTORY}")
+if (NOT DEFINED PYIGL_OUTPUT_DIRECTORY)
+  message(FATAL_ERROR "PYIGL_OUTPUT_DIRECTORY must be defined externally")
 endif()
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -18,23 +23,71 @@ include(CXXFeatures)
 # Generate position independent code by default
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 
+option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       ON)
+# libigl options must come before include(PyiglDependencies)
 include(PyiglDependencies)
-
 if(NOT TARGET igl::core)
   include(libigl)
 endif()
 
 # A module for writing bindings with our framework
 file(GLOB PYIGL_SOURCES src/*.cpp)
-
 npe_add_module(pyigl
   BINDING_SOURCES
-  ${PYIGL_SOURCES}
-  ${PYIGL_SOURCES_COPYLEFT})
-
-#TODO move additional libs to variable
+  ${PYIGL_SOURCES})
 target_link_libraries(pyigl PRIVATE igl::core)
 target_include_directories(pyigl PRIVATE "src/include")
+set_target_properties(pyigl PROPERTIES 
+  LIBRARY_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  RUNTIME_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
+  )
+
+# don't need to worry about nested modules (opengl/** are the only ones and
+# those probably aren't ever getting python bindings)
+#
+# prefix is either "", "copyleft", or "restricted"
+function(pyigl_include prefix name)
+  string(TOUPPER "${prefix}" prefix_uc)
+  string(TOUPPER "${name}" name_uc)
+  if(prefix_uc)
+      string(PREPEND prefix_uc _)
+  endif()
+  string(TOLOWER "${prefix_uc}" prefix_lc)
+  if(LIBIGL${prefix_uc}_${name_uc})
+    if(${prefix} STREQUAL "copyleft")
+      set(subpath "copyleft/${name}")
+    else() # "" or "restricted"
+      set(subpath "${name}")
+    endif()
+    file(GLOB sources src/${subpath}/*.cpp)
+    set(target_name "pyigl${prefix_lc}_${name}")
+    npe_add_module(                            ${target_name} BINDING_SOURCES ${sources})
+    target_link_libraries(                     ${target_name} PRIVATE igl::core igl${prefix_lc}::${name})
+    target_include_directories(                ${target_name} PRIVATE "src/include")
+    set(output_dir "${PYIGL_OUTPUT_DIRECTORY}/${subpath}")
+    file(MAKE_DIRECTORY ${output_dir})
+    file(WRITE "${output_dir}/__init__.py" "from .${target_name} import *")
+    # https://stackoverflow.com/a/56514534/148668
+    set_target_properties(${target_name} PROPERTIES 
+      LIBRARY_OUTPUT_DIRECTORY "${output_dir}"
+      RUNTIME_OUTPUT_DIRECTORY "${output_dir}"
+      LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
+      RUNTIME_OUTPUT_DIRECTORY_RELEASE "${output_dir}")
+    # why do this?
+    target_link_libraries(     pyigl INTERFACE ${target_name})
+  endif()
+  # https://stackoverflow.com/a/69736197/148668 
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    add_custom_command(TARGET ${target_name} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:${target_name}> $<TARGET_FILE_DIR:${target_name}>
+      COMMAND_EXPAND_LISTS)
+  endif()
+endfunction()
+
+pyigl_include("copyleft" "cgal")
+
 
 add_library(pyigl_classes MODULE classes/classes.cpp)
 target_link_libraries(pyigl_classes PRIVATE npe igl::core)
@@ -42,6 +95,12 @@ target_link_libraries(pyigl_classes PRIVATE pybind11::module)
 set_target_properties(pyigl_classes PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}" SUFFIX "${PYTHON_MODULE_EXTENSION}")
 target_include_directories(pyigl_classes PRIVATE "src/include")
 target_include_directories(pyigl_classes PRIVATE "${PYLIBIGL_EXTERNAL}/numpyeigen/src")
+set_target_properties(pyigl_classes PROPERTIES 
+  LIBRARY_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  RUNTIME_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
+  )
 
 # Sort projects inside the solution
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
