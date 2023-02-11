@@ -89,7 +89,10 @@ endfunction()
 pyigl_include("copyleft" "cgal")
 
 
-add_library(pyigl_classes MODULE classes/classes.cpp)
+file(GLOB PYIGL_CLASSES_SOURCES classes/*.cpp)
+add_library(pyigl_classes MODULE ${PYIGL_CLASSES_SOURCES})
+# std::variant
+target_compile_features(pyigl_classes  PRIVATE cxx_std_17)
 target_link_libraries(pyigl_classes PRIVATE npe igl::core)
 target_link_libraries(pyigl_classes PRIVATE pybind11::module)
 set_target_properties(pyigl_classes PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}" SUFFIX "${PYTHON_MODULE_EXTENSION}")

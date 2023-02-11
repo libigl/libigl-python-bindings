@@ -2468,5 +2468,40 @@ class TestBasic(unittest.TestCase):
                         emap.dtype == self.f1.dtype)
         self.assertTrue(np.array(ue2e).dtype == self.f1.dtype)
 
+    def test_AABB(self):
+        tree = igl.AABB_f64_3()
+        tree.init(self.v1,self.f1)
+        bc = igl.barycenter(self.v1,self.f1)
+        sqrD = tree.squared_distance(self.v1,self.f1,bc)
+        self.assertTrue(sqrD.shape[0] == bc.shape[0])
+        self.assertTrue(np.max(sqrD) <= 1e-16)
+        sqrD,I,C = tree.squared_distance(self.v1,self.f1,bc,return_index=True,return_closest_point=True)
+        self.assertTrue(sqrD.shape[0] == bc.shape[0])
+        self.assertTrue(I.shape[0] == bc.shape[0])
+        self.assertTrue(C.shape == bc.shape)
+
+    def test_in_element_3(self):
+        V = np.array([ [0.,0,0], [1,0,0], [0,1,0], [0,0,1], [1,1,1]],dtype='float64')
+        T = np.array([[0,1,2,3],[4,3,2,1]],dtype='int32')
+        Q = np.array([[0.1,0.1,0.1],[0.9,0.9,0.9]],dtype='float64')
+        tree = igl.AABB_f64_3()
+        tree.init(V,T)
+        I = igl.in_element_3(V,T,Q,tree)
+        self.assertTrue(I.shape[0] == Q.shape[0])
+        self.assertTrue(I[0] == 0)
+        self.assertTrue(I[1] == 1)
+
+    def test_in_element_2(self):
+        V = np.array([ [0.,0], [1,0], [0,1], [1,1]],dtype='float64')
+        F = np.array([[0,1,2],[2,1,3]],'int32')
+        Q = np.array([[0.1,0.1],[0.9,0.9]],dtype='float64')
+        tree = igl.AABB_f64_2()
+        tree.init(V,F)
+        I = igl.in_element_2(V,F,Q,tree)
+        self.assertTrue(I.shape[0] == Q.shape[0])
+        self.assertTrue(I[0] == 0)
+        self.assertTrue(I[1] == 1)
+
+
 if __name__ == '__main__':
     unittest.main()
