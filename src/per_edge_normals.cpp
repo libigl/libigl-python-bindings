@@ -42,7 +42,7 @@ npe_function(per_edge_normals)
 npe_doc(ds_per_edge_normals)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_default_arg(weight, int , 0)
 npe_arg(fn, npe_matches(v))
 

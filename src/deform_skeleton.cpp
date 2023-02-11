@@ -38,7 +38,7 @@ npe_function(deform_skeleton)
 npe_doc(ds_deform_skeleton)
 
 npe_arg(c, dense_float, dense_double)
-npe_arg(be, dense_int, dense_long, dense_longlong)
+npe_arg(be, dense_int, dense_long)
 npe_arg(t, dense_float, dense_double)
 
 npe_begin_code()

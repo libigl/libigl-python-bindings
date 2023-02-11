@@ -41,7 +41,7 @@ npe_function(sample_edges)
 npe_doc(ds_sample_edges)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(e, dense_int, dense_long, dense_longlong)
+npe_arg(e, dense_int, dense_long)
 npe_arg(k, int)
 
 

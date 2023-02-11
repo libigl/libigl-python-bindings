@@ -95,7 +95,7 @@ npe_function(fast_winding_number_for_meshes)
 npe_doc(ds_fast_winding_number_for_meshes)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 npe_arg(q, npe_matches(v))
 

@@ -30,7 +30,7 @@ npe_function(mesh_boolean)
 npe_doc(ds_mesh_boolean)
 
 npe_arg(va, dense_float, dense_double)
-npe_arg(fa, dense_int, dense_long, dense_longlong)
+npe_arg(fa, dense_int, dense_long)
 npe_arg(vb, npe_matches(va))
 npe_arg(fb, npe_matches(fa))
 npe_arg(type, std::string)

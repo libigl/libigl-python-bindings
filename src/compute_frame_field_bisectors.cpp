@@ -39,7 +39,7 @@ npe_function(compute_frame_field_bisectors)
 npe_doc(ds_compute_frame_field_bisectors)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(b1, npe_matches(v))
 npe_arg(b2, npe_matches(v))
 npe_arg(pd1, npe_matches(v))
@@ -103,7 +103,7 @@ npe_function(compute_frame_field_bisectors_no_basis)
 npe_doc(ds_compute_frame_field_bisectors_no_basis)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(pd1, npe_matches(v))
 npe_arg(pd2, npe_matches(v))
 

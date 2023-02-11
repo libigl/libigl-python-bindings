@@ -34,7 +34,7 @@ Examples
 npe_function(edge_topology)
 npe_doc(ds_edge_topology)
 npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
   assert_valid_23d_tri_mesh(v, f);

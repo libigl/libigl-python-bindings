@@ -40,7 +40,7 @@ Examples
 npe_function(triangle_triangle_adjacency)
 npe_doc(ds_triangle_triangle_adjacency)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

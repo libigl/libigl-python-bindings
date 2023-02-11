@@ -38,7 +38,7 @@ Examples
 npe_function(path_to_edges)
 npe_doc(ds_path_to_edges)
 
-npe_arg(i, dense_int, dense_long, dense_longlong)
+npe_arg(i, dense_int, dense_long)
 npe_default_arg(make_loop, bool, false)
 
 

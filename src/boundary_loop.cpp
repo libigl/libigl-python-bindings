@@ -31,7 +31,7 @@ Examples
 
 npe_function(boundary_loop)
 npe_doc(ds_boundary_loop)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
   assert_valid_tri_mesh_faces(f);
@@ -70,7 +70,7 @@ Examples
 
 npe_function(all_boundary_loop)
 npe_doc(ds_all_boundary_loop)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
   assert_valid_tri_mesh_faces(f);
   std::vector<std::vector<typename EigenDenseI64::Scalar>> l;

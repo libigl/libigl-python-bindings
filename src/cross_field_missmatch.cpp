@@ -39,7 +39,7 @@ npe_function(cross_field_mismatch)
 npe_doc(ds_cross_field_mismatch)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(pd1, npe_matches(v))
 npe_arg(pd2, npe_matches(v))
 npe_arg(is_combed, bool)

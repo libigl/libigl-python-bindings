@@ -33,7 +33,7 @@ Examples
 npe_function(euler_characteristic)
 npe_doc(ds_euler_characteristic)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()
@@ -72,7 +72,7 @@ npe_function(euler_characteristic_complete)
 npe_doc(ds_euler_characteristic_complete)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

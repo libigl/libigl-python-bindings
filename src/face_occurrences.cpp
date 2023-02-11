@@ -33,7 +33,7 @@ Examples
 npe_function(face_occurrences)
 npe_doc(ds_face_occurrences)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

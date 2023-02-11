@@ -43,7 +43,7 @@ npe_function(offset_surface)
 npe_doc(ds_offset_surface)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(isolevel, double)
 npe_arg(s, int)
 npe_arg(signed_distance_type, int)

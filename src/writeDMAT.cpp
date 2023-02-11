@@ -39,7 +39,7 @@ Examples
 npe_function(write_dmat)
 npe_doc(ds_write_dmat)
 npe_arg(filename, std::string)
-npe_arg(w, dense_double, dense_float, dense_int, dense_longlong )
+npe_arg(w, dense_double, dense_float, dense_int )
 npe_default_arg(ascii, bool, true)
 npe_begin_code()
 

@@ -34,7 +34,7 @@ Examples
 npe_function(triangle_fan)
 npe_doc(ds_triangle_fan)
 
-npe_arg(e, dense_int, dense_long, dense_longlong)
+npe_arg(e, dense_int, dense_long)
 
 
 npe_begin_code()

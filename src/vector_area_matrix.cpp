@@ -29,7 +29,7 @@ Examples
 
 npe_function(vector_area_matrix)
 npe_doc(ds_vector_area_matrix)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
   assert_valid_tri_mesh_faces(f);

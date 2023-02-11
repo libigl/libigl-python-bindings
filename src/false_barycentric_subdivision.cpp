@@ -36,7 +36,7 @@ npe_function(false_barycentric_subdivision)
 npe_doc(ds_false_barycentric_subdivision)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

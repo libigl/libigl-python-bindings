@@ -33,7 +33,7 @@ Examples
 npe_function(quad_planarity)
 npe_doc(ds_quad_planarity)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
 
   assert_valid_tet_mesh(v, f);

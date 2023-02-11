@@ -45,7 +45,7 @@ npe_function(edge_collapse_is_valid)
 npe_doc(ds_edge_collapse_is_valid)
 
 npe_arg(edge, int)
-npe_arg(F, dense_int, dense_long, dense_longlong)
+npe_arg(F, dense_int, dense_long)
 npe_arg(E, npe_matches(F))
 npe_arg(EMAP, npe_matches(F))
 npe_arg(EF, npe_matches(F))

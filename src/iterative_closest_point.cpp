@@ -48,7 +48,7 @@ npe_function(iterative_closest_point)
 npe_doc(ds_iterative_closest_point)
 
 npe_arg(vx, dense_float, dense_double)
-npe_arg(fx, dense_int, dense_long, dense_longlong)
+npe_arg(fx, dense_int, dense_long)
 npe_arg(vy, npe_matches(vx))
 npe_arg(fy, npe_matches(fx))
 npe_arg(num_samples, int)

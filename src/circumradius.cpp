@@ -35,7 +35,7 @@ npe_function(circumradius)
 npe_doc(ds_circumradius)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

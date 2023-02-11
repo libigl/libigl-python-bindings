@@ -22,7 +22,7 @@ npe_function(moments)
 npe_doc(ds_moments)
 
 npe_arg(V, dense_float, dense_double)
-npe_arg(F, dense_int, dense_long, dense_longlong)
+npe_arg(F, dense_int, dense_long)
 
 npe_begin_code()
   assert_valid_3d_tri_mesh(V, F);

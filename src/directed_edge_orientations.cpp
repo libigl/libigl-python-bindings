@@ -35,7 +35,7 @@ npe_function(directed_edge_orientations)
 npe_doc(ds_directed_edge_orientations)
 
 npe_arg(c, dense_float, dense_double)
-npe_arg(e, dense_int, dense_long, dense_longlong)
+npe_arg(e, dense_int, dense_long)
 
 
 npe_begin_code()

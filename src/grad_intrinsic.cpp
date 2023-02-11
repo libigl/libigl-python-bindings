@@ -42,7 +42,7 @@ npe_function(grad_intrinsic)
 npe_doc(ds_grad_intrinsic)
 
 npe_arg(l, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 
 
 npe_begin_code()

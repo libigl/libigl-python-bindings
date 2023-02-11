@@ -38,7 +38,7 @@ npe_function(cut_mesh)
 npe_doc(ds_cut_mesh)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(cuts, npe_matches(f))
 npe_begin_code()
     assert_valid_3d_tri_mesh(v, f);

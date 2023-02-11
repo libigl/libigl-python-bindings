@@ -50,7 +50,7 @@ npe_function(uniformly_sample_two_manifold_internal)
 npe_doc(ds_uniformly_sample_two_manifold_internal)
 
 npe_arg(w, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(k, int)
 npe_arg(push, double)
 

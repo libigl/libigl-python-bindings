@@ -90,7 +90,7 @@ npe_function(direct_delta_mush_precomputation)
 npe_doc(ds_direct_delta_mush_precomp)
 
 npe_arg(v, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(w, npe_matches(v))
 npe_arg(p, int)
 npe_arg(lambda, double)

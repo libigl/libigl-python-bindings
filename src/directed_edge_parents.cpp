@@ -30,7 +30,7 @@ p = directed_edge_parents(e)
 
 npe_function(directed_edge_parents)
 npe_doc(ds_directed_edge_parents)
-npe_arg(e, dense_int, dense_long, dense_longlong)
+npe_arg(e, dense_int, dense_long)
 npe_begin_code()
 
   assert_nonzero_rows(e, "e");

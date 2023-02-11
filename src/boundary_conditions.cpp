@@ -54,7 +54,7 @@ npe_function(boundary_conditions)
 npe_doc(ds_boundary_conditions)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(ele, dense_int, dense_long, dense_longlong)
+npe_arg(ele, dense_int, dense_long)
 npe_arg(c, npe_matches(v))
 npe_arg(p, npe_matches(ele))
 npe_arg(be, npe_matches(ele))

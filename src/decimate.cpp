@@ -48,7 +48,7 @@ npe_function(decimate)
 npe_doc(ds_decimate)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(max_m, size_t)
 
 

@@ -45,7 +45,7 @@ npe_function(simplify_polyhedron)
 npe_doc(ds_simplify_polyhedron)
 
 npe_arg(ov, dense_float, dense_double)
-npe_arg(of, dense_int, dense_long, dense_longlong)
+npe_arg(of, dense_int, dense_long)
 
 
 npe_begin_code()

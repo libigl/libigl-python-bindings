@@ -30,7 +30,7 @@ Examples
 
 npe_function(adjacency_list)
 npe_doc(ds_adjacency_list)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_begin_code()
   assert_valid_tet_or_tri_mesh_faces(f, "f");
   std::vector<std::vector<npe_Scalar_f>> a;

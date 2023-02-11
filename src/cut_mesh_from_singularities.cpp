@@ -34,7 +34,7 @@ Examples
 npe_function(cut_mesh_from_singularities)
 npe_doc(ds_cut_mesh_from_singularities)
 npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int, dense_long)
 npe_arg(mismatch, npe_matches(f))
 npe_begin_code()
     assert_valid_3d_tri_mesh(v, f);
