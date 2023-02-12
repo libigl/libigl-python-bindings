@@ -22,10 +22,7 @@ npe_arg(v, dense_float, dense_double)
 npe_begin_code()
 
   EigenDenseInt g;
-  // when https://github.com/libigl/libigl/pull/1989 is merged this copy should
-  // be removed
-  Eigen::MatrixXd v_copy = v.template cast<double>();
-  igl::copyleft::cgal::convex_hull(v_copy, g);
+  igl::copyleft::cgal::convex_hull(v, g);
   return npe::move(g);
 
 npe_end_code()
