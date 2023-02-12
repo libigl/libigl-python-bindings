@@ -80,9 +80,11 @@ function(pyigl_include prefix name)
     target_link_libraries(     pyigl INTERFACE ${target_name})
   endif()
   # https://stackoverflow.com/a/69736197/148668 
+  # https://cmake.org/cmake/help/latest/manual/cmake.1.html#cmdoption-cmake-E-arg-copy
+  # until then just needlessly also copy TARGET_FILE in case TARGET_RUNTIME_DLLS is empty
   if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     add_custom_command(TARGET ${target_name} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:${target_name}> $<TARGET_FILE_DIR:${target_name}>
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${target_name}> $<TARGET_RUNTIME_DLLS:${target_name}> $<TARGET_FILE_DIR:${target_name}>
       COMMAND_EXPAND_LISTS)
   endif()
 endfunction()
