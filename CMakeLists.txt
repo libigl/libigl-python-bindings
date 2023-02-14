@@ -24,6 +24,7 @@ include(CXXFeatures)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 
 option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       ON)
+option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       ON)
 # libigl options must come before include(PyiglDependencies)
 include(PyiglDependencies)
 if(NOT TARGET igl::core)
@@ -79,14 +80,17 @@ function(pyigl_include prefix name)
     target_link_libraries(     pyigl INTERFACE ${target_name})
   endif()
   # https://stackoverflow.com/a/69736197/148668 
+  # https://cmake.org/cmake/help/latest/manual/cmake.1.html#cmdoption-cmake-E-arg-copy
+  # until then just needlessly also copy TARGET_FILE in case TARGET_RUNTIME_DLLS is empty
   if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     add_custom_command(TARGET ${target_name} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:${target_name}> $<TARGET_FILE_DIR:${target_name}>
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${target_name}> $<TARGET_RUNTIME_DLLS:${target_name}> $<TARGET_FILE_DIR:${target_name}>
       COMMAND_EXPAND_LISTS)
   endif()
 endfunction()
 
 pyigl_include("copyleft" "cgal")
+pyigl_include("restricted" "triangle")
 
 
 file(GLOB PYIGL_CLASSES_SOURCES classes/*.cpp)
