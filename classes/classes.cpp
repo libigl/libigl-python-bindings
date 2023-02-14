@@ -9,8 +9,15 @@
 
 namespace py = pybind11;
 
+// Forward declaration
+template <int DIM>
+void init_AABB(py::module_ &);
+
 PYBIND11_MODULE(pyigl_classes, m)
 {
+  init_AABB<2>(m);
+  init_AABB<3>(m);
+
   py::class_<igl::ARAPData>(m, "ARAP")
       .def(py::init([](Eigen::MatrixXd &v, Eigen::MatrixXi &f, int dim, Eigen::MatrixXi &b,
                        const int energy_type, const bool with_dynamics, const double h, const double ym, const int max_iter) {
