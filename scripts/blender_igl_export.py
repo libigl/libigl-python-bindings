@@ -206,7 +206,7 @@ class IGLDeformableMesh:
 # FILE BROWSER SETUP
 class IGLExportHelper(bpy.types.Operator, ExportHelper):
     bl_idname = 'igl.export_helper'
-    bl_label = 'Select Folder'
+    bl_label = 'Export'
     bl_options = {'PRESET', 'UNDO'}
 
     filename_ext = ''
