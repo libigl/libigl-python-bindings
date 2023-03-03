@@ -145,7 +145,7 @@ class IGLDeformableMesh:
         if not self._validate_obj(file_name_without_ext):
             logger.error("Obj Validation Failed")
         else:
-            logger.info("Skinning Matrix and Obj successfully exported")
+            logger.info("Skinning Matrix and OBJ successfully exported")
 
     
     def _export_weights(self, file_name_without_ext):
@@ -211,11 +211,30 @@ class IGLExportHelper(bpy.types.Operator, ExportHelper):
 
     filename_ext = ''
 
-    def _begin_export(self, file_path):
-        # INPUTS NEEDED FOR EXPORT
-        geometry = bpy.data.objects["Cylinder"]  # INSERT YOUR GEOMETRY NAME
-        armature = bpy.data.armatures["Armature"]  # INSERT YOUR ARMATURE NAME
-        root_bone = "root"  # INSERT YOUR ROOT BONE NAME
+    def _begin_export(self, context, file_path):
+        if len(bpy.context.selected_objects) != 1:
+            logger.error("No support for 0 or multiple objects selected. Select the object at the highest level")
+            return
+
+        parent = bpy.context.selected_objects[0]
+        logger.info(f"Exporting a Skinned Mesh @ {parent.name}")
+        
+        if len(parent.children) != 1:
+            logger.error("We support skinning of a single geometry only")
+            return
+        
+        if parent.name not in bpy.data.armatures:
+            logger.error(f"Expected to have {parent.name} as the corresponding armature name as well")
+            return
+        
+        geometry = parent.children[0]
+        armature = bpy.data.armatures[parent.name]
+        
+        logger.info(f"Processing Armature with {len(armature.bones)} bones")
+        root_bone = "root"
+        if root_bone not in armature.bones:
+            logger.error(f"Please mark the highest level node as {root_bone}")
+            return
 
         bones_to_process = [armature.bones[root_bone]]
         igl_skeleton = IGLSkeleton()
@@ -250,7 +269,7 @@ class IGLExportHelper(bpy.types.Operator, ExportHelper):
         return filepath
 
     def execute(self, context):
-        self._begin_export(self._get_valid_asset_path(self.filepath))
+        self._begin_export(context, self._get_valid_asset_path(self.filepath))
         return {'FINISHED'}
 
 if __name__ == "__main__":
