@@ -14,11 +14,13 @@ from bpy_extras.io_utils import (
     ExportHelper
 )
 
+
+from collections import OrderedDict
 from pathlib import Path
-path_string = '~/Documents/blender_igl_export.log'
 
 # LOGGING SETUP
-logging.basicConfig(filename=str(Path(path_string).expanduser()),
+log_file = str(Path('~/Documents/blender_igl_export.log').expanduser())
+logging.basicConfig(filename=log_file,
                     filemode='w', level=logging.DEBUG, force=True)
 
 logger = logging.getLogger(__name__)
@@ -27,21 +29,68 @@ logger = logging.getLogger(__name__)
 # GLOBAL CONSTANTS
 IGL_AXIS_FORWARD = "-Z"
 IGL_AXIS_UP = "Y"
+EMPTY_ARRAY = np.array([])
+
+GLOBAL_MATRIX = axis_conversion(
+    to_forward=IGL_AXIS_FORWARD,
+    to_up=IGL_AXIS_UP,
+).to_4x4()
+
+def _convert_location_coordinate_system(location):
+        """
+        Receives a location in Blender Coordinate System (Z Up, Y forward)
+        and converts it to a more traditional coordinate system (Y Up, -Z forward)
+        """
+        transformed_location = GLOBAL_MATRIX @ location.to_4d()
+
+        return transformed_location[:-1]
+    
+def _convert_transform_coordinate_system(transform):
+    """
+    Receives a transform as 4x4 affine matrix in Blender Coordinate System (Z Up, Y forward)
+    and converts it to a more traditional coordinate system (Y Up, -Z forward)
+    """
+    transformed_location = GLOBAL_MATRIX @ transform
+
+    return transformed_location
+
+def _export_matrix_as_dmat(file_name_without_ext, matrix):
+        """
+        Given a numpy array as 2D matrix this function will write out
+        the matrix to a .dmat using the libigl specification.
+        """
+        if len(matrix.shape) != 2:
+            logger.error(f"Dmat export expected 2D array. Got {matrix.shape}")
+
+        with open(f"{file_name_without_ext}.dmat", "wb") as binary_writer:
+            binary_writer.write(
+                bytes(bytearray("0 0\n", encoding='ascii'))
+            )
+
+            binary_writer.write(bytes(
+                bytearray(f"{matrix.shape[1]} {matrix.shape[0]}\n", encoding='ascii')
+            ))
+
+            flattened_matrix = matrix.flatten(order='F').tolist()
+            s = struct.pack('d'*len(flattened_matrix), *flattened_matrix)
+            binary_writer.write(s)
 
 
 class IGLSkeleton:
     def __init__(self):
         # A bone is an unconnected entity
-        # Each bone will have a [x, y, z]
+        # Each bone will store a 4x4 transform relative to it's
+        # armature parent
         self.bones = []
-
+        # Will just store the xyz of the bone
+        self.head_bone_transforms = {}
+        
         # A parent / joint is a connection of 2 bones.
         # Each parent is a connection from parent index to child index
-        self.parents = set()
+        self.parents = OrderedDict()
 
         # Contains a mapping from blender bone name to IGL bone index
         self.blender_bone_mapping = {}
-
     
     @property
     def n_limbs(self):
@@ -51,32 +100,51 @@ class IGLSkeleton:
     def n_bones(self):
         return len(self.bones)
     
-    def _convert_coordinate_system(self, location):
-        """
-        Receives a location as x, y and z in Blender Coordinate System (Z Up, Z forward)
-        and converts it to a more traditional coordinate system (Z Up,)
-        """
-        global_matrix = axis_conversion(
-            to_forward=IGL_AXIS_FORWARD,
-            to_up=IGL_AXIS_UP,
-        ).to_4x4()
+    @property
+    def bind_pose(self):
+        # Hold a numpy array for bind pose.
+        # We will not export the bind pose, but if animation
+        # is exported, this bind_pose can be used or exported 
+        # independently
+        if self.n_limbs == 0:
+            logger.error("Requested bind pose when we have no limbs")
+            return EMPTY_ARRAY
 
-        affine_location = location.to_4d()
-        transformed_location = global_matrix @ affine_location
+        bind_pose_transforms = np.tile(
+            np.eye(4, dtype=np.float64), (self.n_limbs, 1, 1))
+        
+        transform_idx = 0
+        # NOTE: this ordering won't change, so safe to use this
+        for parent, _ in self.parents.items():
+            bone_idx = parent[0]
 
-        return transformed_location
+            if bone_idx not in self.head_bone_transforms:
+                logger.error(f"{bone_idx} not in head bone transforms. How did it become a parent?")
+                return EMPTY_ARRAY
+            
+            # Does a very simple copy of the selected bone transforms
+            bind_pose_transforms[transform_idx, :, :] = self.head_bone_transforms[bone_idx]
+            transform_idx += 1
+        
+        return bind_pose_transforms
     
-    def add_bone(self, bone_name, location):
+    def add_bone(self, bone_name, location, transform=None):
         if bone_name in self.blender_bone_mapping:
             logger.error(f"{bone_name} already in IGL Skeleton")
             return
 
-        location = self._convert_coordinate_system(location)
+        location = _convert_location_coordinate_system(location)
         
-        self.bones.append([location[0], location[1], location[2]])
+        self.bones.append(location)
         self.blender_bone_mapping[bone_name] = len(self.bones) - 1
 
-        logger.info(f"Bone {bone_name} added at {self.blender_bone_mapping[bone_name]}: {self.bones[-1]}")
+        if transform is not None:
+            transform = np.array(
+                _convert_transform_coordinate_system(transform), dtype=np.float64)
+            
+            self.head_bone_transforms[len(self.bones) - 1] = transform
+
+        logger.info(f"BONE {bone_name} added at {self.blender_bone_mapping[bone_name]}: {self.bones[-1]}")
     
     def add_parent(self, parent_bone_name, child_bone_name):
         if parent_bone_name not in self.blender_bone_mapping:
@@ -96,19 +164,22 @@ class IGLSkeleton:
         if reversed_edge_tuple in self.parents:
             logger.warning(f"{parent_bone_name}-{child_bone_name} introduces a cylical bone structure which maybe unsupported")
 
-        self.parents.add(edge_tuple)
+        # Store the parent bone name, because this can be used to extract limb transform information
+        self.parents[edge_tuple] = parent_bone_name
 
-        logger.info(f"{parent_bone_name}-{child_bone_name} added to IGL skeleton")
+        logger.info(f"LIMB {parent_bone_name}-{child_bone_name} added to IGL skeleton")
 
     def export(self, file_name_without_ext):
         with open(f"{file_name_without_ext}.tgf", "w") as skeleton_writer:
             for bone_idx, bone in enumerate(self.bones):
-                skeleton_writer.write(f"{bone_idx + 1} {bone[0]} {bone[1]} {bone[2]}\n")
+                skeleton_writer.write(
+                    f"{bone_idx + 1} {bone[0]} {bone[1]} {bone[2]}\n")
             
             skeleton_writer.write("#")
 
-            for parent in self.parents:
-                skeleton_writer.write(f"\n{parent[0] + 1} {parent[1] + 1}")
+            for parent, _ in self.parents.items():
+                # Adding 1 to the end of the write to indicate this is a bone edge.
+                skeleton_writer.write(f"\n{parent[0] + 1} {parent[1] + 1} 1")
             
             skeleton_writer.write("\n#")
 
@@ -138,29 +209,21 @@ class IGLDeformableMesh:
         logger.info(
             f"Constructed {self.skinning.shape} skinning matrix. Max: {self.skinning.max()}, Min: {self.skinning.min(0)}")
         
-    def export(self, file_name_without_ext):
-        self._export_weights(file_name_without_ext)
-        self._export_obj(file_name_without_ext)
+    def export(self, file_name_without_ext, export_mesh=True, export_weights=True):
+        if export_weights:
+            self._export_weights(file_name_without_ext)
+            logger.info("Skinning Matrix successfully exported")
 
-        if not self._validate_obj(file_name_without_ext):
-            logger.error("Obj Validation Failed")
-        else:
-            logger.info("Skinning Matrix and OBJ successfully exported")
+        if export_mesh:
+            self._export_obj(file_name_without_ext)
+            if not self._validate_obj(file_name_without_ext):
+                logger.error("Obj Validation Failed")
+            else:
+                logger.info("OBJ successfully exported")
 
     
     def _export_weights(self, file_name_without_ext):
-        with open(f"{file_name_without_ext}.dmat", "wb") as skinning_binary_writer:
-            skinning_binary_writer.write(
-                bytes(bytearray("0 0\n", encoding='ascii'))
-            )
-
-            skinning_binary_writer.write(bytes(
-                bytearray(f"{self.skinning.shape[1]} {self.skinning.shape[0]}\n", encoding='ascii')
-            ))
-
-            flattened_skinning_matrix = self.skinning.flatten(order='F').tolist()
-            s = struct.pack('d'*len(flattened_skinning_matrix), *flattened_skinning_matrix)
-            skinning_binary_writer.write(s)
+        _export_matrix_as_dmat(file_name_without_ext, self.skinning)
 
     def _export_obj(self, file_name_without_ext):
         bpy.ops.export_scene.obj(
@@ -202,14 +265,121 @@ class IGLDeformableMesh:
                         is_valid = False
 
         return is_valid
+    
+class IGLAnimation:
+    def __init__(self, igl_skeleton, parent_armature, start_frame, end_frame):
+        self.skeleton = igl_skeleton
+        self.armature = parent_armature
+        self.action = parent_armature.animation_data.action
+        
+        end_key_frame = 1
+        for fcu in self.action.fcurves:
+            for idx, keyframe in enumerate(fcu.keyframe_points):
+                end_key_frame = max(end_key_frame, keyframe.co[0])
+
+        self.start_frame = int(min(start_frame, end_key_frame)) # Can't start beyond the last key frame
+        self.end_frame = int(min(end_frame, end_key_frame)) # Can't end beyond the last key frame
+
+        logger.info(f"Ready to Export Animation frames [{self.start_frame}, {self.end_frame}]")
+
+    def _export_npy(self, filepath, bind_pose, animation):
+        np.save(f"{filepath}_bind_pose.npy", bind_pose)
+        np.save(f"{filepath}_animation.npy", animation)
+        logger.info(
+            f"Bind Pose ({bind_pose.shape}) and Animation ({animation.shape}) exported as npy")
+    
+    def _export_dmat(self, filepath, bind_pose, animation):
+        igl_bind_pose = bind_pose[:, :3, :]  # J X 3 X 4 ... last row of affine matrix not needed
+        igl_bind_pose = igl_bind_pose.transpose((0, 2, 1))  # J X 4 X 3 ... igl standard
+        # J*4 X 3 ... stack the transforms
+        bind_pose_flat = igl_bind_pose.reshape((igl_bind_pose.shape[0] * igl_bind_pose.shape[1], -1))
+
+        igl_animation = animation[:, :, :3, :]  # Frames X J X 3 X 4 ... last row of affine matrix not needed
+        igl_animation = igl_animation.transpose((0, 1, 3, 2))  # Frames X J X 4 X 3 ... igl standard
+        # Frames X J*4*3
+        animation_flat = igl_animation.reshape(
+            (-1, igl_animation.shape[1] * igl_animation.shape[2] * igl_animation.shape[3]))
+        animation_flat = animation_flat.transpose() # J*4*3 X Frames
+
+        _export_matrix_as_dmat(f"{filepath}_bind_pose", bind_pose_flat)
+        _export_matrix_as_dmat(f"{filepath}_animation", animation_flat)
+        
+        logger.info(
+            (f"Bind Pose [{bind_pose_flat.shape} column ordered from {igl_bind_pose.shape}] "
+             f"and Animation [{animation_flat.shape} column ordered from {igl_animation.shape}] "
+             "exported as dmat"))
+
+    def export(self, filepath):
+        current_frame = bpy.context.scene.frame_current
+
+        animation = []
+        bpy.context.window_manager.progress_begin(0, self.end_frame + 1)
+        bpy.context.window_manager.progress_update(0)
+        for frame in range(self.start_frame, self.end_frame + 1):
+            bpy.context.scene.frame_set(frame)
+
+            pose = []
+            # NOTE: This ordering will be consistent with bind_pose because parents
+            # is an OrderedDict
+            for _, parent_name in self.skeleton.parents.items():
+                bone = self.armature.pose.bones[parent_name]
+                bone_transform = _convert_transform_coordinate_system(bone.matrix)
+                pose.append(bone_transform)
+            
+            animation.append(pose)
+            bpy.context.window_manager.progress_update(frame)
+
+        bpy.context.scene.frame_set(current_frame)
+
+        animation_np = np.array(animation)
+        bind_pose = self.skeleton.bind_pose
+        self._export_npy(filepath, bind_pose, animation_np)
+        self._export_dmat(filepath, bind_pose, animation_np)
+
 
 # FILE BROWSER SETUP
 class IGLExportHelper(bpy.types.Operator, ExportHelper):
     bl_idname = 'igl.export_helper'
     bl_label = 'Export'
-    bl_options = {'PRESET', 'UNDO'}
-
+    
     filename_ext = ''
+    
+    export_skeleton: bpy.props.BoolProperty(
+        name="Export Skeleton",
+        description="Exports a tgf with bones and parent relationships",
+        default=True
+    )
+
+    export_skinning: bpy.props.BoolProperty(
+        name="Export Skinning",
+        description="Exports a dmat with a dense matrix of vertex influence weights per bone (#V x #J)",
+        default=True
+    )
+
+    export_mesh: bpy.props.BoolProperty(
+        name="Export Mesh",
+        description="Exports a obj containing the mesh that has been skinned",
+        default=True
+    )
+
+    export_animation: bpy.props.BoolProperty(
+        name="Export Animation",
+        description="Exports a npy or dmat with bind pose and animation data",
+        default=True
+    )
+
+    anim_start: bpy.props.IntProperty(
+        name="Animation Start Frame",
+        description="Starting animation frame for export",
+        default=1, min=1, max=300000
+    )
+    
+    anim_end: bpy.props.IntProperty(
+        name="Animation End Frame",
+        description="Ending animation frame for export",
+        default=250, min=0, max=300000
+    )
+    
 
     def _begin_export(self, context, file_path):
         if len(bpy.context.selected_objects) != 1:
@@ -236,12 +406,13 @@ class IGLExportHelper(bpy.types.Operator, ExportHelper):
             logger.error(f"Please mark the highest level node as {root_bone}")
             return
 
-        bones_to_process = [armature.bones[root_bone]]
+        bones_to_process = [armature.
+                            bones[root_bone]]
         igl_skeleton = IGLSkeleton()
 
         while len(bones_to_process) > 0:
             bone = bones_to_process.pop()
-            igl_skeleton.add_bone(bone.name, bone.head_local)
+            igl_skeleton.add_bone(bone.name, bone.head_local, bone.matrix_local)
             if bone.parent is not None:
                 # At this point the parent should have already been added to IGL Skeleton
                 igl_skeleton.add_parent(bone.parent.name, bone.name)
@@ -254,10 +425,20 @@ class IGLExportHelper(bpy.types.Operator, ExportHelper):
                 for child in bone.children:
                     bones_to_process.append(child)
 
-        igl_skeleton.export(file_path)
-
         deformable_mesh = IGLDeformableMesh(geometry, igl_skeleton)
-        deformable_mesh.export(file_path)
+        animation = IGLAnimation(igl_skeleton, parent, self.anim_start, self.anim_end)
+        
+        if self.export_skeleton:
+            igl_skeleton.export(file_path)
+        
+        if self.export_mesh or self.export_skinning:
+            deformable_mesh.export(file_path, self.export_mesh, self.export_skinning)
+        
+        if self.export_animation:
+            animation.export(file_path)
+
+        self.report({'INFO'}, f"Finished Export to {file_path}")
+        self.report({'INFO'}, f"Log dumped to {log_file}")
 
     def _get_valid_asset_path(self, filepath):
         if len(filepath.split('.')) > 1:
