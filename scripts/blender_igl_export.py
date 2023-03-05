@@ -289,24 +289,19 @@ class IGLAnimation:
             f"Bind Pose ({bind_pose.shape}) and Animation ({animation.shape}) exported as npy")
     
     def _export_dmat(self, filepath, bind_pose, animation):
-        igl_bind_pose = bind_pose[:, :3, :]  # J X 3 X 4 ... last row of affine matrix not needed
-        igl_bind_pose = igl_bind_pose.transpose((0, 2, 1))  # J X 4 X 3 ... igl standard
         # J*4 X 3 ... stack the transforms
-        bind_pose_flat = igl_bind_pose.reshape((igl_bind_pose.shape[0] * igl_bind_pose.shape[1], -1))
+        bind_pose_flat = bind_pose.reshape((-1, bind_pose.shape[2]))
 
-        igl_animation = animation[:, :, :3, :]  # Frames X J X 3 X 4 ... last row of affine matrix not needed
-        igl_animation = igl_animation.transpose((0, 1, 3, 2))  # Frames X J X 4 X 3 ... igl standard
         # Frames X J*4*3
-        animation_flat = igl_animation.reshape(
-            (-1, igl_animation.shape[1] * igl_animation.shape[2] * igl_animation.shape[3]))
+        animation_flat = animation.reshape((animation.shape[0], -1))
         animation_flat = animation_flat.transpose() # J*4*3 X Frames
 
         _export_matrix_as_dmat(f"{filepath}_bind_pose", bind_pose_flat)
         _export_matrix_as_dmat(f"{filepath}_animation", animation_flat)
         
         logger.info(
-            (f"Bind Pose [{bind_pose_flat.shape} column ordered from {igl_bind_pose.shape}] "
-             f"and Animation [{animation_flat.shape} column ordered from {igl_animation.shape}] "
+            (f"Bind Pose [{bind_pose_flat.shape}] "
+             f"and Animation [{animation_flat.shape} column ordered from {animation.shape}] "
              "exported as dmat"))
 
     def export(self, filepath):
@@ -331,10 +326,18 @@ class IGLAnimation:
 
         bpy.context.scene.frame_set(current_frame)
 
-        animation_np = np.array(animation)
+        # Make IGL ready animation
+        igl_animation = np.array(animation)
+        igl_animation = igl_animation[:, :, :3, :]  # Frames X J X 3 X 4 ... last row of affine matrix not needed
+        igl_animation = igl_animation.transpose((0, 1, 3, 2))  # Frames X J X 4 X 3 ... igl standard
+        
+        # Make IGL ready bind pose
         bind_pose = self.skeleton.bind_pose
-        self._export_npy(filepath, bind_pose, animation_np)
-        self._export_dmat(filepath, bind_pose, animation_np)
+        igl_bind_pose = bind_pose[:, :3, :]  # J X 3 X 4 ... last row of affine matrix not needed
+        igl_bind_pose = igl_bind_pose.transpose((0, 2, 1))  # J X 4 X 3 ... igl standard
+
+        self._export_npy(filepath, igl_bind_pose, igl_animation)
+        self._export_dmat(filepath, igl_bind_pose, igl_animation)
 
 
 # FILE BROWSER SETUP
