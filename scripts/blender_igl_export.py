@@ -303,6 +303,17 @@ class IGLAnimation:
             (f"Bind Pose [{bind_pose_flat.shape}] "
              f"and Animation [{animation_flat.shape} column ordered from {animation.shape}] "
              "exported as dmat"))
+        
+    def _get_bind_pose_relative_animation(self, bind_pose, animation):
+        # Given a bind pose and a list of animation frames
+        # where each frame has world transforms of the bones
+        # this function will apply the inverse of the bind pose to get
+        # relative frames.
+        inverse_bind_pose = np.linalg.inv(bind_pose)
+        relative_animation = [frame @ inverse_bind_pose for frame in animation]
+
+        return relative_animation
+
 
     def export(self, filepath):
         current_frame = bpy.context.scene.frame_current
@@ -326,15 +337,15 @@ class IGLAnimation:
 
         bpy.context.scene.frame_set(current_frame)
 
-        # Make IGL ready animation
-        igl_animation = np.array(animation)
-        igl_animation = igl_animation[:, :, :3, :]  # Frames X J X 3 X 4 ... last row of affine matrix not needed
-        igl_animation = igl_animation.transpose((0, 1, 3, 2))  # Frames X J X 4 X 3 ... igl standard
-        
         # Make IGL ready bind pose
         bind_pose = self.skeleton.bind_pose
         igl_bind_pose = bind_pose[:, :3, :]  # J X 3 X 4 ... last row of affine matrix not needed
         igl_bind_pose = igl_bind_pose.transpose((0, 2, 1))  # J X 4 X 3 ... igl standard
+
+        # Make IGL ready animation
+        igl_animation = np.array(self._get_bind_pose_relative_animation(bind_pose, animation))
+        igl_animation = igl_animation[:, :, :3, :]  # Frames X J X 3 X 4 ... last row of affine matrix not needed
+        igl_animation = igl_animation.transpose((0, 1, 3, 2))  # Frames X J X 4 X 3 ... igl standard
 
         self._export_npy(filepath, igl_bind_pose, igl_animation)
         self._export_dmat(filepath, igl_bind_pose, igl_animation)
