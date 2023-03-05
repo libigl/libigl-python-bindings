@@ -226,6 +226,10 @@ class IGLDeformableMesh:
         _export_matrix_as_dmat(file_name_without_ext, self.skinning)
 
     def _export_obj(self, file_name_without_ext):
+        # Always Export from Frame 0
+        current_frame = bpy.context.scene.frame_current
+        bpy.context.scene.frame_set(0)
+
         bpy.ops.export_scene.obj(
             filepath=f"{file_name_without_ext}.obj",
             check_existing=False,
@@ -251,6 +255,9 @@ class IGLDeformableMesh:
             axis_forward=IGL_AXIS_FORWARD,
             axis_up=IGL_AXIS_UP
         )
+
+        # Reset the frame
+        bpy.context.scene.frame_set(current_frame)
 
     def _validate_obj(self, file_name_without_ext):
         is_valid = True
@@ -316,6 +323,7 @@ class IGLAnimation:
 
 
     def export(self, filepath):
+        # Store the current frame in UI to restore after export
         current_frame = bpy.context.scene.frame_current
 
         animation = []
@@ -335,6 +343,7 @@ class IGLAnimation:
             animation.append(pose)
             bpy.context.window_manager.progress_update(frame)
 
+        # Restore UI active frame
         bpy.context.scene.frame_set(current_frame)
 
         # Make IGL ready bind pose
