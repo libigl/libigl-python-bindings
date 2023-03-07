@@ -24,7 +24,7 @@ include(CXXFeatures)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 
 option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       ON)
-option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       ON)
+option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       OFF)
 # libigl options must come before include(PyiglDependencies)
 include(PyiglDependencies)
 if(NOT TARGET igl::core)
