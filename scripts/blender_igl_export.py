@@ -182,6 +182,21 @@ class IGLSkeleton:
                 skeleton_writer.write(f"\n{parent[0] + 1} {parent[1] + 1} 1")
             
             skeleton_writer.write("\n#")
+        
+        logger.info(f"SKELETON exported in {file_name_without_ext}.tgf")
+
+        igl_bind_pose = self.bind_pose[:, :3, :]  # J X 3 X 4 ... last row of affine matrix not needed
+        igl_bind_pose = igl_bind_pose.transpose((0, 2, 1))  # J X 4 X 3 ... igl standard
+
+        # Save bind pose as npy
+        np.save(f"{file_name_without_ext}_bind_pose.npy", igl_bind_pose)
+        logger.info(f"BIND POSE {igl_bind_pose.shape} exported in {file_name_without_ext}_bind_pose.npy")
+
+        # Save bind pose as dmat
+        # J*4 X 3 ... stack the transforms
+        bind_pose_flat = igl_bind_pose.reshape((-1, igl_bind_pose.shape[2]))
+        _export_matrix_as_dmat(f"{file_name_without_ext}_bind_pose.dmat", bind_pose_flat)
+        logger.info(f"BIND POSE {bind_pose_flat.shape} exported in {file_name_without_ext}_bind_pose.dmat")
 
 
 class IGLDeformableMesh:
@@ -289,26 +304,20 @@ class IGLAnimation:
 
         logger.info(f"Ready to Export Animation frames [{self.start_frame}, {self.end_frame}]")
 
-    def _export_npy(self, filepath, bind_pose, animation):
-        np.save(f"{filepath}_bind_pose.npy", bind_pose)
+    def _export_npy(self, filepath, animation):
         np.save(f"{filepath}_animation.npy", animation)
         logger.info(
-            f"Bind Pose ({bind_pose.shape}) and Animation ({animation.shape}) exported as npy")
+            f"ANIMATION ({animation.shape}) exported as npy")
     
-    def _export_dmat(self, filepath, bind_pose, animation):
-        # J*4 X 3 ... stack the transforms
-        bind_pose_flat = bind_pose.reshape((-1, bind_pose.shape[2]))
-
+    def _export_dmat(self, filepath, animation):
         # Frames X J*4*3
         animation_flat = animation.reshape((animation.shape[0], -1))
         animation_flat = animation_flat.transpose() # J*4*3 X Frames
 
-        _export_matrix_as_dmat(f"{filepath}_bind_pose", bind_pose_flat)
         _export_matrix_as_dmat(f"{filepath}_animation", animation_flat)
         
         logger.info(
-            (f"Bind Pose [{bind_pose_flat.shape}] "
-             f"and Animation [{animation_flat.shape} column ordered from {animation.shape}] "
+            (f"ANIMATION [{animation_flat.shape} column ordered from {animation.shape}] "
              "exported as dmat"))
         
     def _get_bind_pose_relative_animation(self, bind_pose, animation):
@@ -348,16 +357,14 @@ class IGLAnimation:
 
         # Make IGL ready bind pose
         bind_pose = self.skeleton.bind_pose
-        igl_bind_pose = bind_pose[:, :3, :]  # J X 3 X 4 ... last row of affine matrix not needed
-        igl_bind_pose = igl_bind_pose.transpose((0, 2, 1))  # J X 4 X 3 ... igl standard
 
         # Make IGL ready animation
         igl_animation = np.array(self._get_bind_pose_relative_animation(bind_pose, animation))
         igl_animation = igl_animation[:, :, :3, :]  # Frames X J X 3 X 4 ... last row of affine matrix not needed
         igl_animation = igl_animation.transpose((0, 1, 3, 2))  # Frames X J X 4 X 3 ... igl standard
 
-        self._export_npy(filepath, igl_bind_pose, igl_animation)
-        self._export_dmat(filepath, igl_bind_pose, igl_animation)
+        self._export_npy(filepath, igl_animation)
+        self._export_dmat(filepath, igl_animation)
 
 
 # FILE BROWSER SETUP
@@ -449,8 +456,7 @@ class IGLExportHelper(bpy.types.Operator, ExportHelper):
                     bones_to_process.append(child)
 
         deformable_mesh = IGLDeformableMesh(geometry, igl_skeleton)
-        animation = IGLAnimation(igl_skeleton, parent, self.anim_start, self.anim_end)
-        
+
         if self.export_skeleton:
             igl_skeleton.export(file_path)
         
@@ -458,7 +464,11 @@ class IGLExportHelper(bpy.types.Operator, ExportHelper):
             deformable_mesh.export(file_path, self.export_mesh, self.export_skinning)
         
         if self.export_animation:
-            animation.export(file_path)
+            if parent.animation_data is None:
+                logger.error("Requested to export animation but no animation data found")
+            else:
+                animation = IGLAnimation(igl_skeleton, parent, self.anim_start, self.anim_end)
+                animation.export(file_path)
 
         self.report({'INFO'}, f"Finished Export to {file_path}")
         self.report({'INFO'}, f"Log dumped to {log_file}")
