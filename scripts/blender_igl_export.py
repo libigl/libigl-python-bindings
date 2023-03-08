@@ -5,6 +5,7 @@
 # and hit run 
 
 import bpy
+import io
 import logging
 import numpy as np
 import struct
@@ -19,9 +20,41 @@ from collections import OrderedDict
 from pathlib import Path
 
 # LOGGING SETUP
-log_file = str(Path('~/Documents/blender_igl_export.log').expanduser())
-logging.basicConfig(filename=log_file,
-                    filemode='w', level=logging.DEBUG, force=True)
+class ExportFileHandler(logging.FileHandler):
+    def __init__(self) -> None:
+        self._log_file = str(Path('~/Documents/blender_igl_export.log').expanduser())
+        super().__init__(
+            self._log_file,
+            "w",
+            None,
+            False,
+            'backslashreplace')
+        
+        self._n_errors = 0
+        self._n_warns = 0
+
+    @property
+    def log_file(self):
+        return self._log_file
+    
+    @property
+    def num_warns(self):
+        return self._n_warns
+    
+    @property
+    def num_errors(self):
+        return self._n_errors
+
+    def emit(self, record) -> None:
+        if record.levelno == logging.ERROR or record.levelno == logging.CRITICAL:
+            self._n_errors += 1
+        elif record.levelno == logging.WARN or record.levelno == logging.WARNING:
+            self._n_warns += 1
+
+        return super().emit(record)
+
+log_handler = ExportFileHandler()
+logging.basicConfig(handlers=[log_handler], level=logging.DEBUG, force=True)
 
 logger = logging.getLogger(__name__)
 
@@ -470,8 +503,11 @@ class IGLExportHelper(bpy.types.Operator, ExportHelper):
                 animation = IGLAnimation(igl_skeleton, parent, self.anim_start, self.anim_end)
                 animation.export(file_path)
 
-        self.report({'INFO'}, f"Finished Export to {file_path}")
-        self.report({'INFO'}, f"Log dumped to {log_file}")
+        self.report({'INFO'}, (
+            f"Finished Export to {file_path}."
+            f" Errors: {log_handler.num_errors}, Warnings: {log_handler.num_warns}"
+        ))
+        self.report({'INFO'}, f"Log dumped to {log_handler.log_file}")
 
     def _get_valid_asset_path(self, filepath):
         if len(filepath.split('.')) > 1:
