@@ -1,6 +1,4 @@
 
-
-
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -8,39 +6,44 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Simple Python Geometry Processing Library">
+        <meta name="description" content="Simple Python geometry processing library">
+      
       
       
         <link rel="canonical" href="https://libigl.github.io/tut-chapter0/">
       
       
-      <link rel="shortcut icon" href="../favicon.ico">
-      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.1.7">
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../tut-chapter1/">
+      
+      <link rel="icon" href="../favicon.ico">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.11">
     
     
       
-        <title>Chapter 0 - libigl</title>
+        <title>Chapter 0 - igl</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.4c7052ca.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
-        <link rel="stylesheet" href="../assets/stylesheets/palette.b79bcd20.min.css">
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
       
+      
+
+    
+    
+    
       
         
         
-        <meta name="theme-color" content="#03a9f4">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
-    
-    
-    
-      
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
-      
-    
     
     
       <link rel="stylesheet" href="../css/ansi-colours.css">
@@ -49,8 +52,11 @@
     
       <link rel="stylesheet" href="../css/pandas-dataframe.css">
     
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
+
+    
     
     
   </head>
@@ -58,8 +64,13 @@
   
     
     
-    <body dir="ltr" data-md-color-primary="light-blue" data-md-color-accent="blue">
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="blue">
   
+    
+    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
@@ -75,39 +86,45 @@
       
     </div>
     
-      <header class="md-header" data-md-component="header">
-  <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="https://libigl.github.io" title="libigl" class="md-header-nav__button md-logo" aria-label="libigl">
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="igl" class="md-header__button md-logo" aria-label="igl" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 7a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2v-4h-2v4h-2V9h4V7h-4M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    <label class="md-header-nav__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
     </label>
-    <div class="md-header-nav__title" data-md-component="header-title">
-      
-        <div class="md-header-nav__ellipsis">
-          <span class="md-header-nav__topic md-ellipsis">
-            libigl
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            igl
           </span>
-          <span class="md-header-nav__topic md-ellipsis">
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
             
               Chapter 0
             
           </span>
         </div>
-      
+      </div>
     </div>
     
     
-      <div class="md-header-nav__source">
-        
-<a href="https://github.com/libigl/libigl-python-bindings/" title="Go to repository" class="md-source">
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/libigl/libigl-python-bindings" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     libigl-python-bindings
@@ -116,39 +133,43 @@
       </div>
     
   </nav>
+  
 </header>
     
     <div class="md-container" data-md-component="container">
       
+      
         
-      
-      
+          
         
       
       <main class="md-main" data-md-component="main">
         <div class="md-main__inner md-grid">
           
             
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://libigl.github.io" title="libigl" class="md-nav__button md-logo" aria-label="libigl">
+    <a href=".." title="igl" class="md-nav__button md-logo" aria-label="igl" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 7a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2v-4h-2v4h-2V9h4V7h-4M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
-    libigl
+    igl
   </label>
   
     <div class="md-nav__source">
-      
-<a href="https://github.com/libigl/libigl-python-bindings/" title="Go to repository" class="md-source">
+      <a href="https://github.com/libigl/libigl-python-bindings" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     libigl-python-bindings
@@ -162,12 +183,15 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href=".." title="Home" class="md-nav__link">
-      Home
-    </a>
-  </li>
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
 
     
       
@@ -175,67 +199,70 @@
       
 
   
-
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
-    
-    <label class="md-nav__link" for="nav-2">
-      Tutorial
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
-      </span>
-    </label>
-    <nav class="md-nav" aria-label="Tutorial" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-        </span>
-        Tutorial
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
   
-
-
-  <li class="md-nav__item md-nav__item--active">
     
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+  
+  
     
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorial
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
     
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Chapter 0
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Chapter 0
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="./" title="Chapter 0" class="md-nav__link md-nav__link--active">
-      Chapter 0
-    </a>
-    
+      </a>
       
+        
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
   
   
     
   
   
     <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
+      <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#libigl-design-principles" class="md-nav__link">
@@ -261,97 +288,130 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tut-chapter1/" class="md-nav__link">
+        Chapter 1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tut-chapter2/" class="md-nav__link">
+        Chapter 2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tut-chapter3/" class="md-nav__link">
+        Chapter 3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tut-chapter4/" class="md-nav__link">
+        Chapter 4
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tut-chapter5/" class="md-nav__link">
+        Chapter 5
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tut-chapter6/" class="md-nav__link">
+        Chapter 6
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
     
-  </li>
+      
+      
+      
 
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tut-chapter1/" title="Chapter 1" class="md-nav__link">
-      Chapter 1
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tut-chapter2/" title="Chapter 2" class="md-nav__link">
-      Chapter 2
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tut-chapter3/" title="Chapter 3" class="md-nav__link">
-      Chapter 3
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tut-chapter4/" title="Chapter 4" class="md-nav__link">
-      Chapter 4
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tut-chapter5/" title="Chapter 5" class="md-nav__link">
-      Chapter 5
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tut-chapter6/" title="Chapter 6" class="md-nav__link">
-      Chapter 6
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl_docs/" class="md-nav__link">
+        Docs
+      </a>
+    </li>
+  
 
     
       
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../igl_docs/" title="Docs" class="md-nav__link">
-      Docs
-    </a>
-  </li>
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
 
     
   </ul>
@@ -361,23 +421,24 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
   
   
     
   
   
     <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
+      <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#libigl-design-principles" class="md-nav__link">
@@ -408,34 +469,62 @@
               </div>
             
           
-          <div class="md-content">
-            <article class="md-content__inner md-typeset">
-              
-                
-                  <a href="https://github.com/libigl/libigl-python-bindings/edit/master/docs/tut-chapter0.ipynb" title="Edit this page" class="md-content__button md-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
-                  </a>
-                
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
                 
                   
-                
-                
-                <div class="cell border-box-sizing text_cell rendered">
-<p><div class="inner_cell" markdown="1">
-<div class="text_cell_render border-box-sizing rendered_html" markdown="1"></p>
+
+  
+  
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var requireJsScript = document.createElement('script');
+    requireJsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js';
+
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var jupyterWidgetsScript = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    jupyterWidgetsScript.src = widgetRendererSrc;
+
+    document.body.appendChild(requireJsScript);
+    document.body.appendChild(jupyterWidgetsScript);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="chapter-0">Chapter 0<a class="headerlink" href="#chapter-0" title="Permanent link">&para;</a></h1>
-<p><a href="https://conda.anaconda.org/conda-forge"><img alt="Anaconda-Server Badge" src="https://anaconda.org/conda-forge/igl/badges/installer/conda.svg" /></a>
-<a href="https://anaconda.org/conda-forge/igl"><img alt="Anaconda-Server Badge" src="https://anaconda.org/conda-forge/igl/badges/downloads.svg" /></a>
-<a href="https://anaconda.org/conda-forge/igl"><img alt="Anaconda-Server Badge" src="https://anaconda.org/conda-forge/igl/badges/platforms.svg" /></a>
-<a href="https://anaconda.org/conda-forge/igl"><img alt="Anaconda-Server Badge" src="https://anaconda.org/conda-forge/igl/badges/latest_release_date.svg" /></a></p>
-<p><img alt="" src="../images/libigl-logo.jpg" />
+<p><a href="https://pypi.org/project/libigl/"><img alt="PyPI version" src="https://badge.fury.io/py/libigl.svg" /></a>
+<a href="https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml?query=branch%3Amain"><img alt="buildwheels" src="https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml/badge.svg" /></a></p>
+<p><img alt="" src="../images/libigl-logo.jpg" /></p>
 </div>
-</div></p>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
-<p><div class="inner_cell" markdown="1">
-<div class="text_cell_render border-box-sizing rendered_html" markdown="1">
-We introduce libigl with a series of self-contained examples. The purpose of
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We introduce libigl with a series of self-contained examples. The purpose of
 each example is to showcase a feature of libigl while applying to a practical
 problem in geometry processing. In this chapter, we will present the basic
 concepts of libigl.</p>
@@ -453,15 +542,15 @@ libigl:</p>
 </li>
 </ol>
 <h2 id="downloading-libigl">Downloading Libigl<a class="headerlink" href="#downloading-libigl" title="Permanent link">&para;</a></h2>
-<p>Libigl can be downloaded from <a href="https://anaconda.org/conda-forge/igl">Conda forge</a>:
-<div class="highlight"><pre><span></span><code>conda install -c conda-forge igl 
+<p>Libigl can be downloaded from <a href="https://pypi.org/project/libigl/">PyPI</a>:
+<div class="highlight"><pre><span></span><code>python -m pip install libigl 
 </code></pre></div></p>
-<p>All of libigl functionality depends only on <code>numpy</code> and <code>scipy</code>. For the visualization in this tutorial we use <a href="https://anaconda.org/conda-forge/meshplot">meshplot</a> which can be easily installed from Conda:
-<div class="highlight"><pre><span></span><code>conda install -c conda-forge meshplot 
+<p>All of libigl functionality depends only on <code>numpy</code> and <code>scipy</code>. For the visualization in this tutorial we use <a href="https://github.com/skoch9/meshplot">meshplot</a> which can be easily installed from Conda:
+<div class="highlight"><pre><span></span><code>pip install https://github.com/skoch9/meshplot/archive/0.4.0.tar.gz 
 </code></pre></div></p>
-<p>To start using libigl (with the plots) you just need to import it together with the <code>numpy</code>, <code>scipy</code>, and <code>meshplot</code>.
+<p>To start using libigl (with the plots) you just need to import it together with the <code>numpy</code>, <code>scipy</code>, and <code>meshplot</code>.</p>
 </div>
-</div></p>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -476,16 +565,15 @@ libigl:</p>
 </code></pre></div>
 
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
-<p><div class="inner_cell" markdown="1">
-<div class="text_cell_render border-box-sizing rendered_html" markdown="1"></p>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="mesh-representation">Mesh representation<a class="headerlink" href="#mesh-representation" title="Permanent link">&para;</a></h2>
 <p>Libigl uses <code>numpy</code> to encode vectors and matrices and <code>scipy</code> for sparse matrices.</p>
-<p>A triangular mesh is encoded as a pair of matrices:
+<p>A triangular mesh is encoded as a pair of matrices:</p>
 </div>
-</div></p>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -495,19 +583,18 @@ libigl:</p>
 </code></pre></div>
 
 </div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
-<p><div class="inner_cell" markdown="1">
-<div class="text_cell_render border-box-sizing rendered_html" markdown="1">
-<code>v</code> is a #N by 3 matrix which stores the coordinates of the vertices. Each
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>v</code> is a #N by 3 matrix which stores the coordinates of the vertices. Each
 row stores the coordinate of a vertex, with its x, y and z coordinates in the first,
 second and third column, respectively. The matrix <code>f</code> stores the triangle
 connectivity: each line of <code>f</code> denotes a triangle whose 3 vertices are
 represented as indices pointing to rows of <code>f</code>.</p>
-<p><img alt="A simple mesh made of 2 triangles and 4 vertices." src="../images/VF.png" />
+<p><img alt="A simple mesh made of 2 triangles and 4 vertices." src="../images/VF.png" /></p>
 </div>
-</div></p>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -528,26 +615,24 @@ represented as indices pointing to rows of <code>f</code>.</p>
 </code></pre></div>
 
 </div>
-
-<div class="output_wrapper" markdown="1">
-<div class="output" markdown="1">
-
-
-<div class="output_area" markdown="1">
-
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
 <div class="output_html rendered_html output_subarea output_execute_result">
 
 
-<!-- Load require.js. Delete this if your page already loads require.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js" crossorigin="anonymous"></script>
 
+<!-- Load require.js. Delete this if your page already loads require.js -->
+
+
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
 <script type="application/vnd.jupyter.widget-state+json">
 {
   "version_major": 2,
   "version_minor": 0,
   "state": {
-    "80541230cc4a4150bd2f7549ba89e8df": {
+    "9c3bfe455e344ba58d2f53832731a32f": {
       "model_name": "RendererModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -556,49 +641,33 @@ represented as indices pointing to rows of <code>f</code>.</p>
         "_dom_classes": [],
         "_height": 600,
         "_width": 600,
-        "camera": "IPY_MODEL_b8c7ae928b5647d1a74452c73e9d2be8",
+        "camera": "IPY_MODEL_74b4841363e5420caa01bd4fb2e6b0e3",
         "clippingPlanes": [],
         "controls": [
-          "IPY_MODEL_3f1098ab52744716ac9a4580a9002383"
+          "IPY_MODEL_f0d12af93f2949dea34846bd6fd5504b"
         ],
-        "layout": "IPY_MODEL_4d9a6650a94340fdbc62e010c10c7ec3",
-        "scene": "IPY_MODEL_08f20f4e07964666a56541f8b2357e50",
-        "shadowMap": "IPY_MODEL_2a85baf249ae4023a1c3126743c7ce81"
+        "layout": "IPY_MODEL_ac3b73f0152441088886fbf0a3c47dcb",
+        "scene": "IPY_MODEL_3d1ad54fa25846d69d8388823385a4e0",
+        "shadowMap": "IPY_MODEL_bee5230a3d37471c96e3e56104282905"
       }
     },
-    "b8c7ae928b5647d1a74452c73e9d2be8": {
+    "74b4841363e5420caa01bd4fb2e6b0e3": {
       "model_name": "PerspectiveCameraModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_0d64a3a2b26c4841be0685f269430e3e"
+          "IPY_MODEL_73a48f8969bf43238b75dc9b6e631c1f"
         ],
         "fov": 30.0,
         "position": [
           0.0,
           0.0,
           3.674234614174767
-        ],
-        "quaternion": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ],
-        "up": [
-          0.0,
-          1.0,
-          0.0
         ]
       }
     },
-    "0d64a3a2b26c4841be0685f269430e3e": {
+    "73a48f8969bf43238b75dc9b6e631c1f": {
       "model_name": "DirectionalLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -611,143 +680,79 @@ represented as indices pointing to rows of <code>f</code>.</p>
           0.0,
           3.674234614174767
         ],
-        "quaternion": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ],
         "shadow": "uninitialized",
-        "target": "uninitialized",
-        "up": [
-          0.0,
-          1.0,
-          0.0
-        ]
+        "target": "uninitialized"
       }
     },
-    "3f1098ab52744716ac9a4580a9002383": {
+    "f0d12af93f2949dea34846bd6fd5504b": {
       "model_name": "OrbitControlsModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
-        "controlling": "IPY_MODEL_b8c7ae928b5647d1a74452c73e9d2be8",
+        "controlling": "IPY_MODEL_74b4841363e5420caa01bd4fb2e6b0e3",
         "maxAzimuthAngle": "inf",
         "maxDistance": "inf",
         "maxZoom": "inf",
         "minAzimuthAngle": "-inf"
       }
     },
-    "4d9a6650a94340fdbc62e010c10c7ec3": {
+    "ac3b73f0152441088886fbf0a3c47dcb": {
       "model_name": "LayoutModel",
       "model_module": "@jupyter-widgets/base",
-      "model_module_version": "1.2.0",
+      "model_module_version": "2.0.0",
       "state": {}
     },
-    "08f20f4e07964666a56541f8b2357e50": {
+    "3d1ad54fa25846d69d8388823385a4e0": {
       "model_name": "SceneModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [
-          "IPY_MODEL_b8c7ae928b5647d1a74452c73e9d2be8",
-          "IPY_MODEL_869f9bd3981847ada7016ffac2c6f839",
-          "IPY_MODEL_f7a2eee7a8ff49b1bccb2963c7366d17"
+          "IPY_MODEL_74b4841363e5420caa01bd4fb2e6b0e3",
+          "IPY_MODEL_c65447224435404d88e2ead907776c46",
+          "IPY_MODEL_cd0715bb4e7f4266b91bd1cb9b102f5c"
         ],
         "fog": null,
-        "overrideMaterial": null,
-        "quaternion": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ],
-        "up": [
-          0.0,
-          1.0,
-          0.0
-        ]
+        "overrideMaterial": null
       }
     },
-    "869f9bd3981847ada7016ffac2c6f839": {
+    "c65447224435404d88e2ead907776c46": {
       "model_name": "AmbientLightModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [],
-        "intensity": 0.5,
-        "quaternion": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ],
-        "up": [
-          0.0,
-          1.0,
-          0.0
-        ]
+        "intensity": 0.5
       }
     },
-    "f7a2eee7a8ff49b1bccb2963c7366d17": {
+    "cd0715bb4e7f4266b91bd1cb9b102f5c": {
       "model_name": "MeshModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "children": [],
-        "geometry": "IPY_MODEL_e62b9dd815e24c038a67e10cb3c368b3",
-        "material": "IPY_MODEL_6b90e011370d4c94bc6fa1a648f5e468",
-        "morphTargetInfluences": [],
-        "quaternion": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ],
-        "up": [
-          0.0,
-          1.0,
-          0.0
-        ]
+        "geometry": "IPY_MODEL_659e9b33076d4deb878d408ebe86a918",
+        "material": "IPY_MODEL_79395b2d51d944c185c3fa7975cc753f",
+        "morphTargetInfluences": []
       }
     },
-    "e62b9dd815e24c038a67e10cb3c368b3": {
+    "659e9b33076d4deb878d408ebe86a918": {
       "model_name": "BufferGeometryModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
       "state": {
         "_ref_geometry": null,
         "attributes": {
-          "color": "IPY_MODEL_2fcf47d4b3d94427b2f2ba1c94051e87",
-          "index": "IPY_MODEL_7a267ccb83e946e1aac1cbdb807b3012",
-          "position": "IPY_MODEL_a06f882a1c8340bb99f19d5a6b45bcaa"
+          "color": "IPY_MODEL_bff32bd28ef44545aa03c1a605dcaefc",
+          "index": "IPY_MODEL_37992833721d43389816589d26cdfe88",
+          "position": "IPY_MODEL_96d057e18a854cb9ab8abe1b43cbb225"
         },
         "index": null,
         "morphAttributes": {},
         "userData": {}
       }
     },
-    "2fcf47d4b3d94427b2f2ba1c94051e87": {
+    "bff32bd28ef44545aa03c1a605dcaefc": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -772,7 +777,7 @@ represented as indices pointing to rows of <code>f</code>.</p>
         }
       ]
     },
-    "7a267ccb83e946e1aac1cbdb807b3012": {
+    "37992833721d43389816589d26cdfe88": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -795,7 +800,7 @@ represented as indices pointing to rows of <code>f</code>.</p>
         }
       ]
     },
-    "a06f882a1c8340bb99f19d5a6b45bcaa": {
+    "96d057e18a854cb9ab8abe1b43cbb225": {
       "model_name": "BufferAttributeModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -819,7 +824,7 @@ represented as indices pointing to rows of <code>f</code>.</p>
         }
       ]
     },
-    "6b90e011370d4c94bc6fa1a648f5e468": {
+    "79395b2d51d944c185c3fa7975cc753f": {
       "model_name": "MeshStandardMaterialModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -840,10 +845,6 @@ represented as indices pointing to rows of <code>f</code>.</p>
         "metalness": 0.25,
         "metalnessMap": null,
         "normalMap": null,
-        "normalScale": [
-          1.0,
-          1.0
-        ],
         "polygonOffset": true,
         "polygonOffsetFactor": 1.0,
         "polygonOffsetUnits": 5.0,
@@ -852,7 +853,7 @@ represented as indices pointing to rows of <code>f</code>.</p>
         "vertexColors": "VertexColors"
       }
     },
-    "2a85baf249ae4023a1c3126743c7ce81": {
+    "bee5230a3d37471c96e3e56104282905": {
       "model_name": "WebGLShadowMapModel",
       "model_module": "jupyter-threejs",
       "model_module_version": "^2.1.0",
@@ -862,20 +863,17 @@ represented as indices pointing to rows of <code>f</code>.</p>
 }
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "80541230cc4a4150bd2f7549ba89e8df"}
+{"version_major": 2, "version_minor": 0, "model_id": "9c3bfe455e344ba58d2f53832731a32f"}
 </script>
-
-</div>
-
-</div>
-
 </div>
 </div>
-
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered">
-<p><div class="inner_cell" markdown="1">
-<div class="text_cell_render border-box-sizing rendered_html" markdown="1">
-Note that the order of the vertex indices in <code>f</code> determines the orientation of
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that the order of the vertex indices in <code>f</code> determines the orientation of
 the triangles and it should thus be consistent for the entire surface.
 This simple representation has many advantages:</p>
 <ol>
@@ -885,15 +883,13 @@ This simple representation has many advantages:</p>
 </ol>
 <p>Libigl provides input and output functions to read and write many common mesh formats.
 The IO functions are igl.read_* and igl.write_*.</p>
-<p>Reading a mesh from a file requires a single libigl function call:
+<p>Reading a mesh from a file requires a single libigl function call:</p>
 </div>
-</div></p>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
-</div>
-</div>
 <div class="highlight"><pre><span></span><code><span class="c1">## Load a mesh in OFF format</span>
 <span class="n">v</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">read_triangle_mesh</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_folder</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;bunny.off&quot;</span><span class="p">))</span>
 
@@ -903,29 +899,27 @@ The IO functions are igl.read_* and igl.write_*.</p>
 </code></pre></div>
 
 </div>
-
-<div class="output_wrapper" markdown="1">
-<div class="output" markdown="1">
-
-
-<div class="output_area" markdown="1">
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Vertices:  3485
+<pre>
+<code>Vertices:  3485
 Faces:  6966
+</code>
 </pre>
 </div>
 </div>
-
 </div>
 </div>
-
+</div>
 <div class="cell border-box-sizing text_cell rendered">
-<p><div class="inner_cell" markdown="1">
-<div class="text_cell_render border-box-sizing rendered_html" markdown="1">
-The function reads the mesh bumpy.off and returns the <code>v</code> and <code>f</code> matrices.
-Similarly, a mesh can be written to an OBJ file using:
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The function reads the mesh bumpy.off and returns the <code>v</code> and <code>f</code> matrices.
+Similarly, a mesh can be written to an OBJ file using:</p>
 </div>
-</div></p>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -935,99 +929,66 @@ Similarly, a mesh can be written to an OBJ file using:
 </code></pre></div>
 
 </div>
-
 </div>
-                
-              
-              
-                
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"73a48f8969bf43238b75dc9b6e631c1f": {"model_name": "DirectionalLightModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "DirectionalLightModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "castShadow": false, "children": [], "color": "white", "frustumCulled": true, "intensity": 0.6, "matrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixAutoUpdate": true, "matrixWorld": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixWorldNeedsUpdate": false, "modelViewMatrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "", "normalMatrix": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], "position": [1.0, 0.5, 4.174234614174766], "quaternion": [0.0, 0.0, 0.0, 1.0], "receiveShadow": false, "renderOrder": 0, "rotation": [0.0, 0.0, 0.0, "XYZ"], "scale": [1.0, 1.0, 1.0], "shadow": "uninitialized", "target": "uninitialized", "type": "DirectionalLight", "up": [0.0, 1.0, 0.0], "visible": true}}, "c65447224435404d88e2ead907776c46": {"model_name": "AmbientLightModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "AmbientLightModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "castShadow": false, "children": [], "color": "#ffffff", "frustumCulled": true, "intensity": 0.5, "matrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixAutoUpdate": true, "matrixWorld": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixWorldNeedsUpdate": false, "modelViewMatrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "", "normalMatrix": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], "position": [0.0, 0.0, 0.0], "quaternion": [0.0, 0.0, 0.0, 1.0], "receiveShadow": false, "renderOrder": 0, "rotation": [0.0, 0.0, 0.0, "XYZ"], "scale": [1.0, 1.0, 1.0], "type": "AmbientLight", "up": [0.0, 1.0, 0.0], "visible": true}}, "74b4841363e5420caa01bd4fb2e6b0e3": {"model_name": "PerspectiveCameraModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "PerspectiveCameraModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "aspect": 1.0, "castShadow": false, "children": ["IPY_MODEL_73a48f8969bf43238b75dc9b6e631c1f"], "far": 2000.0, "focus": 10.0, "fov": 30.0, "frustumCulled": true, "matrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixAutoUpdate": true, "matrixWorld": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixWorldInverse": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixWorldNeedsUpdate": false, "modelViewMatrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "", "near": 0.1, "normalMatrix": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], "position": [1.0, 0.5, 4.174234614174766], "projectionMatrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "quaternion": [0.0, 0.0, 0.0, 1.0], "receiveShadow": false, "renderOrder": 0, "rotation": [0.0, 0.0, 0.0, "XYZ"], "scale": [1.0, 1.0, 1.0], "type": "PerspectiveCamera", "up": [0.0, 1.0, 0.0], "visible": true, "zoom": 1.0}}, "f0d12af93f2949dea34846bd6fd5504b": {"model_name": "OrbitControlsModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "OrbitControlsModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "autoRotate": false, "autoRotateSpeed": 2.0, "controlling": "IPY_MODEL_74b4841363e5420caa01bd4fb2e6b0e3", "dampingFactor": 0.25, "enableDamping": false, "enableKeys": true, "enablePan": true, "enableRotate": true, "enableZoom": true, "enabled": true, "keyPanSpeed": 7.0, "maxAzimuthAngle": "inf", "maxDistance": "inf", "maxPolarAngle": 3.141592653589793, "maxZoom": "inf", "minAzimuthAngle": "-inf", "minDistance": 0.0, "minPolarAngle": 0.0, "minZoom": 0.0, "panSpeed": 1.0, "rotateSpeed": 1.0, "screenSpacePanning": true, "target": [1.0, 0.5, 0.5], "zoomSpeed": 1.0}}, "3d1ad54fa25846d69d8388823385a4e0": {"model_name": "SceneModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "SceneModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "autoUpdate": true, "background": "#ffffff", "castShadow": false, "children": ["IPY_MODEL_74b4841363e5420caa01bd4fb2e6b0e3", "IPY_MODEL_c65447224435404d88e2ead907776c46", "IPY_MODEL_cd0715bb4e7f4266b91bd1cb9b102f5c"], "fog": null, "frustumCulled": true, "matrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixAutoUpdate": true, "matrixWorld": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixWorldNeedsUpdate": false, "modelViewMatrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "name": "", "normalMatrix": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], "overrideMaterial": null, "position": [0.0, 0.0, 0.0], "quaternion": [0.0, 0.0, 0.0, 1.0], "receiveShadow": false, "renderOrder": 0, "rotation": [0.0, 0.0, 0.0, "XYZ"], "scale": [1.0, 1.0, 1.0], "type": "Scene", "up": [0.0, 1.0, 0.0], "visible": true}}, "ac3b73f0152441088886fbf0a3c47dcb": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "bee5230a3d37471c96e3e56104282905": {"model_name": "WebGLShadowMapModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "WebGLShadowMapModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "enabled": false, "type": "PCFShadowMap"}}, "9c3bfe455e344ba58d2f53832731a32f": {"model_name": "RendererModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_alpha": false, "_antialias": true, "_dom_classes": [], "_height": 600, "_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "RendererModel", "_pause_autorender": false, "_view_count": null, "_view_module": "jupyter-threejs", "_view_module_version": "^2.1.0", "_view_name": "RendererView", "_webgl_version": 2, "_width": 600, "autoClear": true, "autoClearColor": true, "autoClearDepth": true, "autoClearStencil": true, "background": "black", "background_opacity": 1.0, "camera": "IPY_MODEL_74b4841363e5420caa01bd4fb2e6b0e3", "clearColor": "#000000", "clearOpacity": 1.0, "clippingPlanes": [], "controls": ["IPY_MODEL_f0d12af93f2949dea34846bd6fd5504b"], "gammaFactor": 2.0, "gammaInput": false, "gammaOutput": false, "layout": "IPY_MODEL_ac3b73f0152441088886fbf0a3c47dcb", "localClippingEnabled": false, "maxMorphNormals": 4, "maxMorphTargets": 8, "physicallyCorrectLights": false, "scene": "IPY_MODEL_3d1ad54fa25846d69d8388823385a4e0", "shadowMap": "IPY_MODEL_bee5230a3d37471c96e3e56104282905", "sortObject": true, "tabbable": null, "toneMapping": "LinearToneMapping", "toneMappingExposure": 1.0, "toneMappingWhitePoint": 1.0, "tooltip": null}}, "bff32bd28ef44545aa03c1a605dcaefc": {"model_name": "BufferAttributeModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "BufferAttributeModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "array": {"shape": [4, 3], "dtype": "float32"}, "dynamic": false, "needsUpdate": false, "normalized": true, "version": -1}, "buffers": [{"data": "AACAP3e+Xz8AAAAAAACAP3e+Xz8AAAAAAACAP3e+Xz8AAAAAAACAP3e+Xz8AAAAA", "encoding": "base64", "path": ["array", "buffer"]}]}, "37992833721d43389816589d26cdfe88": {"model_name": "BufferAttributeModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "BufferAttributeModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "array": {"shape": [6], "dtype": "uint32"}, "dynamic": false, "needsUpdate": false, "normalized": false, "version": -1}, "buffers": [{"data": "AAAAAAEAAAACAAAAAQAAAAMAAAACAAAA", "encoding": "base64", "path": ["array", "buffer"]}]}, "96d057e18a854cb9ab8abe1b43cbb225": {"model_name": "BufferAttributeModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "BufferAttributeModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "array": {"shape": [4, 3], "dtype": "float32"}, "dynamic": false, "needsUpdate": false, "normalized": false, "version": -1}, "buffers": [{"data": "AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAgD8AAIA/AAAAQAAAgD8AAAAA", "encoding": "base64", "path": ["array", "buffer"]}]}, "79395b2d51d944c185c3fa7975cc753f": {"model_name": "MeshStandardMaterialModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "MeshStandardMaterialModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "alphaMap": null, "alphaTest": 0.0, "aoMap": null, "aoMapIntensity": 1.0, "blendDst": "OneMinusSrcAlphaFactor", "blendDstAlpha": 0.0, "blendEquation": "AddEquation", "blendEquationAlpha": 0.0, "blendSrc": "SrcAlphaFactor", "blendSrcAlpha": 0.0, "blending": "NormalBlending", "bumpMap": null, "bumpScale": 1.0, "clipIntersection": false, "clipShadows": false, "clippingPlanes": [], "color": "#ffffff", "colorWrite": true, "defines": {"STANDARD": ""}, "depthFunc": "LessEqualDepth", "depthTest": true, "depthWrite": true, "displacementBias": 0.0, "displacementMap": null, "displacementScale": 1.0, "dithering": false, "emissive": "#000000", "emissiveIntensity": 1.0, "emissiveMap": null, "envMap": null, "envMapIntensity": 1.0, "flatShading": true, "fog": true, "lightMap": null, "lightMapIntensity": 1.0, "lights": true, "map": null, "metalness": 0.25, "metalnessMap": null, "morphNormals": false, "morphTargets": false, "name": "", "normalMap": null, "normalScale": [1.0, 1.0], "opacity": 1.0, "overdraw": 0.0, "polygonOffset": true, "polygonOffsetFactor": 1.0, "polygonOffsetUnits": 5.0, "precision": null, "premultipliedAlpha": false, "refractionRatio": 0.98, "roughness": 0.5, "roughnessMap": null, "shadowSide": null, "side": "DoubleSide", "skinning": false, "transparent": false, "type": "MeshStandardMaterial", "vertexColors": "VertexColors", "visible": true, "wireframe": false, "wireframeLinecap": "round", "wireframeLinejoin": "round", "wireframeLinewidth": 1.0}}, "659e9b33076d4deb878d408ebe86a918": {"model_name": "BufferGeometryModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"MaxIndex": 65535, "_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "BufferGeometryModel", "_ref_geometry": null, "_store_ref": false, "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attributes": {"color": "IPY_MODEL_bff32bd28ef44545aa03c1a605dcaefc", "index": "IPY_MODEL_37992833721d43389816589d26cdfe88", "position": "IPY_MODEL_96d057e18a854cb9ab8abe1b43cbb225"}, "index": null, "morphAttributes": {}, "name": "", "type": "BufferGeometry", "userData": {}}}, "cd0715bb4e7f4266b91bd1cb9b102f5c": {"model_name": "MeshModel", "model_module": "jupyter-threejs", "model_module_version": "^2.1.0", "state": {"_model_module": "jupyter-threejs", "_model_module_version": "^2.1.0", "_model_name": "MeshModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "castShadow": false, "children": [], "drawMode": "TrianglesDrawMode", "frustumCulled": true, "geometry": "IPY_MODEL_659e9b33076d4deb878d408ebe86a918", "material": "IPY_MODEL_79395b2d51d944c185c3fa7975cc753f", "matrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixAutoUpdate": true, "matrixWorld": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "matrixWorldNeedsUpdate": false, "modelViewMatrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0], "morphTargetInfluences": [], "name": "", "normalMatrix": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], "position": [0.0, 0.0, 0.0], "quaternion": [0.0, 0.0, 0.0, 1.0], "receiveShadow": false, "renderOrder": 0, "rotation": [0.0, 0.0, 0.0, "XYZ"], "scale": [1.0, 1.0, 1.0], "type": "Mesh", "up": [0.0, 1.0, 0.0], "visible": true}}}, "version_major": 2, "version_minor": 0}
+</script>
 
 
-              
-            </article>
-          </div>
+
+
+
+                
+              </article>
+            </div>
+          
+          
         </div>
+        
       </main>
       
-        
-<footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
-        
-          <a href=".." title="Home" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-            </div>
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                Home
-              </div>
-            </div>
-          </a>
-        
-        
-          <a href="../tut-chapter1/" title="Chapter 1" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Chapter 1
-              </div>
-            </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
+        <footer class="md-footer">
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
-      <div class="md-footer-copyright">
-        
-        Made with
-        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-          Material for MkDocs
-        </a>
-      </div>
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
       
-  <div class="md-footer-social">
+        <div class="md-social">
+  
+    
+    
+    
     
       
       
-        
-        
-      
-      <a href="https://github.com/libigl/libigl-python-bindings" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
-      </a>
     
-  </div>
-
+    <a href="https://github.com/libigl/libigl-python-bindings" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+</div>
+      
     </div>
   </div>
 </footer>
       
     </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
     
-      <script src="../assets/javascripts/vendor.22b62ea4.min.js"></script>
-      <script src="../assets/javascripts/bundle.5f27aba8.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
-      
-      <script>
-        app = initialize({
-          base: "..",
-          features: [],
-          search: Object.assign({
-            worker: "../assets/javascripts/worker/search.f6ebf1dc.min.js"
-          }, typeof search !== "undefined" && search)
-        })
-      </script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.6df46069.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
       
