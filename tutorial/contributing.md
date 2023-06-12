@@ -10,9 +10,6 @@ For any new binding please create a new pull request on git, if everything looks
 **Note 1**, see your new feature in the conda/pip version it might require some time, since we are planning to accumulate several fixes and
 features before publishing a new version on conda/PPI.
 
-**Note 2** we are not planning to bind any function not under MIT/LGLP licence since it would make the whole package not LGPL. If you plan to bind something dependent on CGAL/Triangle/TetGen, don't do it.
-
-
 The general rule of thumb is to keep the python side clean, and copy/hack in the binding if necessary.
 In such a way, if something is fixed (on igl or the bindings) it will not break any python code.
 
