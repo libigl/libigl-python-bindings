@@ -1,10 +1,3 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Alec Jacobson
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/copyleft/cgal/remesh_self_intersections.h>
@@ -83,3 +76,4 @@ npe_begin_code()
   EigenDenseLike<npe_Matrix_F> IM = IMcpy.cast<typename decltype(IM)::Scalar>();
   return std::make_tuple(npe::move(VV), npe::move(FF), npe::move(IF), npe::move(J), npe::move(IM));
 npe_end_code()
+

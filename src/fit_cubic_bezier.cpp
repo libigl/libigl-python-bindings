@@ -1,10 +1,3 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Alec Jacobson
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
 #include <npe.h>
 #include <common.h>
 #include <typedefs.h>
@@ -54,3 +47,4 @@ npe_begin_code()
   return pybind11::detail::type_caster<decltype(c)>::cast(c, pybind11::return_value_policy::move, pybind11::none());
 
 npe_end_code()
+
