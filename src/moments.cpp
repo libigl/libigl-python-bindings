@@ -1,3 +1,10 @@
+// This file is part of libigl, a simple c++ geometry processing library.
+//
+// Copyright (C) 2023 Alec Jacobson
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
 #include <npe.h>
 #include <common.h>
 #include <typedefs.h>
@@ -32,4 +39,3 @@ npe_begin_code()
   igl::moments(V, F, m0, m1, m2);
   return std::make_tuple(m0,npe::move(m1),npe::move(m2));
 npe_end_code()
-

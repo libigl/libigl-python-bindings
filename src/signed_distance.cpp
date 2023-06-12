@@ -1,3 +1,10 @@
+// This file is part of libigl, a simple c++ geometry processing library.
+//
+// Copyright (C) 2023 Francis Williams
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -59,11 +66,17 @@ npe_begin_code()
         //NOTE: compiler concats adjacent string literals. 
         throw pybind11::value_error(
             "Parameter sign_type invalid, must be one of:"
-            "\n\t0: Use fast pseudo-normal test [Bærentzen & Aanæs 2005]"
-            "\n\t1: Use winding number [Jacobson, Kavan Sorking-Hornug 2013]"
-            "\n\t2: Default (pseudo-normal)"
-            "\n\t3: Unsigned"
-            "\n\t4: Use Fast winding number [Barill, Dickson, Schmidt, Levin, Jacobson 2018]\n"
+            "
+	0: Use fast pseudo-normal test [Bærentzen & Aanæs 2005]"
+            "
+	1: Use winding number [Jacobson, Kavan Sorking-Hornug 2013]"
+            "
+	2: Default (pseudo-normal)"
+            "
+	3: Unsigned"
+            "
+	4: Use Fast winding number [Barill, Dickson, Schmidt, Levin, Jacobson 2018]
+"
         );
     }
 
@@ -96,6 +109,3 @@ npe_begin_code()
     }
 
 npe_end_code()
-
-
-
