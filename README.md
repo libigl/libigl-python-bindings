@@ -61,5 +61,5 @@ PYTHONPATH=. python tests/test_basic.py
 
 ## License
 
-Like libigl, the wrapper source code is licensed under MPL2. Code in the
-copyleft and restricted sub-directories may have more restrictive licenses.
+Like libigl, the wrapper source code is licensed under MPL2. Code included via
+the copyleft and restricted sub-directories may have more restrictive licenses.
