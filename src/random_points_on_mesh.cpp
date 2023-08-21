@@ -17,6 +17,7 @@ Returns
      B  n by 3 list of barycentric coordinates, ith row are coordinates of
        ith sampled point in face FI(i)
      FI  n list of indices into F
+     X  n by dim list of sampled points
 
 See also
 --------
@@ -44,7 +45,8 @@ npe_begin_code()
   assert_valid_23d_tri_mesh(v, f);
   EigenDenseLike<npe_Matrix_v> b;
   EigenDenseLike<npe_Matrix_f> fi;
-  igl::random_points_on_mesh(n, v, f, b, fi);
-  return std::make_tuple(npe::move(b), npe::move(fi));
+  EigenDenseLike<npe_Matrix_v> x;
+  igl::random_points_on_mesh(n, v, f, b, fi, x);
+  return std::make_tuple(npe::move(b), npe::move(fi), npe::move(x));
 
 npe_end_code()

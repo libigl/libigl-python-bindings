@@ -53,17 +53,17 @@ npe_begin_code()
   assert_cols_equals(l, 3, "l");
   assert_valid_tri_mesh_faces(f);
 
-  static_assert(int(igl::MASSMATRIX_TYPE_BARYCENTRIC) == 0, "ARAPEnergyType enum changed!");
-  static_assert(int(igl::MASSMATRIX_TYPE_VORONOI) == 1, "ARAPEnergyType enum changed!");
-  static_assert(int(igl::MASSMATRIX_TYPE_FULL) == 2, "ARAPEnergyType enum changed!");
-  static_assert(int(igl::MASSMATRIX_TYPE_DEFAULT) == 3, "ARAPEnergyType enum changed!");
-  static_assert(int(igl::NUM_MASSMATRIX_TYPE) == 4, "ARAPEnergyType enum changed!");
+  static_assert(int(igl::MASSMATRIX_TYPE_BARYCENTRIC) == 0, "MASSMATRIX enum changed!");
+  static_assert(int(igl::MASSMATRIX_TYPE_VORONOI) == 1, "MASSMATRIX enum changed!");
+  static_assert(int(igl::MASSMATRIX_TYPE_FULL) == 2, "MASSMATRIX enum changed!");
+  static_assert(int(igl::MASSMATRIX_TYPE_DEFAULT) == 3, "MASSMATRIX enum changed!");
+  static_assert(int(igl::NUM_MASSMATRIX_TYPES) == 4, "MASSMATRIX enum changed!");
 
-  if (type >= igl::NUM_MASSMATRIX_TYPE)
+  if (type >= igl::NUM_MASSMATRIX_TYPES )
   {
     std::string errmsg =
         std::string("Invalid enum for type should be in the range 0 to ") +
-        std::to_string(igl::NUM_MASSMATRIX_TYPE - 1);
+        std::to_string(igl::NUM_MASSMATRIX_TYPES - 1);
     throw pybind11::value_error(errmsg);
   }
 
