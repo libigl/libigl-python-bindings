@@ -576,16 +576,20 @@ class TestBasic(unittest.TestCase):
 
     def test_random_points_on_mesh(self):
         n = 10
-        b, fi = igl.random_points_on_mesh(n, self.v1, self.f1)
+        b, fi, x = igl.random_points_on_mesh(n, self.v1, self.f1)
 
         self.assertEqual(b.dtype, self.v1.dtype)
+        self.assertEqual(x.dtype, self.v1.dtype)
         self.assertEqual(fi.dtype, self.f1.dtype)
 
         self.assertEqual(b.shape[0], n)
         self.assertEqual(b.shape[1], 3)
+        self.assertEqual(x.shape[0], n)
+        self.assertEqual(x.shape[1], self.v1.shape[1])
         self.assertEqual(fi.shape[0], n)
         self.assertTrue(b.flags.c_contiguous)
         self.assertTrue(fi.flags.c_contiguous)
+        self.assertTrue(x.flags.c_contiguous)
 
     def test_boundary_loop(self):
         l = igl.boundary_loop(self.f)
@@ -725,10 +729,6 @@ class TestBasic(unittest.TestCase):
 
     def test_euler_characteristic(self):
         eu = igl.euler_characteristic(self.f1)
-        self.assertEqual(type(eu), int)
-
-    def test_euler_characteristic_complete(self):
-        eu = igl.euler_characteristic_complete(self.v1, self.f1)
         self.assertEqual(type(eu), int)
 
     def test_fit_plane(self):
@@ -1027,8 +1027,10 @@ class TestBasic(unittest.TestCase):
         C, BE, _, _, _, _ = igl.read_tgf(
             os.path.join(self.test_data_path, "hand.tgf"))
 
-        ok, b, bc = igl.boundary_conditions(V, T, C, np.array(
-            [], dtype=T.dtype), BE, np.array([], dtype=T.dtype))
+        ok, b, bc = igl.boundary_conditions(
+            V, T, C, np.array([], dtype=T.dtype), BE, 
+            np.array([], dtype=T.dtype),
+            np.array([], dtype=T.dtype))
 
         self.assertTrue(b.flags.c_contiguous)
         self.assertTrue(bc.flags.c_contiguous)
