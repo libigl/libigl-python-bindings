@@ -30,6 +30,7 @@ C  #C by dim list of handle positions
 P  #P by 1 list of point handle indices into C
 BE  #BE by 2 list of bone edge indices into C
 CE  #CE by 2 list of cage edge indices into *P*
+CF  #CF by 3 list of cage edge indices into *P*
 
 Returns
 -------
@@ -66,6 +67,7 @@ npe_arg(c, npe_matches(v))
 npe_arg(p, npe_matches(ele))
 npe_arg(be, npe_matches(ele))
 npe_arg(ce, npe_matches(ele))
+npe_arg(cf, npe_matches(ele))
 
 npe_begin_code()
   assert_valid_tet_or_tri_mesh(v, ele);
@@ -81,6 +83,10 @@ npe_begin_code()
   {
     assert_cols_equals(ce, 2, "ce");
   }
+  if(cf.size() > 0)
+  {
+    assert_cols_equals(cf, 3, "cf");
+  }
 
   //TODO: remove __copy
   Eigen::MatrixXd v_copy = v.template cast<double>();
@@ -93,9 +99,12 @@ npe_begin_code()
   Eigen::MatrixXi ce_copy;
   if (ce.size() > 0)
     ce_copy = ce.template cast<int>();
+  Eigen::MatrixXi cf_copy;
+  if (cf.size() > 0)
+    cf_copy = cf.template cast<int>();
   Eigen::VectorXi b_copy;
   Eigen::MatrixXd bc_copy;
-  bool success = igl::boundary_conditions(v_copy, ele_copy, c_copy, p_copy, be_copy, ce_copy, b_copy, bc_copy);
+  bool success = igl::boundary_conditions(v_copy, ele_copy, c_copy, p_copy, be_copy, ce_copy, cf_copy, b_copy, bc_copy);
   EigenDenseLike<npe_Matrix_ele> b = b_copy.template cast<npe_Scalar_ele>();
   EigenDenseLike<npe_Matrix_v> bc = bc_copy.template cast<npe_Scalar_v>();
   return std::make_tuple(success, npe::move(b), npe::move(bc));
