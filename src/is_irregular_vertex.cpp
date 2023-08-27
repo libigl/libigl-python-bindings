@@ -16,7 +16,6 @@ Determine if a vertex is irregular, i.e. it has more than 6 (triangles) or 4 (qu
 
 Parameters
 ----------
-v : #v by dim array of vertex positions
 f : #f by 3[4] array of triangle[quads] indices
 
 Returns
@@ -39,12 +38,10 @@ Examples
 npe_function(is_irregular_vertex)
 npe_doc(ds_is_irregular_vertex)
 
-npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
-  assert_valid_tet_or_tri_mesh_23d(v, f);
-  const std::vector<bool> res = igl::is_irregular_vertex(v, f);
+  const std::vector<bool> res = igl::is_irregular_vertex(f);
   return res;
 
 npe_end_code()

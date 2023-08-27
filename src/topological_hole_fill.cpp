@@ -22,7 +22,6 @@ Parameters
 ----------
 
 F  #F by simplex-size list of element indices
-b  #b boundary indices to preserve
 holes vector of hole loops to fill
 
 Returns
@@ -47,14 +46,13 @@ npe_function(topological_hole_fill)
 npe_doc(ds_topological_hole_fill)
 
 npe_arg(f, dense_int, dense_long, dense_longlong)
-npe_arg(b, dense_int, dense_long, dense_longlong)
 npe_arg(holes, std::vector<std::vector<int>>)
 
 
 npe_begin_code()
 
   EigenDense<npe_Scalar_f> f_filled;
-  igl::topological_hole_fill(f, b, holes, f_filled);
+  igl::topological_hole_fill(f, holes, f_filled);
   return npe::move(f_filled);
 
 npe_end_code()
