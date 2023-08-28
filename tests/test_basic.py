@@ -522,13 +522,16 @@ class TestBasic(unittest.TestCase):
 
     def test_isolines(self):
         func = np.random.rand(self.v1.shape[0], 1)
-        iso_v, iso_e = igl.isolines(self.v1, self.f1, func, 10)
+        vals = np.linspace(0,1, 10)
+        iso_v, iso_e, I = igl.isolines(self.v1, self.f1, func, vals)
 
         self.assertEqual(iso_v.dtype, func.dtype)
         self.assertEqual(iso_e.dtype, self.f1.dtype)
         self.assertEqual(iso_e.shape[1], 2)
+        self.assertEqual(iso_e.shape[0], I.shape[0])
         self.assertTrue(iso_v.flags.c_contiguous)
         self.assertTrue(iso_e.flags.c_contiguous)
+        self.assertTrue(I.flags.c_contiguous)
 
     def test_unproject_ray(self):
         pos = np.random.rand(2, 1)
@@ -1112,7 +1115,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(uv.flags.c_contiguous)
 
     def test_is_irregular_vertex(self):
-        is_i = igl.is_irregular_vertex(self.v1, self.f1)
+        is_i = igl.is_irregular_vertex(self.f1)
         self.assertEqual(type(is_i[0]), bool)
 
     def test_harmonic(self):
@@ -2356,9 +2359,8 @@ class TestBasic(unittest.TestCase):
 
     def test_topological_hole_fill(self):
         f = self.f1
-        b = np.array(range(10))
         h = [range(10, 20)]
-        ff = igl.topological_hole_fill(f, b, h)
+        ff = igl.topological_hole_fill(f, h)
         self.assertTrue(ff.flags.c_contiguous)
         self.assertTrue(ff.shape[1] == 3)
         self.assertTrue(ff.dtype == f.dtype)
