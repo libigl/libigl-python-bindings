@@ -59,3 +59,4 @@ and if developing and trying to run from this directory. You could use:
 PYTHONPATH=. python tests/test_basic.py
 ```
 
+
