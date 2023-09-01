@@ -10,14 +10,13 @@ remote_branch: 'gh-pages'
 theme:
   name: material
   favicon: 'favicon.ico'
-  logo:
-    icon: ' '
+  icon: ''
   palette:
     primary: 'light blue'
     accent: 'blue'
 extra:
   social:
-    - type: 'github'
+    - icon: fontawesome/brands/github-alt
       link: 'https://github.com/libigl/libigl-python-bindings'
 markdown_extensions:
   - codehilite

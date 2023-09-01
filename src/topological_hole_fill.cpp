@@ -1,3 +1,10 @@
+// This file is part of libigl, a simple c++ geometry processing library.
+//
+// Copyright (C) 2023 Teseo Schneider
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
@@ -15,7 +22,6 @@ Parameters
 ----------
 
 F  #F by simplex-size list of element indices
-b  #b boundary indices to preserve
 holes vector of hole loops to fill
 
 Returns
@@ -39,15 +45,14 @@ Examples
 npe_function(topological_hole_fill)
 npe_doc(ds_topological_hole_fill)
 
-npe_arg(f, dense_int, dense_long)
-npe_arg(b, dense_int, dense_long)
+npe_arg(f, dense_int, dense_long )
 npe_arg(holes, std::vector<std::vector<int>>)
 
 
 npe_begin_code()
 
   EigenDense<npe_Scalar_f> f_filled;
-  igl::topological_hole_fill(f, b, holes, f_filled);
+  igl::topological_hole_fill(f, holes, f_filled);
   return npe::move(f_filled);
 
 npe_end_code()

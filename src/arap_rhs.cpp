@@ -1,10 +1,17 @@
+// This file is part of libigl, a simple c++ geometry processing library.
+//
+// Copyright (C) 2023 Sebastian Koch
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
 #include <common.h>
 #include <npe.h>
 #include <typedefs.h>
 #include <igl/arap_rhs.h>
 
 const char* ds_arap_rhs = R"igl_Qu8mg5v7(
-Guild right-hand side constructor of global poisson solve for various ARAP energies
+Build right-hand side constructor of global poisson solve for various ARAP energies
   Inputs:
 
   Outputs:

@@ -3,6 +3,8 @@ import os
 import platform
 
 import igl
+import igl.triangle
+import igl.copyleft.cgal
 import numpy as np
 import scipy as sp
 import scipy.sparse as csc
@@ -520,13 +522,16 @@ class TestBasic(unittest.TestCase):
 
     def test_isolines(self):
         func = np.random.rand(self.v1.shape[0], 1)
-        iso_v, iso_e = igl.isolines(self.v1, self.f1, func, 10)
+        vals = np.linspace(0,1, 10)
+        iso_v, iso_e, I = igl.isolines(self.v1, self.f1, func, vals)
 
         self.assertEqual(iso_v.dtype, func.dtype)
         self.assertEqual(iso_e.dtype, self.f1.dtype)
         self.assertEqual(iso_e.shape[1], 2)
+        self.assertEqual(iso_e.shape[0], I.shape[0])
         self.assertTrue(iso_v.flags.c_contiguous)
         self.assertTrue(iso_e.flags.c_contiguous)
+        self.assertTrue(I.flags.c_contiguous)
 
     def test_unproject_ray(self):
         pos = np.random.rand(2, 1)
@@ -574,16 +579,20 @@ class TestBasic(unittest.TestCase):
 
     def test_random_points_on_mesh(self):
         n = 10
-        b, fi = igl.random_points_on_mesh(n, self.v1, self.f1)
+        b, fi, x = igl.random_points_on_mesh(n, self.v1, self.f1)
 
         self.assertEqual(b.dtype, self.v1.dtype)
+        self.assertEqual(x.dtype, self.v1.dtype)
         self.assertEqual(fi.dtype, self.f1.dtype)
 
         self.assertEqual(b.shape[0], n)
         self.assertEqual(b.shape[1], 3)
+        self.assertEqual(x.shape[0], n)
+        self.assertEqual(x.shape[1], self.v1.shape[1])
         self.assertEqual(fi.shape[0], n)
         self.assertTrue(b.flags.c_contiguous)
         self.assertTrue(fi.flags.c_contiguous)
+        self.assertTrue(x.flags.c_contiguous)
 
     def test_boundary_loop(self):
         l = igl.boundary_loop(self.f)
@@ -723,10 +732,6 @@ class TestBasic(unittest.TestCase):
 
     def test_euler_characteristic(self):
         eu = igl.euler_characteristic(self.f1)
-        self.assertEqual(type(eu), int)
-
-    def test_euler_characteristic_complete(self):
-        eu = igl.euler_characteristic_complete(self.v1, self.f1)
         self.assertEqual(type(eu), int)
 
     def test_fit_plane(self):
@@ -1025,8 +1030,10 @@ class TestBasic(unittest.TestCase):
         C, BE, _, _, _, _ = igl.read_tgf(
             os.path.join(self.test_data_path, "hand.tgf"))
 
-        ok, b, bc = igl.boundary_conditions(V, T, C, np.array(
-            [], dtype=T.dtype), BE, np.array([], dtype=T.dtype))
+        ok, b, bc = igl.boundary_conditions(
+            V, T, C, np.array([], dtype=T.dtype), BE, 
+            np.array([], dtype=T.dtype),
+            np.array([], dtype=T.dtype))
 
         self.assertTrue(b.flags.c_contiguous)
         self.assertTrue(bc.flags.c_contiguous)
@@ -1108,7 +1115,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(uv.flags.c_contiguous)
 
     def test_is_irregular_vertex(self):
-        is_i = igl.is_irregular_vertex(self.v1, self.f1)
+        is_i = igl.is_irregular_vertex(self.f1)
         self.assertEqual(type(is_i[0]), bool)
 
     def test_harmonic(self):
@@ -2352,9 +2359,8 @@ class TestBasic(unittest.TestCase):
 
     def test_topological_hole_fill(self):
         f = self.f1
-        b = np.array(range(10))
         h = [range(10, 20)]
-        ff = igl.topological_hole_fill(f, b, h)
+        ff = igl.topological_hole_fill(f, h)
         self.assertTrue(ff.flags.c_contiguous)
         self.assertTrue(ff.shape[1] == 3)
         self.assertTrue(ff.dtype == f.dtype)
@@ -2467,6 +2473,70 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.dtype == e.dtype == ue.dtype ==
                         emap.dtype == self.f1.dtype)
         self.assertTrue(np.array(ue2e).dtype == self.f1.dtype)
+
+    def test_AABB(self):
+        tree = igl.AABB_f64_3()
+        tree.init(self.v1,self.f1)
+        bc = igl.barycenter(self.v1,self.f1)
+        sqrD = tree.squared_distance(self.v1,self.f1,bc)
+        self.assertTrue(sqrD.shape[0] == bc.shape[0])
+        self.assertTrue(np.max(sqrD) <= 1e-16)
+        sqrD,I,C = tree.squared_distance(self.v1,self.f1,bc,return_index=True,return_closest_point=True)
+        self.assertTrue(sqrD.shape[0] == bc.shape[0])
+        self.assertTrue(I.shape[0] == bc.shape[0])
+        self.assertTrue(C.shape == bc.shape)
+
+    def test_in_element_3(self):
+        V = np.array([ [0.,0,0], [1,0,0], [0,1,0], [0,0,1], [1,1,1]],dtype='float64')
+        T = np.array([[0,1,2,3],[4,3,2,1]],dtype='int32')
+        Q = np.array([[0.1,0.1,0.1],[0.9,0.9,0.9]],dtype='float64')
+        tree = igl.AABB_f64_3()
+        tree.init(V,T)
+        I = igl.in_element_3(V,T,Q,tree)
+        self.assertTrue(I.shape[0] == Q.shape[0])
+        self.assertTrue(I[0] == 0)
+        self.assertTrue(I[1] == 1)
+
+    def test_in_element_2(self):
+        V = np.array([ [0.,0], [1,0], [0,1], [1,1]],dtype='float64')
+        F = np.array([[0,1,2],[2,1,3]],'int32')
+        Q = np.array([[0.1,0.1],[0.9,0.9]],dtype='float64')
+        tree = igl.AABB_f64_2()
+        tree.init(V,F)
+        I = igl.in_element_2(V,F,Q,tree)
+        self.assertTrue(I.shape[0] == Q.shape[0])
+        self.assertTrue(I[0] == 0)
+        self.assertTrue(I[1] == 1)
+
+
+    def test_triangulate(self):
+        V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype='float64')
+        E = np.array([[0,1],[1,2],[2,3],[3,0]])
+        V2,F2 = igl.triangle.triangulate(V,E,flags='Q')
+        self.assertTrue(V2.shape == V.shape)
+        self.assertTrue(F2.shape == (2,3))
+        V = np.array([[0,0],[4,0],[0,4],[1,1],[1,2],[2,1]],dtype='float64')
+        E = np.array([[0,1],[1,2],[2,0],[3,4],[4,5],[5,3]])
+        H = np.array([[1.1,1.1]])
+        # Markers can't be 0
+        VM = 1+np.array(range(V.shape[0]))
+        EM = 1+np.array(range(E.shape[0]))
+        V2,F2,VM2,E2,EM2 = igl.triangle.triangulate(V,E,H,flags='Q',VM=VM,EM=EM)
+        self.assertTrue(V2.shape == V.shape)
+        self.assertTrue(F2.shape == (3*2,3))
+        self.assertTrue(VM2.shape == VM.shape)
+        self.assertTrue(E2.shape == E.shape)
+        self.assertTrue(EM2.shape == EM.shape)
+
+
+    # copyleft.cgal
+    def test_convex_hull(self):
+        V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype="float64")
+        F = igl.copyleft.cgal.convex_hull(V)
+        F = np.sort(F)
+        F = F[np.lexsort(F.T[::-1],axis=0)]
+        F_gt = np.array([[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]],dtype="int64")
+        self.assertTrue((F == F_gt).all())
 
 if __name__ == '__main__':
     unittest.main()
