@@ -48,7 +48,7 @@ npe_begin_code()
 
   EigenDenseLike<npe_Matrix_v> v_copy = v;
   EigenDenseLike<npe_Matrix_f> f_copy = f;
-  EigenDenseLike<npe_Matrix_f> gamma_copy = gamma;
+  Eigen::Matrix<npe_Scalar_f,Eigen::Dynamic,1> gamma_copy = gamma;
 
   Eigen::Matrix<npe_Scalar_v, Eigen::Dynamic, 1> d_copy;
   igl::HeatGeodesicsData<npe_Scalar_v> data;

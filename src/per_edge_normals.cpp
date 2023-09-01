@@ -59,7 +59,7 @@ npe_begin_code()
   assert_valid_3d_tri_mesh(v, f);
   EigenDenseLike<npe_Matrix_v> n;
   EigenDenseLike<npe_Matrix_f> e;
-  EigenDenseLike<npe_Matrix_f> emap;
+  Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> emap;
   igl::per_edge_normals(v, f, igl::PerEdgeNormalsWeightingType(weight), fn, n, e, emap);
   return std::make_tuple(npe::move(n), npe::move(e), npe::move(emap));
 

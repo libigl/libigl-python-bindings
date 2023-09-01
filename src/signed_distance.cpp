@@ -89,7 +89,7 @@ npe_begin_code()
     Eigen::MatrixXi F = f.template cast<int>();
 
     EigenDenseLike<npe_Matrix_p> S;
-    EigenDenseLike<npe_Matrix_f> I;
+    Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> I;
     EigenDenseLike<npe_Matrix_v> C;
     EigenDenseLike<npe_Matrix_v> N;
 

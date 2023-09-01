@@ -59,7 +59,7 @@ npe_begin_code()
   assert_valid_tet_or_tri_mesh_23d(v, f);
   EigenSparseLike<npe_Matrix_v> l;
   EigenDenseLike<npe_Matrix_f> e;
-  EigenDenseLike<npe_Matrix_f> emap;
+  Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> emap;
   igl::crouzeix_raviart_cotmatrix(v, f, l, e, emap);
   return std::make_tuple(npe::move(l), npe::move(e), npe::move(emap));
 

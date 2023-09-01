@@ -58,7 +58,7 @@ npe_begin_code()
 
   EigenDenseLike<npe_Matrix_f> E;
   EigenDenseLike<npe_Matrix_f> uE;
-  EigenDenseLike<npe_Matrix_f> EMAP;
+  Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> EMAP;
   std::vector<std::vector<typename EigenDenseInt::Scalar>> uE2E;
   igl::unique_edge_map(f, E, uE, EMAP, uE2E);
   return std::make_tuple(npe::move(E), npe::move(uE), npe::move(EMAP), uE2E);

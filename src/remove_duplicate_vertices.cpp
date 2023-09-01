@@ -65,7 +65,8 @@ npe_begin_code()
   assert_nonzero_rows(v, "v");
   Eigen::MatrixXd v_copy = v.template cast<double>();
   Eigen::MatrixXd sv;
-  EigenDenseLike<npe_Matrix_f> svi, svj, sf;
+  Eigen::Matrix<npe_Scalar_f,Eigen::Dynamic,1> svi, svj;
+  EigenDenseLike<npe_Matrix_f> sf;
   igl::remove_duplicate_vertices(v_copy, f, epsilon, sv, svi, svj, sf);
   EigenDenseFloat sv_row_major = sv;
   return std::make_tuple(npe::move(sv_row_major), npe::move(svi), npe::move(svj), npe::move(sf));

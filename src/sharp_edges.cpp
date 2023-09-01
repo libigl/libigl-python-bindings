@@ -65,7 +65,7 @@ npe_begin_code()
   EigenDense<npe_Scalar_f> se;
   EigenDense<npe_Scalar_f> e;
   EigenDense<npe_Scalar_f> ue;
-  EigenDense<npe_Scalar_f> emap;
+  Eigen::Matrix<npe_Scalar_f,Eigen::Dynamic,1> emap;
   std::vector<std::vector<typename EigenDenseInt::Scalar>> u_e2_e;
   std::vector<typename EigenDenseInt::Scalar> sharp;
   igl::sharp_edges(v, f, angle, se, e, ue, emap, u_e2_e, sharp);

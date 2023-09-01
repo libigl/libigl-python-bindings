@@ -51,10 +51,10 @@ npe_begin_code()
 
 
   EigenDense<npe_Scalar_p> s;
-  Eigen::Matrix<typename EigenDenseInt::Scalar, Eigen::Dynamic, 1> j_copy;
+  Eigen::VectorXi j_copy;
   EigenDense<npe_Scalar_p> q;
   igl::ramer_douglas_peucker(p, tol, s, j_copy, q);
-  EigenDenseInt j = j_copy;
+  EigenDenseInt j = j_copy.template cast<decltype(j)::Scalar>();
   return std::make_tuple(npe::move(s), npe::move(j), npe::move(q));
 
 npe_end_code()
