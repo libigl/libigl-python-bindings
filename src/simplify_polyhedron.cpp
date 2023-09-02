@@ -66,7 +66,7 @@ npe_begin_code()
 
   EigenDenseLike<npe_Matrix_ov> v = v_copy.template cast < typename npe_Matrix_ov::Scalar >();
   EigenDenseLike<npe_Matrix_of> f = f_copy.template cast<typename npe_Matrix_of::Scalar>();
-  EigenDenseLike<npe_Matrix_of> j = j_copy.template cast<typename npe_Matrix_of::Scalar>();
+  Eigen::Matrix<npe_Scalar_of,Eigen::Dynamic,1> j = j_copy.template cast<typename npe_Matrix_of::Scalar>();
 
   return std::make_tuple(npe::move(v), npe::move(f), npe::move(j));
 

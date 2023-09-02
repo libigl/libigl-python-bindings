@@ -125,7 +125,7 @@ npe_begin_code()
   EigenDense<npe_Scalar_f_in> f;
   EigenDense<npe_Scalar_f_in> e;
   EigenDense<npe_Scalar_f_in> u_e;
-  EigenDense<npe_Scalar_f_in> emap;
+  Eigen::Matrix<npe_Scalar_f_in,Eigen::Dynamic,1> emap;
   std::vector<std::vector<npe_Scalar_f_in>> u_e2_e;
   igl::intrinsic_delaunay_triangulation(l_in, f_in, l, f, e, u_e, emap, u_e2_e);
   std::vector<std::vector<typename EigenDenseInt::Scalar>> u_e2_e_copy;

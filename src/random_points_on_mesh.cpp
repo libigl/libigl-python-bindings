@@ -51,7 +51,7 @@ npe_begin_code()
 
   assert_valid_23d_tri_mesh(v, f);
   EigenDenseLike<npe_Matrix_v> b;
-  EigenDenseLike<npe_Matrix_f> fi;
+  Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> fi;
   EigenDenseLike<npe_Matrix_v> x;
   igl::random_points_on_mesh(n, v, f, b, fi, x);
   return std::make_tuple(npe::move(b), npe::move(fi), npe::move(x));

@@ -45,8 +45,8 @@ npe_begin_code()
   assert_valid_tet_or_tri_mesh_faces(f);
 
   EigenDenseLike<npe_Matrix_f> ff;
-  EigenDenseLike<npe_Matrix_f> ia;
-  EigenDenseLike<npe_Matrix_f> ic;
+  Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> ia;
+  Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> ic;
   igl::unique_simplices(f, ff, ia, ic);
   return std::make_tuple(npe::move(ff), npe::move(ia), npe::move(ic));
 

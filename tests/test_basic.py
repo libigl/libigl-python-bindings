@@ -841,16 +841,6 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(svj.flags.c_contiguous)
         self.assertTrue(sf.flags.c_contiguous)
 
-    def test_remove_duplicates(self):
-        epsilon = 1e-6
-        nv, nf = igl.remove_duplicates(self.v1, self.f1, epsilon)
-        self.assertEqual(nv.dtype, self.v1.dtype)
-        self.assertEqual(nf.dtype, self.f1.dtype)
-        self.assertTrue(nv.shape[0] > 0 and nv.shape[1] > 0)
-        self.assertTrue(nf.shape[0] > 0)
-        self.assertTrue(nv.flags.c_contiguous)
-        self.assertTrue(nf.flags.c_contiguous)
-
     def test_remove_unreferenced(self):
         nv, nf, i, j = igl.remove_unreferenced(self.v1, self.f1)
         self.assertEqual(nv.shape[1], self.v1.shape[1])

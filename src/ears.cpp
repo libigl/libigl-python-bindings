@@ -45,8 +45,8 @@ npe_arg(f, dense_int, dense_long, dense_longlong)
 npe_begin_code()
 
   assert_valid_tri_mesh_faces(f);
-  EigenDenseLike<npe_Matrix_f> ear;
-  EigenDenseLike<npe_Matrix_f> ear_opp;
+  Eigen::Matrix<npe_Scalar_f,Eigen::Dynamic,1> ear;
+  Eigen::Matrix<npe_Scalar_f,Eigen::Dynamic,1> ear_opp;
   igl::ears(f, ear, ear_opp);
   return std::make_tuple(npe::move(ear), npe::move(ear_opp));
 

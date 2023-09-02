@@ -57,7 +57,7 @@ npe_arg(u_e2_e, std::vector<std::vector<int> >)
 npe_begin_code()
   assert_valid_tri_mesh_faces(f);
 
-  EigenDenseLike<npe_Matrix_f> emap;
+  Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> emap;
 
 
   std::vector<std::vector<size_t> > curves;
