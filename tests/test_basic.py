@@ -3,6 +3,7 @@ import os
 import platform
 
 import igl
+print("Using igl found at: ",igl.__file__)
 import igl.triangle
 import igl.copyleft.cgal
 import numpy as np
