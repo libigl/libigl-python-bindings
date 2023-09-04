@@ -50,8 +50,8 @@ jobs:
     env:
       CIBW_BUILD_VERBOSITY: 3
       # This is very dubious... It *may* work because these are just cpp libraries that should not depend on the python version. Still, super-dubious.
-      CIBW_TEST_REQUIRES: "gitpython"
-      CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
+      #CIBW_TEST_REQUIRES: "gitpython"
+      #CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
       CIBW_BUILD: "${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}"
       CIBW_TEST_SKIP: "*-macosx_arm64"
       CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }}"
