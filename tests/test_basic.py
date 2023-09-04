@@ -38,10 +38,18 @@ class TestBasic(unittest.TestCase):
         self.v2, self.f2 = igl.read_triangle_mesh(
             os.path.join(self.test_data_path, "fertility.off"))
 
-        self.v = np.random.rand(10, 3).astype(self.v1.dtype)
-        self.t = np.random.rand(10, 4)
-        self.f = np.random.randint(0, 10, size=(20, 3), dtype=self.f1.dtype)
-        self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
+        ## Alec: I don't understand why it makes sense to use junk random data
+        ## for the tests. Especially for f and t. These will almost never be
+        ## non-degenerate meshes.
+        #self.v = np.random.rand(10, 3).astype(self.v1.dtype)
+        #self.t = np.random.rand(10, 4)
+        #self.f = np.random.randint(0, 10, size=(20, 3), dtype=self.f1.dtype)
+        #self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
+        self.v, self.t, self.f = igl.read_mesh(os.path.join(self.test_data_path, "decimated-knight.mesh"))
+        # This model is a quad mesh that's been trivially triangulated
+        self.v3, self.f3 = igl.read_triangle_mesh(os.path.join(self.test_data_path, "face.obj"))
+        self.q3 = np.concatenate((self.f3[0::2,0:3], self.f3[1::2,2:3]), axis=1)
+
 
         self.default_int = np.array(range(2)).dtype
         self.default_float = np.zeros((2,2)).dtype
@@ -443,9 +451,9 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.flags.c_contiguous)
 
     def test_quad_planarity(self):
-        p = igl.quad_planarity(self.v, self.g)
-        self.assertTrue(p.dtype == self.v.dtype)
-        self.assertEqual(p.shape[0], self.g.shape[0])
+        p = igl.quad_planarity(self.v3, self.q3)
+        self.assertTrue(p.dtype == self.v3.dtype)
+        self.assertEqual(p.shape[0], self.q3.shape[0])
         self.assertTrue(p.flags.c_contiguous)
 
     def test_collapse_small_triangles(self):
@@ -2536,7 +2544,7 @@ class TestBasic(unittest.TestCase):
 
     def test_blue_noise(self):
         r = igl.avg_edge_length(self.v, self.f)
-        b,fi,p = igl.blue_noise(self.v, self.f, r*0.1)
+        b,fi,p = igl.blue_noise(self.v, self.f, r)
         self.assertTrue(b.shape[0] == fi.shape[0])
         self.assertTrue(b.shape[0] == p.shape[0])
         self.assertTrue(self.v.shape[1] == p.shape[1])
