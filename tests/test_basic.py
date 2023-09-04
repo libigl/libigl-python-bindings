@@ -494,6 +494,9 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(mat.dtype, "float64")
         self.assertTrue(mat.flags.c_contiguous)
 
+    def test_write_dmat(self):
+        igl.write_dmat(self.test_data_path + "decimated-knight-selection.dmat",self.v)
+
     # sparse matrix, no flag attribute
     def test_vector_area_matrix(self):
         a = igl.vector_area_matrix(self.f)
@@ -2527,6 +2530,62 @@ class TestBasic(unittest.TestCase):
         F = F[np.lexsort(F.T[::-1],axis=0)]
         F_gt = np.array([[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]],dtype="int64")
         self.assertTrue((F == F_gt).all())
+
+    def test__version(self):
+        self.assertTrue(isinstance(igl.__version__, str))
+
+    def test_blue_noise(self):
+        r = igl.avg_edge_length(self.v, self.f)
+        b,fi,p = igl.blue_noise(self.v, self.f, r*0.1)
+        self.assertTrue(b.shape[0] == fi.shape[0])
+        self.assertTrue(b.shape[0] == p.shape[0])
+        self.assertTrue(self.v.shape[1] == p.shape[1])
+        self.assertTrue(self.f.shape[1] == b.shape[1])
+
+    def test_fit_cubic_bezier(self):
+       r = igl.avg_edge_length(self.v, self.f) 
+       cubics = igl.fit_cubic_bezier(self.v, r)
+       [self.assertTrue(cubic.shape[1] == self.v.shape[1]) for cubic in cubics]
+
+    def test_is_delaunay(self):
+        D = igl.is_delaunay(self.v, self.f)
+        self.assertTrue(D.shape[0] == self.f.shape[0])
+        self.assertTrue(D.shape[1] == self.f.shape[1])
+    
+    def test_random_points_on_mesh(self):
+        b,fi,x = igl.random_points_on_mesh(100, self.v, self.f)
+        self.assertTrue(b.shape[0] == 100)
+        self.assertTrue(b.shape[0] == fi.shape[0])
+        self.assertTrue(b.shape[0] == x.shape[0])
+        self.assertTrue(self.v.shape[1] == x.shape[1])
+        self.assertTrue(self.f.shape[1] == b.shape[1])
+
+    def test_random_points_on_mesh_intrinsic(self):
+        dblA = igl.doublearea(self.v, self.f)
+        b,fi = igl.random_points_on_mesh_intrinsic(100, dblA)
+        self.assertTrue(b.shape[0] == 100)
+        self.assertTrue(b.shape[0] == fi.shape[0])
+        self.assertTrue(self.f.shape[1] == b.shape[1])
+
+    def test_moments(self):
+        m0,m1,m2 = igl.moments(self.v1, self.f1)
+
+    def test_path_to_edges(self):
+        I = self.f1[:,0]
+        e = igl.path_to_edges(I)
+        self.assertTrue(e.shape[1] == 2)
+        self.assertTrue(e.shape[0] == I.shape[0]-1)
+
+
+    def test_copyleft(self):
+        # check that type is <class 'module'>
+        self.assertTrue(type(igl.copyleft) == type(igl))
+
+    def test_triangle(self):
+        # check that type is <class 'module'>
+        self.assertTrue(type(igl.copyleft) == type(igl))
+
+
 
 if __name__ == '__main__':
     unittest.main()

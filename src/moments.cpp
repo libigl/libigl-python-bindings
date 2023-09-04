@@ -33,8 +33,8 @@ npe_arg(F, dense_int, dense_long, dense_longlong)
 
 npe_begin_code()
   assert_valid_3d_tri_mesh(V, F);
-  EigenDenseLike<npe_Matrix_V> m1;
-  EigenDenseLike<npe_Matrix_V> m2;
+  Eigen::Matrix<npe_Scalar_V, 1, 3> m1;
+  Eigen::Matrix<npe_Scalar_V, 3, 3> m2;
   double m0;
   igl::moments(V, F, m0, m1, m2);
   return std::make_tuple(m0,npe::move(m1),npe::move(m2));
