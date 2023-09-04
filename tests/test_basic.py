@@ -718,12 +718,11 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(i.flags.c_contiguous)
 
     def test_dihedral_angles(self):
-        t = np.random.randint(0, 10, size=(10, 4))
-        theta, cos_theta = igl.dihedral_angles(self.v, t)
-        self.assertEqual(theta.dtype, self.v.dtype)
-        self.assertEqual(cos_theta.dtype, self.v.dtype)
+        theta, cos_theta = igl.dihedral_angles(self.v4, self.t4)
+        self.assertEqual(theta.dtype, self.v4.dtype)
+        self.assertEqual(cos_theta.dtype, self.v4.dtype)
         self.assertTrue(
-            theta.shape == cos_theta.shape and cos_theta.shape == (self.t.shape[0], 6))
+            theta.shape == cos_theta.shape and cos_theta.shape == (self.t4.shape[0], 6))
         self.assertTrue(theta.flags.c_contiguous)
         self.assertTrue(cos_theta.flags.c_contiguous)
 
@@ -1801,14 +1800,15 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(type(d) == csc.csc_matrix)
 
     def test_orient_outward(self):
-        c, _ = igl.orientable_patches(self.f)
-        ff, i = igl.orient_outward(self.v, self.f, c)
+        v,f = igl.read_triangle_mesh(os.path.join(self.test_data_path, "truck.obj"))
+        c, _ = igl.orientable_patches(f)
+        ff, i = igl.orient_outward(v, f, c)
 
         self.assertTrue(ff.flags.c_contiguous)
         self.assertTrue(i.flags.c_contiguous)
-        self.assertTrue(ff.dtype == self.f.dtype)
-        self.assertTrue(i.dtype == self.f.dtype)
-        self.assertTrue(ff.shape[0] == self.f.shape[0])
+        self.assertTrue(ff.dtype == f.dtype)
+        self.assertTrue(i.dtype == f.dtype)
+        self.assertTrue(ff.shape[0] == f.shape[0])
         self.assertTrue(ff.shape[1] == 3)
         self.assertTrue(len(i.shape) == 1)
         self.assertTrue(i.shape[0] == np.max(c)+1)
@@ -2172,7 +2172,7 @@ class TestBasic(unittest.TestCase):
     def test_triangle_fan(self):
         _, f = igl.read_triangle_mesh(
             os.path.join(self.test_data_path, "camelhead.off"))
-        e = igl.exterior_edges(self.f)
+        e = igl.exterior_edges(f)
         cap = igl.triangle_fan(e)
 
         self.assertTrue(cap.flags.c_contiguous)
@@ -2305,7 +2305,8 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(type(l) == csc.csc_matrix)
 
     def test_cut_to_disk(self):
-        cuts = igl.cut_to_disk(self.f)
+        cuts = igl.cut_to_disk(self.f2)
+        # This test assumes fertility.off
         self.assertTrue(len(cuts) == 9)
 
     def test_iterative_closest_point(self):
