@@ -45,10 +45,14 @@ class TestBasic(unittest.TestCase):
         #self.t = np.random.rand(10, 4)
         #self.f = np.random.randint(0, 10, size=(20, 3), dtype=self.f1.dtype)
         #self.g = np.random.randint(0, 10, size=(20, 4), dtype="int32")
-        self.v, self.t, self.f = igl.read_mesh(os.path.join(self.test_data_path, "decimated-knight.mesh"))
         # This model is a quad mesh that's been trivially triangulated
         self.v3, self.f3 = igl.read_triangle_mesh(os.path.join(self.test_data_path, "face.obj"))
+        self.v4, self.t4, self.f4 = igl.read_mesh(os.path.join(self.test_data_path, "decimated-knight.mesh"))
         self.q3 = np.concatenate((self.f3[0::2,0:3], self.f3[1::2,2:3]), axis=1)
+        # Use the bunny rather than random junk. Ideally we'd loop over meshes
+        # by category like the libigl tests.
+        self.v = self.v1
+        self.f = self.f1
 
 
         self.default_int = np.array(range(2)).dtype
@@ -612,7 +616,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(l.flags.c_contiguous)
 
     def test_all_boundary_loop(self):
-        l = igl.all_boundary_loop(self.f)
+        l = igl.all_boundary_loop(self.f3)
         self.assertEqual(type(l), type([]))
         self.assertTrue(len(l) > 0)
 
