@@ -40,7 +40,7 @@ Examples
 npe_function(euler_characteristic)
 npe_doc(ds_euler_characteristic)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

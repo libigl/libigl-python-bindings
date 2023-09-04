@@ -38,7 +38,7 @@ Examples
 
 npe_function(tet_tet_adjacency)
 npe_doc(ds_tet_tet_adjacency)
-npe_arg(t, dense_int, dense_long)
+npe_arg(t, dense_int32, dense_int64)
 npe_begin_code()
 
   assert_nonzero_rows(t, "t");

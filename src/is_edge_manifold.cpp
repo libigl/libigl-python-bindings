@@ -21,7 +21,7 @@ See is_edge_manifold for the documentation.
 npe_function(is_edge_manifold)
 npe_doc(ds_is_edge_manifold)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

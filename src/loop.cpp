@@ -45,7 +45,7 @@ npe_function(loop_subdivision_matrix)
 npe_doc(ds_loop_mat)
 
 npe_arg(n_verts, int)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 npe_begin_code()
   assert_valid_tri_mesh_faces(f);
@@ -94,7 +94,7 @@ npe_function(loop)
 npe_doc(ds_loop)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_default_arg(number_of_subdivs, int, 1)
 
 npe_begin_code()

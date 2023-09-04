@@ -57,7 +57,7 @@ npe_function(intrinsic_delaunay_triangulation)
 npe_doc(ds_intrinsic_delaunay_triangulation)
 
 npe_arg(l_in, dense_float, dense_double)
-npe_arg(f_in, dense_int, dense_long, dense_longlong)
+npe_arg(f_in, dense_int32, dense_int64)
 
 
 npe_begin_code()
@@ -113,7 +113,7 @@ npe_function(intrinsic_delaunay_triangulation_edges)
 npe_doc(ds_intrinsic_delaunay_triangulation1)
 
 npe_arg(l_in, dense_float, dense_double)
-npe_arg(f_in, dense_int, dense_long, dense_longlong)
+npe_arg(f_in, dense_int32, dense_int64)
 
 
 npe_begin_code()

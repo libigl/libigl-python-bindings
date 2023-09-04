@@ -58,7 +58,7 @@ Examples
 npe_function(cut_to_disk)
 npe_doc(ds_cut_to_disk)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

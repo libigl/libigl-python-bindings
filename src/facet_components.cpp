@@ -36,7 +36,7 @@ Examples
 
 npe_function(facet_components)
 npe_doc(ds_facet_components)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_begin_code()
     assert_valid_tri_mesh_faces(f);
     EigenDenseLike<npe_Matrix_f> c;

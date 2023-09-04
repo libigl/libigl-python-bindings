@@ -40,7 +40,7 @@ Examples
 npe_function(local_basis)
 npe_doc(ds_local_basis)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int32, dense_int64)
 npe_begin_code()
   assert_valid_3d_tri_mesh(v, f);
   EigenDenseLike<npe_Matrix_v> v_copy = v;

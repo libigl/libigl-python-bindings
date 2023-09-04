@@ -87,7 +87,7 @@ npe_function(biharmonic_coordinates)
 npe_doc(ds_biharmonic_coordinates)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(t, dense_int, dense_long, dense_longlong)
+npe_arg(t, dense_int32, dense_int64)
 npe_arg(s, std::vector<std::vector<int> >)
 npe_default_arg(k, int, 2)
 

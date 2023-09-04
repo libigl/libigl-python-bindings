@@ -42,7 +42,7 @@ npe_function(per_vertex_attribute_smoothing)
 npe_doc(ds_per_vertex_attribute_smoothing)
 
 npe_arg(ain, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

@@ -38,7 +38,7 @@ Examples
 npe_function(unique_simplices)
 npe_doc(ds_unique_simplices)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

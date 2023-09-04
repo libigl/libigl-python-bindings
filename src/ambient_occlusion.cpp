@@ -42,7 +42,7 @@ npe_function(ambient_occlusion)
 npe_doc(ds_ambient_occlusion)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(p, dense_float, dense_double)
 npe_arg(n, npe_matches(p))
 npe_arg(num_samples, int)

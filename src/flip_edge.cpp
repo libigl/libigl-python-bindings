@@ -54,7 +54,7 @@ Examples
 npe_function(flip_edge)
 npe_doc(ds_flip_edge)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(e, npe_matches(f))
 npe_arg(u_e, npe_matches(f))
 npe_arg(emap, npe_matches(f))

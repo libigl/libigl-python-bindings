@@ -40,7 +40,7 @@ Examples
 npe_function(gaussian_curvature)
 npe_doc(ds_gaussian_curvature)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_begin_code()
 
   assert_valid_3d_tri_mesh(v, f);

@@ -51,7 +51,7 @@ npe_function(remesh_self_intersections)
 npe_doc(ds_remesh_self_intersections)
 
 npe_arg(V, dense_float, dense_double)
-npe_arg(F, dense_int, dense_long, dense_longlong)
+npe_arg(F, dense_int32, dense_int64)
 npe_default_arg(detect_only, bool, false)
 npe_default_arg(first_only, bool, false)
 npe_default_arg(stitch_all, bool, false)

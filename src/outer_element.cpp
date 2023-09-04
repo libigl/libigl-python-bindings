@@ -48,7 +48,7 @@ npe_function(outer_vertex)
 npe_doc(ds_outer_vertex)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(i, npe_matches(f))
 
 
@@ -103,7 +103,7 @@ npe_function(outer_edge)
 npe_doc(ds_outer_edge)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(i, npe_matches(f))
 
 
@@ -159,7 +159,7 @@ npe_function(outer_facet)
 npe_doc(ds_outer_facet)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(n, npe_matches(v))
 npe_arg(i, npe_matches(f))
 

@@ -39,7 +39,7 @@ Examples
 npe_function(ears)
 npe_doc(ds_ears)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

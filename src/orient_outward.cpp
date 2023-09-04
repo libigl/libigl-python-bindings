@@ -44,7 +44,7 @@ npe_function(orient_outward)
 npe_doc(ds_orient_outward)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(c, npe_matches(f))
 
 

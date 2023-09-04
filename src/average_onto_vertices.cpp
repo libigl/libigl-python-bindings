@@ -38,7 +38,7 @@ Examples
 npe_function(average_onto_vertices)
 npe_doc(ds_average_onto_vertices)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(s, dense_float, dense_double) // TODO: Maybe do a matches here
 npe_begin_code()
   assert_valid_tet_or_tri_mesh_23d(v, f);

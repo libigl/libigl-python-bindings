@@ -47,7 +47,7 @@ npe_function(blue_noise)
 npe_doc(ds_blue_noise)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(r, double)
 
 

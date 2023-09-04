@@ -53,7 +53,7 @@ npe_function(faces_first)
 npe_doc(ds_faces_first)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

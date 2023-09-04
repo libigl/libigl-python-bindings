@@ -43,7 +43,7 @@ Examples
 npe_function(connected_components)
 npe_doc(ds_connected_components)
 
-npe_arg(a, sparse_int, sparse_long, sparse_longlong)
+npe_arg(a, sparse_int32, sparse_int64)
 
 
 npe_begin_code()

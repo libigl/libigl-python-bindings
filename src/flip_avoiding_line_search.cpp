@@ -62,7 +62,7 @@ Examples
 npe_function(flip_avoiding_line_search)
 npe_doc(ds_flip_avoiding_line_search)
 
-npe_arg(f, dense_int, dense_long)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(cur_v, dense_float, dense_double)
 npe_arg(dst_v, npe_matches(cur_v))
 npe_arg(energy, std::function<double(Eigen::MatrixXd&)>)

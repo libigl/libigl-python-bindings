@@ -32,8 +32,7 @@ npe_function(triangulate)
 npe_doc(ds_triangulate)
 
 npe_arg(V, dense_float, dense_double)
-// remove dense_longlong when https://github.com/libigl/libigl-python-bindings/actions/runs/4152507964 gets merged
-npe_arg(E, dense_int, dense_long, dense_longlong)
+npe_arg(E, dense_int32, dense_int64)
 npe_default_arg(H, npe_matches(V) ,pybind11::array())
 npe_default_arg(flags, std::string, "")
 npe_default_arg(VM, npe_matches(E), pybind11::array())

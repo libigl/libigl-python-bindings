@@ -51,7 +51,7 @@ Examples
 npe_function(resolve_duplicated_faces)
 npe_doc(ds_resolve_duplicated_faces)
 
-npe_arg(f1, dense_int, dense_long, dense_longlong)
+npe_arg(f1, dense_int32, dense_int64)
 
 
 npe_begin_code()

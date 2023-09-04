@@ -49,7 +49,7 @@ npe_function(intersect_other)
 npe_doc(  ds_intersect_other)
 
 npe_arg(VA, dense_float, dense_double)
-npe_arg(FA, dense_int, dense_long, dense_longlong)
+npe_arg(FA, dense_int32, dense_int64)
 npe_arg(VB, npe_matches(VA))
 npe_arg(FB, npe_matches(FA))
 npe_default_arg(detect_only, bool, false)

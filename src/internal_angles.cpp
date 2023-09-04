@@ -38,7 +38,7 @@ Examples
 npe_function(internal_angles)
 npe_doc(ds_internal_angles)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 npe_begin_code()
 
