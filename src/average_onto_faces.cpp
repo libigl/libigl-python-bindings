@@ -37,7 +37,7 @@ Examples
 npe_function(average_onto_faces)
 npe_doc(doccc_faces_avg)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(s, dense_float, dense_double)
 
 

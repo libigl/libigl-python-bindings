@@ -49,7 +49,7 @@ Examples
 npe_function(edges_to_path)
 npe_doc(ds_edges_to_path)
 
-npe_arg(e, dense_int, dense_long, dense_longlong)
+npe_arg(e, dense_int32, dense_int64)
 
 
 npe_begin_code()

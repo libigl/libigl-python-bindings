@@ -37,7 +37,7 @@ Examples
 
 npe_function(orientable_patches)
 npe_doc(ds_orientable_patches)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_begin_code()
 
     assert_valid_tri_mesh_faces(f);

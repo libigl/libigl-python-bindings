@@ -43,7 +43,7 @@ Examples
 
 npe_function(bfs)
 npe_doc(ds_bfs)
-npe_arg(A, sparse_int, sparse_long, sparse_longlong)
+npe_arg(A, sparse_int32, sparse_int64)
 npe_arg(s, int)
 npe_begin_code()
 

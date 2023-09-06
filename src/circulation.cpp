@@ -57,7 +57,7 @@ npe_doc(ds_circulation)
 
 npe_arg(e, int)
 npe_arg(ccw, bool)
-npe_arg(emap, dense_int, dense_long, dense_longlong)
+npe_arg(emap, dense_int32, dense_int64)
 npe_arg(ef, npe_matches(emap))
 npe_arg(ei, npe_matches(emap))
 

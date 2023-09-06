@@ -45,7 +45,7 @@ Examples
 npe_function(grad)
 npe_doc(ds_grad)
 npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_default_arg(uniform, bool, false)
 
 npe_begin_code()

@@ -49,7 +49,7 @@ Examples
 npe_function(lscm)
 npe_doc(ds_lscm)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(b, npe_matches(f))
 npe_arg(bc, npe_matches(v))
 npe_begin_code()

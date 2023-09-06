@@ -26,8 +26,8 @@ FetchContent_MakeAvailable(libigl)
 
 FetchContent_Declare(
   numpyeigen
-  GIT_REPOSITORY https://github.com/fwilliams/numpyeigen.git
-  GIT_TAG        e2ac64034fde35cb70da39aaefbf5331df6015f7)
+  GIT_REPOSITORY https://github.com/alecjacobson/numpyeigen.git
+  GIT_TAG        ef46595a8bf72f96301b4e92334b433fb1bd6c9e)
 # NumpyEigen's CMakeLists sets NPE_PYTHON_EXECUTABLE without a way to override,
 # so we must include directly rather that using FetchContent_MakeAvailable
 #FetchContent_MakeAvailable(numpyeigen)

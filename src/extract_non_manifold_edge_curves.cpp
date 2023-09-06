@@ -50,7 +50,7 @@ Examples
 npe_function(extract_non_manifold_edge_curves)
 npe_doc(ds_extract_non_manifold_edge_curves)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(u_e2_e, std::vector<std::vector<int> >)
 
 

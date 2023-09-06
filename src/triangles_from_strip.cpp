@@ -38,7 +38,7 @@ Examples
 npe_function(triangles_from_strip)
 npe_doc(ds_triangles_from_strip)
 
-npe_arg(s, dense_int, dense_long, dense_longlong)
+npe_arg(s, dense_int32, dense_int64)
 
 
 npe_begin_code()

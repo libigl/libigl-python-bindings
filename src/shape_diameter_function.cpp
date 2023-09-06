@@ -52,7 +52,7 @@ npe_function(shape_diameter_function)
 npe_doc(ds_shape_diameter_function)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(p, npe_matches(v))
 npe_arg(n, npe_matches(v))
 npe_arg(num_samples, int)

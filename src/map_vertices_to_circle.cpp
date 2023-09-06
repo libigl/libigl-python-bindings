@@ -39,7 +39,7 @@ Examples
 npe_function(map_vertices_to_circle)
 npe_doc(ds_map_vertices_to_circle)
 npe_arg(v, dense_float, dense_double)
-npe_arg(bnd, dense_int, dense_long, dense_longlong)
+npe_arg(bnd, dense_int32, dense_int64)
 
 npe_begin_code()
 

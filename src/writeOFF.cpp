@@ -49,7 +49,7 @@ npe_doc(ds_write_off)
 
 npe_arg(str, std::string)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(c, npe_matches(v))
 
 
@@ -70,7 +70,7 @@ npe_end_code()
 
 // npe_arg(str, std::string)
 // npe_arg(v, dense_float, dense_double)
-// npe_arg(f, dense_int, dense_long, dense_longlong)
+// npe_arg(f, dense_int32, dense_int64)
 
 
 // npe_begin_code()

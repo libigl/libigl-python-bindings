@@ -45,7 +45,7 @@ npe_doc(ds_ray_mesh_intersect)
 npe_arg(source, dense_float, dense_double)
 npe_arg(dir, npe_matches(source))
 npe_arg(v, npe_matches(source))
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()
@@ -96,7 +96,7 @@ npe_end_code()
 // npe_arg(source, dense_float, dense_double)
 // npe_arg(dir, dense_float, dense_double)
 // npe_arg(v, dense_float, dense_double)
-// npe_arg(f, dense_int, dense_long)
+// npe_arg(f, dense_int32, dense_int64)
 
 
 // npe_begin_code()

@@ -42,7 +42,7 @@ npe_function(comb_cross_field)
 npe_doc(ds_comb_cross_field)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(pd1in, npe_matches(v))
 npe_arg(pd2in, npe_matches(v))
 

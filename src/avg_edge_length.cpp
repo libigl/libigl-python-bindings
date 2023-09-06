@@ -38,7 +38,7 @@ Examples
 npe_function(avg_edge_length)
 npe_doc(ds_avg_edge_length)
 npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_begin_code()
 
   assert_valid_tet_or_tri_mesh(v, f);

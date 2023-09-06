@@ -36,7 +36,7 @@ Examples
 
 npe_function(vertex_components)
 npe_doc(ds_vertex_components)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_begin_code()
     assert_valid_tri_mesh_faces(f);
     EigenDenseLike<npe_Matrix_f> c;
@@ -73,7 +73,7 @@ Examples
 
 npe_function(vertex_components_from_adjacency_matrix)
 npe_doc(ds_vertex_components_from_adjacency_matrix)
-npe_arg(a, sparse_int, sparse_long, sparse_longlong)
+npe_arg(a, sparse_int32, sparse_int64)
 npe_begin_code()
     EigenDense<npe_Scalar_a> c;
     EigenDense<npe_Scalar_a> counts;

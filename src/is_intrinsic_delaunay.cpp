@@ -44,7 +44,7 @@ npe_function(is_intrinsic_delaunay)
 npe_doc(ds_is_intrinsic_delaunay)
 
 npe_arg(l, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

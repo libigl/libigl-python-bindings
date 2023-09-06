@@ -48,7 +48,7 @@ npe_function(marching_tets)
 npe_doc(ds_marching_tets)
 
 npe_arg(TV, dense_float, dense_double)
-npe_arg(TT, dense_int, dense_long, dense_longlong)
+npe_arg(TT, dense_int32, dense_int64)
 npe_arg(S, npe_matches(TV))
 npe_arg(isovalue, double)
 

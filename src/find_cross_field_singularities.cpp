@@ -42,7 +42,7 @@ npe_function(find_cross_field_singularities)
 npe_doc(ds_find_cross_field_singularities)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(handle_m_match, npe_matches(f))
 
 
@@ -95,7 +95,7 @@ npe_function(find_cross_field_singularities_from_field)
 npe_doc(ds_find_cross_field_singularities_from_field)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(pd1, npe_matches(v))
 npe_arg(pd2, npe_matches(v))
 npe_default_arg(is_combed, bool, false)

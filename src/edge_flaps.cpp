@@ -48,7 +48,7 @@ Examples
 npe_function(edge_flaps)
 npe_doc(ds_edge_flaps)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

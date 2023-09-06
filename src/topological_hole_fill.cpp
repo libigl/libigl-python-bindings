@@ -45,7 +45,7 @@ Examples
 npe_function(topological_hole_fill)
 npe_doc(ds_topological_hole_fill)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(holes, std::vector<std::vector<int>>)
 
 

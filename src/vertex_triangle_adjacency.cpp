@@ -47,7 +47,7 @@ Examples
 npe_function(vertex_triangle_adjacency)
 npe_doc(ds_vertex_triangle_adjacency)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(n, int)
 
 

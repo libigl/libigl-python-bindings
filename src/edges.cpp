@@ -37,7 +37,7 @@ Examples
 
 npe_function(edges)
 npe_doc(ds_edges)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_begin_code()
 
   assert_valid_tet_or_tri_mesh_faces(f);

@@ -55,7 +55,7 @@ npe_function(collapse_small_triangles)
 npe_doc(ds_collapse_small_triangles)
 
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_arg(eps, double)
 
 

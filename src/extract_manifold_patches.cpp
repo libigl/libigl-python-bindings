@@ -40,7 +40,7 @@ Examples
 npe_function(extract_manifold_patches)
 npe_doc(ds_extract_manifold_patches)
 
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 
 
 npe_begin_code()

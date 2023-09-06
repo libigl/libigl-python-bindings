@@ -52,7 +52,7 @@ npe_doc(ds_signed_distance)
 
 npe_arg(p, dense_float, dense_double)
 npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int, dense_long, dense_longlong)
+npe_arg(f, dense_int32, dense_int64)
 npe_default_arg(sign_type, int, int(igl::SIGNED_DISTANCE_TYPE_DEFAULT))
 npe_default_arg(return_normals, bool, false)
 

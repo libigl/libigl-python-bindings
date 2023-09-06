@@ -46,7 +46,7 @@ npe_function(isolines)
 npe_doc(ds_isolines)
 
 npe_arg(V, dense_float, dense_double)
-npe_arg(F, dense_int, dense_long, dense_longlong)
+npe_arg(F, dense_int32, dense_int64)
 npe_arg(S, npe_matches(V))
 npe_arg(vals, npe_matches(S))
 

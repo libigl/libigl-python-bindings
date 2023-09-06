@@ -46,7 +46,7 @@ npe_function(forward_kinematics)
 npe_doc(ds_forward_kinematics)
 
 npe_arg(c, dense_float, dense_double)
-npe_arg(be, dense_int, dense_long, dense_longlong)
+npe_arg(be, dense_int32, dense_int64)
 npe_arg(p, npe_matches(be))
 npe_arg(d_q, npe_matches(c))
 npe_arg(d_t, dense_float, dense_double)
