@@ -1902,7 +1902,7 @@ class TestBasic(unittest.TestCase):
 
     def test_ray_mesh_intersect(self):
         source = np.array([-1., -1, -1])
-        dire = np.array([1., 1., 1.])
+        dire = self.v1[self.f1[0, :], :].mean(axis=0) - source
 
         hits = igl.ray_mesh_intersect(source, dire, self.v1, self.f1)
 
