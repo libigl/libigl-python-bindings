@@ -24,6 +24,7 @@ include(CXXFeatures)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 
 option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       ON)
+option(LIBIGL_COPYLEFT_TETGEN "Build target igl_copyleft::tetgen"       ON)
 option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       ON)
 # libigl options must come before include(PyiglDependencies)
 include(PyiglDependencies)
@@ -90,6 +91,7 @@ function(pyigl_include prefix name)
 endfunction()
 
 pyigl_include("copyleft" "cgal")
+pyigl_include("copyleft" "tetgen")
 pyigl_include("restricted" "triangle")
 
 
