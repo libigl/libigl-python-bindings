@@ -10,6 +10,8 @@
 #include <typedefs.h>
 
 #include <igl/ray_mesh_intersect.h>
+#include <igl/matlab_format.h>
+#include <iostream>
 #include <pybind11/stl.h>
 
 const char *ds_ray_mesh_intersect = R"igl_Qu8mg5v7(
@@ -44,7 +46,9 @@ npe_doc(ds_ray_mesh_intersect)
 
 npe_arg(source, dense_float, dense_double)
 npe_arg(dir, npe_matches(source))
-npe_arg(v, npe_matches(source))
+// This does not work and seems to be a bug in numpyeigen
+//// npe_arg(v, npe_matches(source))
+npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int32, dense_int64)
 
 
@@ -54,7 +58,10 @@ npe_begin_code()
   assert_valid_3d_tri_mesh(v, f);
 
   std::vector<igl::Hit> hits;
-  igl::ray_mesh_intersect(source, dir, v, f, hits);
+  igl::ray_mesh_intersect(
+    source.template cast<npe_Scalar_v>().eval(),
+       dir.template cast<npe_Scalar_v>().eval(),
+    v, f, hits);
   std::vector<std::tuple<int, int, float, float, float>> hits_res;
 
   for(const auto &h : hits)
@@ -63,47 +70,3 @@ npe_begin_code()
   return hits_res;
 
 npe_end_code()
-
-
-// const char* ds_ray_mesh_intersect = R"igl_Qu8mg5v7(
-
-// Parameters
-// ----------
-
-
-// Returns
-// -------
-
-
-// See also
-// --------
-
-
-// Notes
-// -----
-// None
-
-// Examples
-// --------
-
-//  Outputs:
-
-// )igl_Qu8mg5v7";
-
-// npe_function(ray_mesh_intersect)
-// npe_doc(ds_ray_mesh_intersect)
-
-// npe_arg(source, dense_float, dense_double)
-// npe_arg(dir, dense_float, dense_double)
-// npe_arg(v, dense_float, dense_double)
-// npe_arg(f, dense_int32, dense_int64)
-
-
-// npe_begin_code()
-
-//   igl::Hit & hit;
-//   igl::ray_mesh_intersect(source, dir, v, f, hit);
-//   return npe::move(hit);
-
-// npe_end_code()
-
