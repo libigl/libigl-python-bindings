@@ -5,6 +5,7 @@ import platform
 import igl
 print("Using igl found at: ",igl.__file__)
 import igl.triangle
+import igl.copyleft.tetgen
 import igl.copyleft.cgal
 import numpy as np
 import scipy as sp
@@ -2535,6 +2536,26 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(E2.shape == E.shape)
         self.assertTrue(EM2.shape == EM.shape)
 
+    def test_tetrahedralize(self):
+        V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype='float64')
+        F = np.array([[0,1,2],[0,1,3],[0,2,3],[1,2,3]])
+        TV,TT,TF = igl.copyleft.tetgen.tetrahedralize(V,F);
+        self.assertTrue(TV.shape == V.shape)
+        self.assertTrue(TT.shape == (4,))
+        self.assertTrue(TF.shape == F.shape)
+        V = np.array([[1,1,0],[1,-1,0],[-1,-1,0],[-1,1,0],[0,0,1]],dtype='float64')
+        TV,TT,TF = igl.copyleft.tetgen.tetrahedralize(V,switches="cQ");
+        self.assertTrue(TV.shape == V.shape)
+        self.assertTrue(TT.shape == (2,4))
+        self.assertTrue(TF.shape == (6,3))
+        TV,TT,TF = igl.copyleft.tetgen.tetrahedralize(self.v1,self.f1,switches="pQq1.34");
+        igl.writeMESH("test.mesh",TV,TT,TF)
+        self.assertTrue(TV.shape[0] > self.v1.shape[0])
+        self.assertTrue(TT.shape[0] > self.f1.shape[0])
+
+
+    def test_writeMESH(self):
+        igl.writeMESH("test.mesh",self.v4,self.t4,self.f4)
 
     # copyleft.cgal
     def test_convex_hull(self):
@@ -2598,6 +2619,10 @@ class TestBasic(unittest.TestCase):
     def test_triangle(self):
         # check that type is <class 'module'>
         self.assertTrue(type(igl.copyleft) == type(igl))
+
+    def test_copyleft_tetgen(self):
+        # check that type is <class 'module'>
+        self.assertTrue(type(igl.copyleft.tetgen) == type(igl))
 
 
 
