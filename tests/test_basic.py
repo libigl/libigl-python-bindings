@@ -2557,6 +2557,9 @@ class TestBasic(unittest.TestCase):
     def test_writeMESH(self):
         igl.writeMESH("test.mesh",self.v4,self.t4,self.f4)
 
+    def test_writeMSH(self):
+        igl.writeMSH("test.msh",self.v4,self.f4,self.t4)
+
     # copyleft.cgal
     def test_convex_hull(self):
         V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype="float64")
