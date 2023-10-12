@@ -291,7 +291,7 @@ breadth first search. I.e. the output is an array of vertices in breadth-first o
 
 **Examples**
 ```python
-V, F, _ = igl.readOFF("test.off)
+V, F, _ = igl.read_off("test.off")
 A = igl.adjacency_matrix(V, F)
 d, p = igl.bfs(A, V[0])
 ```
@@ -309,7 +309,7 @@ Consistently orient faces in orientable patches using BFS.
 
 **Examples**
 ```python
-v, f, _ = igl.readOFF("test.off)
+v, f, _ = igl.read_off("test.off")
 ff, c = igl.bfs_orient(f)
 ```
 
@@ -979,7 +979,7 @@ Constructs a list of unique edges represented in a given mesh (v, f)
 
 **Examples**
 ```python
-V, F, _ = igl.readOFF("test.off)
+V, F, _ = igl.read_off("test.off")
 E = igl.edges(F)
 ```
 
