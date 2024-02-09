@@ -26,6 +26,21 @@ jobs:
         path: dist/*.tar.gz
 
   build_wheels:
+    name: Build wheels ${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
+    runs-on: ${{ matrix.os.runs-on }}
+
+    env:
+      CIBW_BUILD_VERBOSITY: 3
+      # This is very dubious... It *may* work because these are just cpp libraries that should not depend on the python version. Still, super-dubious.
+      CIBW_TEST_REQUIRES: "gitpython"
+      CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
+      CIBW_BUILD: "${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}"
+      CIBW_TEST_SKIP: "*-macosx_arm64"
+      CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }}"
+      # Why universal2 here? It's not included above in CIBW_BUILD
+      CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
+      CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.13 CMAKE_OSX_ARCHITECTURES=\"${{ matrix.os.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.os.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.os.cibw-arch == 'macosx_universal2' && 'arm64;x86_64' || '' }}\""
+
     strategy:
       fail-fast: false
       matrix:
@@ -53,30 +68,14 @@ jobs:
           - os:
               - runs-on: macos-latest
                 cibw-arch: macosx_arm64
-            cpversion: "cp36"
+            cpversion: cp36
           - os:
               - runs-on: macos-latest
                 cibw-arch: macosx_arm64
-            cpversion: "cp37"
-
-    name: Build wheels ${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
-    runs-on: ${{ matrix.os.runs-on }}
-
-    env:
-      CIBW_BUILD_VERBOSITY: 3
-      # This is very dubious... It *may* work because these are just cpp libraries that should not depend on the python version. Still, super-dubious.
-      CIBW_TEST_REQUIRES: "gitpython"
-      CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
-      CIBW_BUILD: "${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}"
-      CIBW_TEST_SKIP: "*-macosx_arm64"
-      CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }}"
-      # Why universal2 here? It's not included above in CIBW_BUILD
-      CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
-      CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.13 CMAKE_OSX_ARCHITECTURES=\"${{ matrix.os.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.os.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.os.cibw-arch == 'macosx_universal2' && 'arm64;x86_64' || '' }}\""
-
+            cpversion: cp37
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         name: Install Python
@@ -93,13 +92,14 @@ jobs:
       # Upload binaries to github
       - uses: actions/upload-artifact@v4
         with:
-          path: |
+          name: artefact-${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
+          path: |-
             ./wheelhouse/*.whl 
             ./wheelhouse/*.tar.gz 
 
   # # Push the resulting binaries to pypi on a tag starting with 'v'
   upload_pypi:
-    needs: [build_wheels]
+    needs: build_wheels
     runs-on: ubuntu-latest
     # upload to PyPI on every tag starting with 'v'
     # if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
