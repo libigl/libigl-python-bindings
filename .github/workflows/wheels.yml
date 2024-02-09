@@ -109,9 +109,9 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
+          pattern: artifact-*
           merge-multiple: true
           path: dist
-          pattern: artifact-*
 
       - uses: pypa/gh-action-pypi-publish@v1.8.11
         with:
