@@ -66,14 +66,14 @@ jobs:
           - runs-on: windows-latest
             cibw-arch: win_amd64
         exclude:
-          - os:
+          - cpversion: cp36
+            os:
               - runs-on: macos-latest
                 cibw-arch: macosx_arm64
-            cpversion: cp36
-          - os:
+          - cpversion: cp37
+            os:
               - runs-on: macos-latest
                 cibw-arch: macosx_arm64
-            cpversion: cp37
 
     steps:
       - uses: actions/checkout@v4
