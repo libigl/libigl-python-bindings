@@ -13,9 +13,7 @@ jobs:
     name: Build SDist
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
+    - uses: actions/checkout@v4
 
     - name: Build SDist
       run: pipx run build --sdist
@@ -23,27 +21,12 @@ jobs:
     - name: Check metadata
       run: pipx run twine check dist/*
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
+        name: artifact-sdist
         path: dist/*.tar.gz
 
   build_wheels:
-    strategy:
-      fail-fast: false
-      matrix:
-        # Launch separate job for each python. The build is so much longer than
-        # machine configuration/setup, so parallel builds will be faster. More
-        # importantly, github times out after 6 hours _per job_.
-        cpversion: ["cp36", "cp37", "cp38", "cp39", "cp310", "cp311"]
-        os: [ { runs-on: ubuntu-latest, cibw-arch: manylinux_x86_64}, { runs-on: macos-latest, cibw-arch: macosx_x86_64}, { runs-on: macos-latest, cibw-arch: macosx_arm64}, { runs-on: windows-latest, cibw-arch: win_amd64} ]
-        exclude:
-          - os: { runs-on: macos-latest, cibw-arch: macosx_arm64}
-            cpversion: "cp36"
-          - os: { runs-on: macos-latest, cibw-arch: macosx_arm64}
-            cpversion: "cp37"
-
-
-
     name: Build wheels ${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
     runs-on: ${{ matrix.os.runs-on }}
 
@@ -59,48 +42,78 @@ jobs:
       CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
       CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.13 CMAKE_OSX_ARCHITECTURES=\"${{ matrix.os.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.os.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.os.cibw-arch == 'macosx_universal2' && 'arm64;x86_64' || '' }}\""
 
+    strategy:
+      fail-fast: false
+      matrix:
+        # Launch separate job for each python. The build is so much longer than
+        # machine configuration/setup, so parallel builds will be faster. More
+        # importantly, github times out after 6 hours _per job_.
+        cpversion:
+          - cp36
+          - cp37
+          - cp38
+          - cp39
+          - cp310
+          - cp311
+          - cp312
+        os:
+          - runs-on: ubuntu-latest
+            cibw-arch: manylinux_x86_64
+          - runs-on: macos-latest
+            cibw-arch: macosx_x86_64
+          - runs-on: macos-latest
+            cibw-arch: macosx_arm64
+          - runs-on: windows-latest
+            cibw-arch: win_amd64
+        exclude:
+          - cpversion: cp36
+            os:
+              runs-on: macos-latest
+              cibw-arch: macosx_arm64
+          - cpversion: cp37
+            os:
+              runs-on: macos-latest
+              cibw-arch: macosx_arm64
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: 'recursive'
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
         name: Install Python
-        with:
-          python-version: '3.7'
 
       - name: Install cibuildwheel
         run: |
           python -m pip install --upgrade pip
-          python -m pip install cibuildwheel==2.12.0
+          python -m pip install cibuildwheel
 
       - name: Build wheels
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
       # Upload binaries to github
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
-          path: |
+          name: artifact-wheel-${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
+          path: |-
             ./wheelhouse/*.whl 
             ./wheelhouse/*.tar.gz 
 
   # # Push the resulting binaries to pypi on a tag starting with 'v'
   upload_pypi:
-    needs: [build_wheels]
+    needs: build_wheels
     runs-on: ubuntu-latest
     # upload to PyPI on every tag starting with 'v'
     # if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     # alternatively, to publish when a GitHub Release is created, use the following rule:
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          pattern: artifact-*
+          merge-multiple: true
           path: dist
 
-      - uses: pypa/gh-action-pypi-publish@v1.5.0
+      - uses: pypa/gh-action-pypi-publish@v1.8.11
         with:
           user: __token__
           password: ${{ secrets.pypi_password }}
