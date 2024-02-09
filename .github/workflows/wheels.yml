@@ -68,12 +68,12 @@ jobs:
         exclude:
           - cpversion: cp36
             os:
-              - runs-on: macos-latest
-                cibw-arch: macosx_arm64
+              runs-on: macos-latest
+              cibw-arch: macosx_arm64
           - cpversion: cp37
             os:
-              - runs-on: macos-latest
-                cibw-arch: macosx_arm64
+              runs-on: macos-latest
+              cibw-arch: macosx_arm64
 
     steps:
       - uses: actions/checkout@v4
