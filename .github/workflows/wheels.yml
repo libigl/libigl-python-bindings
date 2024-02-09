@@ -32,7 +32,7 @@ jobs:
         # Launch separate job for each python. The build is so much longer than
         # machine configuration/setup, so parallel builds will be faster. More
         # importantly, github times out after 6 hours _per job_.
-        cpversion: ["cp36", "cp37", "cp38", "cp39", "cp310", "cp311", "cp312"]
+        cpversion: ["cp312"]
         os: [ { runs-on: ubuntu-latest, cibw-arch: manylinux_x86_64}, { runs-on: macos-latest, cibw-arch: macosx_x86_64}, { runs-on: macos-latest, cibw-arch: macosx_arm64}, { runs-on: windows-latest, cibw-arch: win_amd64} ]
         exclude:
           - os: { runs-on: macos-latest, cibw-arch: macosx_arm64}
