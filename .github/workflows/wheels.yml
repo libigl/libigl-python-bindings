@@ -21,8 +21,9 @@ jobs:
     - name: Check metadata
       run: pipx run twine check dist/*
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
+        name: artifact-sdist
         path: dist/*.tar.gz
 
   build_wheels:
@@ -90,8 +91,9 @@ jobs:
           python -m cibuildwheel --output-dir wheelhouse
 
       # Upload binaries to github
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: artifact-wheel-${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
           path: |-
             ./wheelhouse/*.whl 
             ./wheelhouse/*.tar.gz 
@@ -105,10 +107,11 @@ jobs:
     # alternatively, to publish when a GitHub Release is created, use the following rule:
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          merge-multiple: true
           path: dist
+          pattern: artifact-*
 
       - uses: pypa/gh-action-pypi-publish@v1.8.11
         with:
