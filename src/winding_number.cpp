@@ -48,7 +48,10 @@ npe_arg(o, npe_matches(v))
 
 
 npe_begin_code()
-  assert_valid_3d_tri_mesh(v, f);
+  if (v.cols() == 3)
+    assert_valid_3d_tri_mesh(v, f);
+  else
+    assert_cols_equals(f, 2, "f");
   assert_cols_match(v, o, "v", "o");
   Eigen::MatrixXd v_copy = v.template cast<double>();
   Eigen::MatrixXi f_copy = f.template cast<int>();
