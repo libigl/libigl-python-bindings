@@ -2053,28 +2053,6 @@ Computes the polar decomposition (R,T) of a matrix A
 |Returns| R  3 by 3 orthonormal matrix part of decomposition</br>T  3 by 3 stretch matrix part of decomposition |
 
 
-### polygon_mesh_to_triangle_mesh
-**`polygon_mesh_to_triangle_mesh(p: array)`**
-
-Triangulate a general polygonal mesh into a triangle mesh.
-
-| | |
-|-|-|
-|Parameters| vF  matrix polygon index lists |
-|Returns| F  eigen int matrix \#F by 3 |
-
-
-### polygon_mesh_to_triangle_mesh_from_list
-**`polygon_mesh_to_triangle_mesh_from_list(v_f: List[List[int]])`**
-
-Triangulate a general polygonal mesh into a triangle mesh.
-
-| | |
-|-|-|
-|Parameters| vF  list of polygon index lists |
-|Returns| F  eigen int matrix \#F by 3 |
-
-
 ### principal_curvature
 **`principal_curvature(v: array, f: array, radius: int = 5, use_k_ring: bool = True)`**
 
