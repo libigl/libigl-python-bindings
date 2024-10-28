@@ -705,7 +705,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.flags.c_contiguous)
 
     def test_decimate(self):
-        success, u, g, j, i = igl.decimate(self.v1, self.f1, 100)
+        success, u, g, j, i = igl.decimate(self.v1, self.f1, 100, False)
         self.assertEqual(u.shape[1], self.v1.shape[1])
         self.assertEqual(g.shape[1], 3)
         self.assertEqual(j.shape[0], g.shape[0])
@@ -823,7 +823,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.dtype == t.dtype == self.v1.dtype)
 
     def test_qslim(self):
-        success, u, g, j, i = igl.qslim(self.v1, self.f1, 100)
+        success, u, g, j, i = igl.qslim(self.v1, self.f1, 100, False)
         self.assertEqual(u.dtype, self.v1.dtype)
         self.assertTrue(g.dtype == j.dtype == i.dtype == self.f1.dtype)
         self.assertEqual(u.shape[1], self.v1.shape[1])
