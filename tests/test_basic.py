@@ -13,6 +13,8 @@ import scipy.sparse as csc
 import math
 import sys
 from git import Repo
+import faulthandler
+faulthandler.enable()
 
 
 
