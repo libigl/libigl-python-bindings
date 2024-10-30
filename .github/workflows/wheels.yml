@@ -91,7 +91,7 @@ jobs:
       - name: Build wheels
         shell: bash
         run: |
-          CIBW_BEFORE_ALL="pip install numpy<=1.26.4" python -m cibuildwheel --output-dir wheelhouse
+          PIP_CONSTRAINT=$GITHUB_WORKSPACE/constraints.txt python -m cibuildwheel --output-dir wheelhouse
 
       # Upload binaries to github
       - uses: actions/upload-artifact@v4
