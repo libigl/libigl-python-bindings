@@ -90,7 +90,7 @@ jobs:
 
       - name: Build wheels
         run: |
-          CIBW_ENVIRONMENT="PIP_CONSTRAINT=constraints.txt" python -m cibuildwheel --output-dir wheelhouse
+          set "PIP_CONSTRAINT=constraints.txt" &&  python -m cibuildwheel --output-dir wheelhouse
 
       # Upload binaries to github
       - uses: actions/upload-artifact@v4
