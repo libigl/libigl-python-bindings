@@ -90,10 +90,10 @@ jobs:
 
       - name: Build wheels
         run: |
-          if [ "$RUNNER_OS" = "Windows" ]; then \
-            set "PIP_CONSTRAINT=constraints.txt" && python -m cibuildwheel --output-dir wheelhouse; \
-          else \
-            PIP_CONSTRAINT=constraints.txt python -m cibuildwheel --output-dir wheelhouse; \
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            set PIP_CONSTRAINT=constraints.txt && python -m cibuildwheel --output-dir wheelhouse
+          else
+            PIP_CONSTRAINT=constraints.txt python -m cibuildwheel --output-dir wheelhouse
           fi
 
       # Upload binaries to github
