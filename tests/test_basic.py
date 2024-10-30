@@ -2432,7 +2432,7 @@ class TestBasic(unittest.TestCase):
 
     def test_flip_avoiding_line_search(self):
         def fun(v):
-            return np.random.rand(1)
+            return np.random.rand(1)[0]
 
         energy, vr = igl.flip_avoiding_line_search(
             self.f1, self.v1[:, :2], self.v1[:, :2], fun, 10.0)
