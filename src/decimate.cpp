@@ -29,6 +29,7 @@ Parameters
 V  #V by dim list of vertex positions
 F  #F by 3 list of face indices into V.
 max_m  desired number of output faces
+block_intersections  whether to block intersections
 
 Returns
 -------
@@ -57,6 +58,7 @@ npe_doc(ds_decimate)
 npe_arg(v, dense_float, dense_double)
 npe_arg(f, dense_int32, dense_int64)
 npe_arg(max_m, size_t)
+npe_arg(block_intersections, bool)
 
 
 npe_begin_code()
@@ -69,7 +71,7 @@ npe_begin_code()
   Eigen::MatrixXi g;
   Eigen::VectorXi j;
   Eigen::VectorXi i;
-  bool reach = igl::decimate(v_copy, f_copy, max_m, u, g, j, i);
+  bool reach = igl::decimate(v_copy, f_copy, max_m, block_intersections, u, g, j, i);
   EigenDenseFloat u_row_major = u;
   EigenDenseInt g_row_major = g.template cast<typename EigenDenseInt::Scalar>();
   // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major

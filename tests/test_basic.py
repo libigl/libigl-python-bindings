@@ -13,6 +13,8 @@ import scipy.sparse as csc
 import math
 import sys
 from git import Repo
+import faulthandler
+faulthandler.enable()
 
 
 
@@ -705,7 +707,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(f.flags.c_contiguous)
 
     def test_decimate(self):
-        success, u, g, j, i = igl.decimate(self.v1, self.f1, 100)
+        success, u, g, j, i = igl.decimate(self.v1, self.f1, 100, False)
         self.assertEqual(u.shape[1], self.v1.shape[1])
         self.assertEqual(g.shape[1], 3)
         self.assertEqual(j.shape[0], g.shape[0])
@@ -823,7 +825,7 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(r.dtype == t.dtype == self.v1.dtype)
 
     def test_qslim(self):
-        success, u, g, j, i = igl.qslim(self.v1, self.f1, 100)
+        success, u, g, j, i = igl.qslim(self.v1, self.f1, 100, False)
         self.assertEqual(u.dtype, self.v1.dtype)
         self.assertTrue(g.dtype == j.dtype == i.dtype == self.f1.dtype)
         self.assertEqual(u.shape[1], self.v1.shape[1])
@@ -2430,7 +2432,7 @@ class TestBasic(unittest.TestCase):
 
     def test_flip_avoiding_line_search(self):
         def fun(v):
-            return np.random.rand(1)
+            return np.random.rand(1)[0]
 
         energy, vr = igl.flip_avoiding_line_search(
             self.f1, self.v1[:, :2], self.v1[:, :2], fun, 10.0)
@@ -2484,20 +2486,22 @@ class TestBasic(unittest.TestCase):
 
     def test_AABB(self):
         tree = igl.AABB_f64_3()
-        tree.init(self.v1,self.f1)
-        bc = igl.barycenter(self.v1,self.f1)
-        sqrD = tree.squared_distance(self.v1,self.f1,bc)
+        v1_f = np.asarray(self.v1, order='F')
+        f1_f = np.asarray(self.f1, order='F')
+        tree.init(v1_f,f1_f)
+        bc = igl.barycenter(v1_f,f1_f)
+        sqrD = tree.squared_distance(v1_f,f1_f,bc)
         self.assertTrue(sqrD.shape[0] == bc.shape[0])
         self.assertTrue(np.max(sqrD) <= 1e-16)
-        sqrD,I,C = tree.squared_distance(self.v1,self.f1,bc,return_index=True,return_closest_point=True)
+        sqrD,I,C = tree.squared_distance(v1_f,f1_f,bc,return_index=True,return_closest_point=True)
         self.assertTrue(sqrD.shape[0] == bc.shape[0])
         self.assertTrue(I.shape[0] == bc.shape[0])
         self.assertTrue(C.shape == bc.shape)
 
     def test_in_element_3(self):
-        V = np.array([ [0.,0,0], [1,0,0], [0,1,0], [0,0,1], [1,1,1]],dtype='float64')
-        T = np.array([[0,1,2,3],[4,3,2,1]],dtype='int32')
-        Q = np.array([[0.1,0.1,0.1],[0.9,0.9,0.9]],dtype='float64')
+        V = np.array([ [0.,0,0], [1,0,0], [0,1,0], [0,0,1], [1,1,1]],dtype='float64',order='f')
+        T = np.array([[0,1,2,3],[4,3,2,1]],dtype='int32',order='f')
+        Q = np.array([[0.1,0.1,0.1],[0.9,0.9,0.9]],dtype='float64',order='f')
         tree = igl.AABB_f64_3()
         tree.init(V,T)
         I = igl.in_element_3(V,T,Q,tree)
@@ -2506,16 +2510,15 @@ class TestBasic(unittest.TestCase):
         self.assertTrue(I[1] == 1)
 
     def test_in_element_2(self):
-        V = np.array([ [0.,0], [1,0], [0,1], [1,1]],dtype='float64')
-        F = np.array([[0,1,2],[2,1,3]],'int32')
-        Q = np.array([[0.1,0.1],[0.9,0.9]],dtype='float64')
+        V = np.array([ [0.,0], [1,0], [0,1], [1,1]],dtype='float64',order='f')
+        F = np.array([[0,1,2],[2,1,3]],'int32',order='f')
+        Q = np.array([[0.1,0.1],[0.9,0.9]],dtype='float64',order='f')
         tree = igl.AABB_f64_2()
         tree.init(V,F)
         I = igl.in_element_2(V,F,Q,tree)
         self.assertTrue(I.shape[0] == Q.shape[0])
         self.assertTrue(I[0] == 0)
         self.assertTrue(I[1] == 1)
-
 
     def test_triangulate(self):
         V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype='float64')
