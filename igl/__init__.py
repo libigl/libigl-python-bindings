@@ -7,5 +7,4 @@
 # obtain one at http://mozilla.org/MPL/2.0/.
 from .pyigl import *
 from .helpers import *
-from .pyigl_classes import *
 from ._version import __version__
