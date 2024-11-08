@@ -30,11 +30,55 @@ namespace pyigl
     
     return nb::cast(std::move(Z));
   }
+
+  struct MinQuadWithFixed
+  {
+    igl::min_quad_with_fixed_data<Numeric> data;
+    MinQuadWithFixed(
+      const Eigen::SparseMatrixN &A = Eigen::SparseMatrixN(),
+      const nb::DRef<const Eigen::VectorXI>  &known = Eigen::VectorXI(),
+      const Eigen::SparseMatrixN &Aeq = Eigen::SparseMatrixN(),
+      const bool pd = true)
+    {
+      if(!igl::min_quad_with_fixed_precompute(A, known, Aeq, pd, data))
+      {
+        throw std::runtime_error("min_quad_with_fixed: Precomputation failed.");
+      }
+    }
+
+    Eigen::MatrixXN solve(
+      const nb::DRef<const Eigen::MatrixXN> &B,
+      const nb::DRef<const Eigen::MatrixXN> &Y,
+      const nb::DRef<const Eigen::MatrixXN> &Beq)
+    {
+      Eigen::MatrixXN Z;
+      if(!igl::min_quad_with_fixed_solve(data, B, Y, Beq, Z))
+      {
+        throw std::runtime_error("min_quad_with_fixed: Optimization failed.");
+      }
+      return std::move(Z);
+    }
+  };
+
 }
 
 // Bind the wrapper to the Python module
 void bind_min_quad_with_fixed(nb::module_ &m)
 {
+  nb::class_<pyigl::MinQuadWithFixed>(m, "MinQuadWithFixed")
+    .def(nb::init<
+      const Eigen::SparseMatrixN &, 
+      const nb::DRef<const Eigen::VectorXI> &, 
+      const Eigen::SparseMatrixN &,
+      const bool>())
+    .def("solve", &pyigl::MinQuadWithFixed::solve,
+      "B"_a=Eigen::MatrixXN(),
+      "Y"_a=Eigen::MatrixXN(),
+      "Beq"_a=Eigen::MatrixXN(),
+      R"(Solve the precomputed quadratic optimization problem.)")
+    ;
+
+
   m.def(
     "min_quad_with_fixed",
     &pyigl::min_quad_with_fixed,

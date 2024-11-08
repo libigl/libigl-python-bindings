@@ -2,6 +2,47 @@ import igl
 import numpy as np
 # scipy sparse matrices
 import scipy.sparse
+# timing
+import time
+
+#def rand_sparse(n,density):
+#    n_features = n
+#    n_samples = n
+#    rng1 = np.random.RandomState(42)
+#    rng2 = np.random.RandomState(43)
+#
+#    nnz = int(n_samples*n_features*density)
+#
+#    row = rng1.randint(n_samples, size=nnz)
+#    cols = rng2.randint(n_features, size=nnz)
+#    data = rng1.rand(nnz)
+#
+#    S = scipy.sparse.coo_matrix((data, (row, cols)), shape=(n_samples, n_features))
+#    return S.tocsc()
+#
+#def time_noop():
+#    def helper(N,I,SN,SI):
+#        igl.noop(SN=SN)
+#        # start timer
+#        runs = 100
+#        start = time.time()
+#        for i in range(runs):
+#            igl.noop(SN=SN)
+#        # end timer
+#        end = time.time()
+#        return (end - start)/runs
+#    n = 10000
+#    m = 10
+#    N64_f = np.asfortranarray(np.random.randn(n,m).astype(np.float64))
+#    I64_f = np.asfortranarray(np.random.randn(n,m).astype(np.int64))
+#    # random sparse matrix
+#    SN64 = rand_sparse(n,1.0/(n))
+#    # print number of nonzeros
+#    SI64 = (rand_sparse(n,1.0/(n))*1000).astype(np.int64)
+#    print(f"noop<{n},{m}>: {helper(N64_f,I64_f,SN64,SI64)} secs")
+#
+#time_noop()
+
 
 F = np.array([[0,1,2],[0,2,3]],dtype=np.int64)
 E,oE = igl.orient_halfedges(F)
@@ -112,3 +153,4 @@ Y = np.array([-1,1],dtype=np.float64).reshape(-1, 1)
 Aeq = scipy.sparse.csc_matrix(([-1,1],([0,0],[0,3])),shape=(1,V.shape[0]))
 Beq = np.zeros((1,1),dtype=np.float64)
 Z = igl.min_quad_with_fixed(A,B,known,Y,Aeq,Beq,pd=True)
+Z = igl.MinQuadWithFixed(A,known,Aeq,True).solve(B,Y,Beq)

@@ -10,16 +10,15 @@
 ///////////////////////////////////////////////////////////////////////////////////
 using Numeric = double;
 using Integer = int64_t;
+constexpr auto Options = Eigen::RowMajor;
 namespace Eigen
 {
   typedef Matrix<Numeric, Dynamic, Dynamic> MatrixXN;
   typedef Matrix<Integer, Dynamic, Dynamic> MatrixXI;
   typedef Matrix<Numeric, Dynamic, 1> VectorXN;
   typedef Matrix<Integer, Dynamic, 1> VectorXI;
-  typedef Matrix<Numeric, 1, Dynamic> RowVectorXN;
-  typedef Matrix<Integer, 1, Dynamic> RowVectorXI;
+  typedef Matrix<Numeric, 1, Dynamic, Options> RowVectorXN;
+  typedef Matrix<Integer, 1, Dynamic, Options> RowVectorXI;
   typedef SparseMatrix<Numeric> SparseMatrixN;
   typedef SparseMatrix<Integer> SparseMatrixI;
 }
-
-
