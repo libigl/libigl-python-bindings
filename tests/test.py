@@ -62,6 +62,7 @@ L = igl.cotmatrix(V,I=I,C=C)
 L,M = igl.cotmatrix(V,I=I,C=C,return_M=True)
 L,P = igl.cotmatrix(V,I=I,C=C,return_P=True)
 L,M,P = igl.cotmatrix(V,I=I,C=C,return_M=True,return_P=True)
+
 M = igl.massmatrix(V,F)
 M = igl.massmatrix(V,F,type="barycentric")
 M = igl.massmatrix(V,F,type="voronoi")
@@ -109,6 +110,10 @@ O = np.array([[2,1,1],[0.2,0.2,-1]],np.float64);
 D = V.mean(axis=0)-O
 I,T,UV = tree.intersect_ray(V,F,O,D,first=True)
 hits = tree.intersect_ray(V,F,O,D,first=False)
+o = O[0,:]
+d = D[0,:]
+hit = igl.ray_mesh_intersect(o,d,V,F,first=True)
+hits = igl.ray_mesh_intersect(o,d,V,F)
 
 
 E,uE,EMAP = igl.unique_edge_map(F)
@@ -122,7 +127,6 @@ TT,TTi = igl.triangle_triangle_adjacency(F,use_lists=True,return_TTi=True)
 
 VF,NI = igl.vertex_triangle_adjacency(F)
 VF,NI = igl.vertex_triangle_adjacency(F,n=V.shape[0])
-VF,NI = igl.vertex_triangle_adjacency(F,V=V)
 VF = igl.vertex_triangle_adjacency(F,use_lists=True)
 VF,VFi = igl.vertex_triangle_adjacency(F,use_lists=True,return_VFi=True)
 
@@ -154,3 +158,50 @@ Aeq = scipy.sparse.csc_matrix(([-1,1],([0,0],[0,3])),shape=(1,V.shape[0]))
 Beq = np.zeros((1,1),dtype=np.float64)
 Z = igl.min_quad_with_fixed(A,B,known,Y,Aeq,Beq,pd=True)
 Z = igl.MinQuadWithFixed(A,known,Aeq,True).solve(B,Y,Beq)
+
+V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+T = np.array([[0,1,2,3]],dtype=np.int64)
+L = igl.edge_lengths(V,T)
+vol = igl.volume(V,T)
+vol = igl.volume(L=L)
+vol = igl.volume(A=V[T[:,0],:],B=V[T[:,1],:],C=V[T[:,2],:],D=V[T[:,3],:])
+
+F = igl.boundary_facets(T)
+# remove last face
+F = F[:-1,:]
+B = igl.is_border_vertex(F)
+
+L = igl.squared_edge_lengths(V,F)
+C = igl.cotmatrix_entries(V,F)
+l = igl.edge_lengths(V,F)
+C = igl.cotmatrix_entries(l=l)
+E = igl.oriented_facets(F)
+F = igl.oriented_facets(T)
+
+res = igl.is_edge_manifold(F)
+# 4 choose 1
+res,BF = igl.is_edge_manifold(F,return_BF=True)
+res,E = igl.is_edge_manifold(F,return_E=True)
+res,EMAP = igl.is_edge_manifold(F,return_EMAP=True)
+res,BE = igl.is_edge_manifold(F,return_BE=True)
+# 4 choose 2
+res,BF,EF = igl.is_edge_manifold(F,return_BF=True,return_E=True)
+res,BF,EMAP = igl.is_edge_manifold(F,return_BF=True,return_EMAP=True)
+res,BF,BE = igl.is_edge_manifold(F,return_BF=True,return_BE=True)
+res,EF,EMAP = igl.is_edge_manifold(F,return_E=True,return_EMAP=True)
+res,EF,BE = igl.is_edge_manifold(F,return_E=True,return_BE=True)
+res,EMAP,BE = igl.is_edge_manifold(F,return_EMAP=True,return_BE=True)
+# 4 choose 3
+res,BF,EF,EMAP = igl.is_edge_manifold(F,return_BF=True,return_E=True,return_EMAP=True)
+res,BF,EF,BE = igl.is_edge_manifold(F,return_BF=True,return_E=True,return_BE=True)
+res,BF,EMAP,BE = igl.is_edge_manifold(F,return_BF=True,return_EMAP=True,return_BE=True)
+res,EF,EMAP,BE = igl.is_edge_manifold(F,return_E=True,return_EMAP=True,return_BE=True)
+# 4 choose 4
+res,BF,EF,EMAP,BE = igl.is_edge_manifold(F,return_BF=True,return_E=True,return_EMAP=True,return_BE=True)
+
+L = igl.cotmatrix(V,F)
+s = igl.matlab_format(V,"V")
+s = igl.matlab_format_index(F,"F")
+s = igl.matlab_format(L,"L")
+
+

@@ -11,7 +11,17 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for barycentric_coordinates function
-  nb::object barycentric_coordinates(
+  nb::object barycentric_coordinates_PABC(
+    const nb::DRef<const Eigen::MatrixXN> &P,
+    const nb::DRef<const Eigen::MatrixXN> &A,
+    const nb::DRef<const Eigen::MatrixXN> &B,
+    const nb::DRef<const Eigen::MatrixXN> &C)
+  {
+    Eigen::MatrixXN L;
+    igl::barycentric_coordinates(P, A, B, C, L);
+    return nb::cast(std::move(L));
+  }
+  nb::object barycentric_coordinates_PABCD(
     const nb::DRef<const Eigen::MatrixXN> &P,
     const nb::DRef<const Eigen::MatrixXN> &A,
     const nb::DRef<const Eigen::MatrixXN> &B,
@@ -19,13 +29,7 @@ namespace pyigl
     const nb::DRef<const Eigen::MatrixXN> &D)
   {
     Eigen::MatrixXN L;
-    if(D.size()>0)
-    {
-      igl::barycentric_coordinates(P, A, B, C, D, L);
-    }else
-    {
-      igl::barycentric_coordinates(P, A, B, C, L);
-    }
+    igl::barycentric_coordinates(P, A, B, C, D, L);
     return nb::cast(std::move(L));
   }
 }
@@ -35,20 +39,36 @@ void bind_barycentric_coordinates(nb::module_ &m)
 {
   m.def(
     "barycentric_coordinates",
-    &pyigl::barycentric_coordinates,
+    &pyigl::barycentric_coordinates_PABC,
     "P"_a,
     "A"_a,
     "B"_a,
     "C"_a,
-    "D"_a=Eigen::MatrixXN(),
-R"(Compute barycentric coordinates of each point in a corresponding triangle/tetrahedron.
+R"(Compute barycentric coordinates of each point in a corresponding triangle
 
 @param[in] P  #P by 3 Query points in 3d
-@param[in] A  #P by 3 (Tri|Tet) corners in 3d
-@param[in] B  #P by 3 (Tri|Tet) corners in 3d
-@param[in] C  #P by 3 (Tri|Tet) corners in 3d
+@param[in] A  #P by 3 Tri corners in 3d
+@param[in] B  #P by 3 Tri corners in 3d
+@param[in] C  #P by 3 Tri corners in 3d
+@param[out] L  #P by 3 list of barycentric coordinates
+  )"
+    );
+  m.def(
+    "barycentric_coordinates",
+    &pyigl::barycentric_coordinates_PABCD,
+    "P"_a,
+    "A"_a,
+    "B"_a,
+    "C"_a,
+    "D"_a,
+R"(Compute barycentric coordinates of each point in a corresponding tetrhedron
+
+@param[in] P  #P by 3 Query points in 3d
+@param[in] A  #P by 3 Tet corners in 3d
+@param[in] B  #P by 3 Tet corners in 3d
+@param[in] C  #P by 3 Tet corners in 3d
 @param[in] D  #P by 3 Tet corners in 3d
-@param[out] L  #P by (3|4) list of barycentric coordinates
+@param[out] L  #P by 3 list of barycentric coordinates
   )"
     );
 }

@@ -14,6 +14,8 @@ Hit
 LinSpaced
 repmat
 repdiag
+unique_rows
+sortrows
 sum
 cumsum
 slice
