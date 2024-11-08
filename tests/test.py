@@ -1,10 +1,13 @@
 import igl
 import numpy as np
+# scipy sparse matrices
+import scipy.sparse
 
 F = np.array([[0,1,2],[0,2,3]],dtype=np.int64)
 E,oE = igl.orient_halfedges(F)
 ne = E.max()+1
 uE = np.random.rand(ne).astype(np.float64)
+
 uV = igl.average_from_edges_onto_vertices(F,E,oE,uE)
 V = np.array([[0,0,0],[1,0,0],[1,1,0],[0,1,0]],dtype=np.float64)
 l = igl.edge_lengths(V,F)
@@ -66,3 +69,46 @@ D = V.mean(axis=0)-O
 I,T,UV = tree.intersect_ray(V,F,O,D,first=True)
 hits = tree.intersect_ray(V,F,O,D,first=False)
 
+
+E,uE,EMAP = igl.unique_edge_map(F)
+E,uE,EMAP,uE2E = igl.unique_edge_map(F,return_uE2E = True)
+E,uE,EMAP,uEC,uEE = igl.unique_edge_map(F,return_uEC_uEE = True)
+
+TT = igl.triangle_triangle_adjacency(F)
+TT,TTi = igl.triangle_triangle_adjacency(F,return_TTi=True)
+TT = igl.triangle_triangle_adjacency(F,use_lists=True)
+TT,TTi = igl.triangle_triangle_adjacency(F,use_lists=True,return_TTi=True)
+
+VF,NI = igl.vertex_triangle_adjacency(F)
+VF,NI = igl.vertex_triangle_adjacency(F,n=V.shape[0])
+VF,NI = igl.vertex_triangle_adjacency(F,V=V)
+VF = igl.vertex_triangle_adjacency(F,use_lists=True)
+VF,VFi = igl.vertex_triangle_adjacency(F,use_lists=True,return_VFi=True)
+
+F012 = F;
+F120 = np.roll(F012,1,axis=1)
+FF = np.vstack((F012,F120))
+F = igl.unique_simplices(FF)
+F,IA = igl.unique_simplices(FF,return_IA=True)
+F,IC = igl.unique_simplices(FF,return_IC=True)
+F,IA,IC = igl.unique_simplices(FF,return_IA=True,return_IC=True)
+
+
+L = igl.cotmatrix(V,F)
+# convert nonzeros to 1s to int64
+A = (L != 0).astype(np.int64)
+# subtract diagonal
+A = A - scipy.sparse.diags(A.diagonal())
+n = igl.connected_components(A)
+n,C = igl.connected_components(A,return_C=True)
+n,K = igl.connected_components(A,return_K=True)
+n,C,K = igl.connected_components(A,return_C=True,return_K=True)
+
+
+A = -igl.cotmatrix(V,F)
+B = np.zeros((V.shape[0],1),dtype=np.float64)
+known = np.array([1,2],dtype=np.int64)
+Y = np.array([-1,1],dtype=np.float64).reshape(-1, 1)
+Aeq = scipy.sparse.csc_matrix(([-1,1],([0,0],[0,3])),shape=(1,V.shape[0]))
+Beq = np.zeros((1,1),dtype=np.float64)
+Z = igl.min_quad_with_fixed(A,B,known,Y,Aeq,Beq,pd=True)

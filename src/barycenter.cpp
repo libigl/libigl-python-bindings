@@ -16,7 +16,7 @@ namespace pyigl
   {
     Eigen::MatrixXN BC;
     igl::barycenter(V, F, BC);
-    return nb::cast(BC);
+    return nb::cast(std::move(BC));
   }
 }
 

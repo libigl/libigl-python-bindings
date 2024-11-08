@@ -38,7 +38,7 @@ namespace pyigl
     {
       throw std::runtime_error("bbw: failed to compute weights");
     }
-    return nb::cast(W);
+    return nb::cast(std::move(W));
   }
 }
 

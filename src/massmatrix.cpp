@@ -36,7 +36,7 @@ namespace pyigl
     }
     igl::massmatrix(V,F,t,M);
 
-    return nb::cast(M);
+    return nb::cast(std::move(M));
   }
 }
 

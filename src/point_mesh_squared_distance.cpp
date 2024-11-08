@@ -31,7 +31,7 @@ namespace pyigl
     {
       return nb::make_tuple(sqrD, C);
     }
-    return nb::cast(sqrD);
+    return nb::cast(std::move(sqrD));
   }
 }
 

@@ -61,7 +61,7 @@ namespace pyigl
       }
       igl::per_face_normals(V,F,Z,N);
     }
-    return nb::cast(N);
+    return nb::cast(std::move(N));
   }
 }
 

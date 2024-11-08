@@ -31,13 +31,14 @@ namespace pyigl
     {
       throw std::runtime_error("find: Ele must have V.cols()+1 columns");
     }
-    std::vector<int> vec = tree.find(V,Ele,q,first);
+    std::vector<int> vec_int = tree.find(V,Ele,q,first);
+    std::vector<Integer> vec(vec_int.begin(),vec_int.end());
     if(first)
     {
       return vec.size() ? nb::cast(vec[0]) : nb::none();
     }else
     {
-      return nb::cast(vec);
+      return nb::cast(std::move(vec));
     }
   }
 
@@ -64,7 +65,7 @@ namespace pyigl
     {
       return nb::make_tuple(sqrD,C);
     }
-    return nb::cast(sqrD);
+    return nb::cast(std::move(sqrD));
   }
 
   template <typename AABB>
@@ -93,10 +94,10 @@ namespace pyigl
       }
       std::vector<std::vector<igl::Hit<Numeric>>> hits;
       tree.intersect_ray(V,Ele,orig,dir,hits);
-      std::vector<std::vector<std::tuple<int,Numeric,Numeric,Numeric>>> out;
+      std::vector<std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>>> out;
       for(const auto &hit : hits)
       {
-        std::vector<std::tuple<int,Numeric,Numeric,Numeric>> hit_out;
+        std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>> hit_out;
         for(const auto &h : hit)
         {
           hit_out.push_back(std::make_tuple(h.id,h.t,h.u,h.v));
@@ -104,7 +105,7 @@ namespace pyigl
         out.push_back(hit_out);
       }
 
-      return nb::cast(out);
+      return nb::cast(std::move(out));
     }
   }
 }

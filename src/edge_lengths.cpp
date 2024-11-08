@@ -16,7 +16,7 @@ namespace pyigl
   {
     Eigen::MatrixXN L;
     igl::edge_lengths(V, F, L);
-    return nb::cast(L);
+    return nb::cast(std::move(L));
   }
 }
 

@@ -29,7 +29,7 @@ namespace pyigl
     {
       return nb::make_tuple(F,K);
     }
-    return nb::cast(F);
+    return nb::cast(std::move(F));
   }
 }
 

@@ -40,7 +40,7 @@ namespace pyigl
         igl::doublearea(V, F, dblA);
       }
     }
-    return nb::cast(dblA);
+    return nb::cast(std::move(dblA));
   }
 }
 

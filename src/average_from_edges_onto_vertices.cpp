@@ -17,7 +17,7 @@ namespace pyigl
   {
     Eigen::VectorXN uV;
     igl::average_from_edges_onto_vertices(F, E, oE, uE, uV);
-    return nb::cast(uV);
+    return nb::cast(std::move(uV));
   }
 }
 

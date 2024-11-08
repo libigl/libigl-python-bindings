@@ -26,7 +26,7 @@ namespace pyigl
     {
       igl::barycentric_coordinates(P, A, B, C, L);
     }
-    return nb::cast(L);
+    return nb::cast(std::move(L));
   }
 }
 

@@ -46,7 +46,7 @@ namespace pyigl
         throw std::runtime_error("cotmatrix: M and P only available for polygonal meshes");
       }
     }
-    return nb::cast(L);
+    return nb::cast(std::move(L));
   }
 }
 
