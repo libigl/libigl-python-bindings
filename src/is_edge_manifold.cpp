@@ -3,6 +3,7 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
@@ -10,12 +11,8 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for is_edge_manifold with overload handling
-  nb::object is_edge_manifold(
-    const nb::DRef<const Eigen::MatrixXI> &F,
-    const bool return_BF = false,
-    const bool return_E = false,
-    const bool return_EMAP = false,
-    const bool return_BE = false)
+  auto is_edge_manifold(
+    const nb::DRef<const Eigen::MatrixXI> &F)
   {
     bool result;
     Eigen::MatrixXI BF;
@@ -24,71 +21,7 @@ namespace pyigl
     Eigen::VectorX<bool> BE;
 
     result = igl::is_edge_manifold(F, BF, E, EMAP, BE);
-    // 4 choose 4
-    if (return_BF && return_E && return_EMAP && return_BE)
-    {
-      return nb::make_tuple(result, BF, E, EMAP, BE);
-    }
-    // 4 choose 3
-    else if (return_BF && return_E && return_EMAP)
-    {
-      return nb::make_tuple(result, BF, E, EMAP);
-    }
-    else if (return_BF && return_E && return_BE)
-    {
-      return nb::make_tuple(result, BF, E, BE);
-    }
-    else if (return_BF && return_EMAP && return_BE)
-    {
-      return nb::make_tuple(result, BF, EMAP, BE);
-    }
-    else if (return_E && return_EMAP && return_BE)
-    {
-      return nb::make_tuple(result, E, EMAP, BE);
-    }
-    // 4 choose 2
-    else if (return_BF && return_E)
-    {
-      return nb::make_tuple(result, BF, E);
-    }
-    else if (return_BF && return_EMAP)
-    {
-      return nb::make_tuple(result, BF, EMAP);
-    }
-    else if (return_BF && return_BE)
-    {
-      return nb::make_tuple(result, BF, BE);
-    }
-    else if (return_E && return_EMAP)
-    {
-      return nb::make_tuple(result, E, EMAP);
-    }
-    else if (return_E && return_BE)
-    {
-      return nb::make_tuple(result, E, BE);
-    }
-    else if (return_EMAP && return_BE)
-    {
-      return nb::make_tuple(result, EMAP, BE);
-    }
-    // 4 choose 1
-    else if (return_BF)
-    {
-      return nb::make_tuple(result, BF);
-    }else if (return_E)
-    {
-      return nb::make_tuple(result, E);
-    }else if (return_EMAP)
-    {
-      return nb::make_tuple(result, EMAP);
-    }else if (return_BE)
-    {
-      return nb::make_tuple(result, BE);
-    }
-    else
-    {
-      return nb::cast(result);
-    }
+    return std::make_tuple(result, BF, E, EMAP, BE);
   }
 }
 
@@ -99,10 +32,6 @@ void bind_is_edge_manifold(nb::module_ &m)
     "is_edge_manifold",
     &pyigl::is_edge_manifold,
     "F"_a,
-    "return_BF"_a = false,
-    "return_E"_a = false,
-    "return_EMAP"_a = false,
-    "return_BE"_a = false,
 R"(Check if the mesh is edge-manifold (every edge is incident to one or two oppositely oriented faces).
 
 @param[in] F  #F by 3 list of triangle indices

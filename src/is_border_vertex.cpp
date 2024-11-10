@@ -12,7 +12,7 @@ namespace pyigl
   // Wrapper for is_border_vertex
   std::vector<bool> is_border_vertex(const nb::DRef<const Eigen::MatrixXI> &F)
   {
-    return std::move(igl::is_border_vertex(F));
+    return igl::is_border_vertex(F);
   }
 }
 

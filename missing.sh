@@ -3,6 +3,9 @@
 already=$(ls src/*.cpp | sed -e "s/src\/\(.*\).cpp$/\1/g")
 skip="igl_inline
 EPS
+sparse
+setdiff
+rotation_matrix_from_directions
 verbose
 colon
 min_quad_with_fixed.impl

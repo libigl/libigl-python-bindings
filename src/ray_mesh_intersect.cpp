@@ -4,6 +4,7 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/dense.h>
 #include <nanobind/stl/vector.h>
+#include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
@@ -11,32 +12,33 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for ray_mesh_intersect with overload handling
-  nb::object ray_mesh_intersect(
+  std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>>
+    ray_mesh_intersect(
     const Eigen::VectorXN &source,
     const Eigen::VectorXN &dir,
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F,
     const bool first = false)
   {
+    std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>> out;
     if (first)
     {
       // Overload for a single hit
       igl::Hit<Numeric> hit;
       bool result = igl::ray_mesh_intersect(source, dir, V, F, hit);
-      return nb::make_tuple(hit.id, hit.t, hit.u, hit.v);
+      out.emplace_back(hit.id, hit.t, hit.u, hit.v);
     }
     else
     {
       // Overload for all hits
       std::vector<igl::Hit<Numeric> > hits;
       bool result = igl::ray_mesh_intersect(source, dir, V, F, hits);
-      std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>> out;
       for (const auto &hit : hits)
       {
-        out.push_back(std::make_tuple(hit.id, hit.t, hit.u, hit.v));
+        out.emplace_back(hit.id, hit.t, hit.u, hit.v);
       }
-      return nb::cast(std::move(out));
     }
+    return out;
   }
 }
 

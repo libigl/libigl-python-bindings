@@ -10,13 +10,13 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for barycenter function
-  nb::object barycenter(
+  auto barycenter(
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F)
   {
     Eigen::MatrixXN BC;
     igl::barycenter(V, F, BC);
-    return nb::cast(std::move(BC));
+    return BC;
   }
 }
 

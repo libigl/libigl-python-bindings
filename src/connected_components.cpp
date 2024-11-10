@@ -3,6 +3,7 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/sparse.h>
 #include <nanobind/ndarray.h>
+#include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
@@ -10,35 +11,12 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for connected_components
-  nb::object connected_components(
-    const Eigen::SparseMatrix<Integer> &A,
-    const bool return_C = false,
-    const bool return_K = false)
+  auto connected_components( const Eigen::SparseMatrix<Integer> &A)
   {
-    int num_components;
     Eigen::VectorXI C;
     Eigen::VectorXI K;
-
-    if (return_C && return_K)
-    {
-      num_components = igl::connected_components(A, C, K);
-      return nb::make_tuple(num_components, C, K);
-    }
-    else if (return_C)
-    {
-      num_components = igl::connected_components(A, C, K);
-      return nb::make_tuple(num_components, C);
-    }
-    else if (return_K)
-    {
-      num_components = igl::connected_components(A, C, K);
-      return nb::make_tuple(num_components, K);
-    }
-    else
-    {
-      num_components = igl::connected_components(A, C, K);
-      return nb::cast(num_components);
-    }
+    Integer num_components = (Integer)igl::connected_components(A, C, K);
+    return std::make_tuple(num_components, C, K);
   }
 }
 
@@ -49,8 +27,6 @@ void bind_connected_components(nb::module_ &m)
     "connected_components",
     &pyigl::connected_components,
     "A"_a,
-    "return_C"_a = false,
-    "return_K"_a = false,
 R"(Determine the connected components of a graph described by the input adjacency matrix.
 
 @param[in] A  #A by #A adjacency matrix (treated as describing a directed graph)

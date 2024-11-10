@@ -9,7 +9,7 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  nb::object average_from_edges_onto_vertices(
+  auto average_from_edges_onto_vertices(
     const nb::DRef<const Eigen::MatrixXI> &F,
     const nb::DRef<const Eigen::MatrixXI> &E,
     const nb::DRef<const Eigen::MatrixXI> &oE,
@@ -17,7 +17,7 @@ namespace pyigl
   {
     Eigen::VectorXN uV;
     igl::average_from_edges_onto_vertices(F, E, oE, uE, uV);
-    return nb::cast(std::move(uV));
+    return uV;
   }
 }
 

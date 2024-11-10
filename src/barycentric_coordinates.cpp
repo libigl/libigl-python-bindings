@@ -11,7 +11,7 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for barycentric_coordinates function
-  nb::object barycentric_coordinates_PABC(
+  auto barycentric_coordinates_PABC(
     const nb::DRef<const Eigen::MatrixXN> &P,
     const nb::DRef<const Eigen::MatrixXN> &A,
     const nb::DRef<const Eigen::MatrixXN> &B,
@@ -19,9 +19,9 @@ namespace pyigl
   {
     Eigen::MatrixXN L;
     igl::barycentric_coordinates(P, A, B, C, L);
-    return nb::cast(std::move(L));
+    return L;
   }
-  nb::object barycentric_coordinates_PABCD(
+  auto barycentric_coordinates_PABCD(
     const nb::DRef<const Eigen::MatrixXN> &P,
     const nb::DRef<const Eigen::MatrixXN> &A,
     const nb::DRef<const Eigen::MatrixXN> &B,
@@ -30,7 +30,7 @@ namespace pyigl
   {
     Eigen::MatrixXN L;
     igl::barycentric_coordinates(P, A, B, C, D, L);
-    return nb::cast(std::move(L));
+    return L;
   }
 }
 

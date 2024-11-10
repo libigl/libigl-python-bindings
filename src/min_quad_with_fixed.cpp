@@ -11,7 +11,7 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for min_quad_with_fixed
-  nb::object min_quad_with_fixed(
+  auto min_quad_with_fixed(
     const Eigen::SparseMatrixN &A,
     const nb::DRef<const Eigen::MatrixXN> &B,
     const nb::DRef<const Eigen::VectorXI> &known,
@@ -28,7 +28,7 @@ namespace pyigl
       throw std::runtime_error("min_quad_with_fixed: Optimization failed.");
     }
     
-    return nb::cast(std::move(Z));
+    return Z;
   }
 
   struct MinQuadWithFixed
@@ -46,7 +46,7 @@ namespace pyigl
       }
     }
 
-    Eigen::MatrixXN solve(
+    auto solve(
       const nb::DRef<const Eigen::MatrixXN> &B,
       const nb::DRef<const Eigen::MatrixXN> &Y,
       const nb::DRef<const Eigen::MatrixXN> &Beq)
@@ -56,7 +56,7 @@ namespace pyigl
       {
         throw std::runtime_error("min_quad_with_fixed: Optimization failed.");
       }
-      return std::move(Z);
+      return Z;
     }
   };
 

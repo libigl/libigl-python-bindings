@@ -10,13 +10,13 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for edge_lengths function
-  nb::object edge_lengths(
+  auto edge_lengths(
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F)
   {
     Eigen::MatrixXN L;
     igl::edge_lengths(V, F, L);
-    return nb::cast(std::move(L));
+    return L;
   }
 }
 

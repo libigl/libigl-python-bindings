@@ -16,7 +16,7 @@ namespace pyigl
   {
     Eigen::MatrixXN L;
     igl::squared_edge_lengths(V, F, L);
-    return std::move(L);
+    return L;
   }
 }
 

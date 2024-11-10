@@ -4,41 +4,30 @@
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
 #include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
 
 namespace pyigl
 {
-  nb::object cotmatrix_VF(
+  auto cotmatrix(
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F)
   {
     Eigen::SparseMatrixN L;
     igl::cotmatrix(V,F,L);
-    return nb::cast(std::move(L));
+    return L;
   }
 
-  nb::object cotmatrix_VIC(
+  auto cotmatrix_polygon(
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::VectorXI> &I,
-    const nb::DRef<const Eigen::VectorXI> &C,
-    bool return_M,
-    bool return_P)
+    const nb::DRef<const Eigen::VectorXI> &C)
   {
     Eigen::SparseMatrixN L,M,P;
     igl::cotmatrix(V,I,C,L,M,P);
-    if(return_M && return_P)
-    {
-      return nb::make_tuple(L,M,P);
-    }else if(return_M)
-    {
-      return nb::make_tuple(L,M);
-    }else if(return_P)
-    {
-      return nb::make_tuple(L,P);
-    }
-    return nb::cast(std::move(L));
+    return std::make_tuple(L,M,P);
   }
 }
 
@@ -47,7 +36,7 @@ void bind_cotmatrix(nb::module_ &m)
 {
   m.def(
     "cotmatrix",
-    &pyigl::cotmatrix_VF, 
+    &pyigl::cotmatrix, 
     "V"_a, 
     "F"_a,
 R"(Constructs the cotangent stiffness matrix (discrete laplacian) for a given
@@ -63,13 +52,11 @@ mesh (V,F).
   @param[out] L  #V by #V cotangent matrix, each row i corresponding to V(i,:))");
 
   m.def(
-    "cotmatrix",
-    &pyigl::cotmatrix_VIC,
+    "cotmatrix_polygon",
+    &pyigl::cotmatrix_polygon,
     "V"_a, 
-    "I"_a=Eigen::VectorXI(), 
-    "C"_a=Eigen::VectorXI(), 
-    "return_M"_a=false,
-    "return_P"_a=false,
+    "I"_a,
+    "C"_a,
 R"(Cotangent Laplacian (and mass matrix) for polygon meshes according to
 "Polygon Laplacian Made Simple" [Bunge et al.\ 2020]
 

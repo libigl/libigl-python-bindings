@@ -11,7 +11,7 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  nb::object massmatrix(
+  auto massmatrix(
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F,
     const std::string type)
@@ -36,7 +36,7 @@ namespace pyigl
     }
     igl::massmatrix(V,F,t,M);
 
-    return nb::cast(std::move(M));
+    return M;
   }
 }
 

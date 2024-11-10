@@ -10,25 +10,12 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for unique_simplices with overload handling
-  nb::object unique_simplices(
-    const nb::DRef<const Eigen::MatrixXI> &F,
-    const bool return_IA,
-    const bool return_IC)
+  auto unique_simplices( const nb::DRef<const Eigen::MatrixXI> &F)
   {
     Eigen::MatrixXI FF;
     Eigen::VectorXI IA,IC;
     igl::unique_simplices(F,FF,IA,IC);
-    if(return_IA && return_IC)
-    {
-      return nb::make_tuple(FF,IA,IC);
-    }else if(return_IA)
-    {
-      return nb::make_tuple(FF,IA);
-    }else if(return_IC)
-    {
-      return nb::make_tuple(FF,IC);
-    }
-    return nb::cast(std::move(FF));
+    return nb::make_tuple(FF,IA,IC);
   }
 }
 
@@ -39,8 +26,6 @@ void bind_unique_simplices(nb::module_ &m)
     "unique_simplices",
     &pyigl::unique_simplices,
     "F"_a,
-    "return_IA"_a = false,
-    "return_IC"_a = false,
 R"(Find combinatorially unique simplices in F. Order independent.
 
 @param[in] F  #F by simplex-size list of simplices

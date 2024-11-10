@@ -11,30 +11,30 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for doublearea function
-  nb::object doublearea_VF(
+  auto doublearea_VF(
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F)
   {
     Eigen::VectorXN dblA;
     igl::doublearea(V, F, dblA);
-    return nb::cast(std::move(dblA));
+    return dblA;
   }
-  nb::object doublearea_ABC(
+  auto doublearea_ABC(
     const nb::DRef<const Eigen::MatrixXN> &A,
     const nb::DRef<const Eigen::MatrixXN> &B,
     const nb::DRef<const Eigen::MatrixXN> &C)
   {
     Eigen::VectorXN dblA;
     igl::doublearea(A, B, C, dblA);
-    return nb::cast(std::move(dblA));
+    return dblA;
   }
-  nb::object doublearea_l(
+  auto doublearea_l(
     const nb::DRef<const Eigen::MatrixXN> &l,
     const Numeric nan_replacement)
   {
     Eigen::VectorXN dblA;
     igl::doublearea(l, nan_replacement, dblA);
-    return nb::cast(std::move(dblA));
+    return dblA;
   }
 }
 

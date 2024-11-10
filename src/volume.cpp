@@ -9,22 +9,22 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  nb::object volume_VT(
+  auto volume_VT(
     const nb::DRef<const Eigen::MatrixXN> &V = Eigen::MatrixXN(),
     const nb::DRef<const Eigen::MatrixXI> &T = Eigen::MatrixXI())
   {
     Eigen::VectorXN vol;
     igl::volume(V, T, vol);
-    return nb::cast(std::move(vol));
+    return vol;
   }
-  nb::object volume_L(
+  auto volume_L(
     const nb::DRef<const Eigen::MatrixXN> &L = Eigen::MatrixXN())
   {
     Eigen::VectorXN vol;
     igl::volume(L, vol);
-    return nb::cast(std::move(vol));
+    return vol;
   }
-  nb::object volume_ABCD(
+  auto volume_ABCD(
     const nb::DRef<const Eigen::MatrixXN> &A = Eigen::MatrixXN(),
     const nb::DRef<const Eigen::MatrixXN> &B = Eigen::MatrixXN(),
     const nb::DRef<const Eigen::MatrixXN> &C = Eigen::MatrixXN(),
@@ -32,7 +32,7 @@ namespace pyigl
   {
     Eigen::VectorXN vol;
     igl::volume(A, B, C, D, vol);
-    return nb::cast(std::move(vol));
+    return vol;
   }
 
 }

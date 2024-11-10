@@ -11,7 +11,7 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for bbw function
-  nb::object bbw(
+  auto bbw(
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &Ele,
     const nb::DRef<const Eigen::VectorXI> &b,
@@ -38,7 +38,7 @@ namespace pyigl
     {
       throw std::runtime_error("bbw: failed to compute weights");
     }
-    return nb::cast(std::move(W));
+    return W;
   }
 }
 

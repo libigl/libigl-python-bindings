@@ -11,7 +11,7 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  nb::object write_triangle_mesh(
+  void write_triangle_mesh(
     const std::string & filename,
     const nb::DRef<const Eigen::MatrixXN> V,
     const nb::DRef<const Eigen::MatrixXI> F,
@@ -38,7 +38,6 @@ namespace pyigl
       // throw runtime exception
       throw std::runtime_error("Failed to write mesh to: " + filename);
     }
-    return nb::bool_(true);
   }
 }
 
@@ -61,8 +60,7 @@ obj, off, stl, wrl, ply, mesh).
 @param[in] str  path to file
 @param[in] V  eigen double matrix #V by 3
 @param[in] F  eigen int matrix #F by 3
-@param[in] encoding  set file encoding (ascii or binary) when both are available
-@return true iff success)"
+@param[in] encoding  set file encoding (ascii or binary) when both are available)"
     );
 }
 

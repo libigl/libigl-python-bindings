@@ -10,7 +10,7 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  nb::object noop(
+  auto noop(
     const nb::DRef<const Eigen::MatrixXN> &N,
     const nb::DRef<const Eigen::MatrixXI> &I,
     const Eigen::SparseMatrixN &SN,

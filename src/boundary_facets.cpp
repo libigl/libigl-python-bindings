@@ -4,32 +4,20 @@
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
 #include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
 
 namespace pyigl
 {
-  nb::object boundary_facets(
-    const nb::DRef<const Eigen::MatrixXI> &T,
-    bool return_J,
-    bool return_K)
+  auto boundary_facets( const nb::DRef<const Eigen::MatrixXI> &T)
   {
     Eigen::MatrixXI F;
     Eigen::VectorXI J;
     Eigen::VectorXI K;
     igl::boundary_facets(T,F,J,K);
-    if(return_J && return_K)
-    {
-      return nb::make_tuple(F,J,K);
-    }else if(return_J)
-    {
-      return nb::make_tuple(F,J);
-    }else if(return_K)
-    {
-      return nb::make_tuple(F,K);
-    }
-    return nb::cast(std::move(F));
+    return std::make_tuple(F,J,K);
   }
 }
 
@@ -40,8 +28,6 @@ void bind_boundary_facets(nb::module_ &m)
     "boundary_facets",
     &pyigl::boundary_facets, 
     "T"_a,
-    "return_J"_a=false,
-    "return_K"_a=false,
 R"(Determine boundary faces (edges) of tetrahedra (triangles) stored in T
 (analogous to qptoolbox's `outline` and `boundary_faces`).
 

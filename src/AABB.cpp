@@ -20,7 +20,7 @@ namespace pyigl
     tree.init(V,Ele);
   }
   template <typename AABB>
-  nb::object find(
+  auto find(
     AABB &tree,
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &Ele,
@@ -33,80 +33,61 @@ namespace pyigl
     }
     std::vector<int> vec_int = tree.find(V,Ele,q,first);
     std::vector<Integer> vec(vec_int.begin(),vec_int.end());
-    if(first)
-    {
-      return vec.size() ? nb::cast(vec[0]) : nb::none();
-    }else
-    {
-      return nb::cast(std::move(vec));
-    }
+    return vec;
   }
 
   template <typename AABB>
-  nb::object squared_distance(
+  auto squared_distance(
     AABB &tree,
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &Ele,
-    const nb::DRef<const Eigen::MatrixXN> &P,
-    const bool return_I,
-    const bool return_C)
+    const nb::DRef<const Eigen::MatrixXN> &P)
   {
     Eigen::VectorXN sqrD;
     Eigen::VectorXI I;
     Eigen::MatrixXN C;
     tree.squared_distance(V,Ele,P,sqrD,I,C);
-    if(return_I && return_C)
-    {
-      return nb::make_tuple(sqrD,I,C);
-    }else if(return_I)
-    {
-      return nb::make_tuple(sqrD,I);
-    }else if(return_C)
-    {
-      return nb::make_tuple(sqrD,C);
-    }
-    return nb::cast(std::move(sqrD));
+    return std::make_tuple(sqrD,I,C);
   }
 
   template <typename AABB>
-  nb::object intersect_ray(
+  auto intersect_ray_first(
     AABB &tree,
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &Ele,
     const nb::DRef<const Eigen::MatrixXN> &orig,
     const nb::DRef<const Eigen::MatrixXN> &dir,
-    const Numeric min_t,
-    const bool first)
+    const Numeric min_t)
   {
-    if(first)
-    {
+    Eigen::VectorXI I;
+    Eigen::VectorXN T;
+    Eigen::MatrixXN UV;
+    tree.intersect_ray(V,Ele,orig,dir,min_t,I,T,UV);
+    return std::make_tuple(I,T,UV);
+  }
 
-      Eigen::VectorXI I;
-      Eigen::VectorXN T;
-      Eigen::MatrixXN UV;
-      tree.intersect_ray(V,Ele,orig,dir,min_t,I,T,UV);
-      return nb::make_tuple(I,T,UV);
-    }else
+  template <typename AABB>
+  auto intersect_ray(
+    AABB &tree,
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &Ele,
+    const nb::DRef<const Eigen::MatrixXN> &orig,
+    const nb::DRef<const Eigen::MatrixXN> &dir)
+  {
+    std::vector<std::vector<igl::Hit<Numeric>>> hits;
+    tree.intersect_ray(V,Ele,orig,dir,hits);
+    std::vector<std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>>> out;
+    for(const auto &hit : hits)
     {
-      if(std::isfinite(min_t))
+      std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>> hit_out;
+      for(const auto &h : hit)
       {
-        throw std::runtime_error("intersect_ray: min_t only supported for first=true");
+        hit_out.push_back(std::make_tuple(h.id,h.t,h.u,h.v));
       }
-      std::vector<std::vector<igl::Hit<Numeric>>> hits;
-      tree.intersect_ray(V,Ele,orig,dir,hits);
-      std::vector<std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>>> out;
-      for(const auto &hit : hits)
-      {
-        std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>> hit_out;
-        for(const auto &h : hit)
-        {
-          hit_out.push_back(std::make_tuple(h.id,h.t,h.u,h.v));
-        }
-        out.push_back(hit_out);
-      }
-
-      return nb::cast(std::move(out));
+      out.push_back(hit_out);
     }
+
+    return out;
   }
 }
 
@@ -118,8 +99,9 @@ void bind_AABB(nb::module_ &m)
     .def(nb::init<>())
     .def("init", &pyigl::init<AABBN3>, "V"_a, "Ele"_a)
     .def("find", &pyigl::find<AABBN3>, "V"_a, "Ele"_a, "q"_a, "first"_a=false)
-    .def("squared_distance", &pyigl::squared_distance<AABBN3>, "V"_a, "Ele"_a, "P"_a, "return_I"_a=false,"return_C"_a=false)
-    .def("intersect_ray",&pyigl::intersect_ray<AABBN3>, "V"_a, "Ele"_a, "orig"_a, "dir"_a, "min_t"_a=std::numeric_limits<Numeric>::infinity(), "first"_a=false)
+    .def("squared_distance", &pyigl::squared_distance<AABBN3>, "V"_a, "Ele"_a, "P"_a)
+    .def("intersect_ray_first",&pyigl::intersect_ray_first<AABBN3>, "V"_a, "Ele"_a, "orig"_a, "dir"_a, "min_t"_a=std::numeric_limits<Numeric>::infinity())
+    .def("intersect_ray",&pyigl::intersect_ray<AABBN3>, "V"_a, "Ele"_a, "orig"_a, "dir"_a)
     ;
 }
 

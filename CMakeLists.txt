@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16.0)
 project(pyigl)
 
-# use C++20
+# use C++20 (we need at least C++17 for return value optimization)
 set(CMAKE_CXX_STANDARD 20)
 
 if (CMAKE_VERSION VERSION_LESS 3.18)
@@ -32,7 +32,7 @@ FetchContent_MakeAvailable(nanobind)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG 0e504e1b331e6696b485258a9aac779f0f20c5b0
+  GIT_TAG 1410ad43dff78bfaf8d8103de422fa64adfa35d5
 )
 FetchContent_MakeAvailable(libigl)
 

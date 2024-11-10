@@ -3,6 +3,7 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
@@ -10,28 +11,16 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for point_mesh_squared_distance function
-  nb::object point_mesh_squared_distance(
+  auto point_mesh_squared_distance(
     const nb::DRef<const Eigen::MatrixXN> &P,
     const nb::DRef<const Eigen::MatrixXN> &V,
-    const nb::DRef<const Eigen::MatrixXI> &Ele,
-    const bool return_I,
-    const bool return_C)
+    const nb::DRef<const Eigen::MatrixXI> &Ele)
   {
     Eigen::VectorXN sqrD;
     Eigen::VectorXI I;
     Eigen::MatrixXN C;
     igl::point_mesh_squared_distance(P, V, Ele, sqrD, I, C);
-    if(return_I && return_C)
-    {
-      return nb::make_tuple(sqrD, I, C);
-    }else if(return_I)
-    {
-      return nb::make_tuple(sqrD, I);
-    }else if(return_C)
-    {
-      return nb::make_tuple(sqrD, C);
-    }
-    return nb::cast(std::move(sqrD));
+    return std::make_tuple(sqrD, I, C);
   }
 }
 
@@ -44,8 +33,6 @@ void bind_point_mesh_squared_distance(nb::module_ &m)
     "P"_a,
     "V"_a,
     "Ele"_a,
-    "return_I"_a=false,
-    "return_C"_a=false,
 R"(Compute distances from a set of points P to a triangle mesh (V,F)
 
 @param[in] P  #P by 3 list of query point positions

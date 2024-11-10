@@ -3,18 +3,19 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
 
 namespace pyigl
 {
-  nb::object orient_halfedges(
+  auto orient_halfedges(
     const nb::DRef<const Eigen::MatrixXI> &F)
   {
     Eigen::MatrixXI E,oE;
     igl::orient_halfedges(F,E,oE);
-    return nb::make_tuple(E,oE);
+    return std::make_tuple(E,oE);
   }
 }
 

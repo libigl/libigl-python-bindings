@@ -14,7 +14,7 @@ namespace pyigl
   {
     Eigen::MatrixXI E;
     igl::oriented_facets(F, E);
-    return std::move(E);
+    return E;
   }
 }
 
