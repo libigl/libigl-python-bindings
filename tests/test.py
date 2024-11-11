@@ -56,19 +56,27 @@ V = np.array([[0,0,0],[1,0,0],[1,1,0],[0,1,0]],dtype=np.float64)
 l = igl.edge_lengths(V,F)
 igl.write_triangle_mesh("out.obj",V,F)
 igl.write_triangle_mesh("out.ply",V,F,encoding="binary")
+igl.writePLY("out.ply",V,F)
 V,F = igl.read_triangle_mesh("out.ply")
 L = igl.cotmatrix(V,F)
 I = np.array([0,1,2,3],dtype=np.int64)
 C = np.array([0,4],dtype=np.int64)
 L,M,P = igl.cotmatrix_polygon(V,I,C)
+A = igl.adjacency_matrix(F)
+A = igl.adjacency_matrix_polygon(I,C)
 
 M = igl.massmatrix(V,F)
 M = igl.massmatrix(V,F,type="barycentric")
 M = igl.massmatrix(V,F,type="voronoi")
 M = igl.massmatrix(V,F,type="full")
-N = igl.per_face_normals(V,F)
-N = igl.per_face_normals(V,F,Z=np.array([0,0,1],dtype=np.float64))
-N,_,_,_ = igl.per_face_normals(V,I,C)
+FN = igl.per_face_normals(V,F)
+FN = igl.per_face_normals(V,F,Z=np.array([0,0,1],dtype=np.float64))
+FN,_,_,_ = igl.per_face_normals(V,I,C)
+VN = igl.per_vertex_normals(V,F)
+VN = igl.per_vertex_normals(V,F,weighting="uniform")
+VN = igl.per_vertex_normals(V,F,weighting="area")
+VN = igl.per_vertex_normals(V,F,weighting="angle")
+VN = igl.per_vertex_normals(V,F,weighting="angle",FN=FN)
 
 dblA = igl.doublearea(V,F)
 dblA = igl.doublearea(l=l)
@@ -77,6 +85,9 @@ P = np.array([[0.5,0.5,0.0],[0.5,0.5,0.5]],dtype=np.float64)
 sqrD,I,C = igl.point_mesh_squared_distance(P,V,F)
 W = igl.winding_number(V,F,P)
 W = igl.winding_number(V,F,P[1,:])
+S,I,C,N = igl.signed_distance(P,V,F)
+S,I,C,N = igl.signed_distance(P,V,F,sign_type="fast_winding_number")
+
 BC = igl.barycenter(V,F)
 
 b = np.array([0,3],dtype=np.int64)
@@ -156,6 +167,10 @@ F,_,_ = igl.boundary_facets(T)
 # remove last face
 F = F[:-1,:]
 B = igl.is_border_vertex(F)
+I,C = igl.on_boundary(F)
+I,C = igl.on_boundary(T)
+F = np.array([[2,1,3]],dtype=np.int64)
+NV,NF,I,J = igl.remove_unreferenced(V,F)
 
 L = igl.squared_edge_lengths(V,F)
 C = igl.cotmatrix_entries(V,F)
@@ -185,5 +200,15 @@ R,T,U,S,V = igl.polar_svd(A,include_reflections=True)
 
 SV,SVI,SVJ = igl.remove_duplicate_vertices(V,epsilon=1e-10)
 SV,SVI,SVJ,F = igl.remove_duplicate_vertices(V,F,epsilon=1e-10)
+
+GV = igl.grid(np.array([2,2,2],dtype=np.int64))
+
+model = np.eye(4).astype(np.float64)
+proj = np.eye(4).astype(np.float64)
+viewport = np.array([0,0,640,480],dtype=np.float64)
+win = igl.project(V,model,proj,viewport)
+scene = igl.unproject(win,model,proj,viewport)
+
+
 
 

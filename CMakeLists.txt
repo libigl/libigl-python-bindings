@@ -32,7 +32,7 @@ FetchContent_MakeAvailable(nanobind)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG 1410ad43dff78bfaf8d8103de422fa64adfa35d5
+  GIT_TAG b354782fbc527e846a1933d755001dd23b79d80f
 )
 FetchContent_MakeAvailable(libigl)
 

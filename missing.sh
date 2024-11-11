@@ -5,6 +5,7 @@ skip="igl_inline
 EPS
 sparse
 setdiff
+ARAPEnergyType
 rotation_matrix_from_directions
 verbose
 colon
@@ -12,13 +13,17 @@ min_quad_with_fixed.impl
 find
 unique
 IGL_ASSERT
+tinyply
 cat
+speye
+pathinfo
 Hit
 LinSpaced
 repmat
 repdiag
 unique_rows
 sortrows
+redux
 sum
 cumsum
 slice
