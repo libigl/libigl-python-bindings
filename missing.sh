@@ -1,48 +1,75 @@
 #!/bin/bash
 #
 already=$(ls src/*.cpp | sed -e "s/src\/\(.*\).cpp$/\1/g")
-skip="igl_inline
-EPS
-sparse
-setdiff
+skip="
 ARAPEnergyType
-rotation_matrix_from_directions
-verbose
-colon
-min_quad_with_fixed.impl
-find
-unique
-IGL_ASSERT
-tinyply
-cat
-speye
-pathinfo
+EPS
 Hit
+IGL_ASSERT
 LinSpaced
-repmat
-repdiag
-unique_rows
-sortrows
-redux
-sum
+PI
+cat
+colon
 cumsum
-slice
-get_seconds
-matrix_to_list
 decimate_callback_types
-sort
-placeholders
+find
+get_seconds
+igl_inline
 list_to_matrix
+matrix_to_list
+min_quad_with_fixed.impl
 parallel_for
-PI"
+pathinfo
+placeholders
+quadric_binary_plus_operator
+redux
+repdiag
+repmat
+rotation_matrix_from_directions
+setdiff
+slice
+sort
+sortrows
+sparse
+speye
+sum
+tinyply
+unique
+unique_rows
+verbose
+decimate_trivial_callbacks
+edges
+for_each
+generate_default_urbg
+max_size
+min
+min_size
+collapse_edge
+max
+mode
+main
+gl
+opengl/glfw/Viewer
+C_STR
+STR
+"
 # combine these into exclude
 exclude=$(echo -e "$already\n$skip" | sort | uniq)
-echo $exclude
 
 # but don't include any from exclude
 
 # Run grep and filter out excluded files
-grep -ho '#include "[^"]\+"' "$1"/*.{h,cpp} | \
-  sed 's/#include "\(.*\).h"/\1/' | \
-grep -v -F -w -f <(echo "$exclude") | \
-sort | uniq -c | sort -n
+include_igl=$(grep -hor '#include "[^"]\+"' /Users/alecjacobson/Repos/libigl/include/igl/ | sed 's/#include "\(.*\).h"/\1/')
+# remove any .cpp includes
+include_igl=$(echo "$include_igl" | grep -v -F ".cpp")
+# remove any number of "../" from the beginning of the line
+include_igl=$(echo "$include_igl" | sed -e 's#^\(\.\./\)*##')
+# stray includes
+include_igl=$(echo "$include_igl" | grep -v -F "#include")
+
+tutorial_igl=$(grep -hor '#include <[^>]\+>' /Users/alecjacobson/Repos/libigl/tutorial/ | sed -n 's/#include <igl\/\(.*\).h>/\1/p')
+tests_igl=$(grep -hor '#include <[^>]\+>' /Users/alecjacobson/Repos/libigl/tests/ | sed -n 's/#include <igl\/\(.*\).h>/\1/p')
+# append to include_igl
+all=$(echo -e "$include_igl\n$tutorial_igl\n$tests_igl")
+#
+echo "$all" | grep -v -F -w -f <(echo "$exclude") | sort | uniq -c | sort -n
