@@ -4,6 +4,8 @@ import numpy as np
 import scipy.sparse
 # timing
 import time
+import warnings
+
 
 #def rand_sparse(n,density):
 #    n_features = n
@@ -260,3 +262,38 @@ VS = np.array([0],dtype=np.int64)
 VT = np.array([1],dtype=np.int64)
 D = igl.exact_geodesic(V,F,VS=VS,VT=VT)
 
+
+try:
+    import igl.triangle
+    V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype=np.float64)
+    E = np.array([[0,1],[1,2],[2,3],[3,0]],dtype=np.int64)
+    V,T,_,_,_ = igl.triangle.triangulate(V,E,flags="Qc")
+    V,T,_,_,_ = igl.triangle.triangulate(V,E,flags="Q")
+    V,T,_,_,_ = igl.triangle.triangulate(V,E,flags="Qqa0.1")
+except ImportError:
+    warnings.warn("igl.triangle not available")
+    pass
+
+try:
+    import igl.copyleft.tetgen
+    # octahedron
+    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
+    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
+    V,T,F,_,_,_,_,_,_ = igl.copyleft.tetgen.tetrahedralize(V,F,flags="Q")
+except ImportError:
+    warnings.warn("igl.copyleft.tetgen not available")
+    pass
+
+try:
+    import igl.copyleft.cgal
+    # tetrahedron
+    VA = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]],dtype=np.float64)
+    T = np.array([[0,1,2,3]],dtype=np.int64)
+    FA,_,_ = igl.boundary_facets(T)
+    # flip z
+    VB = np.array([[0,0,1],[2,0,1],[0,2,1],[1,1,-1]],dtype=np.float64)
+    FB = FA[:,::-1]
+    VC,FC,J = igl.copyleft.cgal.mesh_boolean(VA,FA,VB,FB,"union")
+except ImportError:
+    warnings.warn("igl.copyleft.tetgen not available")
+    pass

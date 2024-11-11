@@ -29,10 +29,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nanobind)
 
 # Download and set up libigl
+option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       ON)
+option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       ON)
+option(LIBIGL_COPYLEFT_TETGEN "Build target igl_copyleft::tetgen"       ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG b354782fbc527e846a1933d755001dd23b79d80f
+  GIT_TAG 00eb7032a8944666c5c1d9941768f4b35b2f4971
 )
 FetchContent_MakeAvailable(libigl)
 
@@ -58,32 +61,84 @@ option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       OFF)
 option(LIBIGL_COPYLEFT_TETGEN "Build target igl_copyleft::tetgen"       OFF)
 option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       OFF)
 
-# A module for writing bindings with our framework
-file(GLOB PYIGL_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-set(BINDING_SOURCES ${PYIGL_SOURCES})
-list(REMOVE_ITEM BINDING_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/module.cpp")  # Exclude module.cpp
 
-# Generate the function calls based on filenames
-set(BINDING_DECLARATIONS "")
-foreach(source_file ${BINDING_SOURCES})
-    get_filename_component(filename ${source_file} NAME_WE)
-    set(BINDING_DECLARATIONS "${BINDING_DECLARATIONS}extern void bind_${filename}(nb::module_ &m);\n")
-    set(BINDING_INVOCATIONS "${BINDING_INVOCATIONS}    bind_${filename}(m);\n")
-endforeach()
-# make a temporary folder in the build directory to store the generated files
-file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/include")
-# write contents into BINDING_DECLARATIONS.h and BINDING_INVOCATIONS.h
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/include/BINDING_DECLARATIONS.in" "${BINDING_DECLARATIONS}")
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/include/BINDING_INVOCATIONS.in" "${BINDING_INVOCATIONS}")
+# don't need to worry about nested modules (opengl/** are the only ones and
+# those probably aren't ever getting python bindings)
+#
+# prefix is either "", "copyleft", or "restricted"
+function(pyigl_include prefix name)
+  string(TOUPPER "${prefix}" prefix_uc)
+  string(TOUPPER "${name}" name_uc)
+  if(prefix_uc)
+      string(PREPEND prefix_uc _)
+  endif()
+  string(TOLOWER "${prefix_uc}" prefix_lc)
+  # if(LIBIGL${prefix_uc}_${name_uc}) or name == "core"
+  if(LIBIGL${prefix_uc}_${name_uc} OR name STREQUAL "core")
+    if("${prefix}" STREQUAL "copyleft")
+      set(subpath "copyleft/${name}")
+    elseif("${name}" STREQUAL "core")
+      set(subpath "")
+    else() # "" or "restricted"
+      set(subpath "${name}")
+    endif()
+    file(GLOB sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/*.cpp")
+    set(BINDING_SOURCES ${sources})
+    list(FILTER BINDING_SOURCES EXCLUDE REGEX ".*/module\\.cpp$")
+    # Generate the function calls based on filenames
+    set(BINDING_DECLARATIONS "")
+    foreach(source_file ${BINDING_SOURCES})
+      get_filename_component(filename ${source_file} NAME_WE)
+      set(BINDING_DECLARATIONS "${BINDING_DECLARATIONS}extern void bind_${filename}(nb::module_ &m);\n")
+      set(BINDING_INVOCATIONS "${BINDING_INVOCATIONS}    bind_${filename}(m);\n")
+    endforeach()
+    # make a temporary folder in the build directory to store the generated files
+    set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/include/${subpath}")
+    file(MAKE_DIRECTORY "${generated_dir}")
+    # write contents into BINDING_DECLARATIONS.h and BINDING_INVOCATIONS.h
+    file(WRITE "${generated_dir}/BINDING_DECLARATIONS.in" "${BINDING_DECLARATIONS}")
+    file(WRITE "${generated_dir}/BINDING_INVOCATIONS.in" "${BINDING_INVOCATIONS}")
 
-nanobind_add_module(pyigl ${PYIGL_SOURCES})
 
-target_link_libraries(pyigl PRIVATE igl::core)
-target_include_directories(pyigl PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/include")
-target_include_directories(pyigl PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-set_target_properties(pyigl PROPERTIES 
-  LIBRARY_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
-  RUNTIME_OUTPUT_DIRECTORY "${PYIGL_OUTPUT_DIRECTORY}"
-  LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
-  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PYIGL_OUTPUT_DIRECTORY}"
-  )
+    set(target_name "pyigl${prefix_lc}_${name}")
+    nanobind_add_module(${target_name} ${sources})
+
+    if("${name}" STREQUAL "core")
+      target_link_libraries(${target_name} PRIVATE igl::core)
+    else()
+      target_link_libraries(${target_name} PRIVATE igl::core igl${prefix_lc}::${name})
+    endif()
+    target_include_directories(${target_name} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/include")
+    target_include_directories(${target_name} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+    set(output_dir "${PYIGL_OUTPUT_DIRECTORY}/${subpath}")
+    file(MAKE_DIRECTORY ${output_dir})
+    file(WRITE "${output_dir}/__init__.py" "from .${target_name} import *\n")
+    if("${name}" STREQUAL "core")
+      file(APPEND "${output_dir}/__init__.py" "from ._version import __version__\n")
+    endif()
+    set_target_properties(${target_name} PROPERTIES 
+        LIBRARY_OUTPUT_DIRECTORY         "${output_dir}"
+        RUNTIME_OUTPUT_DIRECTORY         "${output_dir}"
+        LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
+    )
+    # just to add dependency?
+
+    if("${name}" STREQUAL "core")
+    else()
+      target_link_libraries(pyigl_core INTERFACE ${target_name})
+    endif()
+  endif()
+endfunction()
+
+pyigl_include("" "core")
+if(LIBIGL_RESTRICTED_TRIANGLE)
+  pyigl_include("restricted" "triangle")
+endif()
+if(LIBIGL_COPYLEFT_CGAL)
+  pyigl_include("copyleft" "cgal")
+endif()
+if(LIBIGL_COPYLEFT_TETGEN)
+  pyigl_include("copyleft" "tetgen")
+endif()
+
