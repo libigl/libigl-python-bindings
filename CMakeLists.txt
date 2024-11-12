@@ -29,13 +29,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nanobind)
 
 # Download and set up libigl
-option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       ON)
-option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       ON)
-option(LIBIGL_COPYLEFT_TETGEN "Build target igl_copyleft::tetgen"       ON)
+option(LIBIGL_COPYLEFT_CORE        "Build target igl_copyleft::core"       ON)
+option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
+option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       ON)
+option(LIBIGL_COPYLEFT_TETGEN      "Build target igl_copyleft::tetgen"     ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG 0971aecc2349feed0dc010ed85dcece607cb0b14
+  GIT_TAG e60c377f953ae70e66ceefed42cec73aec044f92
 )
 FetchContent_MakeAvailable(libigl)
 
@@ -76,13 +77,18 @@ function(pyigl_include prefix name)
   # if(LIBIGL${prefix_uc}_${name_uc}) or name == "core"
   if(LIBIGL${prefix_uc}_${name_uc} OR name STREQUAL "core")
     if("${prefix}" STREQUAL "copyleft")
-      set(subpath "copyleft/${name}")
+      if("${name}" STREQUAL "core")
+        set(subpath "copyleft")
+      else()
+        set(subpath "copyleft/${name}")
+      endif()
     elseif("${name}" STREQUAL "core")
       set(subpath "")
     else() # "" or "restricted"
       set(subpath "${name}")
     endif()
     file(GLOB sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/*.cpp")
+
     set(BINDING_SOURCES ${sources})
     list(FILTER BINDING_SOURCES EXCLUDE REGEX ".*/module\\.cpp$")
     # Generate the function calls based on filenames
@@ -99,7 +105,6 @@ function(pyigl_include prefix name)
     file(WRITE "${generated_dir}/BINDING_DECLARATIONS.in" "${BINDING_DECLARATIONS}")
     file(WRITE "${generated_dir}/BINDING_INVOCATIONS.in" "${BINDING_INVOCATIONS}")
 
-
     set(target_name "pyigl${prefix_lc}_${name}")
     nanobind_add_module(${target_name} ${sources})
 
@@ -113,7 +118,7 @@ function(pyigl_include prefix name)
     set(output_dir "${PYIGL_OUTPUT_DIRECTORY}/${subpath}")
     file(MAKE_DIRECTORY ${output_dir})
     file(WRITE "${output_dir}/__init__.py" "from .${target_name} import *\n")
-    if("${name}" STREQUAL "core")
+    if("${name}" STREQUAL "core" AND "${prefix}" STREQUAL "")
       file(APPEND "${output_dir}/__init__.py" "from ._version import __version__\n")
     endif()
     set_target_properties(${target_name} PROPERTIES 
@@ -132,6 +137,9 @@ function(pyigl_include prefix name)
 endfunction()
 
 pyigl_include("" "core")
+if(LIBIGL_COPYLEFT_CORE)
+  pyigl_include("copyleft" "core")
+endif()
 if(LIBIGL_RESTRICTED_TRIANGLE)
   pyigl_include("restricted" "triangle")
 endif()
@@ -141,4 +149,5 @@ endif()
 if(LIBIGL_COPYLEFT_TETGEN)
   pyigl_include("copyleft" "tetgen")
 endif()
+
 

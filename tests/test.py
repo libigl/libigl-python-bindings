@@ -45,6 +45,11 @@ import warnings
 #
 #time_noop()
 
+# print(igl.matlab_format(V,"V"))
+# print(igl.matlab_format_index(F,"F"))
+# print(igl.matlab_format(dV,"dV"))
+# print(igl.matlab_format_index(dF,"dF"))
+
 # seed numpy's random number generator
 np.random.seed(42)
 
@@ -263,6 +268,7 @@ VT = np.array([1],dtype=np.int64)
 D = igl.exact_geodesic(V,F,VS=VS,VT=VT)
 
 dV,dF,J,I = igl.decimate(V,F)
+dV,dF,J,I = igl.qslim(V,F)
 
 V,Q,E = igl.quad_grid(3,3);
 V,F = igl.triangulated_grid(3,3);
@@ -281,6 +287,8 @@ V = V[:,:2]
 igl.arap_precomputation(V,F,V.shape[1],b,data)
 U = igl.arap_solve(bc,data,U)
 
+U,Q = igl.lscm(V,F,b,bc)
+
 res = np.array([3,3,3],dtype=np.int64)
 GV = igl.grid(res)
 S = np.sqrt(((GV - np.array([0.5,0.5,0.5],dtype=np.float64))**2).sum(axis=1))-0.25;
@@ -297,6 +305,19 @@ try:
     V,T,_,_,_ = igl.triangle.triangulate(V,E,flags="Qqa0.1")
 except ImportError:
     warnings.warn("igl.triangle not available")
+    pass
+
+try:
+    import igl.copyleft
+    V = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]],dtype=np.float64)
+    T = np.array([[0,1,2,3]],dtype=np.int64)
+    F,_,_ = igl.boundary_facets(T)
+    V,F = igl.loop(V,F)
+
+    dV,dF,J = igl.copyleft.progressive_hulls(V,F)
+
+except ImportError:
+    warnings.warn("igl.copyleft not available")
     pass
 
 try:
@@ -318,7 +339,28 @@ try:
     # flip z
     VB = np.array([[0,0,1],[2,0,1],[0,2,1],[1,1,-1]],dtype=np.float64)
     FB = FA[:,::-1]
+    IF,_,_,_,_ = igl.copyleft.cgal.intersect_other(VA,FA,VB,FB)
+    IF,_,_,_,_ = igl.copyleft.cgal.intersect_other(VA,FA,VB,FB,detect_only=True,first_only=True)
     VC,FC,J = igl.copyleft.cgal.mesh_boolean(VA,FA,VB,FB,"union")
+    H = igl.copyleft.cgal.convex_hull(VC)
+    # concatenate A and B meshes
+    VC = np.vstack((VA,VB))
+    FC = np.vstack((FA,FB+VA.shape[0]))
+    VV,FF,IF,J,IM = igl.copyleft.cgal.remesh_self_intersections(VC,FC)
+    _,_,IF,_,_ = igl.copyleft.cgal.remesh_self_intersections(VC,FC,detect_only=True,first_only=True)
+
+    p = np.array([0,0,0],dtype=np.float64)
+    n = np.array([1,1,1],dtype=np.float64)
+    VV,FF,J = igl.copyleft.cgal.intersect_with_half_space(VC,FC,p,n)
+    equ = np.hstack((n,-n.dot(p)))
+    VV,FF,J = igl.copyleft.cgal.intersect_with_half_space(VC,FC,equ)
+
+    P = np.array([[0.5,0.5,0.0],[0.5,0.5,0.5]],dtype=np.float64)
+    W = igl.copyleft.cgal.fast_winding_number(VA,FA,P)
+    W = igl.copyleft.cgal.fast_winding_number(VA,FA,P,expansion_order=2,beta=2.0)
+
+    VC,FC,D,J = igl.copyleft.cgal.trim_with_solid(VA,FA,VB,FB)
+
 except ImportError:
-    warnings.warn("igl.copyleft.tetgen not available")
+    warnings.warn("igl.copyleft.cgal not available")
     pass

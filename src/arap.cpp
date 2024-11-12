@@ -33,7 +33,6 @@ namespace pyigl
     igl::ARAPData &data,
     const nb::DRef<const Eigen::MatrixXN> & U0)
   {
-    printf("pyigl::arap_solve\n");
     // igl::arap_solve expects U to be both the initial guess and the output 
     // not sure how to avoid this copy
     Eigen::MatrixXN U = U0;
