@@ -79,9 +79,9 @@ M = igl.massmatrix(V,F)
 M = igl.massmatrix(V,F,type="barycentric")
 M = igl.massmatrix(V,F,type="voronoi")
 M = igl.massmatrix(V,F,type="full")
+FN,_,_,_ = igl.per_face_normals(V,I,C)
 FN = igl.per_face_normals(V,F)
 FN = igl.per_face_normals(V,F,Z=np.array([0,0,1],dtype=np.float64))
-FN,_,_,_ = igl.per_face_normals(V,I,C)
 VN = igl.per_vertex_normals(V,F)
 VN = igl.per_vertex_normals(V,F,weighting="uniform")
 VN = igl.per_vertex_normals(V,F,weighting="area")
@@ -266,15 +266,22 @@ dV,dF,J,I = igl.decimate(V,F)
 
 V,Q,E = igl.quad_grid(3,3);
 V,F = igl.triangulated_grid(3,3);
-V_init = V.copy()
+# slim needs 3D data even if the problem is 2D
+V = np.c_[V, np.zeros(V.shape[0])]
+V_init = V[:,:2]
 V_init[:,0] = V_init[:,0] * 2
 b = np.array([0,1],dtype=np.int64)
-bc = V[b,:]
+bc = V[b,:2]
 data = igl.slim_precompute(V,F,V_init,"symmetric_dirichlet",b,bc,soft_p=1e10)
 U = igl.slim_solve(data,iter_num=1)
 
+data = igl.ARAPData()
+data.energy = igl.ARAPEnergyType.ARAP_ENERGY_TYPE_SPOKES_AND_RIMS
+V = V[:,:2]
+igl.arap_precomputation(V,F,V.shape[1],b,data)
+U = igl.arap_solve(bc,data,U)
 
-res =np.array([3,3,3],dtype=np.int64)
+res = np.array([3,3,3],dtype=np.int64)
 GV = igl.grid(res)
 S = np.sqrt(((GV - np.array([0.5,0.5,0.5],dtype=np.float64))**2).sum(axis=1))-0.25;
 V,F,E2V = igl.marching_cubes(S,GV,res[0],res[1],res[2])

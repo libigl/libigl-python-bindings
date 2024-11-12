@@ -35,7 +35,7 @@ option(LIBIGL_COPYLEFT_TETGEN "Build target igl_copyleft::tetgen"       ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG 00eb7032a8944666c5c1d9941768f4b35b2f4971
+  GIT_TAG 0971aecc2349feed0dc010ed85dcece607cb0b14
 )
 FetchContent_MakeAvailable(libigl)
 

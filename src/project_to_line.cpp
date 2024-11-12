@@ -13,8 +13,8 @@ namespace pyigl
   // Wrapper for the multiple points overload of project_to_line
   auto project_to_line(
     const nb::DRef<const Eigen::MatrixXN> &P,
-    const nb::DRef<const Eigen::VectorXN> &S,
-    const nb::DRef<const Eigen::VectorXN> &D)
+    const nb::DRef<const Eigen::RowVectorXN> &S,
+    const nb::DRef<const Eigen::RowVectorXN> &D)
   {
     Eigen::VectorXN t;
     Eigen::VectorXN sqrD;

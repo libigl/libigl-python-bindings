@@ -35,7 +35,7 @@ namespace pyigl
   {
     Eigen::MatrixXN V;
     Eigen::MatrixXI F;
-    igl::marching_cubes(S,GV,nx,ny,nz,isovalue,V,F);
+    igl::marching_cubes(S,GV,GI,isovalue,V,F);
     return std::make_tuple(V,F);
   }
 }
@@ -73,7 +73,7 @@ EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.i
 
   m.def(
     "marching_cubes",
-    &pyigl::marching_cubes, 
+    &pyigl::marching_cubes_sparse, 
     "S"_a, 
     "GV"_a,
     "GI"_a,

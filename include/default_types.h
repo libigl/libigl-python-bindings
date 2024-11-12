@@ -10,11 +10,14 @@
 ///////////////////////////////////////////////////////////////////////////////////
 using Numeric = double;
 using Integer = int64_t;
-//constexpr auto Options = Eigen::RowMajor;
+// When using `const nb::DRef<const Eigen::MatrixX*>` this `Options` does not
+// affect the input types (either order should result in no copy if `dtype`s
+// match). It does affect return types, `Eigen::MatrixXN X; … ; return X;`
+constexpr auto Options = Eigen::RowMajor;
 namespace Eigen
 {
-  typedef Matrix<Numeric, Dynamic, Dynamic> MatrixXN;
-  typedef Matrix<Integer, Dynamic, Dynamic> MatrixXI;
+  typedef Matrix<Numeric, Dynamic, Dynamic, Options> MatrixXN;
+  typedef Matrix<Integer, Dynamic, Dynamic, Options> MatrixXI;
   typedef Matrix<Numeric, Dynamic, 1, Eigen::ColMajor> VectorXN;
   typedef Matrix<Integer, Dynamic, 1, Eigen::ColMajor> VectorXI;
   typedef Matrix<Numeric, 1, Dynamic, Eigen::RowMajor> RowVectorXN;

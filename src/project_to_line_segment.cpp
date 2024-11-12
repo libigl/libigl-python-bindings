@@ -13,8 +13,8 @@ namespace pyigl
   // Wrapper for project_to_line_segment function
   auto project_to_line_segment(
     const nb::DRef<const Eigen::MatrixXN> &P,
-    const nb::DRef<const Eigen::VectorXN> &S,
-    const nb::DRef<const Eigen::VectorXN> &D)
+    const nb::DRef<const Eigen::RowVectorXN> &S,
+    const nb::DRef<const Eigen::RowVectorXN> &D)
   {
     Eigen::VectorXN t;
     Eigen::VectorXN sqrD;
