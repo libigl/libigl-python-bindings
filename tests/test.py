@@ -218,7 +218,7 @@ R,T,sU,sS,sV = igl.polar_svd(A,include_reflections=True)
 SV,SVI,SVJ = igl.remove_duplicate_vertices(V,epsilon=1e-10)
 SV,SVI,SVJ,F = igl.remove_duplicate_vertices(V,F,epsilon=1e-10)
 
-GV = igl.grid(np.array([2,2,2],dtype=np.int64))
+
 
 model = np.eye(4).astype(np.float64)
 proj = np.eye(4).astype(np.float64)
@@ -262,6 +262,24 @@ VS = np.array([0],dtype=np.int64)
 VT = np.array([1],dtype=np.int64)
 D = igl.exact_geodesic(V,F,VS=VS,VT=VT)
 
+dV,dF,J,I = igl.decimate(V,F)
+
+V,Q,E = igl.quad_grid(3,3);
+V,F = igl.triangulated_grid(3,3);
+V_init = V.copy()
+V_init[:,0] = V_init[:,0] * 2
+b = np.array([0,1],dtype=np.int64)
+bc = V[b,:]
+data = igl.slim_precompute(V,F,V_init,"symmetric_dirichlet",b,bc,soft_p=1e10)
+U = igl.slim_solve(data,iter_num=1)
+
+
+res =np.array([3,3,3],dtype=np.int64)
+GV = igl.grid(res)
+S = np.sqrt(((GV - np.array([0.5,0.5,0.5],dtype=np.float64))**2).sum(axis=1))-0.25;
+V,F,E2V = igl.marching_cubes(S,GV,res[0],res[1],res[2])
+# unpack keys into (i,j,v) index triplets
+EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
 
 try:
     import igl.triangle
