@@ -11,7 +11,8 @@
 #include <igl/in_element.h>
 #include <igl/AABB.h>
 
-using AABB_f64_3 = igl::AABB<Eigen::MatrixXd,3>;
+using AABB_f64_3 = igl::AABB<Eigen::Map<const Eigen::MatrixXd>,3>;
+using AABB_f64_2 = igl::AABB<Eigen::Map<const Eigen::MatrixXd>,2>;
 const char* ds_in_element = R"igl_Qu8mg5v7(
 Determine whether each point in a list of points is in the elements of a mesh.
  
@@ -36,13 +37,13 @@ npe_arg(aabb, AABB_f64_3)
 npe_begin_code()
 
   Eigen::VectorXi I;
-  igl::in_element(V,Ele,Q,aabb,I);
+  Eigen::Map<const Eigen::MatrixXd> V_map(V.data(),V.rows(),V.cols());
+  igl::in_element(V_map,Ele,Q,aabb,I);
   return npe::move(I);
 
 npe_end_code()
 
 
-using AABB_f64_2 = igl::AABB<Eigen::MatrixXd,2>;
 npe_function(in_element_2)
 npe_doc(  ds_in_element)
 npe_arg(V, Eigen::MatrixXd)
@@ -52,7 +53,8 @@ npe_arg(aabb, AABB_f64_2)
 npe_begin_code()
 
   Eigen::VectorXi I;
-  igl::in_element(V,Ele,Q,aabb,I);
+  Eigen::Map<const Eigen::MatrixXd> V_map(V.data(),V.rows(),V.cols());
+  igl::in_element(V_map,Ele,Q,aabb,I);
   return npe::move(I);
 
 npe_end_code()
