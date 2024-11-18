@@ -12,7 +12,7 @@ using namespace nb::literals;
 namespace pyigl
 {
   template <typename AABB>
-  void init(
+  void aabb_init(
     AABB &tree,
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &Ele)
@@ -97,7 +97,7 @@ void bind_AABB(nb::module_ &m)
   typedef igl::AABB<nb::DRef<const Eigen::MatrixXN>,3> AABBN3;
   nb::class_<AABBN3>(m, "AABB")
     .def(nb::init<>())
-    .def("init", &pyigl::init<AABBN3>, "V"_a, "Ele"_a)
+    .def("init", &pyigl::aabb_init<AABBN3>, "V"_a, "Ele"_a)
     .def("find", &pyigl::find<AABBN3>, "V"_a, "Ele"_a, "q"_a, "first"_a=false)
     .def("squared_distance", &pyigl::squared_distance<AABBN3>, "V"_a, "Ele"_a, "P"_a)
     .def("intersect_ray_first",&pyigl::intersect_ray_first<AABBN3>, "V"_a, "Ele"_a, "orig"_a, "dir"_a, "min_t"_a=std::numeric_limits<Numeric>::infinity())

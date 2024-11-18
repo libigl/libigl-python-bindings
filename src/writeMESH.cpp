@@ -2,7 +2,7 @@
 #include <igl/writeMESH.h>
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/dense.h>
-#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 #include <string>
 
 namespace nb = nanobind;
@@ -11,14 +11,14 @@ using namespace nb::literals;
 namespace pyigl
 {
   void writeMESH(
-    const std::string &mesh_file_name,
+    const std::filesystem::path &mesh_file_name,
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &T,
     const nb::DRef<const Eigen::MatrixXI> &F)
   {
     if (!igl::writeMESH(mesh_file_name, V, T, F))
     {
-      throw std::runtime_error("Failed to write .mesh file: " + mesh_file_name);
+      throw std::runtime_error("Failed to write .mesh file: " + mesh_file_name.generic_string());
     }
   }
 }

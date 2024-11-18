@@ -10,7 +10,6 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  // Wrapper for min_quad_with_fixed
   auto min_quad_with_fixed(
     const Eigen::SparseMatrixN &A,
     const nb::DRef<const Eigen::MatrixXN> &B,
@@ -31,53 +30,59 @@ namespace pyigl
     return Z;
   }
 
-  struct MinQuadWithFixed
+  void min_quad_with_fixed_precompute(
+    const Eigen::SparseMatrixN &A,
+    const nb::DRef<const Eigen::VectorXI>  &known,
+    const Eigen::SparseMatrixN &Aeq,
+    const bool pd,
+    igl::min_quad_with_fixed_data<Numeric> &data)
   {
-    igl::min_quad_with_fixed_data<Numeric> data;
-    MinQuadWithFixed(
-      const Eigen::SparseMatrixN &A = Eigen::SparseMatrixN(),
-      const nb::DRef<const Eigen::VectorXI>  &known = Eigen::VectorXI(),
-      const Eigen::SparseMatrixN &Aeq = Eigen::SparseMatrixN(),
-      const bool pd = true)
+    if(!igl::min_quad_with_fixed_precompute(A, known, Aeq, pd, data))
     {
-      if(!igl::min_quad_with_fixed_precompute(A, known, Aeq, pd, data))
-      {
-        throw std::runtime_error("min_quad_with_fixed: Precomputation failed.");
-      }
+      throw std::runtime_error("min_quad_with_fixed: Precomputation failed.");
     }
+  }
 
-    auto solve(
-      const nb::DRef<const Eigen::MatrixXN> &B,
-      const nb::DRef<const Eigen::MatrixXN> &Y,
-      const nb::DRef<const Eigen::MatrixXN> &Beq)
+  auto min_quad_with_fixed_solve(
+    const igl::min_quad_with_fixed_data<Numeric> &data,
+    const nb::DRef<const Eigen::MatrixXN> &B,
+    const nb::DRef<const Eigen::MatrixXN> &Y,
+    const nb::DRef<const Eigen::MatrixXN> &Beq)
+  {
+    Eigen::MatrixXN Z;
+    if(!igl::min_quad_with_fixed_solve(data, B, Y, Beq, Z))
     {
-      Eigen::MatrixXN Z;
-      if(!igl::min_quad_with_fixed_solve(data, B, Y, Beq, Z))
-      {
-        throw std::runtime_error("min_quad_with_fixed: Optimization failed.");
-      }
-      return Z;
+      throw std::runtime_error("min_quad_with_fixed: Optimization failed.");
     }
-  };
+    return Z;
+  }
 
 }
 
 // Bind the wrapper to the Python module
 void bind_min_quad_with_fixed(nb::module_ &m)
 {
-  nb::class_<pyigl::MinQuadWithFixed>(m, "MinQuadWithFixed")
-    .def(nb::init<
-      const Eigen::SparseMatrixN &, 
-      const nb::DRef<const Eigen::VectorXI> &, 
-      const Eigen::SparseMatrixN &,
-      const bool>())
-    .def("solve", &pyigl::MinQuadWithFixed::solve,
+  nb::class_<igl::min_quad_with_fixed_data<Numeric>>(m, "min_quad_with_fixed_data")
+    .def(nb::init<>())
+    ;
+
+  m.def("min_quad_with_fixed_solve", 
+      &pyigl::min_quad_with_fixed_solve,
+      "data"_a,
       "B"_a=Eigen::MatrixXN(),
       "Y"_a=Eigen::MatrixXN(),
       "Beq"_a=Eigen::MatrixXN(),
-      R"(Solve the precomputed quadratic optimization problem.)")
+      R"(Solve the precomputed convex quadratic optimization problem.)")
     ;
-
+  m.def("min_quad_with_fixed_precompute", 
+      &pyigl::min_quad_with_fixed_precompute,
+      "A"_a          = Eigen::SparseMatrixN(),
+      "known"_a      = Eigen::VectorXI()     ,
+      "Aeq"_a        = Eigen::SparseMatrixN(),
+      "pd"_a         = true                  ,
+      "data"_a,
+      R"(Precompute convex quadratic optimization problem.)")
+    ;
 
   m.def(
     "min_quad_with_fixed",

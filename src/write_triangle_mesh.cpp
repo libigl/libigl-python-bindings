@@ -3,7 +3,7 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
-#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 #include <limits>
 
 namespace nb = nanobind;
@@ -12,20 +12,11 @@ using namespace nb::literals;
 namespace pyigl
 {
   void write_triangle_mesh(
-    const std::string & filename,
+    const std::filesystem::path & filename,
     const nb::DRef<const Eigen::MatrixXN> V,
     const nb::DRef<const Eigen::MatrixXI> F,
-    const std::string encoding)
+    const igl::FileEncoding encoding_enum)
   {
-    auto encoding_enum = igl::FileEncoding::Ascii;
-    if(encoding == "binary")
-    {
-      encoding_enum = igl::FileEncoding::Binary;
-    }else if(encoding != "ascii")
-    {
-      // throw runtime exception
-      throw std::runtime_error("Invalid encoding: " + encoding);
-    }
     // Throw an error if entries in F are bigger than can be cast to int32_t
     if(F.maxCoeff() > std::numeric_limits<std::int32_t>::max())
     {
@@ -36,7 +27,7 @@ namespace pyigl
     if(!igl::write_triangle_mesh(filename,V,F32,encoding_enum))
     {
       // throw runtime exception
-      throw std::runtime_error("Failed to write mesh to: " + filename);
+      throw std::runtime_error("Failed to write mesh to: " + filename.generic_string());
     }
   }
 }
@@ -50,7 +41,7 @@ void bind_write_triangle_mesh(nb::module_ &m)
     "filename"_a,
     "V"_a, 
     "F"_a, 
-    "encoding"_a="ascii",
+    "encoding"_a=igl::FileEncoding::Ascii,
 R"(write mesh to a file with automatic detection of file format.  supported:
 obj, off, stl, wrl, ply, mesh).
 

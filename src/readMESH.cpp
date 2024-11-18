@@ -2,7 +2,7 @@
 #include <igl/readMESH.h>
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/dense.h>
-#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 #include <nanobind/stl/tuple.h>
 #include <string>
 
@@ -11,7 +11,7 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  auto readMESH(const std::string& mesh_file_name)
+  auto readMESH(const std::filesystem::path& mesh_file_name)
   {
     Eigen::MatrixXN V;  // Vertex positions
     Eigen::MatrixXI T;  // Tetrahedral indices
@@ -19,7 +19,7 @@ namespace pyigl
 
     if (!igl::readMESH(mesh_file_name, V, T, F))
     {
-      throw std::runtime_error("Failed to read .mesh file: " + mesh_file_name);
+      throw std::runtime_error("Failed to read .mesh file: " + mesh_file_name.generic_string());
     }
 
     return std::make_tuple(V, T, F);

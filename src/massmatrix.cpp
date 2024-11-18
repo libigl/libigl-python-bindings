@@ -14,28 +14,10 @@ namespace pyigl
   auto massmatrix(
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F,
-    const std::string type)
+    const igl::MassMatrixType type)
   {
     Eigen::SparseMatrixN M;
-    igl::MassMatrixType t;
-    if(type == "barycentric")
-    {
-      t = igl::MASSMATRIX_TYPE_BARYCENTRIC;
-    }else if(type == "voronoi")
-    {
-      t = igl::MASSMATRIX_TYPE_VORONOI;
-    }else if(type == "full")
-    {
-      t = igl::MASSMATRIX_TYPE_FULL;
-    }else if(type == "default")
-    {
-      t = igl::MASSMATRIX_TYPE_DEFAULT;
-    }else
-    {
-      throw std::runtime_error("massmatrix: unknown type");
-    }
-    igl::massmatrix(V,F,t,M);
-
+    igl::massmatrix(V,F,type,M);
     return M;
   }
 }
@@ -43,12 +25,19 @@ namespace pyigl
 // Bind the wrapper to the Python module
 void bind_massmatrix(nb::module_ &m)
 {
+  nb::enum_<igl::MassMatrixType>(m, "MassMatrixType")
+    .value("MASSMATRIX_TYPE_BARYCENTRIC", igl::MASSMATRIX_TYPE_BARYCENTRIC)
+    .value("MASSMATRIX_TYPE_VORONOI", igl::MASSMATRIX_TYPE_VORONOI)
+    .value("MASSMATRIX_TYPE_FULL", igl::MASSMATRIX_TYPE_FULL)
+    .value("MASSMATRIX_TYPE_DEFAULT", igl::MASSMATRIX_TYPE_DEFAULT)
+    .export_values()
+    ;
   m.def(
     "massmatrix",
     &pyigl::massmatrix, 
     "V"_a, 
     "F"_a,
-    "type"_a="default",
+    "type"_a=igl::MASSMATRIX_TYPE_DEFAULT,
 R"(Constructs the mass (area) matrix for a given mesh (V,F).
 
 @tparam DerivedV  derived type of eigen matrix for V (e.g. derived from

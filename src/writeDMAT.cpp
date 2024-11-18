@@ -3,7 +3,7 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/dense.h>
 #include <nanobind/stl/vector.h>
-#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
@@ -12,7 +12,7 @@ namespace pyigl
 {
   // Wrapper for writeDMAT with Eigen matrix input
   bool writeDMAT(
-    const std::string &file_name,
+    const std::filesystem::path &file_name,
     const nb::DRef<const Eigen::MatrixXN> &W, 
     const bool ascii)
   {

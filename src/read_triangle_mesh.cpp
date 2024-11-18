@@ -4,6 +4,7 @@
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
 #include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 #include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
@@ -12,14 +13,14 @@ using namespace nb::literals;
 namespace pyigl
 {
   auto read_triangle_mesh(
-    const std::string str)
+    const std::filesystem::path & path)
   {
     Eigen::MatrixXN V;
     Eigen::MatrixXI F;
-    if(!igl::read_triangle_mesh(str,V,F))
+    if(!igl::read_triangle_mesh(path,V,F))
     {
       // throw runtime exception
-      throw std::runtime_error("Failed to read mesh from: " + str);
+      throw std::runtime_error("Failed to read mesh from: " + path.generic_string());
     }
     return std::make_tuple(V,F);
   }

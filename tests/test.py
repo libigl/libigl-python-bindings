@@ -63,7 +63,7 @@ V = np.array([[0,0,0],[1,0,0],[1,1,0],[0,1,0]],dtype=np.float64)
 l = igl.edge_lengths(V,F)
 igl.write_triangle_mesh("out.obj",V,F)
 igl.write_triangle_mesh("out.off",V,F)
-igl.write_triangle_mesh("out.ply",V,F,encoding="binary")
+igl.write_triangle_mesh("out.ply",V,F,encoding=igl.Binary)
 igl.writePLY("out.ply",V,F)
 igl.writeOBJ("out.obj",V,F)
 igl.writeOBJ("out.obj",V,F,V,F,V,F)
@@ -74,6 +74,7 @@ L = igl.cotmatrix(V,F)
 I = np.array([0,1,2,3],dtype=np.int64)
 C = np.array([0,4],dtype=np.int64)
 L,M,P = igl.cotmatrix_polygon(V,I,C)
+A = igl.facet_adjacency_matrix(F)
 A = igl.adjacency_matrix(F)
 A = igl.adjacency_matrix_polygon(I,C)
 E = igl.edges(F)
@@ -81,17 +82,17 @@ E = igl.edges(I,C)
 E = igl.edges(A)
 
 M = igl.massmatrix(V,F)
-M = igl.massmatrix(V,F,type="barycentric")
-M = igl.massmatrix(V,F,type="voronoi")
-M = igl.massmatrix(V,F,type="full")
+M = igl.massmatrix(V,F,type=igl.MASSMATRIX_TYPE_BARYCENTRIC)
+M = igl.massmatrix(V,F,type=igl.MASSMATRIX_TYPE_VORONOI)
+M = igl.massmatrix(V,F,type=igl.MASSMATRIX_TYPE_DEFAULT)
 FN,_,_,_ = igl.per_face_normals(V,I,C)
 FN = igl.per_face_normals(V,F)
 FN = igl.per_face_normals(V,F,Z=np.array([0,0,1],dtype=np.float64))
 VN = igl.per_vertex_normals(V,F)
-VN = igl.per_vertex_normals(V,F,weighting="uniform")
-VN = igl.per_vertex_normals(V,F,weighting="area")
-VN = igl.per_vertex_normals(V,F,weighting="angle")
-VN = igl.per_vertex_normals(V,F,weighting="angle",FN=FN)
+VN = igl.per_vertex_normals(V,F,      weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_UNIFORM)
+VN = igl.per_vertex_normals(V,F,      weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA)
+VN = igl.per_vertex_normals(V,F,      weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE)
+VN = igl.per_vertex_normals(V,F,FN=FN,weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE)
 
 dblA = igl.doublearea(V,F)
 dblA = igl.doublearea(l=l)
@@ -102,7 +103,7 @@ W = igl.winding_number(V,F,P)
 W = igl.winding_number(V,F,P[1,:])
 W = igl.fast_winding_number(V,F,P)
 S,I,C,N = igl.signed_distance(P,V,F)
-S,I,C,N = igl.signed_distance(P,V,F,sign_type="fast_winding_number")
+S,I,C,N = igl.signed_distance(P,V,F,sign_type=igl.SignedDistanceType.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER)
 
 BC = igl.barycenter(V,F)
 
@@ -114,11 +115,14 @@ W = igl.harmonic(V,F,b,bc,k=2)
 
 
 V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+F = np.array([[2,1,0],[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
 T = np.array([[0,1,2,3]],dtype=np.int64)
 F,J,K = igl.boundary_facets(T)
 igl.writeMESH("out.mesh",V,T)
 igl.writeMESH("out.mesh",V,T,F=F)
 V,T,F = igl.readMESH("out.mesh")
+igl.writeMSH("out.msh",V,F,T)
+V,F,T,_,_,_,_,_,_,_ = igl.readMSH("out.msh")
 
 tree = igl.AABB()
 tree.init(V,T)
@@ -126,6 +130,9 @@ tree.init(V,T)
 q = P[0,:]
 I = tree.find(V,T,q)
 i = tree.find(V,T,q,first=True)
+
+Q = igl.barycenter(V,T)
+I = igl.in_element(V,T,Q,tree)
 
 tree = igl.AABB()
 tree.init(V,F)
@@ -141,13 +148,25 @@ hit = igl.ray_mesh_intersect(o,d,V,F,first=True)
 hits = igl.ray_mesh_intersect(o,d,V,F)
 
 
+# upsample so there's something to collapse
+V,F = igl.upsample(V,F,number_of_subdivs=1)
 E,uE,EMAP,uE2E = igl.unique_edge_map_lists(F)
 E,uE,EMAP,uEC,uEE = igl.unique_edge_map(F)
 EF,EI = igl.edge_flaps(F,uE,EMAP)
 uE,EMAP,EF,EI = igl.edge_flaps(F)
 Nv,Nf = igl.circulation(0,True,F,EMAP,EF,EI)
 
+e = 0
+p = V[uE[e,0],:]
+e1,e2,f1,f2 = igl.collapse_edge(e,p,V,F,uE,EMAP,EF,EI)
 
+
+# restore single tet
+V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+F = np.array([[2,1,0],[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
+T = np.array([[0,1,2,3]],dtype=np.int64)
+C = np.ones(F.shape,dtype=bool)
+Vn,Fn,I = igl.cut_mesh(V,F,C)
 
 TT,TTi = igl.triangle_triangle_adjacency(F)
 TT,TTi = igl.triangle_triangle_adjacency_lists(F)
@@ -159,6 +178,10 @@ F012 = F;
 F120 = np.roll(F012,1,axis=1)
 FF = np.vstack((F012,F120))
 F,IA,IC = igl.unique_simplices(FF)
+A = np.array([[1,2,3],[1,2,4],[3,2,1],[5,6,7]],dtype=np.int64)
+B = np.array([[1,2,3],[5,6,2],[1,2,4],[3,2,1]],dtype=np.int64)
+IA,LOCB = igl.ismember_rows(A,B)
+
 
 
 L = igl.cotmatrix(V,F)
@@ -176,7 +199,9 @@ Y = np.array([-1,1],dtype=np.float64).reshape(-1, 1)
 Aeq = scipy.sparse.csc_matrix(([-1,1],([0,0],[0,3])),shape=(1,V.shape[0]))
 Beq = np.zeros((1,1),dtype=np.float64)
 Z = igl.min_quad_with_fixed(A,B,known,Y,Aeq,Beq,pd=True)
-Z = igl.MinQuadWithFixed(A,known,Aeq,True).solve(B,Y,Beq)
+data = igl.min_quad_with_fixed_data()
+igl.min_quad_with_fixed_precompute(A,known,Aeq,True,data)
+Z = igl.min_quad_with_fixed_solve(data,B,Y,Beq)
 
 V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
 T = np.array([[0,1,2,3]],dtype=np.int64)
@@ -242,6 +267,7 @@ V,F = igl.upsample(V,F,number_of_subdivs=1)
 V,F = igl.loop(V,F,number_of_subdivs=1)
 # remove first and last
 F = F[1:-1,:]
+L_all = igl.boundary_loop_all(F)
 L = igl.boundary_loop(F)
 
 A = igl.adjacency_list(F)
@@ -251,7 +277,11 @@ GV,side = igl.voxel_grid(V,s=10)
 GV,side = igl.voxel_grid(V,s=10,offset=0.1,pad_count=2)
 
 C = igl.vertex_components(F)
+nc,C = igl.facet_components(F)
 B,I,X = igl.random_points_on_mesh(1000,V,F)
+
+point_indices, CH,CN,W = igl.octree(X)
+I = igl.knn(X,X,1,point_indices,CH,CN,W)
 
 igl.writeDMAT("out.dmat",V)
 igl.writeDMAT("out.dmat",V,ascii=True)
@@ -278,7 +308,7 @@ V_init = V[:,:2]
 V_init[:,0] = V_init[:,0] * 2
 b = np.array([0,1],dtype=np.int64)
 bc = V[b,:2]
-data = igl.slim_precompute(V,F,V_init,"symmetric_dirichlet",b,bc,soft_p=1e10)
+data = igl.slim_precompute(V,F,V_init,igl.MappingEnergyType.ARAP,b,bc,soft_p=1e10)
 U = igl.slim_solve(data,iter_num=1)
 
 data = igl.ARAPData()
@@ -289,6 +319,7 @@ U = igl.arap_solve(bc,data,U)
 
 U,Q = igl.lscm(V,F,b,bc)
 
+
 res = np.array([3,3,3],dtype=np.int64)
 GV = igl.grid(res)
 S = np.sqrt(((GV - np.array([0.5,0.5,0.5],dtype=np.float64))**2).sum(axis=1))-0.25;
@@ -296,16 +327,29 @@ V,F,E2V = igl.marching_cubes(S,GV,res[0],res[1],res[2])
 # unpack keys into (i,j,v) index triplets
 EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
 
-try:
-    import igl.triangle
-    V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype=np.float64)
-    E = np.array([[0,1],[1,2],[2,3],[3,0]],dtype=np.int64)
-    V,T,_,_,_ = igl.triangle.triangulate(V,E,flags="Qc")
-    V,T,_,_,_ = igl.triangle.triangulate(V,E,flags="Q")
-    V,T,_,_,_ = igl.triangle.triangulate(V,E,flags="Qqa0.1")
-except ImportError:
-    warnings.warn("igl.triangle not available")
-    pass
+
+h = igl.avg_edge_length(V,F)
+m0,m1,m2 = igl.moments(V,F)
+D = V[:,0]
+vals = np.array([D.min(),D.mean(),D.max()],dtype=np.float64)
+iV,iE,I = igl.isolines(V,F,S,vals)
+iB,iF,iE,I = igl.isolines_intrinsic(F,S,vals)
+
+
+x0 = V[0,:]
+f = np.array([0,0,1],dtype=np.float64)
+R = np.eye(3).astype(np.float64)
+U = igl.kelvinlets(V,x0,f,R,epsilon=1.0,falloff=1.0,brushType=igl.GRAB)
+
+SV = V[:,0]
+SF = igl.average_onto_faces(F,SV)
+SV = igl.average_onto_vertices(V,F,SF)
+
+P = [[0,1,2],[2,1,3,4]]
+I,C = igl.polygon_corners(P)
+Q = np.array([[0,1,2,3],[2,1,4,5]],dtype=np.int64)
+I,C = igl.polygon_corners(Q)
+F,J = igl.polygons_to_triangles(I,C)
 
 try:
     import igl.copyleft
@@ -318,16 +362,6 @@ try:
 
 except ImportError:
     warnings.warn("igl.copyleft not available")
-    pass
-
-try:
-    import igl.copyleft.tetgen
-    # octahedron
-    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
-    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
-    V,T,F,_,_,_,_,_,_ = igl.copyleft.tetgen.tetrahedralize(V,F,flags="Q")
-except ImportError:
-    warnings.warn("igl.copyleft.tetgen not available")
     pass
 
 try:
@@ -361,6 +395,70 @@ try:
 
     VC,FC,D,J = igl.copyleft.cgal.trim_with_solid(VA,FA,VB,FB)
 
+    _,I,X = igl.random_points_on_mesh(1000,VC,FC)
+    N = igl.per_face_normals(VC,FC)
+    N = N[I,:]
+    point_indices, CH,CN,W = igl.octree(X)
+    I = igl.knn(X,X,20,point_indices,CH,CN,W)
+    A,T = igl.copyleft.cgal.point_areas(X,I,N)
+
 except ImportError:
     warnings.warn("igl.copyleft.cgal not available")
+    pass
+
+try:
+    import igl.embree
+    # octahedron
+    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
+    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
+    N = igl.per_vertex_normals(V,F)
+    ei = igl.embree.EmbreeIntersector();
+    ei.init(V,F)
+    S = igl.embree.ambient_occlusion(V,F,V,N,100)
+    S = igl.embree.ambient_occlusion(ei,V,N,100)
+    N = -N
+    S = igl.embree.shape_diameter_function(V,F,V,N,100)
+    S = igl.embree.shape_diameter_function(ei,V,N,100)
+    origin = np.array([2,2,2],dtype=np.float64)
+    direction = np.array([-2,-2,-2],dtype=np.float64)
+    hit = ei.intersectRay_first(origin,direction)
+    hits = ei.intersectRay(origin,direction)
+    hits = ei.intersectRay(origin,direction,tnear=0,tfar=1)
+    I,C = igl.embree.reorient_facets_raycast(V,F)
+except ImportError:
+    warnings.warn("igl.embree not available")
+    pass
+
+try:
+    import igl.copyleft.tetgen
+    # octahedron
+    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
+    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
+    V,T,F,_,_,_,_,_,_ = igl.copyleft.tetgen.tetrahedralize(V,F,flags="Q")
+except ImportError:
+    warnings.warn("igl.copyleft.tetgen not available")
+    pass
+
+
+try:
+    import igl.triangle
+    V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype=np.float64)
+    E = np.array([[0,1],[1,2],[2,3],[3,0]],dtype=np.int64)
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qc")
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Q")
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qqa0.1")
+    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+    F = np.array([[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
+    scaf_data = igl.triangle.SCAFData()
+    b = np.array([0,1,2],dtype=np.int64)
+    bc = np.array([[0,0],[1,0],[0,1]],dtype=np.float64)
+    V_init = np.array([[0,0],[1,0],[0,1],[0.1,0.1]],dtype=np.float64)
+    soft_p = 0;
+    igl.triangle.scaf_precompute(V,F,V_init,igl.ARAP,b,bc,soft_p,scaf_data)
+    L,rhs = igl.triangle.scaf_system(scaf_data)
+    U = igl.triangle.scaf_solve(1,scaf_data)
+
+
+except ImportError:
+    warnings.warn("igl.triangle not available")
     pass

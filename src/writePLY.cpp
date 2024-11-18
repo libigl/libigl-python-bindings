@@ -4,6 +4,7 @@
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
 #include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 #include <nanobind/stl/vector.h>
 
 namespace nb = nanobind;
@@ -12,7 +13,7 @@ using namespace nb::literals;
 namespace pyigl
 {
   void writePLY(
-    const std::string & filename,
+    const std::filesystem::path & filename,
     const Eigen::MatrixXN & V,
     const Eigen::MatrixXI & F_,
     const Eigen::MatrixXI & E_,
@@ -25,10 +26,8 @@ namespace pyigl
     const Eigen::MatrixXN & ED,
     const std::vector<std::string> & EDheader,
     const std::vector<std::string> & comments,
-    std::string encoding_)
+    const igl::FileEncoding encoding)
   {
-    const auto encoding = encoding_ == "binary" ? igl::FileEncoding::Binary : igl::FileEncoding::Ascii;
-
     // tinyply doesn't support int64
     Eigen::MatrixXi F = F_.cast<int>();
     Eigen::MatrixXi E = E_.cast<int>();
@@ -50,7 +49,7 @@ namespace pyigl
       encoding
     ))
     {
-      throw std::runtime_error("Error writing " + filename);
+      throw std::runtime_error("Error writing " + filename.generic_string());
     }
   }
 }
@@ -74,7 +73,7 @@ void bind_writePLY(nb::module_ &m)
     "ED"_a = Eigen::MatrixXN(),
     "EDheader"_a = std::vector<std::string>(),
     "comments"_a = std::vector<std::string>(),
-    "encoding"_a = "binary",
+    "encoding"_a = igl::FileEncoding::Binary,
     R"(Write a mesh to a .ply file.
 
  @tparam Derived from Eigen matrix parameters

@@ -2,7 +2,7 @@
 #include <igl/readDMAT.h>
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/dense.h>
-#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
@@ -10,7 +10,7 @@ using namespace nb::literals;
 namespace pyigl
 {
   // Wrapper for readDMAT with Eigen matrix output
-  Eigen::MatrixXN readDMAT(const std::string &file_name)
+  Eigen::MatrixXN readDMAT(const std::filesystem::path &file_name)
   {
     Eigen::MatrixXN W;
     if (!igl::readDMAT(file_name, W))

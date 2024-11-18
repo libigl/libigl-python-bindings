@@ -3,6 +3,13 @@ import re
 import sys
 import platform
 import subprocess
+import warnings
+# Define a custom format warning function
+def custom_formatwarning(msg, category, filename, lineno, line=None):
+    return f"\033[91m{category.__name__}: {msg}\033[0m\n"
+
+# Apply the custom warning format
+warnings.formatwarning = custom_formatwarning
 
 from packaging.version import Version
 from setuptools import setup, Extension, find_packages
@@ -24,7 +31,8 @@ class CMakeBuild(build_ext):
             raise RuntimeError(
                 "CMake must be installed to build the following extensions: , ".join(e.name for e in self.extensions))
 
-        # self.debug = True
+        warnings.warn("Debug mode is on")
+        self.debug = True
 
         cmake_version = Version(re.search(r'version\s*([\d.]+)', out.decode()).group(1))
         if cmake_version < Version('3.2.0'):
@@ -45,6 +53,7 @@ class CMakeBuild(build_ext):
         build_args = ['--config', cfg]
         cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
         # cmake_args += ['-DDEBUG_TRACE=ON']
+        # build_args += ['-v']
 
         if platform.system() == "Windows":
             cmake_generator = os.environ.get('CMAKE_GENERATOR', '')

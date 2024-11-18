@@ -3,7 +3,7 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
-#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 #include <limits>
 
 namespace nb = nanobind;
@@ -12,7 +12,7 @@ using namespace nb::literals;
 namespace pyigl
 {
   void writeOBJ(
-    const std::string & filename,
+    const std::filesystem::path & filename,
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F,
     const nb::DRef<const Eigen::MatrixXN> &CN,
@@ -23,7 +23,7 @@ namespace pyigl
     if(!igl::writeOBJ(filename,V,F,CN,FN,TC,FTC))
     {
       // throw runtime exception
-      throw std::runtime_error("Failed to write mesh to: " + filename);
+      throw std::runtime_error("Failed to write mesh to: " + filename.generic_string());
     }
   }
 }

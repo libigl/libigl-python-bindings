@@ -3,7 +3,7 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/ndarray.h>
 #include <nanobind/eigen/dense.h>
-#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
 #include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
@@ -11,14 +11,14 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  auto readOBJ(const std::string filename)
+  auto readOBJ(const std::filesystem::path filename)
   {
     Eigen::MatrixXN V,TC,CN;
     Eigen::MatrixXI F,FTC,FN;
     if(!igl::readOBJ(filename,V,TC,CN,F,FTC,FN))
     {
       // throw runtime exception
-      throw std::runtime_error("Failed to read mesh from: " + filename);
+      throw std::runtime_error("Failed to read mesh from: " + filename.generic_string());
     }
     return std::make_tuple(V,TC,CN,F,FTC,FN);
   }

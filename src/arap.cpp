@@ -54,6 +54,7 @@ void bind_arap(nb::module_ &m)
     .value("ARAP_ENERGY_TYPE_SPOKES_AND_RIMS", igl::ARAPEnergyType::ARAP_ENERGY_TYPE_SPOKES_AND_RIMS)
     .value("ARAP_ENERGY_TYPE_ELEMENTS", igl::ARAPEnergyType::ARAP_ENERGY_TYPE_ELEMENTS)
     .value("NUM_ARAP_ENERGY_TYPES", igl::ARAPEnergyType::NUM_ARAP_ENERGY_TYPES)
+    .export_values()
     ;
   nb::class_<igl::ARAPData>(m, "ARAPData")
     .def(nb::init<>())

@@ -13,49 +13,16 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  auto mapping_energy(const std::string str)
-  {
-    if (str == "arap")
-    {
-      return igl::MappingEnergyType::ARAP;
-    }
-    else if (str == "log_arap")
-    {
-      return igl::MappingEnergyType::LOG_ARAP;
-    }
-    else if (str == "symmetric_dirichlet")
-    {
-      return igl::MappingEnergyType::SYMMETRIC_DIRICHLET;
-    }
-    else if (str == "conformal")
-    {
-      return igl::MappingEnergyType::CONFORMAL;
-    }
-    else if (str == "exp_conformal")
-    {
-      return igl::MappingEnergyType::EXP_CONFORMAL;
-    }
-    else if (str == "exp_symmetric_dirichlet")
-    {
-      return igl::MappingEnergyType::EXP_SYMMETRIC_DIRICHLET;
-    }
-    else
-    {
-      throw std::runtime_error("Unknown energy type");
-    }
-  }
-
   auto slim_precompute(
     const Eigen::MatrixXd &V, // maybe copy here to avoid yet another copy in slim
     const Eigen::MatrixXi &F,
     const Eigen::MatrixXd &V_init,
-    const std::string & slim_energy_str,
+    const igl::MappingEnergyType slim_energy,
     const Eigen::VectorXi &b,
     const Eigen::MatrixXd &bc,
     const double soft_p)
   {
     igl::SLIMData data;
-    auto slim_energy = mapping_energy(slim_energy_str);
     igl::slim_precompute(V, F, V_init, data, slim_energy, b, bc, soft_p);
     return data;
   }

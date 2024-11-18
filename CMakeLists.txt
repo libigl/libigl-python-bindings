@@ -1,8 +1,16 @@
-cmake_minimum_required(VERSION 3.16.0)
+# Refactor the cmake/setup.py build to use scikit-build
+# https://github.com/wjakob/nanobind_example
+# Rather than creating multiple modules and dealing with multiple __init__.py
+# files, we can create a single module and use __init__.py to import the
+# submodules, create one extension module with submodules
+# https://stackoverflow.com/a/77020918/148668
+
+cmake_minimum_required(VERSION 3.15...3.27)
 project(pyigl)
 
-# use C++20 (we need at least C++17 for return value optimization)
-set(CMAKE_CXX_STANDARD 20)
+# ≥17 for return value optimization 
+# <20 for embree
+set(CMAKE_CXX_STANDARD 17)
 
 if (CMAKE_VERSION VERSION_LESS 3.18)
   set(DEV_MODULE Development)
@@ -30,13 +38,14 @@ FetchContent_MakeAvailable(nanobind)
 
 # Download and set up libigl
 option(LIBIGL_COPYLEFT_CORE        "Build target igl_copyleft::core"       ON)
-option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
 option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       ON)
+option(LIBIGL_EMBREE               "Build target igl::embree"              ON)
 option(LIBIGL_COPYLEFT_TETGEN      "Build target igl_copyleft::tetgen"     ON)
+option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG e60c377f953ae70e66ceefed42cec73aec044f92
+  GIT_TAG 7326483d8dcea0169054599ae7e09917929b4b46
 )
 FetchContent_MakeAvailable(libigl)
 
@@ -58,9 +67,6 @@ include(CXXFeatures)
 # Generate position independent code by default
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
 
-option(LIBIGL_COPYLEFT_CGAL "Build target igl_copyleft::cgal"       OFF)
-option(LIBIGL_COPYLEFT_TETGEN "Build target igl_copyleft::tetgen"       OFF)
-option(LIBIGL_RESTRICTED_TRIANGLE "Build target igl_restricted::triangle"       OFF)
 
 
 # don't need to worry about nested modules (opengl/** are the only ones and
@@ -127,8 +133,15 @@ function(pyigl_include prefix name)
         LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
     )
-    # just to add dependency?
+    nanobind_add_stub(
+      ${target_name}_stub
+      MODULE ${target_name}
+      OUTPUT "${output_dir}/${target_name}.pyi"
+      PYTHON_PATH $<TARGET_FILE_DIR:${target_name}>
+      DEPENDS ${target_name}
+    )
 
+    # just to add dependency?
     if("${name}" STREQUAL "core")
     else()
       target_link_libraries(pyigl_core INTERFACE ${target_name})
@@ -140,14 +153,17 @@ pyigl_include("" "core")
 if(LIBIGL_COPYLEFT_CORE)
   pyigl_include("copyleft" "core")
 endif()
-if(LIBIGL_RESTRICTED_TRIANGLE)
-  pyigl_include("restricted" "triangle")
-endif()
 if(LIBIGL_COPYLEFT_CGAL)
   pyigl_include("copyleft" "cgal")
 endif()
+if(LIBIGL_EMBREE)
+  pyigl_include("" "embree")
+endif()
 if(LIBIGL_COPYLEFT_TETGEN)
   pyigl_include("copyleft" "tetgen")
+endif()
+if(LIBIGL_RESTRICTED_TRIANGLE)
+  pyigl_include("restricted" "triangle")
 endif()
 
 

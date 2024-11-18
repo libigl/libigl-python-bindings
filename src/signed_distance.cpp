@@ -12,45 +12,14 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  auto signed_distance_type_from_string(const std::string & sign_type_str)
-  {
-    igl::SignedDistanceType sign_type;
-    if (sign_type_str == "pseudonormal")
-    {
-      sign_type = igl::SIGNED_DISTANCE_TYPE_PSEUDONORMAL;
-    }
-    else if (sign_type_str == "winding_number")
-    {
-      sign_type = igl::SIGNED_DISTANCE_TYPE_WINDING_NUMBER;
-    }
-    else if (sign_type_str == "unsigned")
-    {
-      sign_type = igl::SIGNED_DISTANCE_TYPE_UNSIGNED;
-    }
-    else if (sign_type_str == "fast_winding_number")
-    {
-      sign_type = igl::SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER;
-    }
-    else if (sign_type_str == "default")
-    {
-      sign_type = igl::SIGNED_DISTANCE_TYPE_DEFAULT;
-    }
-    else
-    {
-      throw std::invalid_argument("Invalid sign_type: " + sign_type_str);
-    }
-    return sign_type;
-  };
-
   auto signed_distance(
     const nb::DRef<const Eigen::MatrixXN> &P,
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F,
-    const std::string &sign_type_str,
+    const igl::SignedDistanceType sign_type,
     const Numeric lower_bound = -std::numeric_limits<Numeric>::infinity(),
     const Numeric upper_bound = std::numeric_limits<Numeric>::infinity())
   {
-    const auto sign_type = signed_distance_type_from_string(sign_type_str);
     Eigen::VectorXN S;
     Eigen::VectorXI I;
     Eigen::MatrixXN C,N;
@@ -61,13 +30,21 @@ namespace pyigl
 
 void bind_signed_distance(nb::module_ &m)
 {
+  nb::enum_<igl::SignedDistanceType>(m, "SignedDistanceType")
+    .value("SIGNED_DISTANCE_TYPE_PSEUDONORMAL", igl::SIGNED_DISTANCE_TYPE_PSEUDONORMAL)
+    .value("SIGNED_DISTANCE_TYPE_WINDING_NUMBER", igl::SIGNED_DISTANCE_TYPE_WINDING_NUMBER)
+    .value("SIGNED_DISTANCE_TYPE_UNSIGNED", igl::SIGNED_DISTANCE_TYPE_UNSIGNED)
+    .value("SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER", igl::SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER)
+    .value("SIGNED_DISTANCE_TYPE_DEFAULT", igl::SIGNED_DISTANCE_TYPE_DEFAULT)
+    .export_values()
+    ;
   m.def(
     "signed_distance",
     &pyigl::signed_distance,
     "P"_a,
     "V"_a,
     "F"_a,
-    "sign_type"_a = "default",
+    "sign_type"_a = igl::SIGNED_DISTANCE_TYPE_DEFAULT,
     "lower_bound"_a = -std::numeric_limits<Numeric>::infinity(),
     "upper_bound"_a = std::numeric_limits<Numeric>::infinity(),
 R"(Computes signed distance to a mesh.
