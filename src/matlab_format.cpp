@@ -58,6 +58,13 @@ void bind_matlab_format(nb::module_ &m)
 
   m.def(
     "matlab_format",
+    &pyigl::matlab_format_dense_vector,
+    "M"_a,
+    "name"_a = "",
+    R"(Format a dense matrix for MATLAB-style output.)");
+
+  m.def(
+    "matlab_format",
     &pyigl::matlab_format_sparse,
     "S"_a,
     "name"_a = "",
@@ -76,13 +83,6 @@ void bind_matlab_format(nb::module_ &m)
     "M"_a,
     "name"_a = "",
     R"(Format a matrix for MATLAB-style output with 1-based indexing.)");
-
-  m.def(
-    "matlab_format",
-    &pyigl::matlab_format_dense_vector,
-    "M"_a,
-    "name"_a = "",
-    R"(Format a dense matrix for MATLAB-style output.)");
 
   m.def(
     "matlab_format_index",

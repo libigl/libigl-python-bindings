@@ -113,7 +113,6 @@ W = igl.bbw(V,F,b,bc)
 W = igl.harmonic(V,F,b,bc,k=1)
 W = igl.harmonic(V,F,b,bc,k=2)
 
-
 V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
 F = np.array([[2,1,0],[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
 T = np.array([[0,1,2,3]],dtype=np.int64)
@@ -350,6 +349,24 @@ I,C = igl.polygon_corners(P)
 Q = np.array([[0,1,2,3],[2,1,4,5]],dtype=np.int64)
 I,C = igl.polygon_corners(Q)
 F,J = igl.polygons_to_triangles(I,C)
+
+V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+F = np.array([[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
+V,F = igl.upsample(V,F,number_of_subdivs=1)
+data = igl.HeatGeodesicsData()
+igl.heat_geodesics_precompute(V,F,t=1e-3,data=data)
+data = igl.HeatGeodesicsData()
+data.use_intrinsic_delaunay = True
+igl.heat_geodesics_precompute(V,F,data)
+gamma = np.array([0],dtype=np.int64)
+D = igl.heat_geodesics_solve(data,gamma)
+l = igl.edge_lengths(V,F)
+iV,iF,E,uE,EMAP,uE2E = igl.intrinsic_delaunay_triangulation(l,F)
+L,il,iF = igl.intrinsic_delaunay_cotmatrix(V,F)
+L = igl.cotmatrix_intrinsic(il,iF)
+M = igl.massmatrix_intrinsic(il,iF)
+
+V,F = igl.icosahedron()
 
 try:
     import igl.copyleft

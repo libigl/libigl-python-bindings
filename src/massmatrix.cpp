@@ -25,13 +25,6 @@ namespace pyigl
 // Bind the wrapper to the Python module
 void bind_massmatrix(nb::module_ &m)
 {
-  nb::enum_<igl::MassMatrixType>(m, "MassMatrixType")
-    .value("MASSMATRIX_TYPE_BARYCENTRIC", igl::MASSMATRIX_TYPE_BARYCENTRIC)
-    .value("MASSMATRIX_TYPE_VORONOI", igl::MASSMATRIX_TYPE_VORONOI)
-    .value("MASSMATRIX_TYPE_FULL", igl::MASSMATRIX_TYPE_FULL)
-    .value("MASSMATRIX_TYPE_DEFAULT", igl::MASSMATRIX_TYPE_DEFAULT)
-    .export_values()
-    ;
   m.def(
     "massmatrix",
     &pyigl::massmatrix, 
