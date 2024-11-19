@@ -52,7 +52,7 @@ mesh (V,F).
   @param[out] L  #V by #V cotangent matrix, each row i corresponding to V(i,:))");
 
   m.def(
-    "cotmatrix_polygon",
+    "cotmatrix",
     &pyigl::cotmatrix_polygon,
     "V"_a, 
     "I"_a,

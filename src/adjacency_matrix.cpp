@@ -41,7 +41,7 @@ R"(Constructs the adjacency matrix for a simplicial mesh.
 @return A Sparse adjacency matrix of size max(F)+1 by max(F)+1)");
 
   m.def(
-    "adjacency_matrix_polygon",
+    "adjacency_matrix",
     &pyigl::adjacency_matrix_polygon,
     "I"_a,
     "C"_a,
