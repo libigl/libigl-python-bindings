@@ -529,3 +529,22 @@ def test_triangle():
     igl.triangle.scaf_precompute(V,F,V_init,igl.ARAP,b,bc,soft_p,scaf_data)
     L,rhs = igl.triangle.scaf_system(scaf_data)
     U = igl.triangle.scaf_solve(1,scaf_data)
+
+def test_misc():
+    V,F = igl.icosahedron()
+    BV,BF = igl.bounding_box(V,pad=1.0)
+    R,C,B = igl.circumradius(V,F)
+    R = igl.inradius(V,F)
+    _,E,EMAP,_,_ = igl.unique_edge_map(F)
+    L = igl.crouzeix_raviart_cotmatrix(V,F,E,EMAP)
+    M = igl.crouzeix_raviart_massmatrix(V,F,E,EMAP)
+    cuts = igl.cut_to_disk(F)
+    V,F = igl.cylinder(10,10)
+    VD,FD = igl.false_barycentric_subdivision(V,F)
+    V,F,T = single_tet()
+    theta, cos_theta = igl.dihedral_angles(V,T)
+    L = igl.edge_lengths(V,T)
+    A = igl.face_areas(V,T)
+    theta, cos_theta = igl.dihedral_angles_intrinsic(L,A)
+
+

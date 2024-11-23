@@ -45,7 +45,7 @@ option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG f82ad2b463e0307c56f8101bcfe5c290c9cd30cd
+  GIT_TAG 753f4d3c88ddc9280696852d4740e58a815e365d
 )
 FetchContent_MakeAvailable(libigl)
 
