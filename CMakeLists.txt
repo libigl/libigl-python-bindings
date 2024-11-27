@@ -8,6 +8,8 @@
 cmake_minimum_required(VERSION 3.15...3.27)
 project(pyigl)
 
+# For std::filesystem::path (generic_string)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
 # ≥17 for return value optimization 
 # <20 for embree
 set(CMAKE_CXX_STANDARD 17)
