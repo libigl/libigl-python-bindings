@@ -2,7 +2,7 @@
 build-verbosity = "0"
 [build-system]
 requires = [
-    "numpy",
+    "numpy>=1.20",
     "scipy",
     "setuptools>=42",
     "wheel",
