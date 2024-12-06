@@ -8,6 +8,7 @@ requires = [
     "wheel",
     "cmake>=3.16",
     "packaging",
+    "typing_extensions",
 ]
 
 build-backend = "setuptools.build_meta"
