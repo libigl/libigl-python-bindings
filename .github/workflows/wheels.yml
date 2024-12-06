@@ -36,7 +36,7 @@ jobs:
       CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
       CIBW_BUILD: "${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}"
       CIBW_TEST_SKIP: "*-macosx_arm64"
-      CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }} PIP_CONSTRAINT=constraints.txt"
+      CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }}"
       # Why universal2 here? It's not included above in CIBW_BUILD
       CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
       CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.13 CMAKE_OSX_ARCHITECTURES=\"${{ matrix.os.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.os.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.os.cibw-arch == 'macosx_universal2' && 'arm64;x86_64' || '' }}\""
@@ -90,7 +90,7 @@ jobs:
       - name: Build wheels
         shell: bash
         run: |
-          PIP_CONSTRAINT=$GITHUB_WORKSPACE/constraints.txt python -m cibuildwheel --output-dir wheelhouse
+          python -m cibuildwheel --output-dir wheelhouse
 
       # Upload binaries to github
       - uses: actions/upload-artifact@v4
