@@ -31,7 +31,6 @@ jobs:
     runs-on: ${{ matrix.os.runs-on }}
 
     env:
-      CIBW_BUILD_VERBOSITY: 3
       # This is very dubious... It *may* work because these are just cpp libraries that should not depend on the python version. Still, super-dubious.
       CIBW_TEST_REQUIRES: "gitpython"
       CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
