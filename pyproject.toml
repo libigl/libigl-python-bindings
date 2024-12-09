@@ -1,5 +1,5 @@
 [tool.cibuildwheel]
-build-verbosity = "0"
+build-verbosity = "1"
 [build-system]
 requires = [
     "numpy>=1.20",
