@@ -26,40 +26,12 @@ python -m pip install ./
 * A function reference can be found [here](https://libigl.github.io/libigl-python-bindings/igl_docs/)
 
 ## Compiling and modifying the bindiings
-After installing numpy & scipy and then cloning this repository, you can compile the bindings from scratch by running:
+
+According to the [scikit-build-core documentation](https://scikit-build-core.readthedocs.io/en/latest/configuration.html#editable-installs), the way to make an editable (incremental) build is to:
+
+ 1. Preinstall the dependencies (at the top of pyproject.toml 
+ 2. Then use this very long command:
 
 ```
-python setup.py develop
+python -m pip install --no-build-isolation --config-settings=editable.rebuild=true -Cbuild-dir=build -ve.
 ```
-
-or
-
-```
-python setup.py build --debug develop
-```
-
-for debug compilation. This command will make the package `igl` available for import in the
-current shell.
-
-To run the tests:
-
-```
-python setup.py test
-```
-
-or
-
-```
-python tests/test_basic.py
-```
-
-and if developing and trying to run from this directory. You could use:
-
-```
-PYTHONPATH=. python tests/test_basic.py
-```
-
-## License
-
-Like libigl, the wrapper source code is licensed under MPL2. Code included via
-the copyleft and restricted sub-directories may have more restrictive licenses.

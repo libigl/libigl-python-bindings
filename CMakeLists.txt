@@ -47,14 +47,12 @@ option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG 1f75bc3b617f1966d7c1d8c586463c2a5f11554b
+  GIT_TAG a221faf1e4bd571529ca2101c08bc2458579b1da
 )
 FetchContent_MakeAvailable(libigl)
 
-message(STATUS "PYIGL_OUTPUT_DIRECTORY: ${PYIGL_OUTPUT_DIRECTORY}")
-if (NOT DEFINED PYIGL_OUTPUT_DIRECTORY)
-  message(FATAL_ERROR "PYIGL_OUTPUT_DIRECTORY must be defined externally")
-endif()
+# set PYIGL_OUTPUT_DIRECTORY to [this dir]/igl
+set(PYIGL_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/igl")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # Color output
