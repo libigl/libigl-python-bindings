@@ -30,6 +30,7 @@ jobs:
       - name: Build wheels
         env:
           CIBW_BUILD: "cp310-*"
+          CIBW_REPAIR_WHEEL_COMMAND: ""
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - name: Repair wheel
