@@ -30,17 +30,9 @@ jobs:
       - name: Build wheels
         env:
           CIBW_BUILD: "cp310-*"
-          CIBW_REPAIR_WHEEL_COMMAND: ""
         run: python -m cibuildwheel --output-dir wheelhouse
 
-      - name: Repair wheel
-        run: |
-          delocate-wheel --require-archs arm64 -w repaired_wheel wheelhouse/*.whl
-        continue-on-error: true  # Allow the job to proceed even if this fails
-
-      - name: Upload wheel artifact
-        if: always()  # Ensure this step always runs
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: built-wheels
-          path: wheelhouse/
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
