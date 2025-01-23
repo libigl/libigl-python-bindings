@@ -121,6 +121,10 @@ function(pyigl_include prefix name)
     set(target_name "pyigl${prefix_lc}_${name}")
     nanobind_add_module(${target_name} ${sources})
 
+    # important for scikit-build
+    install(TARGETS ${target_name} LIBRARY DESTINATION  "igl/${subpath}")
+
+
     if("${name}" STREQUAL "core")
       target_link_libraries(${target_name} PRIVATE igl::core)
     else()
@@ -172,5 +176,6 @@ endif()
 if(LIBIGL_RESTRICTED_TRIANGLE)
   pyigl_include("restricted" "triangle")
 endif()
+
 
 
