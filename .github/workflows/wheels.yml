@@ -19,8 +19,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Used to host cibuildwheel
+      # Set up Python 3.10
       - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==2.22.0
