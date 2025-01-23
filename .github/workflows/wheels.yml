@@ -1,116 +1,79 @@
-name: Wheels
+name: Pip build
 
 on:
-  workflow_dispatch:
-  pull_request:
   push:
+    branches:    
+      - main
+  pull_request:
     branches:
-     - master
-  release:
-    types:
-      - published
+      - main
 
 jobs:
-  build_wheels:
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, windows-latest, macos-13, macos-14]
-        python: [cp38, cp39, cp310, cp311, cp312, cp312_stable, cp313]
-        exclude:
-          # The first Python version to target Apple arm64 architectures is 3.9
-          - os: macos-14
-            python: cp38
-      fail-fast: false
+  build_sdist:
+    name: Build SDist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
 
-    name: >
-      ${{ matrix.python }} wheel for ${{ matrix.os }}
-      ${{ (endsWith(matrix.python, '_stable') && '(stable ABI)') || '' }}
-    runs-on: ${{ matrix.os }}
+    - name: Build SDist
+      run: pipx run build --sdist
+
+    - name: Check metadata
+      run: pipx run twine check dist/*
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: artifact-sdist
+        path: dist/*.tar.gz
+
+  build_wheels:
+    name: Build wheels ${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
+    runs-on: ${{ matrix.os.runs-on }}
+
+    env:
+      CIBW_BUILD: "${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}"
+      CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }}"
+      # Why universal2 here? It's not included above in CIBW_BUILD
+      CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
+      CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.13 CMAKE_OSX_ARCHITECTURES=\"${{ matrix.os.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.os.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.os.cibw-arch == 'macosx_universal2' && 'arm64;x86_64' || '' }}\""
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # Launch separate job for each python. The build is so much longer than
+        # machine configuration/setup, so parallel builds will be faster. More
+        # importantly, github times out after 6 hours _per job_.
+        cpversion:
+          - cp310
+        os:
+          - runs-on: macos-latest
+            cibw-arch: macosx_x86_64
+          - runs-on: macos-latest
+            cibw-arch: macosx_arm64
 
     steps:
-      ###########################################################
-      # Setup local environment (source code, build requirements)
-      ###########################################################
-      - uses: Wandalen/wretry.action@v1.2.0
-        with:
-          action: actions/checkout@v3
-          with: |
-            submodules: recursive
-          attempt_limit: 3
-          attempt_delay: 2000
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v4
-        name: Install Python
+      - name: Install Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-
-      - name: Prepare compiler environment for Windows
-        if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x64
+          python-version: "3.x"
 
       - name: Install cibuildwheel
         run: |
-          python -m pip install cibuildwheel==2.20.0
+          python -m pip install --upgrade pip
+          python -m pip install cibuildwheel
 
-
-      ################################################################
-      # Set up envvars to build the correct wheel (stable ABI or not)
-      ################################################################
-      - name: Prepare cibuildwheel environment (UNIX)
-        if: ${{ ! endsWith(matrix.python, '_stable') && runner.os != 'Windows' }}
-        run: |
-          echo "CIBW_BUILD=${{ matrix.python }}-*" >> $GITHUB_ENV
-
-      - name: Prepare cibuildwheel environment (Windows)
-        if: ${{ ! endsWith(matrix.python, '_stable') && runner.os == 'Windows' }}
-        run: |
-          echo "CIBW_BUILD=${{ matrix.python }}-*" >> $env:GITHUB_ENV
-
-      - name: Prepare cibuildwheel environment for stable ABI wheel (UNIX)
-        if: ${{ endsWith(matrix.python, '_stable') && runner.os != 'Windows' }}
-        run: |
-          stable_cp=$(echo ${{ matrix.python }} | cut -d_ -f1) &&
-          echo "CIBW_BUILD=${stable_cp}-*" >> $GITHUB_ENV &&
-          echo "CIBW_CONFIG_SETTINGS=\"wheel.py-api=cp312\" \"cmake.args=-DDRJIT_STABLE_ABI=ON\"" >> $GITHUB_ENV
-
-      - name: Prepare cibuildwheel environment for stable ABI wheel (Windows)
-        if: ${{ endsWith(matrix.python, '_stable') && runner.os == 'Windows' }}
-        run: |
-          $stable_cp = '${{ matrix.python }}' -split '_'
-          echo "CIBW_BUILD=$($stable_cp[0])-*" >> $env:GITHUB_ENV
-          echo "CIBW_CONFIG_SETTINGS=wheel.py-api=cp312 cmake.args=-DDRJIT_STABLE_ABI=ON" >> $env:GITHUB_ENV
-
-
-      #########################
-      # Build and store wheels
-      #########################
-      - name: Build wheel
+      - name: Build wheels
+        shell: bash
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
-      - uses: actions/upload-artifact@v3
+      # Upload binaries to github
+      - uses: actions/upload-artifact@v4
         with:
-          name: wheels
-          path: ./wheelhouse/*.whl
+          name: artifact-wheel-${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
+          path: |-
+            ./wheelhouse/*.whl 
+            ./wheelhouse/*.tar.gz 
 
-  upload_pypi:
-    name: Upload wheels to PyPI
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.upload == '1'}}
-    needs: [build_wheels]
-
-    steps:
-      #########################
-      # Fetch and upload wheels
-      #########################
-      - uses: actions/download-artifact@v3
-        with:
-          name: wheels
-          path: dist
-
-      - uses: pypa/gh-action-pypi-publish@v1.10.2
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_PASSWORD }}
