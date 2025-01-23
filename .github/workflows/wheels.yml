@@ -9,71 +9,29 @@ on:
       - main
 
 jobs:
-  build_sdist:
-    name: Build SDist
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Build SDist
-      run: pipx run build --sdist
-
-    - name: Check metadata
-      run: pipx run twine check dist/*
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: artifact-sdist
-        path: dist/*.tar.gz
-
   build_wheels:
-    name: Build wheels ${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
-    runs-on: ${{ matrix.os.runs-on }}
-
-    env:
-      CIBW_BUILD: "${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}"
-      CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }}"
-      # Why universal2 here? It's not included above in CIBW_BUILD
-      CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
-      CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.13 CMAKE_OSX_ARCHITECTURES=\"${{ matrix.os.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.os.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.os.cibw-arch == 'macosx_universal2' && 'arm64;x86_64' || '' }}\""
-
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        # Launch separate job for each python. The build is so much longer than
-        # machine configuration/setup, so parallel builds will be faster. More
-        # importantly, github times out after 6 hours _per job_.
-        cpversion:
-          - cp310
-        os:
-          - runs-on: macos-latest
-            cibw-arch: macosx_x86_64
-          - runs-on: macos-latest
-            cibw-arch: macosx_arm64
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-latest]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
+      # Used to host cibuildwheel
+      - uses: actions/setup-python@v5
 
       - name: Install cibuildwheel
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install cibuildwheel
+        run: python -m pip install cibuildwheel==2.22.0
 
       - name: Build wheels
-        shell: bash
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse
+        run: python -m cibuildwheel --output-dir wheelhouse
+        # to supply options, put them in 'env', like:
+        # env:
+        #   CIBW_SOME_OPTION: value
 
-      # Upload binaries to github
       - uses: actions/upload-artifact@v4
         with:
-          name: artifact-wheel-${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
-          path: |-
-            ./wheelhouse/*.whl 
-            ./wheelhouse/*.tar.gz 
-
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
