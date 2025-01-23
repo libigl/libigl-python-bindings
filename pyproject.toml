@@ -10,6 +10,7 @@ requires = [
     ]
 build-backend = "scikit_build_core.build"
 
+
 [project]
 name = "libigl"
 version = "2.5.4dev"
@@ -21,6 +22,11 @@ authors = [
 ]
 classifiers = [
     "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+]
+dependencies = [
+    "numpy>=2.0.0",
+    "scipy",
+    "pytest"
 ]
 
 [project.urls]
