@@ -37,6 +37,7 @@ jobs:
       - name: Build wheels
         env:
           CIBW_BUILD: "cp310-*"
+          MACOSX_DEPLOYMENT_TARGET: 10.15
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - uses: actions/upload-artifact@v4
