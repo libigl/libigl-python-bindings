@@ -2,11 +2,13 @@ name: Wheels
 
 on:
   workflow_dispatch:
-    inputs:
-      upload:
-        description: 'Upload wheels to PyPI? (0: no, 1: yes)'
-        required: true
-        default: '0'
+  pull_request:
+  push:
+    branches:
+     - master
+  release:
+    types:
+      - published
 
 jobs:
   build_wheels:
