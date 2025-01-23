@@ -1,77 +1,113 @@
-name: Wheels
-
+name: Build Python wheels
 on:
   workflow_dispatch:
-  pull_request:
-  push:
-    branches:
-     - master
-  release:
-    types:
-      - published
+    inputs:
+      upload:
+        description: 'Upload wheels to PyPI? (0: no, 1: yes)'
+        required: true
+        default: '0'
 
 jobs:
-  build_sdist:
-    name: Build SDist
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-
-    - name: Build SDist
-      run: pipx run build --sdist
-
-    - name: Check metadata
-      run: pipx run twine check dist/*
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: dist-sdist
-        path: dist/*.tar.gz
-
-
   build_wheels:
-    name: Wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-13, macos-14, windows-latest]
+        os: [ubuntu-20.04, windows-latest, macos-13, macos-14]
+        python: [cp38, cp39, cp310, cp311, cp312, cp312_stable, cp313]
+        exclude:
+          # The first Python version to target Apple arm64 architectures is 3.9
+          - os: macos-14
+            python: cp38
+      fail-fast: false
+
+    name: >
+      ${{ matrix.python }} wheel for ${{ matrix.os }}
+      ${{ (endsWith(matrix.python, '_stable') && '(stable ABI)') || '' }}
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
+      ###########################################################
+      # Setup local environment (source code, build requirements)
+      ###########################################################
+      - uses: Wandalen/wretry.action@v1.2.0
+        with:
+          action: actions/checkout@v3
+          with: |
+            submodules: recursive
+          attempt_limit: 3
+          attempt_delay: 2000
 
-    - uses: pypa/cibuildwheel@v2.22
+      - uses: actions/setup-python@v4
+        name: Install Python
+        with:
+          python-version: '3.10'
 
-    - name: Verify clean directory
-      run: git diff --exit-code
-      shell: bash
+      - name: Prepare compiler environment for Windows
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
 
-    - name: Upload wheels
-      uses: actions/upload-artifact@v4
-      with:
-        path: wheelhouse/*.whl
-        name: dist-${{ matrix.os }}
+      - name: Install cibuildwheel
+        run: |
+          python -m pip install cibuildwheel==2.20.0
 
-  upload_all:
-    name: Upload if release
-    needs: [build_wheels, build_sdist]
+
+      ################################################################
+      # Set up envvars to build the correct wheel (stable ABI or not)
+      ################################################################
+      - name: Prepare cibuildwheel environment (UNIX)
+        if: ${{ ! endsWith(matrix.python, '_stable') && runner.os != 'Windows' }}
+        run: |
+          echo "CIBW_BUILD=${{ matrix.python }}-*" >> $GITHUB_ENV
+
+      - name: Prepare cibuildwheel environment (Windows)
+        if: ${{ ! endsWith(matrix.python, '_stable') && runner.os == 'Windows' }}
+        run: |
+          echo "CIBW_BUILD=${{ matrix.python }}-*" >> $env:GITHUB_ENV
+
+      - name: Prepare cibuildwheel environment for stable ABI wheel (UNIX)
+        if: ${{ endsWith(matrix.python, '_stable') && runner.os != 'Windows' }}
+        run: |
+          stable_cp=$(echo ${{ matrix.python }} | cut -d_ -f1) &&
+          echo "CIBW_BUILD=${stable_cp}-*" >> $GITHUB_ENV &&
+          echo "CIBW_CONFIG_SETTINGS=\"wheel.py-api=cp312\" \"cmake.args=-DDRJIT_STABLE_ABI=ON\"" >> $GITHUB_ENV
+
+      - name: Prepare cibuildwheel environment for stable ABI wheel (Windows)
+        if: ${{ endsWith(matrix.python, '_stable') && runner.os == 'Windows' }}
+        run: |
+          $stable_cp = '${{ matrix.python }}' -split '_'
+          echo "CIBW_BUILD=$($stable_cp[0])-*" >> $env:GITHUB_ENV
+          echo "CIBW_CONFIG_SETTINGS=wheel.py-api=cp312 cmake.args=-DDRJIT_STABLE_ABI=ON" >> $env:GITHUB_ENV
+
+
+      #########################
+      # Build and store wheels
+      #########################
+      - name: Build wheel
+        run: |
+          python -m cibuildwheel --output-dir wheelhouse
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: ./wheelhouse/*.whl
+
+  upload_pypi:
+    name: Upload wheels to PyPI
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' && github.event.action == 'published'
+    if: ${{ github.event.inputs.upload == '1'}}
+    needs: [build_wheels]
 
     steps:
-    - uses: actions/setup-python@v5
-    - uses: actions/download-artifact@v4
-      with:
-        name: dist
-        pattern: dist-*
-        merge-multiple: true
+      #########################
+      # Fetch and upload wheels
+      #########################
+      - uses: actions/download-artifact@v3
+        with:
+          name: wheels
+          path: dist
 
-    - uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.pypi_password }}
-
+      - uses: pypa/gh-action-pypi-publish@v1.10.2
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_PASSWORD }}
