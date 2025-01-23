@@ -39,11 +39,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nanobind)
 
 # Download and set up libigl
-option(LIBIGL_COPYLEFT_CORE        "Build target igl_copyleft::core"       ON)
-option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       ON)
-option(LIBIGL_EMBREE               "Build target igl::embree"              ON)
-option(LIBIGL_COPYLEFT_TETGEN      "Build target igl_copyleft::tetgen"     ON)
-option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
+option(LIBIGL_COPYLEFT_CORE        "Build target igl_copyleft::core"       OFF)
+option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       OFF)
+option(LIBIGL_EMBREE               "Build target igl::embree"              OFF)
+option(LIBIGL_COPYLEFT_TETGEN      "Build target igl_copyleft::tetgen"     OFF)
+option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" OFF)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
@@ -95,8 +95,15 @@ function(pyigl_include prefix name)
     endif()
     file(GLOB sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/*.cpp")
 
+    # Just compile a single file
+    list(GET sources 0 sources)
+    list(APPEND sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/module.cpp")
+
     set(BINDING_SOURCES ${sources})
     list(FILTER BINDING_SOURCES EXCLUDE REGEX ".*/module\\.cpp$")
+
+    # keep just the first in the list and overwrite BINDING_SOURCES
+
     # Generate the function calls based on filenames
     set(BINDING_DECLARATIONS "")
     foreach(source_file ${BINDING_SOURCES})
