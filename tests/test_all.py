@@ -10,6 +10,10 @@ import igl
 #import igl.copyleft.tetgen
 #import igl.embree
 #import igl.triangle
+
+def test_nothing():
+    pass
+
 #
 ###def rand_sparse(n,density):
 ###    n_features = n
