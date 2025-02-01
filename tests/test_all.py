@@ -11,7 +11,8 @@ import igl
 #import igl.embree
 #import igl.triangle
 
-def test_nothing():
+def test_version():
+    version = igl.__version__
     pass
 
 
@@ -61,16 +62,16 @@ def test_nothing():
 
 # seed numpy's random number generator
 #
-def triangulated_square():
-    V = np.array([[0,0,0],[1,0,0],[1,1,0],[0,1,0]],dtype=np.float64)
-    F = np.array([[0,1,2],[0,2,3]],dtype=np.int64)
-    return V,F
-
-def single_tet():
-    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
-    F = np.array([[2,1,0],[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
-    T = np.array([[0,1,2,3]],dtype=np.int64)
-    return V,F,T
+#def triangulated_square():
+#    V = np.array([[0,0,0],[1,0,0],[1,1,0],[0,1,0]],dtype=np.float64)
+#    F = np.array([[0,1,2],[0,2,3]],dtype=np.int64)
+#    return V,F
+#
+#def single_tet():
+#    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+#    F = np.array([[2,1,0],[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
+#    T = np.array([[0,1,2,3]],dtype=np.int64)
+#    return V,F,T
 
 #def test_edges():
 #    F = np.array([[0,1,2],[0,2,3]],dtype=np.int64)
@@ -168,11 +169,11 @@ def single_tet():
 #    V,T,F = igl.readMESH("out.mesh")
 #    igl.writeMSH("out.msh",V,F,T)
 #    V,F,T,_,_,_,_,_,_,_ = igl.readMSH("out.msh")
-
-def test_bvh():
-    V,F,T = single_tet()
-    tree = igl.AABB()
-    tree.init(V,T)
+#
+#def test_bvh():
+#    V,F,T = single_tet()
+#    tree = igl.AABB()
+#    tree.init(V,T)
 
 #    P = np.array([[0.5,0.5,0.0],[0.5,0.5,0.5]],dtype=np.float64)
 #    # first row of P
