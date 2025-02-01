@@ -135,22 +135,27 @@ function(pyigl_include prefix name)
     set(output_dir "${PYIGL_OUTPUT_DIRECTORY}/${subpath}")
     file(MAKE_DIRECTORY ${output_dir})
     file(WRITE "${output_dir}/__init__.py" "from .${target_name} import *\n")
+    install(FILES "${output_dir}/__init__.py" DESTINATION "igl/${subpath}")
     if("${name}" STREQUAL "core" AND "${prefix}" STREQUAL "")
+      install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/igl/_version.py" DESTINATION "igl/${subpath}")
       file(APPEND "${output_dir}/__init__.py" "from ._version import __version__\n")
     endif()
+
     set_target_properties(${target_name} PROPERTIES 
         LIBRARY_OUTPUT_DIRECTORY         "${output_dir}"
         RUNTIME_OUTPUT_DIRECTORY         "${output_dir}"
         LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
     )
+    set(PYI_OUTPUT "${output_dir}/${target_name}.pyi")
     nanobind_add_stub(
       ${target_name}_stub
       MODULE ${target_name}
-      OUTPUT "${output_dir}/${target_name}.pyi"
+      OUTPUT ${PYI_OUTPUT}
       PYTHON_PATH $<TARGET_FILE_DIR:${target_name}>
       DEPENDS ${target_name}
     )
+    install(FILES "${PYI_OUTPUT}" DESTINATION "igl/${subpath}")
 
     # just to add dependency?
     if("${name}" STREQUAL "core")

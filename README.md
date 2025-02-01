@@ -35,3 +35,10 @@ According to the [scikit-build-core documentation](https://scikit-build-core.rea
 ```
 python -m pip install --no-build-isolation --config-settings=editable.rebuild=true -Cbuild-dir=build -ve.
 ```
+
+## Testing cibuildwheel locally
+
+Install whichever version of Python from the [official website](https://www.python.org/downloads/) and then run:
+
+    /Library/Frameworks/Python.framework/Versions/[version]/bin/python -m pip install cibuildwheel
+    CIBW_BUILD="cp311-*" python -m cibuildwheel --output-dir wheelhouse --platform macos
