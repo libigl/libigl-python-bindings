@@ -95,9 +95,9 @@ function(pyigl_include prefix name)
     endif()
     file(GLOB sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/*.cpp")
 
-    # Just compile a single file
-    list(GET sources 0 sources)
-    list(APPEND sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/module.cpp")
+    ## Just compile a single file
+    #list(GET sources 0 sources)
+    #list(APPEND sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/module.cpp")
 
     set(BINDING_SOURCES ${sources})
     list(FILTER BINDING_SOURCES EXCLUDE REGEX ".*/module\\.cpp$")
