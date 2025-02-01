@@ -32,8 +32,10 @@ jobs:
       - name: Build wheels
         # why do I need to specify this cpversion here?
         env:
-          CIBW_ARCHS: auto64
+          CIBW_ARCHS: "auto64"
           CIBW_BUILD: "${{ matrix.cpversion }}-*"
+          # why isn't auto64 working?
+          CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux_i686 cp*-win32"  
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - uses: actions/upload-artifact@v4
