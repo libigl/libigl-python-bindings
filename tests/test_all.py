@@ -448,109 +448,109 @@ def test_bijective():
     U = igl.bijective_composite_harmonic_mapping(V,F,b,bc)
 
 
-#def test_copyleft():
-#    V = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]],dtype=np.float64)
-#    T = np.array([[0,1,2,3]],dtype=np.int64)
-#    F,_,_ = igl.boundary_facets(T)
-#    V,F = igl.loop(V,F)
-#    
-#    dV,dF,J = igl.copyleft.progressive_hulls(V,F)
-#    
-#
-#def test_cgal():
-#    # tetrahedron
-#    VA = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]],dtype=np.float64)
-#    T = np.array([[0,1,2,3]],dtype=np.int64)
-#    FA,_,_ = igl.boundary_facets(T)
-#    # flip z
-#    VB = np.array([[0,0,1],[2,0,1],[0,2,1],[1,1,-1]],dtype=np.float64)
-#    FB = FA[:,::-1]
-#    IF,_,_,_,_ = igl.copyleft.cgal.intersect_other(VA,FA,VB,FB)
-#    IF,_,_,_,_ = igl.copyleft.cgal.intersect_other(VA,FA,VB,FB,detect_only=True,first_only=True)
-#    VC,FC,J = igl.copyleft.cgal.mesh_boolean(VA,FA,VB,FB,"union")
-#    H = igl.copyleft.cgal.convex_hull(VC)
-#    # concatenate A and B meshes
-#    VC = np.vstack((VA,VB))
-#    FC = np.vstack((FA,FB+VA.shape[0]))
-#    VV,FF,IF,J,IM = igl.copyleft.cgal.remesh_self_intersections(VC,FC)
-#    _,_,IF,_,_ = igl.copyleft.cgal.remesh_self_intersections(VC,FC,detect_only=True,first_only=True)
-#    
-#    p = np.array([0,0,0],dtype=np.float64)
-#    n = np.array([1,1,1],dtype=np.float64)
-#    VV,FF,J = igl.copyleft.cgal.intersect_with_half_space(VC,FC,p,n)
-#    equ = np.hstack((n,-n.dot(p)))
-#    VV,FF,J = igl.copyleft.cgal.intersect_with_half_space(VC,FC,equ)
-#    
-#    P = np.array([[0.5,0.5,0.0],[0.5,0.5,0.5]],dtype=np.float64)
-#    W = igl.copyleft.cgal.fast_winding_number(VA,FA,P)
-#    W = igl.copyleft.cgal.fast_winding_number(VA,FA,P,expansion_order=2,beta=2.0)
-#    
-#    VC,FC,D,J = igl.copyleft.cgal.trim_with_solid(VA,FA,VB,FB)
-#    
-#    _,I,X = igl.random_points_on_mesh(1000,VC,FC)
-#    N = igl.per_face_normals(VC,FC)
-#    N = N[I,:]
-#    point_indices, CH,CN,W = igl.octree(X)
-#    I = igl.knn(X,X,20,point_indices,CH,CN,W)
-#    A,T = igl.copyleft.cgal.point_areas(X,I,N)
-#    
-#def test_embree():
-#    # octahedron
-#    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
-#    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
-#    N = igl.per_vertex_normals(V,F)
-#    ei = igl.embree.EmbreeIntersector();
-#    ei.init(V,F)
-#    S = igl.embree.ambient_occlusion(V,F,V,N,100)
-#    S = igl.embree.ambient_occlusion(ei,V,N,100)
-#    N = -N
-#    S = igl.embree.shape_diameter_function(V,F,V,N,100)
-#    S = igl.embree.shape_diameter_function(ei,V,N,100)
-#    origin = np.array([2,2,2],dtype=np.float64)
-#    direction = np.array([-2,-2,-2],dtype=np.float64)
-#    hit = ei.intersectRay_first(origin,direction)
-#    hits = ei.intersectRay(origin,direction)
-#    hits = ei.intersectRay(origin,direction,tnear=0,tfar=1)
-#    I,C = igl.embree.reorient_facets_raycast(V,F)
-#
-#def test_tetgen():
-#    # octahedron
-#    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
-#    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
-#    V,T,F,_,_,_,_,_,_ = igl.copyleft.tetgen.tetrahedralize(V,F,flags="Q")
-#
-#def test_triangle():
-#    V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype=np.float64)
-#    E = np.array([[0,1],[1,2],[2,3],[3,0]],dtype=np.int64)
-#    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qc")
-#    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Q")
-#    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qqa0.1")
-#    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
-#    F = np.array([[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
-#    scaf_data = igl.triangle.SCAFData()
-#    b = np.array([0,1,2],dtype=np.int64)
-#    bc = np.array([[0,0],[1,0],[0,1]],dtype=np.float64)
-#    V_init = np.array([[0,0],[1,0],[0,1],[0.1,0.1]],dtype=np.float64)
-#    soft_p = 0;
-#    igl.triangle.scaf_precompute(V,F,V_init,igl.ARAP,b,bc,soft_p,scaf_data)
-#    L,rhs = igl.triangle.scaf_system(scaf_data)
-#    U = igl.triangle.scaf_solve(1,scaf_data)
-#
-#def test_misc():
-#    V,F = igl.icosahedron()
-#    BV,BF = igl.bounding_box(V,pad=1.0)
-#    R,C,B = igl.circumradius(V,F)
-#    R = igl.inradius(V,F)
-#    _,E,EMAP,_,_ = igl.unique_edge_map(F)
-#    L = igl.crouzeix_raviart_cotmatrix(V,F,E,EMAP)
-#    M = igl.crouzeix_raviart_massmatrix(V,F,E,EMAP)
-#    cuts = igl.cut_to_disk(F)
-#    V,F = igl.cylinder(10,10)
-#    VD,FD = igl.false_barycentric_subdivision(V,F)
-#    V,F,T = single_tet()
-#    theta, cos_theta = igl.dihedral_angles(V,T)
-#    L = igl.edge_lengths(V,T)
-#    A = igl.face_areas(V,T)
-#    theta, cos_theta = igl.dihedral_angles_intrinsic(L,A)
-#
-#
+def test_copyleft():
+    V = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]],dtype=np.float64)
+    T = np.array([[0,1,2,3]],dtype=np.int64)
+    F,_,_ = igl.boundary_facets(T)
+    V,F = igl.loop(V,F)
+    
+    dV,dF,J = igl.copyleft.progressive_hulls(V,F)
+    
+
+def test_cgal():
+    # tetrahedron
+    VA = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]],dtype=np.float64)
+    T = np.array([[0,1,2,3]],dtype=np.int64)
+    FA,_,_ = igl.boundary_facets(T)
+    # flip z
+    VB = np.array([[0,0,1],[2,0,1],[0,2,1],[1,1,-1]],dtype=np.float64)
+    FB = FA[:,::-1]
+    IF,_,_,_,_ = igl.copyleft.cgal.intersect_other(VA,FA,VB,FB)
+    IF,_,_,_,_ = igl.copyleft.cgal.intersect_other(VA,FA,VB,FB,detect_only=True,first_only=True)
+    VC,FC,J = igl.copyleft.cgal.mesh_boolean(VA,FA,VB,FB,"union")
+    H = igl.copyleft.cgal.convex_hull(VC)
+    # concatenate A and B meshes
+    VC = np.vstack((VA,VB))
+    FC = np.vstack((FA,FB+VA.shape[0]))
+    VV,FF,IF,J,IM = igl.copyleft.cgal.remesh_self_intersections(VC,FC)
+    _,_,IF,_,_ = igl.copyleft.cgal.remesh_self_intersections(VC,FC,detect_only=True,first_only=True)
+    
+    p = np.array([0,0,0],dtype=np.float64)
+    n = np.array([1,1,1],dtype=np.float64)
+    VV,FF,J = igl.copyleft.cgal.intersect_with_half_space(VC,FC,p,n)
+    equ = np.hstack((n,-n.dot(p)))
+    VV,FF,J = igl.copyleft.cgal.intersect_with_half_space(VC,FC,equ)
+    
+    P = np.array([[0.5,0.5,0.0],[0.5,0.5,0.5]],dtype=np.float64)
+    W = igl.copyleft.cgal.fast_winding_number(VA,FA,P)
+    W = igl.copyleft.cgal.fast_winding_number(VA,FA,P,expansion_order=2,beta=2.0)
+    
+    VC,FC,D,J = igl.copyleft.cgal.trim_with_solid(VA,FA,VB,FB)
+    
+    _,I,X = igl.random_points_on_mesh(1000,VC,FC)
+    N = igl.per_face_normals(VC,FC)
+    N = N[I,:]
+    point_indices, CH,CN,W = igl.octree(X)
+    I = igl.knn(X,X,20,point_indices,CH,CN,W)
+    A,T = igl.copyleft.cgal.point_areas(X,I,N)
+    
+def test_embree():
+    # octahedron
+    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
+    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
+    N = igl.per_vertex_normals(V,F)
+    ei = igl.embree.EmbreeIntersector();
+    ei.init(V,F)
+    S = igl.embree.ambient_occlusion(V,F,V,N,100)
+    S = igl.embree.ambient_occlusion(ei,V,N,100)
+    N = -N
+    S = igl.embree.shape_diameter_function(V,F,V,N,100)
+    S = igl.embree.shape_diameter_function(ei,V,N,100)
+    origin = np.array([2,2,2],dtype=np.float64)
+    direction = np.array([-2,-2,-2],dtype=np.float64)
+    hit = ei.intersectRay_first(origin,direction)
+    hits = ei.intersectRay(origin,direction)
+    hits = ei.intersectRay(origin,direction,tnear=0,tfar=1)
+    I,C = igl.embree.reorient_facets_raycast(V,F)
+
+def test_tetgen():
+    # octahedron
+    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
+    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
+    V,T,F,_,_,_,_,_,_ = igl.copyleft.tetgen.tetrahedralize(V,F,flags="Q")
+
+def test_triangle():
+    V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype=np.float64)
+    E = np.array([[0,1],[1,2],[2,3],[3,0]],dtype=np.int64)
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qc")
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Q")
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qqa0.1")
+    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+    F = np.array([[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
+    scaf_data = igl.triangle.SCAFData()
+    b = np.array([0,1,2],dtype=np.int64)
+    bc = np.array([[0,0],[1,0],[0,1]],dtype=np.float64)
+    V_init = np.array([[0,0],[1,0],[0,1],[0.1,0.1]],dtype=np.float64)
+    soft_p = 0;
+    igl.triangle.scaf_precompute(V,F,V_init,igl.ARAP,b,bc,soft_p,scaf_data)
+    L,rhs = igl.triangle.scaf_system(scaf_data)
+    U = igl.triangle.scaf_solve(1,scaf_data)
+
+def test_misc():
+    V,F = igl.icosahedron()
+    BV,BF = igl.bounding_box(V,pad=1.0)
+    R,C,B = igl.circumradius(V,F)
+    R = igl.inradius(V,F)
+    _,E,EMAP,_,_ = igl.unique_edge_map(F)
+    L = igl.crouzeix_raviart_cotmatrix(V,F,E,EMAP)
+    M = igl.crouzeix_raviart_massmatrix(V,F,E,EMAP)
+    cuts = igl.cut_to_disk(F)
+    V,F = igl.cylinder(10,10)
+    VD,FD = igl.false_barycentric_subdivision(V,F)
+    V,F,T = single_tet()
+    theta, cos_theta = igl.dihedral_angles(V,T)
+    L = igl.edge_lengths(V,T)
+    A = igl.face_areas(V,T)
+    theta, cos_theta = igl.dihedral_angles_intrinsic(L,A)
+
+
