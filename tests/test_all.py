@@ -14,64 +14,64 @@ import igl
 def test_nothing():
     pass
 
-#
-###def rand_sparse(n,density):
-###    n_features = n
-###    n_samples = n
-###    rng1 = np.random.RandomState(42)
-###    rng2 = np.random.RandomState(43)
-###
-###    nnz = int(n_samples*n_features*density)
-###
-###    row = rng1.randint(n_samples, size=nnz)
-###    cols = rng2.randint(n_features, size=nnz)
-###    data = rng1.rand(nnz)
-###
-###    S = scipy.sparse.coo_matrix((data, (row, cols)), shape=(n_samples, n_features))
-###    return S.tocsc()
-###
-###def time_noop():
-###    def helper(N,I,SN,SI):
-###        igl.noop(SN=SN)
-###        # start timer
-###        runs = 100
-###        start = time.time()
-###        for i in range(runs):
-###            igl.noop(SN=SN)
-###        # end timer
-###        end = time.time()
-###        return (end - start)/runs
-###    n = 10000
-###    m = 10
-###    N64_f = np.asfortranarray(np.random.randn(n,m).astype(np.float64))
-###    I64_f = np.asfortranarray(np.random.randn(n,m).astype(np.int64))
-###    # random sparse matrix
-###    SN64 = rand_sparse(n,1.0/(n))
-###    # print number of nonzeros
-###    SI64 = (rand_sparse(n,1.0/(n))*1000).astype(np.int64)
-###    print(f"noop<{n},{m}>: {helper(N64_f,I64_f,SN64,SI64)} secs")
-###
-###time_noop()
+
+##def rand_sparse(n,density):
+##    n_features = n
+##    n_samples = n
+##    rng1 = np.random.RandomState(42)
+##    rng2 = np.random.RandomState(43)
 ##
-### print(igl.matlab_format(V,"V"))
-### print(igl.matlab_format_index(F,"F"))
-### print(igl.matlab_format(dV,"dV"))
-### print(igl.matlab_format_index(dF,"dF"))
-#
-#
-## seed numpy's random number generator
+##    nnz = int(n_samples*n_features*density)
 ##
-#def triangulated_square():
-#    V = np.array([[0,0,0],[1,0,0],[1,1,0],[0,1,0]],dtype=np.float64)
-#    F = np.array([[0,1,2],[0,2,3]],dtype=np.int64)
-#    return V,F
+##    row = rng1.randint(n_samples, size=nnz)
+##    cols = rng2.randint(n_features, size=nnz)
+##    data = rng1.rand(nnz)
+##
+##    S = scipy.sparse.coo_matrix((data, (row, cols)), shape=(n_samples, n_features))
+##    return S.tocsc()
+##
+##def time_noop():
+##    def helper(N,I,SN,SI):
+##        igl.noop(SN=SN)
+##        # start timer
+##        runs = 100
+##        start = time.time()
+##        for i in range(runs):
+##            igl.noop(SN=SN)
+##        # end timer
+##        end = time.time()
+##        return (end - start)/runs
+##    n = 10000
+##    m = 10
+##    N64_f = np.asfortranarray(np.random.randn(n,m).astype(np.float64))
+##    I64_f = np.asfortranarray(np.random.randn(n,m).astype(np.int64))
+##    # random sparse matrix
+##    SN64 = rand_sparse(n,1.0/(n))
+##    # print number of nonzeros
+##    SI64 = (rand_sparse(n,1.0/(n))*1000).astype(np.int64)
+##    print(f"noop<{n},{m}>: {helper(N64_f,I64_f,SN64,SI64)} secs")
+##
+##time_noop()
 #
-#def single_tet():
-#    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
-#    F = np.array([[2,1,0],[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
-#    T = np.array([[0,1,2,3]],dtype=np.int64)
-#    return V,F,T
+## print(igl.matlab_format(V,"V"))
+## print(igl.matlab_format_index(F,"F"))
+## print(igl.matlab_format(dV,"dV"))
+## print(igl.matlab_format_index(dF,"dF"))
+
+
+# seed numpy's random number generator
 #
+def triangulated_square():
+    V = np.array([[0,0,0],[1,0,0],[1,1,0],[0,1,0]],dtype=np.float64)
+    F = np.array([[0,1,2],[0,2,3]],dtype=np.int64)
+    return V,F
+
+def single_tet():
+    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+    F = np.array([[2,1,0],[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
+    T = np.array([[0,1,2,3]],dtype=np.int64)
+    return V,F,T
+
 #def test_edges():
 #    F = np.array([[0,1,2],[0,2,3]],dtype=np.int64)
 #    E,oE = igl.orient_halfedges(F)
@@ -168,11 +168,12 @@ def test_nothing():
 #    V,T,F = igl.readMESH("out.mesh")
 #    igl.writeMSH("out.msh",V,F,T)
 #    V,F,T,_,_,_,_,_,_,_ = igl.readMSH("out.msh")
-#
-#def test_bvh():
-#    V,F,T = single_tet()
-#    tree = igl.AABB()
-#    tree.init(V,T)
+
+def test_bvh():
+    V,F,T = single_tet()
+    tree = igl.AABB()
+    tree.init(V,T)
+
 #    P = np.array([[0.5,0.5,0.0],[0.5,0.5,0.5]],dtype=np.float64)
 #    # first row of P
 #    q = P[0,:]
