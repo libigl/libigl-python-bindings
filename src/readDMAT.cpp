@@ -13,7 +13,7 @@ namespace pyigl
   Eigen::MatrixXN readDMAT(const std::filesystem::path &file_name)
   {
     Eigen::MatrixXN W;
-    if (!igl::readDMAT(file_name, W))
+    if (!igl::readDMAT(file_name.generic_string(), W))
     {
       throw std::runtime_error("readDMAT: Failed to read DMAT file.");
     }

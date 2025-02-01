@@ -25,7 +25,7 @@ namespace pyigl
     std::vector<std::string> EFields;
     std::vector<Eigen::MatrixXN> TriF;
     std::vector<Eigen::MatrixXN> TetF;
-    if(!igl::writeMSH(mesh_file_name, V, Tri, Tet, TriTag, TetTag, XFields, XF, EFields, TriF, TetF))
+    if(!igl::writeMSH(mesh_file_name.generic_string(), V, Tri, Tet, TriTag, TetTag, XFields, XF, EFields, TriF, TetF))
     {
       throw std::runtime_error("Failed to write .msh file: " + mesh_file_name.generic_string());
     }

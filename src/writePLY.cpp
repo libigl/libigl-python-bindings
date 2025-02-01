@@ -33,7 +33,7 @@ namespace pyigl
     Eigen::MatrixXi E = E_.cast<int>();
 
     if(!igl::writePLY(
-      filename,
+      filename.generic_string(),
       V,
       F,
       E,

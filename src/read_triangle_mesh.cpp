@@ -17,7 +17,7 @@ namespace pyigl
   {
     Eigen::MatrixXN V;
     Eigen::MatrixXI F;
-    if(!igl::read_triangle_mesh(path,V,F))
+    if(!igl::read_triangle_mesh(path.generic_string(),V,F))
     {
       // throw runtime exception
       throw std::runtime_error("Failed to read mesh from: " + path.generic_string());

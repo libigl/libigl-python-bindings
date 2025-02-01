@@ -15,7 +15,7 @@ namespace pyigl
   {
     Eigen::MatrixXN V,N;
     Eigen::MatrixXI F;
-    if(!igl::readOFF(filename,V,F,N))
+    if(!igl::readOFF(filename.generic_string(),V,F,N))
     {
       // throw runtime exception
       throw std::runtime_error("Failed to read mesh from: " + filename.generic_string() );

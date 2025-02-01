@@ -26,7 +26,7 @@ namespace pyigl
     std::vector<Eigen::MatrixXN> TriF;
     std::vector<Eigen::MatrixXN> TetF;
 
-    if (!igl::readMSH(msh_file_name, V, Tri, Tet, TriTag, TetTag, XFields, XF, EFields, TriF, TetF))
+    if (!igl::readMSH(msh_file_name.generic_string(), V, Tri, Tet, TriTag, TetTag, XFields, XF, EFields, TriF, TetF))
     {
       throw std::runtime_error("Failed to read .msh file: " + msh_file_name.generic_string());
     }

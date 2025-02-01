@@ -16,7 +16,7 @@ namespace pyigl
     const nb::DRef<const Eigen::MatrixXN> &W, 
     const bool ascii)
   {
-    if (!igl::writeDMAT(file_name, W, ascii))
+    if (!igl::writeDMAT(file_name.generic_string(), W, ascii))
     {
       throw std::runtime_error("writeDMAT: Failed to write DMAT file.");
     }

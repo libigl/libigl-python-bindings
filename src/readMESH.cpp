@@ -17,7 +17,7 @@ namespace pyigl
     Eigen::MatrixXI T;  // Tetrahedral indices
     Eigen::MatrixXI F;  // Face indices
 
-    if (!igl::readMESH(mesh_file_name, V, T, F))
+    if (!igl::readMESH(mesh_file_name.generic_string(), V, T, F))
     {
       throw std::runtime_error("Failed to read .mesh file: " + mesh_file_name.generic_string());
     }

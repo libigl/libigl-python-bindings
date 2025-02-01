@@ -16,7 +16,7 @@ namespace pyigl
     const nb::DRef<const Eigen::MatrixXI> &T,
     const nb::DRef<const Eigen::MatrixXI> &F)
   {
-    if (!igl::writeMESH(mesh_file_name, V, T, F))
+    if (!igl::writeMESH(mesh_file_name.generic_string(), V, T, F))
     {
       throw std::runtime_error("Failed to write .mesh file: " + mesh_file_name.generic_string());
     }

@@ -24,7 +24,7 @@ namespace pyigl
       throw std::runtime_error("Entries in F are too big to be cast to int32_t (required by igl::write_triangle_mesh)");
     }
     Eigen::MatrixXi F32 = F.cast<std::int32_t>();
-    if(!igl::write_triangle_mesh(filename,V,F32,encoding_enum))
+    if(!igl::write_triangle_mesh(filename.generic_string(),V,F32,encoding_enum))
     {
       // throw runtime exception
       throw std::runtime_error("Failed to write mesh to: " + filename.generic_string());
