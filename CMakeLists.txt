@@ -40,8 +40,8 @@ FetchContent_MakeAvailable(nanobind)
 
 # Download and set up libigl
 option(LIBIGL_COPYLEFT_CORE        "Build target igl_copyleft::core"       ON)
-option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       ON)
-option(LIBIGL_EMBREE               "Build target igl::embree"              ON)
+option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       OFF)
+option(LIBIGL_EMBREE               "Build target igl::embree"              OFF)
 option(LIBIGL_COPYLEFT_TETGEN      "Build target igl_copyleft::tetgen"     ON)
 option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
 FetchContent_Declare(
@@ -95,9 +95,13 @@ function(pyigl_include prefix name)
     endif()
     file(GLOB sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/*.cpp")
 
-    ## Just compile a single file
-    #list(GET sources 0 sources)
-    #list(APPEND sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/module.cpp")
+    # Just compile a single file
+    list(FILTER sources EXCLUDE REGEX ".*/module\\.cpp$")
+    list(GET sources 0 sources)
+    list(APPEND sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/module.cpp")
+
+    message(STATUS "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+    message(STATUS "${prefix} ${name} sources: ${sources}")
 
     set(BINDING_SOURCES ${sources})
     list(FILTER BINDING_SOURCES EXCLUDE REGEX ".*/module\\.cpp$")
