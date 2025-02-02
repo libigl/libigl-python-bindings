@@ -2,9 +2,10 @@
 [![PyPI version](https://badge.fury.io/py/libigl.svg)](https://pypi.org/project/libigl/)
 [![buildwheels](https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml/badge.svg)](https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml?query=branch%3Amain)
 
-This repository contains the source code for the libigl Python bindings written
-using [nanobind](https://nanobind.readthedocs.io/en/latest/). Functions allow
-NumPy arrays as input and output for dense matrices and vectors and SciPy sparse
+This repository contains the source code for the python bindings for the C++
+[libigl](https://github.com/libigl/libigl) library written using
+[nanobind](https://nanobind.readthedocs.io/en/latest/). Functions allow NumPy
+arrays as input and output for dense matrices and vectors and SciPy sparse
 matrices for sparse matrices. 
 
 ## Installation
@@ -13,11 +14,11 @@ matrices for sparse matrices.
 python -m pip install libigl
 ```
 
-## [Help/Documentation](https://libigl.github.io/libigl-python-bindings/)
+## Documentation
 
 | :warning: WARNING           |
 |:----------------------------|
-| This documentation is perennially out of date and will likely be removed/changed. |
+| The [python-binding documentation](https://libigl.github.io/libigl-python-bindings/) is perennially out of date and will likely be removed/changed. |
 
 * A tutorial on how to use the bindings can be found [here](https://libigl.github.io/libigl-python-bindings/tutorials/)
 * A function reference can be found [here](https://libigl.github.io/libigl-python-bindings/igl_docs/)
