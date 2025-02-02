@@ -25,6 +25,20 @@ python -m pip install ./
 * A tutorial on how to use the bindings can be found [here](https://libigl.github.io/libigl-python-bindings/tutorials/)
 * A function reference can be found [here](https://libigl.github.io/libigl-python-bindings/igl_docs/)
 
+## Getting the current version of libigl within python code
+
+Since version 2.5.4.dev0, the `igl.__version__` attribute has been removed. To
+get the version of the libigl package you're using within your python code, you
+can use the following code:
+
+```
+import importlib.metadata
+libigl_version = importlib.metadata.version('libigl')
+```
+
+The version of libigl is defined in the [pyproject.toml](./pyproject.toml) file.
+
+
 ## Compiling and modifying the bindiings
 
 According to the [scikit-build-core documentation](https://scikit-build-core.readthedocs.io/en/latest/configuration.html#editable-installs), the way to make an editable (incremental) build is to:
