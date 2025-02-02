@@ -10,13 +10,13 @@ on:
 
 jobs:
   build_wheels:
-    name: Build ${{ matrix.cpversionj}} wheels on ${{ matrix.os }}
+    name: Build ${{ matrix.cpversion }} wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-14]
-        cpversion:
-          - cp311
+        # build all cpversion: 3.9 to 3.13
+        cpversion: [cp39, cp310, cp311, cp312, cp313]
 
     steps:
       - uses: actions/checkout@v4
