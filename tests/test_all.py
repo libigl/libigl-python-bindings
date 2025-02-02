@@ -6,10 +6,6 @@ import time
 import warnings
 import igl
 
-def test_version():
-    version = igl.__version__
-    pass
-
 import igl.triangle
 import igl.copyleft
 import igl.copyleft.tetgen
