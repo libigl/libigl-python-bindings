@@ -77,7 +77,12 @@ Install whichever version of Python from the [official website](https://www.pyth
 
 ## Acknowledgements
 
-The original python bindings were generated and maintained by @teseoch,
-@KarlLeell, @fwilliams, @skoch9, @danielepanozzo.
+The original python bindings were generated and maintained by
+[@teseoch](https://github.com/teseoch),
+[@KarlLeell](https://github.com/KarlLeell),
+[@fwilliams](https://github.com/fwilliams),
+[@skoch9](https://github.com/skoch9), and
+[@danielepanozzo](https://github.com/danielepanozzo)
 
-The modern python bindings (since 2.5.4.dev0) can largely be blamed on @alecjacobson.
+The modern python bindings (since 2.5.4.dev0) can largely be blamed on
+[@alecjacobson](https://github.com/alecjacobson).
