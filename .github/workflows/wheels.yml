@@ -13,9 +13,10 @@ jobs:
     name: Build ${{ matrix.cpversion }} wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-14]
-        cpversion: [cp39, cp310, cp311, cp312, cp313]
+        cpversion: [cp38, cp39, cp310, cp311, cp312, cp313]
 
     steps:
       - uses: actions/checkout@v4
