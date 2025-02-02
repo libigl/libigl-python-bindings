@@ -1,60 +1,36 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
+#include "default_types.h"
 #include <igl/connected_components.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/stl/tuple.h>
 
-const char *ds_connected_components = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Determine the connected components of a graph described by the input
-   adjacency matrix (similar to MATLAB's graphconncomp).
+namespace pyigl
+{
+  // Wrapper for connected_components
+  auto connected_components( const Eigen::SparseMatrix<Integer> &A)
+  {
+    Eigen::VectorXI C;
+    Eigen::VectorXI K;
+    Integer num_components = (Integer)igl::connected_components(A, C, K);
+    return std::make_tuple(num_components, C, K);
+  }
+}
 
-Parameters
-----------
+// Bind the wrapper to the Python module
+void bind_connected_components(nb::module_ &m)
+{
+  m.def(
+    "connected_components",
+    &pyigl::connected_components,
+    "A"_a,
+R"(Determine the connected components of a graph described by the input adjacency matrix.
 
-A  #A by #A adjacency matrix (treated as describing an undirected graph)
-
-Returns
--------
-Returns number of connected components
-C  #A list of component indices into [0,#K-1]
-K  #K list of sizes of each component
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(connected_components)
-npe_doc(ds_connected_components)
-
-npe_arg(a, sparse_int32, sparse_int64)
-
-
-npe_begin_code()
-   assert_nonzero_rows(a, "A");
-   assert_cols_equals(a, a.rows(), "A");
-   Eigen::SparseMatrix<npe_Scalar_a> a_copy = a;
-   EigenDense<npe_Scalar_a> c;
-   EigenDense<npe_Scalar_a> k;
-   const int comps = igl::connected_components(a_copy, c, k);
-   return std::make_tuple(comps, npe::move(c), npe::move(k));
-
-npe_end_code()
-
-
+@param[in] A  #A by #A adjacency matrix (treated as describing a directed graph)
+@param[out] C (if return_C=True) #A list of component indices in [0,#K-1]
+@param[out] K (if return_K=True) #K list of sizes of each component
+@return number of connected components)");
+}

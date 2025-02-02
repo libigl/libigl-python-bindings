@@ -1,62 +1,72 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/per_vertex_normals.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
+#include <nanobind/stl/string.h>
+#include <stdexcept>
 
-const char* ds_per_vertex_normals = R"igl_Qu8mg5v7(
-Compute vertex normals via vertex position list, face list.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-v : #v by 3 array of mesh vertex 3D positions
-f : #f by 3 array of face (triangle) indices
-weighting : Weighting type, one of the following
-        -igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_UNIFORM uniform influence
-        -igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA area weighted
-        -igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE angle weighted
+namespace pyigl
+{
+  auto per_vertex_normals(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const igl::PerVertexNormalsWeightingType weight_enum)
+  {
+    Eigen::MatrixXN N;
+    igl::per_vertex_normals(V, F, weight_enum, N);
+    return N;
+  }
+  auto per_vertex_normals_FN(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const igl::PerVertexNormalsWeightingType weight_enum,
+    const nb::DRef<const Eigen::MatrixXN> &FN)
+  {
+    Eigen::MatrixXN N;
+    igl::per_vertex_normals(V, F, weight_enum, FN, N);
+    return N;
+  }
+}
 
-Returns
--------
-n  #v by 3 array of mesh vertex 3D normals
+// Bind the wrapper to the Python module
+void bind_per_vertex_normals(nb::module_ &m)
+{
+  nb::enum_<igl::PerVertexNormalsWeightingType>(m, "PerVertexNormalsWeightingType")
+    .value("PER_VERTEX_NORMALS_WEIGHTING_TYPE_UNIFORM", igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_UNIFORM)
+    .value("PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA", igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA)
+    .value("PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE", igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE)
+    .value("PER_VERTEX_NORMALS_WEIGHTING_TYPE_DEFAULT", igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_DEFAULT)
+    .export_values()
+    ;
+  m.def(
+    "per_vertex_normals",
+    &pyigl::per_vertex_normals,
+    "V"_a,
+    "F"_a,
+    "weighting"_a = igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_DEFAULT,
+R"(Compute per-vertex normals with optional weighting and face normals.
 
-See also
---------
-per_face_normals, per_edge_normals
+@param[in] V  #V by 3 matrix of vertex positions
+@param[in] F  #F by 3 matrix of face indices
+@param[in] weighting Optional string for weighting type ("uniform", "area", "angle", or "default")
+@return N  #V by 3 matrix of vertex normals)");
+  m.def(
+    "per_vertex_normals",
+    &pyigl::per_vertex_normals_FN,
+    "V"_a,
+    "F"_a,
+    "weighting"_a = igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_DEFAULT,
+    "FN"_a,
+R"(Compute per-vertex normals with optional weighting and face normals.
 
-Notes
------
-None
-
-Examples
---------
-# Mesh in (v, f)
->>> n = per_vertex_normals(v, f)
-)igl_Qu8mg5v7";
-
-npe_function(per_vertex_normals)
-npe_doc(ds_per_vertex_normals)
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_default_arg(weighting, int, 0)
-
-npe_begin_code()
-
-  assert_valid_3d_tri_mesh(v, f);
-  static_assert(int(igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_UNIFORM) == 0, "PerVertexNormalWeightingType enum changed!");
-  static_assert(int(igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA) == 1, "PerVertexNormalWeightingType enum changed!");
-  static_assert(int(igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE) == 2, "PerVertexNormalWeightingType enum changed!");
-
-  EigenDenseLike<npe_Matrix_v> n;
-  igl::per_vertex_normals(v, f, igl::PerVertexNormalsWeightingType(weighting), n);
-  return npe::move(n);
-
-npe_end_code()
-
-
+@param[in] V  #V by 3 matrix of vertex positions
+@param[in] F  #F by 3 matrix of face indices
+@param[in] weighting Optional string for weighting type ("uniform", "area", "angle", or "default")
+@param[in] FN Optional #F by 3 matrix of face normals
+@return N  #V by 3 matrix of vertex normals)");
+}

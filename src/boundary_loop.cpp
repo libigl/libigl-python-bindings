@@ -1,88 +1,48 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/boundary_loop.h>
-#include <pybind11/stl.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/vector.h>
 
-const char* ds_boundary_loop = R"igl_Qu8mg5v7(
-Compute ordered boundary loops for a manifold mesh and return the longest loop in terms of vertices.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-f : #v by dim array of mesh faces
+namespace pyigl
+{
+  // Wrapper for boundary_loop that returns all loops as a vector of vectors
+  auto boundary_loop_all(const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    std::vector<std::vector<Integer>> loops;
+    igl::boundary_loop(F, loops);
+    return loops;
+  }
+  // Wrapper for boundary_loop that returns all loops as a vector of vectors
+  auto boundary_loop(const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::VectorXI longest;
+    igl::boundary_loop(F, longest);
+    return longest;
+  }
+}
 
-Returns
--------
-l : ordered list of boundary vertices of longest boundary loop
+// Bind the wrapper to the Python module
+void bind_boundary_loop(nb::module_ &m)
+{
+  m.def(
+    "boundary_loop",
+    &pyigl::boundary_loop,
+    "F"_a,
+R"(Compute the ordered boundary loop with the most vertices for a manifold mesh.
 
-See also
---------
+@param[in] F  #F by dim list of mesh faces
+@param[out]  L  ordered list of boundary vertices of longest boundary loop)");
+  m.def(
+    "boundary_loop_all",
+    &pyigl::boundary_loop_all,
+    "F"_a,
+R"(Compute all ordered boundary loops for a manifold mesh.
 
-
-Notes
------
-None
-
-Examples
---------
-# Mesh in (v, f)
->>>l = boundary_loop(f)
-)igl_Qu8mg5v7";
-
-npe_function(boundary_loop)
-npe_doc(ds_boundary_loop)
-npe_arg(f, dense_int32, dense_int64)
-npe_begin_code()
-
-  assert_valid_tri_mesh_faces(f);
-  EigenDenseLike<npe_Matrix_f> l;
-  igl::boundary_loop(f, l);
-  return npe::move(l);
-
-npe_end_code()
-
-
-
-const char* ds_all_boundary_loop = R"igl_Qu8mg5v7xx(
-Compute ordered boundary loops for a manifold mesh
-
-Parameters
-----------
-f : #v by dim array of mesh faces
-
-Returns
--------
-l : list of loops where l[i] = ordered list of boundary vertices in loop i
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-# Mesh in (v, f)
->>>l = all_boundary_loop(f)
-)igl_Qu8mg5v7xx";
-
-npe_function(all_boundary_loop)
-npe_doc(ds_all_boundary_loop)
-npe_arg(f, dense_int32, dense_int64)
-npe_begin_code()
-  assert_valid_tri_mesh_faces(f);
-  std::vector<std::vector<typename EigenDenseI64::Scalar>> l;
-  igl::boundary_loop(f, l);
-  return l;
-
-npe_end_code()
+@param[in] F  #F by dim list of mesh faces
+@return List of lists of boundary vertices, where each sublist represents a loop)");
+}
 

@@ -1,66 +1,56 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Francis Williams
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
+#include "default_types.h"
 #include <igl/cut_mesh.h>
-#include <npe.h>
-#include <typedefs.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_cut_mesh = R"igl_Qu8mg5v7(
-Compute the barycenter of every simplex
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-v : #v x dim matrix of vertex coordinates
-f : #f x simplex_size  matrix of indices of simplex corners into V
-cuts : #F by 3 list of boolean flags, indicating the edges that need to
-   be cut (has 1 at the face edges that are to be cut, 0 otherwise)
+namespace pyigl
+{
+  auto cut_mesh(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const nb::DRef<const Eigen::MatrixXB> &C)
+  {
+    Eigen::MatrixXN Vn;
+    Eigen::MatrixXI Fn;
+    Eigen::VectorXI I;
+    igl::cut_mesh(V,F,C,Vn,Fn,I);
+    return std::make_tuple(Vn,Fn,I);
+  }
 
-Returns
--------
-A pair (vcut, fcut) where:
-  * vcut is a #v by 3 list of the vertex positions
-    of the cut mesh. This matrix will be similar to the original vertices except
-    some rows will be duplicated.
-  * fcut is a #f by 3 list of the faces of the cut mesh (must be triangles). This
+}
+
+// Bind the wrapper to the Python module
+void bind_cut_mesh(nb::module_ &m)
+{
+  m.def(
+    "cut_mesh",
+    &pyigl::cut_mesh, 
+    "V"_a, 
+    "F"_a,
+    "C"_a,
+R"(Given a mesh and a list of edges that are to be cut, the function
+generates a new disk-topology mesh that has the cuts at its boundary.
+
+
+\note Assumes mesh is edge-manifold.
+@param[in,out] V  #V by 3 list of the vertex positions
+@param[in,out] F  #F by 3 list of the faces
+@param[in] cuts  #F by 3 list of boolean flags, indicating the edges that need to
+    be cut (has 1 at the face edges that are to be cut, 0 otherwise)
+@param[out]  Vn  #V by 3 list of the vertex positions of the cut mesh. This matrix
+    will be similar to the original vertices except some rows will be
+    duplicated.
+@param[out]  Fn  #F by 3 list of the faces of the cut mesh(must be triangles). This
     matrix will be similar to the original face matrix except some indices
     will be redirected to point to the newly duplicated vertices.
+@param[out]  I   #V by 1 list of the map between Vn to original V index.
+)");
+}
 
-See also
---------
 
-Notes
------
 
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(cut_mesh)
-npe_doc(ds_cut_mesh)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_arg(cuts, npe_matches(f))
-npe_begin_code()
-    assert_valid_3d_tri_mesh(v, f);
-    assert_shapes_match(f, cuts, "f", "cuts");
-
-    // FIXME: Copying is bad m'kay but libIGL's templates are broken
-    EigenDenseLike<npe_Matrix_v> Vcopy = v;
-    EigenDenseLike<npe_Matrix_f> Fcopy = f;
-    EigenDenseLike<npe_Matrix_cuts> cutsCopy = cuts;
-
-    EigenDenseLike<npe_Matrix_v> Vcut;
-    EigenDenseLike<npe_Matrix_f> Fcut;
-
-    igl::cut_mesh(Vcopy, Fcopy, cutsCopy, Vcut, Fcut);
-
-    return std::make_tuple(npe::move(Vcut), npe::move(Fcut));
-
-npe_end_code()

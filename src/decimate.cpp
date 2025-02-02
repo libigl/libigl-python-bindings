@@ -1,84 +1,64 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 KarlLeell
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-// TODO: __miss 4 functions
-
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
-
-
-
-
-
+#include "default_types.h"
 #include <igl/decimate.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_decimate = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Assumes (V,F) is a manifold mesh (possibly with boundary) Collapses edges
-  until desired number of faces is achieved. This uses default edge cost and
-  merged vertex placement functions {edge length, edge midpoint}.
+namespace pyigl
+{
+  // igl::decimate is a nightmare of poor templating. Suffer copies.
+  auto decimate(
+    const Eigen::MatrixXd &V,
+    const Eigen::MatrixXi &F,
+    const int max_m,
+    const bool block_intersections)
+  {
+    Eigen::MatrixXd U;
+    Eigen::MatrixXi G;
+    Eigen::VectorXi J,I;
+    igl::decimate(V,F,max_m,block_intersections,U,G,J,I);
+    return std::make_tuple(
+      U.cast<Numeric>().eval(), // If Numeric==double will this incur a copy?
+      G.cast<Integer>().eval(),
+      J.cast<Integer>().eval(),
+      I.cast<Integer>().eval());
+  }
+}
 
-Parameters
-----------
-V  #V by dim list of vertex positions
-F  #F by 3 list of face indices into V.
-max_m  desired number of output faces
-block_intersections  whether to block intersections
+// Bind the wrapper to the Python module
+void bind_decimate(nb::module_ &m)
+{
+  m.def(
+    "decimate",
+    &pyigl::decimate, 
+    "V"_a, 
+    "F"_a,
+    "max_m"_a = 0,
+    "block_intersections"_a = false,
+    R"(Assumes (V,F) is a manifold mesh (possibly with boundary) collapses edges
+until desired number of faces is achieved. This uses default edge cost and
+merged vertex placement functions {edge length, edge midpoint}.
 
-Returns
--------
-U  #U by dim list of output vertex posistions (can be same ref as V)
-G  #G by 3 list of output face indices into U (can be same ref as G)
-J  #G list of indices into F of birth face
-I  #U list of indices into V of birth vertices
-Returns true if m was reached (otherwise #G > m)
+See \fileinfo for more details.
 
-See also
---------
+@param[in] V  #V by dim list of vertex positions
+@param[in] F  #F by 3 list of face indices into V.
+@param[in] max_m  desired number of output faces
+@param[in] block_intersections  whether to block intersections (see
+  intersection_blocking_collapse_edge_callbacks)
+@param[out] U  #U by dim list of output vertex posistions (can be same ref as V)
+@param[out] G  #G by 3 list of output face indices into U (can be same ref as G)
+@param[out] J  #G list of indices into F of birth face
+@param[out] I  #U list of indices into V of birth vertices
+@return true if m was reached (otherwise #G > m))");
 
-Notes
------
-None
-
-Examples
---------
-
-
-)igl_Qu8mg5v7";
-
-npe_function(decimate)
-npe_doc(ds_decimate)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_arg(max_m, size_t)
-npe_arg(block_intersections, bool)
+}
 
 
-npe_begin_code()
-
-  assert_valid_23d_tri_mesh(v, f);
-  // TODO: remove __copy
-  Eigen::MatrixXd v_copy = v.template cast<double>();
-  Eigen::MatrixXi f_copy = f.template cast<int>();
-  Eigen::MatrixXd u;
-  Eigen::MatrixXi g;
-  Eigen::VectorXi j;
-  Eigen::VectorXi i;
-  bool reach = igl::decimate(v_copy, f_copy, max_m, block_intersections, u, g, j, i);
-  EigenDenseFloat u_row_major = u;
-  EigenDenseInt g_row_major = g.template cast<typename EigenDenseInt::Scalar>();
-  // FIXME: vector not allowing row major, but they should be essentially the same so i feel we can leave it as col major
-  Eigen::Matrix<typename EigenDenseInt::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor> j_row_major = j.template cast<typename EigenDenseInt::Scalar>();
-  Eigen::Matrix<typename EigenDenseInt::Scalar, Eigen::Dynamic, 1, Eigen::ColMajor> i_row_major = i.template cast<typename EigenDenseInt::Scalar>();
-  return std::make_tuple(reach, npe::move(u_row_major), npe::move(g_row_major), npe::move(j_row_major), npe::move(i_row_major));
-
-npe_end_code()
 
 

@@ -1,70 +1,59 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-//TODO: __example
-
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
-
+#include "default_types.h"
 #include <igl/write_triangle_mesh.h>
-#include <igl/FileEncoding.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/filesystem.h>
+#include <limits>
 
-const char *ds_write_triangle_mesh = R"igl_Qu8mg5v7(
- write mesh to a file with automatic detection of file format.  supported: obj, off, stl, wrl, ply, mesh).
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-    str  path to file
-     V  double matrix #V by 3
-     F  int matrix #F by 3
-    force_ascii=True  force ascii format even if binary is available
-Returns
--------
-    Returns true iff success
-
-See also
---------
-
-
-Notes
------
-
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(write_triangle_mesh)
-npe_doc(ds_write_triangle_mesh)
-
-npe_arg(str, std::string)
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_default_arg(force_ascii, bool, bool(true))
-
-npe_begin_code()
-  assert_valid_3d_tri_mesh(v, f);
-  // TODO: remove __copy
-  //copy is necessary for the ply library
-  Eigen::MatrixXi f_copy = f.template cast<int>();
-  Eigen::MatrixXd v_copy = v.template cast<double>();
-  
-  igl::FileEncoding encoding = igl::FileEncoding::Ascii;
-  if (!force_ascii) {
-    //NOTE: if not ascii, we default to binary
-    encoding = igl::FileEncoding::Binary;
+namespace pyigl
+{
+  void write_triangle_mesh(
+    const std::filesystem::path & filename,
+    const nb::DRef<const Eigen::MatrixXN> V,
+    const nb::DRef<const Eigen::MatrixXI> F,
+    const igl::FileEncoding encoding_enum)
+  {
+    // Throw an error if entries in F are bigger than can be cast to int32_t
+    if(F.maxCoeff() > std::numeric_limits<std::int32_t>::max())
+    {
+      // throw runtime exception
+      throw std::runtime_error("Entries in F are too big to be cast to int32_t (required by igl::write_triangle_mesh)");
+    }
+    Eigen::MatrixXi F32 = F.cast<std::int32_t>();
+    if(!igl::write_triangle_mesh(filename.generic_string(),V,F32,encoding_enum))
+    {
+      // throw runtime exception
+      throw std::runtime_error("Failed to write mesh to: " + filename.generic_string());
+    }
   }
+}
 
-  bool ok = igl::write_triangle_mesh(str, v_copy, f_copy, encoding);
-  return ok;
+// Bind the wrapper to the Python module
+void bind_write_triangle_mesh(nb::module_ &m)
+{
+  m.def(
+    "write_triangle_mesh",
+    &pyigl::write_triangle_mesh, 
+    "filename"_a,
+    "V"_a, 
+    "F"_a, 
+    "encoding"_a=igl::FileEncoding::Ascii,
+R"(write mesh to a file with automatic detection of file format.  supported:
+obj, off, stl, wrl, ply, mesh).
 
-npe_end_code()
+@tparam Scalar  type for positions and vectors (will be read as double and cast
+           to Scalar)
+@tparam Index  type for indices (will be read as int and cast to Index)
+@param[in] str  path to file
+@param[in] V  eigen double matrix #V by 3
+@param[in] F  eigen int matrix #F by 3
+@param[in] encoding  set file encoding (ascii or binary) when both are available)"
+    );
+}
+
 
 

@@ -1,87 +1,90 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Thomas
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
+#include "default_types.h"
 #include <igl/marching_cubes.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
+#include <nanobind/stl/unordered_map.h>
 
-const char* ds_marching_cubes = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-marching_cubes performs marching cubes reconstruction on a grid defined by values, and 
+namespace pyigl
+{
+  auto marching_cubes(
+    const nb::DRef<const Eigen::VectorXN> &S,
+    const nb::DRef<const Eigen::MatrixXN> &GV,
+    const unsigned nx,
+    const unsigned ny,
+    const unsigned nz,
+    const Numeric isovalue)
+  {
+    Eigen::MatrixXN V;
+    Eigen::MatrixXI F;
+    std::unordered_map<std::int64_t,int> E2V;
+    igl::marching_cubes(S,GV,nx,ny,nz,isovalue,V,F,E2V);
+    return std::make_tuple(V,F,E2V);
+  }
+
+  auto marching_cubes_sparse(
+    const nb::DRef<const Eigen::VectorXN> &S,
+    const nb::DRef<const Eigen::MatrixXN> &GV,
+    const nb::DRef<const Eigen::MatrixXI> &GI,
+    const Numeric isovalue)
+  {
+    Eigen::MatrixXN V;
+    Eigen::MatrixXI F;
+    igl::marching_cubes(S,GV,GI,isovalue,V,F);
+    return std::make_tuple(V,F);
+  }
+}
+
+// Bind the wrapper to the Python module
+void bind_marching_cubes(nb::module_ &m)
+{
+
+  m.def(
+    "marching_cubes",
+    &pyigl::marching_cubes, 
+    "S"_a, 
+    "GV"_a,
+    "nx"_a,
+    "ny"_a,
+    "nz"_a,
+    "isovalue"_a=0,
+R"(Performs marching cubes reconstruction on a grid defined by values, and
 points, and generates a mesh defined by vertices and faces
 
-Parameters
-----------
-S   nx*ny*nz list of values at each grid corner i.e. S(x + y*xres + z*xres*yres) for corner (x,y,z)
-GV  nx*ny*nz by 3 array of corresponding grid corner vertex locations
-        points, ordered in x,y,z order:
-        points[index] = the point at (x,y,z) where :
-            x = (index % (xres -1),
-            y = (index / (xres-1)) %(yres-1),
-            z = index / (xres -1) / (yres -1) ).
-            where x,y,z index x, y, z dimensions
-            i.e. index = x + y*xres + z*xres*yres
-nx  resolutions of the grid in x dimension
-ny  resolutions of the grid in y dimension
-nz  resolutions of the grid in z dimension
-isovalue  the isovalue of the surface to reconstruct
+@param[in] S   nx*ny*nz list of values at each grid corner
+               i.e. S(x + y*xres + z*xres*yres) for corner (x,y,z)
+@param[in] GV  nx*ny*nz by 3 array of corresponding grid corner vertex locations
+@param[in] nx  resolutions of the grid in x dimension
+@param[in] ny  resolutions of the grid in y dimension
+@param[in] nz  resolutions of the grid in z dimension
+@param[in] isovalue  the isovalue of the surface to reconstruct
+@param[out] V  #V by 3 list of mesh vertex positions
+@param[out] F  #F by 3 list of mesh triangle indices into rows of V
+@param[out] E2V  map from edge key to index into rows of V
 
+# unpack keys into (i,j,v) index triplets
+EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
+)");
 
-Returns
--------
-V  #V by 3 list of mesh vertex positions
-F  #F by 3 list of mesh triangle indices into rows of V
+  m.def(
+    "marching_cubes",
+    &pyigl::marching_cubes_sparse, 
+    "S"_a, 
+    "GV"_a,
+    "GI"_a,
+    "isovalue"_a=0,
+R"(Performs marching cubes reconstruction on a grid defined by values, and
+points, and generates a mesh defined by vertices and faces
 
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
->> import numpy as np
->> K = np.linspace( -1.0, 1.0, 64)
->> pts = np.array([[x,y,z] for x in K for y in K for z in K])
->> S = signed_distance(pts, v, f)
->> v, f = marching_cubes(S, pts, nx, ny, nz, 0.0)
-
-)igl_Qu8mg5v7";
-
-npe_function(marching_cubes)
-npe_doc(ds_marching_cubes)
-npe_arg(s, dense_float, dense_double)
-npe_arg(gv, dense_float, dense_double)
-npe_arg(nx, int)
-npe_arg(ny, int)
-npe_arg(nz, int)
-npe_default_arg(isovalue, double, 0.0)
-
-npe_begin_code()
-    // input checks
-    assert_rows_match(s, gv, "S", "GV");
-    assert_cols_equals(s, 1, "S");
-    assert_cols_equals(gv, 3, "GV");
-
-    // vertices and faces of marched iso surface
-    Eigen::MatrixXd SV;
-    Eigen::MatrixXi SF; 
-
-    Eigen::MatrixXd s_copy = s.template cast<double>();
-    Eigen::MatrixXd gv_copy = gv.template cast<double>();
-
-    igl::marching_cubes(s_copy, gv_copy, nx, ny, nz, isovalue, SV, SF);
-
-    EigenDenseLike<npe_Matrix_gv> svRowMajor = SV.template cast<typename npe_Matrix_gv::Scalar>();
-    EigenDenseLike<EigenDenseInt> sfRowMajor = SF.template cast<typename EigenDenseInt::Scalar>();
-
-    return std::make_tuple(npe::move(svRowMajor), npe::move(sfRowMajor));
-npe_end_code()
+@param[in] S #S list of scalar field values
+@param[in] GV  #S by 3 list of referenced grid vertex positions
+@param[in] GI  #GI by 8 list of grid corner indices into rows of GV
+@param[in] isovalue  the isovalue of the surface to reconstruct
+@param[out] V  #V by 3 list of mesh vertex positions
+@param[out] F  #F by 3 list of mesh triangle indices into rows of V)");
+}

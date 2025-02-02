@@ -1,72 +1,64 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <npe.h>
-#include <common.h>
-#include <typedefs.h>
-
+#include "default_types.h"
 #include <igl/ray_mesh_intersect.h>
-#include <igl/matlab_format.h>
-#include <iostream>
-#include <pybind11/stl.h>
+#include <igl/Hit.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/vector.h>
+#include <nanobind/stl/tuple.h>
 
-const char *ds_ray_mesh_intersect = R"igl_Qu8mg5v7(
-Shoot a ray against a mesh (V,F) and collect the first hit.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-source  3-vector origin of ray
-dir  3-vector direction of ray
-V  #V by 3 list of mesh vertex positions
-F  #F by 3 list of mesh face indices into V
+namespace pyigl
+{
+  // Wrapper for ray_mesh_intersect with overload handling
+  std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>>
+    ray_mesh_intersect(
+    const Eigen::VectorXN &source,
+    const Eigen::VectorXN &dir,
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const bool first = false)
+  {
+    std::vector<std::tuple<Integer,Numeric,Numeric,Numeric>> out;
+    if (first)
+    {
+      // Overload for a single hit
+      igl::Hit<Numeric> hit;
+      bool result = igl::ray_mesh_intersect(source, dir, V, F, hit);
+      out.emplace_back(hit.id, hit.t, hit.u, hit.v);
+    }
+    else
+    {
+      // Overload for all hits
+      std::vector<igl::Hit<Numeric> > hits;
+      bool result = igl::ray_mesh_intersect(source, dir, V, F, hits);
+      for (const auto &hit : hits)
+      {
+        out.emplace_back(hit.id, hit.t, hit.u, hit.v);
+      }
+    }
+    return out;
+  }
+}
 
-Returns
--------
-hits  **sorted** list of hits: id, gid, u, v, t
+// Bind the wrapper to the Python module
+void bind_ray_mesh_intersect(nb::module_ &m)
+{
+  m.def(
+    "ray_mesh_intersect",
+    &pyigl::ray_mesh_intersect,
+    "source"_a,
+    "dir"_a,
+    "V"_a,
+    "F"_a,
+    "first"_a = false,
+R"(Shoot a ray against a mesh (V, F) and collect hits.
 
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(ray_mesh_intersect)
-npe_doc(ds_ray_mesh_intersect)
-
-npe_arg(source, dense_float, dense_double)
-npe_arg(dir, npe_matches(source))
-// This does not work and seems to be a bug in numpyeigen
-//// npe_arg(v, npe_matches(source))
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-
-
-npe_begin_code()
-  assert_size_equals(source, 3, "source");
-  assert_size_equals(dir, 3, "dir");
-  assert_valid_3d_tri_mesh(v, f);
-
-  std::vector<igl::Hit> hits;
-  igl::ray_mesh_intersect(
-    source.template cast<npe_Scalar_v>().eval(),
-       dir.template cast<npe_Scalar_v>().eval(),
-    v, f, hits);
-  std::vector<std::tuple<int, int, float, float, float>> hits_res;
-
-  for(const auto &h : hits)
-    hits_res.emplace_back(h.id, h.gid, h.u, h.v, h.t);
-
-  return hits_res;
-
-npe_end_code()
+@param[in] source  3-vector origin of the ray
+@param[in] dir     3-vector direction of the ray
+@param[in] V       #V by 3 list of mesh vertex positions
+@param[in] F       #F by 3 list of mesh face indices into V
+@param[in] first If True, only return the first hit (if any)
+@return Sorted list of hits if any exist, otherwise None)");
+}

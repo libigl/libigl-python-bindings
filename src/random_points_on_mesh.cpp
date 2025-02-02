@@ -1,59 +1,49 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-//TODO: __example
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/random_points_on_mesh.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_random_points_on_mesh = R"igl_Qu8mg5v7(
-RANDOM_POINTS_ON_MESH Randomly sample a mesh (V,F) n times.
-Parameters
-----------
-     n  number of samples
-     V  #V by dim list of mesh vertex positions
-     F  #F by 3 list of mesh triangle indices
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Returns
--------
-     B  n by 3 list of barycentric coordinates, ith row are coordinates of
-       ith sampled point in face FI(i)
-     FI  n list of indices into F
-     X  n by dim list of sampled points
+namespace pyigl
+{
+  // Wrapper for vertex_components with face indices
+  auto random_points_on_mesh(
+    const Integer n,
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::VectorXI FI;
+    Eigen::MatrixXN B,X;
+    igl::random_points_on_mesh(n, V, F,  B, FI, X);
+    return std::make_tuple(B, FI, X);
+  }
+}
 
-See also
---------
+// Bind the wrappers to the Python module
+void bind_random_points_on_mesh(nb::module_ &m)
+{
+  // Binding for vertex_components with adjacency matrix and counts
+  m.def(
+    "random_points_on_mesh",
+    &pyigl::random_points_on_mesh,
+    "n"_a,
+    "V"_a,
+    "F"_a,
+    R"(
+ Randomly sample a mesh (V,F) n times.
 
+ @param[in] n  number of samples
+ @param[in] V  #V by dim list of mesh vertex positions
+ @param[in] F  #F by 3 list of mesh triangle indices
+ @param[out] B  n by 3 list of barycentric coordinates, ith row are coordinates of
+     ith sampled point in face FI(i)
+ @param[in] urbg An instance of UnformRandomBitGenerator (e.g.,
+  `std::minstd_rand(0)`)
+ @param[out] FI  n list of indices into F 
+ @param[in,out] urbg An instance of UnformRandomBitGenerator.
+ @param[out] X  n by dim list of sample positions.)");
+}
 
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(random_points_on_mesh)
-npe_doc(ds_random_points_on_mesh)
-
-npe_arg(n, int)
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-
-
-npe_begin_code()
-
-  assert_valid_23d_tri_mesh(v, f);
-  EigenDenseLike<npe_Matrix_v> b;
-  Eigen::Matrix<npe_Scalar_f, Eigen::Dynamic, 1> fi;
-  EigenDenseLike<npe_Matrix_v> x;
-  igl::random_points_on_mesh(n, v, f, b, fi, x);
-  return std::make_tuple(npe::move(b), npe::move(fi), npe::move(x));
-
-npe_end_code()

@@ -1,59 +1,53 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/adjacency_matrix.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
 
-const char* ds_adjacency_matrix = R"igl_Qu8mg5v7(
-Constructs the graph adjacency matrix of a given mesh (v, f).
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-f : #f by dim list of mesh simplices
+namespace pyigl
+{
+  // Wrapper for adjacency_matrix with simplicial mesh (F)
+  auto adjacency_matrix(const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::SparseMatrixI A;
+    igl::adjacency_matrix(F, A);
+    return A;
+  }
 
-Returns
--------
-a : max(f) by max(f) cotangent matrix, each row i corresponding to v(i, :)
+  // Wrapper for adjacency_matrix with polygonal mesh (I, C)
+  auto adjacency_matrix_polygon(
+    const nb::DRef<const Eigen::VectorXI> &I,
+    const nb::DRef<const Eigen::VectorXI> &C)
+  {
+    Eigen::SparseMatrixI A;
+    igl::adjacency_matrix(I, C, A);
+    return A;
+  }
+}
 
-See also
---------
-adjacency_list, edges, cotmatrix, diag
+// Bind the wrapper to the Python module
+void bind_adjacency_matrix(nb::module_ &m)
+{
+  m.def(
+    "adjacency_matrix",
+    &pyigl::adjacency_matrix,
+    "F"_a,
+R"(Constructs the adjacency matrix for a simplicial mesh.
 
-Notes
------
-None
+@param[in] F  #F by dim matrix of mesh simplices
+@return A Sparse adjacency matrix of size max(F)+1 by max(F)+1)");
 
-Examples
---------
-# Mesh in (v, f)
->>> a = adjacency_matrix(f)
+  m.def(
+    "adjacency_matrix",
+    &pyigl::adjacency_matrix_polygon,
+    "I"_a,
+    "C"_a,
+R"(Constructs the adjacency matrix for a polygon mesh.
 
-# Sum each row 
->>> a_sum = np.sum(a, axis=1)
-
-# Convert row sums into diagonal of sparse matrix
->>> a_diag = diag(a_sum)
-
-# Build uniform laplacian
->>> u = a - a_diag
-)igl_Qu8mg5v7";
-
-npe_function(adjacency_matrix)
-npe_doc(ds_adjacency_matrix)
-npe_arg(f, dense_int32, dense_int64)
-npe_begin_code()
-
-  assert_valid_simplex_idxs(f, "f");
-  EigenSparseLike<npe_Matrix_f> a;
-  igl::adjacency_matrix(f, a);
-  return npe::move(a);
-
-npe_end_code()
-
-
+@param[in] I  Vectorized list of polygon corner indices into rows of some matrix V
+@param[in] C  Cumulative polygon sizes such that C(i+1)-C(i) = size of the ith polygon
+@return A Sparse adjacency matrix of size max(I)+1 by max(I)+1)");
+}

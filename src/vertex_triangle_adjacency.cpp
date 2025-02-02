@@ -1,65 +1,76 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 KarlLeell
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-// TODO: __miss __example
-
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/vertex_triangle_adjacency.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/vector.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_vertex_triangle_adjacency = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-vertex_face_adjacency constructs the vertex-face topology of a given mesh (V,F)
+namespace pyigl
+{
+  auto vertex_triangle_adjacency(
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    Integer n)
+  {
+    if(n==0 && F.size()>0)
+    {
+      n = F.maxCoeff()+1;
+    }
+    Eigen::VectorXI VF,NI;
+    igl::vertex_triangle_adjacency(F,n,VF,NI);
+    return std::make_tuple(VF,NI);
+  }
+  auto vertex_triangle_adjacency_lists(
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    Integer n)
+  {
+    if(n==0 && F.size()>0)
+    {
+      n = F.maxCoeff()+1;
+    }
+    std::vector<std::vector<Integer>> VF,VFi;
+    igl::vertex_triangle_adjacency(n,F,VF,VFi);
+    return std::make_tuple(VF,VFi);
+  }
+}
 
-Parameters
-----------
-F  #F by 3 list of triangle indices into some vertex list V
-n  number of vertices, #V (e.g., F.maxCoeff()+1)
+// Bind the wrapper to the Python module
+void bind_vertex_triangle_adjacency(nb::module_ &m)
+{
+  m.def(
+    "vertex_triangle_adjacency",
+    &pyigl::vertex_triangle_adjacency, 
+    "F"_a,
+    "n"_a=0,
+R"(vertex_face_adjacency constructs the vertex-face topology of a given mesh (V,F)
 
-Returns
--------
-VF  3*#F list  List of faces indice on each vertex, so that VF(NI(i)+j) =
-  f, means that face f is the jth face (in no particular order) incident
-  on vertex i.
-NI  #V+1 list  cumulative sum of vertex-triangle degrees with a
-  preceeding zero. "How many faces" have been seen before visiting this
-  vertex and its incident faces.
+ @param[in] F  #F by dim list of mesh faces (must be triangles)
+ @param[in] n  number of vertices #V (e.g. `F.maxCoeff()+1` or `V.rows()`)
+ @param[out] VF  #V list of lists of incident faces (adjacency list)
+ @param[out] VI  #V list of lists of index of incidence within incident faces listed
+     in VF
+    );)"
+    );
+  m.def(
+    "vertex_triangle_adjacency_lists",
+    &pyigl::vertex_triangle_adjacency_lists, 
+    "F"_a,
+    "n"_a=0,
+R"(vertex_face_adjacency constructs the vertex-face topology of a given mesh (V,F)
 
+ @param[in] F  #F by dim list of mesh faces (must be triangles)
+ @param[in] n  number of vertices #V (e.g. `F.maxCoeff()+1` or `V.rows()`)
+ if using lists
+ @param[out] VF  #V list of lists of incident faces (adjacency list)
+ @param[out] VI  #V list of lists of index of incidence within incident faces listed
+     in VF)"
+    );
+}
 
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(vertex_triangle_adjacency)
-npe_doc(ds_vertex_triangle_adjacency)
-
-npe_arg(f, dense_int32, dense_int64)
-npe_arg(n, int)
-
-
-npe_begin_code()
-
-  assert_valid_tri_mesh_faces(f);
-  Eigen::VectorXi vf;
-  Eigen::VectorXi ni;
-  igl::vertex_triangle_adjacency(f, n, vf, ni);
-  return std::make_tuple(npe::move(vf), npe::move(ni));
-
-npe_end_code()
 
 
 

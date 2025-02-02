@@ -1,69 +1,73 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Alec Jacobson
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <pybind11/stl.h>
-
-
-#include <npe.h>
-#include <common.h>
-#include <typedefs.h>
-
+#include "default_types.h"
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/string.h>
+#include <nanobind/stl/tuple.h>
 #include <igl/copyleft/tetgen/tetrahedralize.h>
+#include <Eigen/Core>
+#include <string>
 
-const char* ds_tetrahedralize = R"igl_Qu8mg5v7(
-)igl_Qu8mg5v7";
+namespace nb = nanobind;
+using namespace nb::literals;
 
-npe_function(tetrahedralize)
-npe_doc(ds_tetrahedralize)
-
-npe_arg(V, dense_float, dense_double)
-npe_default_arg(F, dense_int32, dense_int64, Eigen::MatrixXi(0,3))
-npe_default_arg(H, npe_matches(V) ,pybind11::array())
-npe_default_arg(switches, std::string, "Q")
-npe_default_arg(return_adjacency_info, bool, false)
-npe_default_arg(VM, npe_matches(F), pybind11::array())
-npe_default_arg(FM, npe_matches(F), pybind11::array())
-npe_default_arg( R, npe_matches(V), pybind11::array())
-npe_begin_code()
-const bool has_markers = VM.size() > 0 || FM.size() > 0;
-const bool has_regions = R.size() > 0;
-EigenDenseLike<npe_Matrix_V> TV;
-EigenDenseLike<npe_Matrix_F> TT, TF, TN, FT;
-Eigen::Matrix<npe_Scalar_F,Eigen::Dynamic,1> TR,PT,TM;
-
-int num_regions;
-igl::copyleft::tetgen::tetrahedralize(
-  V,F,H,
-  Eigen::Map<Eigen::Matrix<typename decltype(VM)::Scalar,Eigen::Dynamic,1>>(VM.data(),VM.size()),
-  Eigen::Map<Eigen::Matrix<typename decltype(FM)::Scalar,Eigen::Dynamic,1>>(FM.data(),FM.size()),
-  R,switches,TV,TT,TF,TM,TR,TN,PT,FT,num_regions);
-
-auto ret = std::list<pybind11::object>({npe::move(TV), npe::move(TT), npe::move(TF)});
-
-if(has_markers)
+namespace pyigl
 {
-  ret.push_back(npe::move(TM));
-}
-if(has_regions)
-{
-  ret.push_back(npe::move(TR));
-}
-if(return_adjacency_info)
-{
-  ret.push_back(npe::move(TN));
-  ret.push_back(npe::move(PT));
-  ret.push_back(npe::move(FT));
-}
-if(has_regions)
-{
-  ret.push_back(pybind11::cast(num_regions));
+  // Full version with all parameters
+  auto tetrahedralize(
+    const nb::DRef<const Eigen::MatrixXN>& V,
+    const nb::DRef<const Eigen::MatrixXI>& F,
+    const nb::DRef<const Eigen::MatrixXN>& H,
+    const nb::DRef<const Eigen::VectorXI>& VM,
+    const nb::DRef<const Eigen::VectorXI>& FM,
+    const nb::DRef<const Eigen::MatrixXN>& R,
+    const std::string& flags)
+  {
+    Eigen::MatrixXN TV;
+    Eigen::MatrixXI TT, TF, TN, FT;
+    Eigen::VectorXI TM, TR, PT;
+    int num_regions = 0;
+
+    int status = igl::copyleft::tetgen::tetrahedralize(V, F, H, VM, FM, R, flags, TV, TT, TF, TM, TR, TN, PT, FT, num_regions);
+    if(status != 0)
+    {
+      // throw error including status code
+      throw std::runtime_error("Tetrahedralization failed with status " + std::to_string(status));
+    }
+
+    return std::make_tuple(TV, TT, TF, TM, TR, TN, PT, FT, num_regions);
+  }
 }
 
-return ret;
+void bind_tetrahedralize(nb::module_ &m)
+{
+  m.def("tetrahedralize", &pyigl::tetrahedralize,
+    "V"_a, 
+    "F"_a=Eigen::MatrixXI(),
+    "H"_a=Eigen::MatrixXN(),
+    "VM"_a=Eigen::VectorXI(),
+    "FM"_a=Eigen::VectorXI(),
+    "R"_a=Eigen::MatrixXN(),
+    "flags"_a="",
+    R"(Mesh the interior of a surface mesh (V,F) using tetgen
 
-npe_end_code()
+@param[in] V  #V by 3 vertex position list
+@param[in] F  #F list of polygon face indices into V (0-indexed)
+@param[in] H  #H by 3 list of seed points inside holes
+@param[in] VM  #VM list of vertex markers
+@param[in] FM  #FM list of face markers
+@param[in] R  #R by 5 list of region attributes            
+@param[in] flags string of tetgen options (See tetgen documentation) e.g.
+    "pq1.414a0.01" tries to mesh the interior of a given surface with
+      quality and area constraints
+    "" will mesh the convex hull constrained to pass through V (ignores F)
+@param[out] TV  #TV by 3 vertex position list
+@param[out] TT  #TT by 4 list of tet face indices
+@param[out] TF  #TF by 3 list of triangle face indices ('f', else
+  `boundary_facets` is called on TT)
+@param[out] TR  #TT list of region ID for each tetrahedron      
+@param[out] TN  #TT by 4 list of indices neighbors for each tetrahedron ('n')
+@param[out] PT  #TV list of incident tetrahedron for a vertex ('m')
+@param[out] FT  #TF by 2 list of tetrahedrons sharing a triface ('nn')
+@param[out] num_regions Number of regions in output mesh)");
 
+}

@@ -1,117 +1,76 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/barycentric_coordinates.h>
-#include <iostream>
-const char* ds_barycentric_coordinates_tet = R"igl_Qu8mg5v7(
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <limits>
 
-Compute barycentric coordinates in a tet corresponding to the Euclidean coordinates in `p`.
-The input arrays `a`, `b`, `c` and `d` are the vertices of each tet. I.e. one tet is
-`a[i, :], b[i, :], c[i, :], d[:, i]`.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-p : #P by 3 Query points in 3d
-a : #P by 3 Tet corners in 3d
-b : #P by 3 Tet corners in 3d
-c : #P by 3 Tet corners in 3d
-d : #P by 3 Tet corners in 3d
+namespace pyigl
+{
+  // Wrapper for barycentric_coordinates function
+  auto barycentric_coordinates_PABC(
+    const nb::DRef<const Eigen::MatrixXN> &P,
+    const nb::DRef<const Eigen::MatrixXN> &A,
+    const nb::DRef<const Eigen::MatrixXN> &B,
+    const nb::DRef<const Eigen::MatrixXN> &C)
+  {
+    Eigen::MatrixXN L;
+    igl::barycentric_coordinates(P, A, B, C, L);
+    return L;
+  }
+  auto barycentric_coordinates_PABCD(
+    const nb::DRef<const Eigen::MatrixXN> &P,
+    const nb::DRef<const Eigen::MatrixXN> &A,
+    const nb::DRef<const Eigen::MatrixXN> &B,
+    const nb::DRef<const Eigen::MatrixXN> &C,
+    const nb::DRef<const Eigen::MatrixXN> &D)
+  {
+    Eigen::MatrixXN L;
+    igl::barycentric_coordinates(P, A, B, C, D, L);
+    return L;
+  }
+}
 
-Returns
--------
-#P by 4 list of barycentric coordinates
+// Bind the wrapper to the Python module
+void bind_barycentric_coordinates(nb::module_ &m)
+{
+  m.def(
+    "barycentric_coordinates",
+    &pyigl::barycentric_coordinates_PABC,
+    "P"_a,
+    "A"_a,
+    "B"_a,
+    "C"_a,
+R"(Compute barycentric coordinates of each point in a corresponding triangle
 
-See also
---------
+@param[in] P  #P by 3 Query points in 3d
+@param[in] A  #P by 3 Tri corners in 3d
+@param[in] B  #P by 3 Tri corners in 3d
+@param[in] C  #P by 3 Tri corners in 3d
+@param[out] L  #P by 3 list of barycentric coordinates
+  )"
+    );
+  m.def(
+    "barycentric_coordinates",
+    &pyigl::barycentric_coordinates_PABCD,
+    "P"_a,
+    "A"_a,
+    "B"_a,
+    "C"_a,
+    "D"_a,
+R"(Compute barycentric coordinates of each point in a corresponding tetrhedron
 
-Notes
------
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(barycentric_coordinates_tet)
-npe_doc(ds_barycentric_coordinates_tet)
-npe_arg(p, dense_float, dense_double)
-npe_arg(a, npe_matches(p))
-npe_arg(b, npe_matches(p))
-npe_arg(c, npe_matches(p))
-npe_arg(d, npe_matches(p))
-npe_begin_code()
-
-    assert_rows_match(p, a, "p", "a");
-    assert_rows_match(p, b, "p", "b");
-    assert_rows_match(p, c, "p", "c");
-    assert_rows_match(p, d, "p", "d");
-    assert_cols_equals(p, 3, "p");
-    assert_cols_equals(a, 3, "a");
-    assert_cols_equals(b, 3, "b");
-    assert_cols_equals(c, 3, "c");
-    assert_cols_equals(d, 3, "d");
-    EigenDenseLike<npe_Matrix_p> l;
-    igl::barycentric_coordinates(p, a, b, c, d, l);
-    return npe::move(l);
-
-npe_end_code()
-
-
+@param[in] P  #P by 3 Query points in 3d
+@param[in] A  #P by 3 Tet corners in 3d
+@param[in] B  #P by 3 Tet corners in 3d
+@param[in] C  #P by 3 Tet corners in 3d
+@param[in] D  #P by 3 Tet corners in 3d
+@param[out] L  #P by 3 list of barycentric coordinates
+  )"
+    );
+}
 
 
-
-const char* ds_barycentric_coordinates_tri = R"igl_Qu8mg5v7(
-
-Compute barycentric coordinates in a triangle corresponding to the Euclidean coordinates in `p`.
-The input arrays `a`, `b`, and `c` are the vertices of each triangle. I.e. one triangle is
-`a[i, :], b[i, :], c[i, :]`.
-
-Parameters
-----------
-p : #P by 3 Query points in 3d
-a : #P by 3 Tri corners in 3d
-b : #P by 3 Tri corners in 3d
-c : #P by 3 Tri corners in 3d
-
-Returns
--------
-#P by 3 list of barycentric coordinates
-
-See also
---------
-
-Notes
------
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(barycentric_coordinates_tri)
-npe_doc(ds_barycentric_coordinates_tri)
-npe_arg(p, dense_float, dense_double)
-npe_arg(a, npe_matches(p))
-npe_arg(b, npe_matches(p))
-npe_arg(c, npe_matches(p))
-npe_begin_code()
-    assert_rows_match(p, a, "p", "a");
-    assert_rows_match(p, b, "p", "b");
-    assert_rows_match(p, c, "p", "c");
-    assert_cols_equals(p, 3, "p");
-    assert_cols_equals(a, 3, "a");
-    assert_cols_equals(b, 3, "b");
-    assert_cols_equals(c, 3, "c");
-
-    EigenDenseLike<npe_Matrix_p> l;
-    igl::barycentric_coordinates(p, a, b, c, l);
-    return npe::move(l);
-
-npe_end_code()

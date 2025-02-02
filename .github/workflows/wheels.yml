@@ -1,8 +1,8 @@
-name: Pip build
+name: Wheels
 
 on:
   push:
-    branches:    
+    branches:
       - main
   pull_request:
     branches:
@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: true
 
     - name: Build SDist
       run: pipx run build --sdist
@@ -23,102 +25,48 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: artifact-sdist
+        name: dist-sdist
         path: dist/*.tar.gz
 
   build_wheels:
-    name: Build wheels ${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
-    runs-on: ${{ matrix.os.runs-on }}
-
-    env:
-      CIBW_BUILD_VERBOSITY: 3
-      # This is very dubious... It *may* work because these are just cpp libraries that should not depend on the python version. Still, super-dubious.
-      CIBW_TEST_REQUIRES: "gitpython"
-      CIBW_TEST_COMMAND: "python {project}/tests/test_basic.py"
-      CIBW_BUILD: "${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}"
-      CIBW_TEST_SKIP: "*-macosx_arm64"
-      CIBW_ENVIRONMENT: "MAX_JOBS=${{ matrix.os.runs-on == 'macos-latest' && 3 || 2 }} PIP_CONSTRAINT=constraints.txt"
-      # Why universal2 here? It's not included above in CIBW_BUILD
-      CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
-      CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.13 CMAKE_OSX_ARCHITECTURES=\"${{ matrix.os.cibw-arch == 'macosx_x86_64' && 'x86_64' || matrix.os.cibw-arch == 'macosx_arm64' && 'arm64' || matrix.os.cibw-arch == 'macosx_universal2' && 'arm64;x86_64' || '' }}\""
-
+    name: Build ${{ matrix.cpversion }} wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        # Launch separate job for each python. The build is so much longer than
-        # machine configuration/setup, so parallel builds will be faster. More
-        # importantly, github times out after 6 hours _per job_.
-        cpversion:
-          - cp36
-          - cp37
-          - cp38
-          - cp39
-          - cp310
-          - cp311
-          - cp312
-        os:
-          - runs-on: ubuntu-latest
-            cibw-arch: manylinux_x86_64
-          - runs-on: macos-latest
-            cibw-arch: macosx_x86_64
-          - runs-on: macos-latest
-            cibw-arch: macosx_arm64
-          - runs-on: windows-latest
-            cibw-arch: win_amd64
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-14]
+        # cp313 seemed to produce the same wheel name as cp312. Skip unless
+        # necessary.
+        cpversion: [cp38, cp39, cp310, cp311, cp312]
+        # github actions cp38 on macos-14 runners are cross compiling or
+        # something and confusing the stub generation. Just skip it for now.
+        # Maybe it'd be friendlier to disable the stub generation for this
+        # combination.
         exclude:
-          - cpversion: cp36
-            os:
-              runs-on: macos-latest
-              cibw-arch: macosx_arm64
-          - cpversion: cp37
-            os:
-              runs-on: macos-latest
-              cibw-arch: macosx_arm64
+          - os: macos-14
+            cpversion: cp38
+
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: '3.12'
 
       - name: Install cibuildwheel
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install cibuildwheel
+        run: python -m pip install cibuildwheel==2.22.0
 
       - name: Build wheels
-        shell: bash
-        run: |
-          PIP_CONSTRAINT=$GITHUB_WORKSPACE/constraints.txt python -m cibuildwheel --output-dir wheelhouse
+        # why do I need to specify this cpversion here?
+        env:
+          CIBW_ARCHS: "auto64"
+          CIBW_BUILD: "${{ matrix.cpversion }}-*"
+          # why isn't auto64 working?
+          CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux* cp*-win32"  
+        run: python -m cibuildwheel --output-dir wheelhouse
 
-      # Upload binaries to github
       - uses: actions/upload-artifact@v4
         with:
-          name: artifact-wheel-${{ matrix.cpversion }}-${{ matrix.os.cibw-arch }}
-          path: |-
-            ./wheelhouse/*.whl 
-            ./wheelhouse/*.tar.gz 
-
-  # # Push the resulting binaries to pypi on a tag starting with 'v'
-  upload_pypi:
-    needs: build_wheels
-    runs-on: ubuntu-latest
-    # upload to PyPI on every tag starting with 'v'
-    # if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
-    # alternatively, to publish when a GitHub Release is created, use the following rule:
-    if: github.event_name == 'release' && github.event.action == 'published'
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: artifact-*
-          merge-multiple: true
-          path: dist
-
-      - uses: pypa/gh-action-pypi-publish@v1.8.11
-        with:
-          user: __token__
-          password: ${{ secrets.pypi_password }}
-          skip_existing: true
-          # To test: repository_url: https://test.pypi.org/legacy/
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl

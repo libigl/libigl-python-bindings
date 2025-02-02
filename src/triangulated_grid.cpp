@@ -1,58 +1,45 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
-
+#include "default_types.h"
 #include <igl/triangulated_grid.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
-const char *ds_triangulated_grid = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Create a regular grid of elements (only 2D supported, currently)
-   Vertex position order is compatible with `igl::grid`
+namespace pyigl
+{
+  auto triangulated_grid(
+    const int nx,
+    const int ny)
+  {
+    Eigen::MatrixXN GV;
+    Eigen::MatrixXI GF;
+    igl::triangulated_grid(nx,ny, GV,GF);
+    return std::make_tuple(GV,GF);
+  }
+}
 
-Parameters
-----------
-nx  number of vertices in the x direction
-ny  number of vertices in the y direction
+// Bind the wrapper to the Python module
+void bind_triangulated_grid(nb::module_ &m)
+{
+  m.def(
+    "triangulated_grid",
+    &pyigl::triangulated_grid, 
+    "nx"_a, 
+    "ny"_a,
+R"(Create a regular grid of elements (only 2D supported, currently) Vertex
+position order is compatible with `igl::grid`
 
-Returns
--------
+@param[in] nx  number of vertices in the x direction
+@param[in] ny  number of vertices in the y direction
+@param[out] GV  nx*ny by 2 list of mesh vertex positions.
+@param[out] GF  2*(nx-1)*(ny-1) by 3  list of triangle indices
 
-GV  nx*ny by 2 list of mesh vertex positions.
-GF  2*(nx-1)*(ny-1) by 3  list of triangle indices
-
-See also
---------
-grid, quad_grid
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(triangulated_grid)
-npe_doc(ds_triangulated_grid)
-
-npe_arg(nx, int)
-npe_arg(ny, int)
+\see grid, quad_grid)"
+    );
+}
 
 
-npe_begin_code()
 
-  EigenDenseFloat gv;
-  EigenDenseInt gf;
-  igl::triangulated_grid(nx, ny, gv, gf);
-  return std::make_tuple(npe::move(gv), npe::move(gf));
-
-npe_end_code()

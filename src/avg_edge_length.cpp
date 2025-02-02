@@ -1,49 +1,41 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
+#include "default_types.h"
 #include <igl/avg_edge_length.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_avg_edge_length = R"igl_Qu8mg5v7(
-Compute the average edge length for the given triangle mesh.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-v : array_like #v by 3 vertex array
-f : f #f by simplex-size list of mesh faces (must be simplex)
+namespace pyigl
+{
+  auto avg_edge_length(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    return (Numeric)igl::avg_edge_length(V,F);
+  }
+}
 
-Returns
--------
-l : average edge length
+void bind_avg_edge_length(nb::module_ &m)
+{
+  m.def(
+    "avg_edge_length",
+    &pyigl::avg_edge_length, 
+    "V"_a, 
+    "F"_a,
+R"(Constructs the cotangent stiffness matrix (discrete laplacian) for a given
+mesh (V,F).
 
-See also
---------
-adjacency_matrix
+  @tparam DerivedV  derived type of eigen matrix for V (e.g. derived from
+    MatrixXd)
+  @tparam DerivedF  derived type of eigen matrix for F (e.g. derived from
+    MatrixXi)
+  @tparam Scalar  scalar type for eigen sparse matrix (e.g. double)
+  @param[in] V  #V by dim list of mesh vertex positions
+  @param[in] F  #F by simplex_size list of mesh elements (triangles or tetrahedra)
+  @param[out] L  #V by #V cotangent matrix, each row i corresponding to V(i,:))");
 
-Notes
------
-None
-
-Examples
---------
-# Mesh in (v, f)
->>> length = avg_edge_length(v, f)
-)igl_Qu8mg5v7";
-
-npe_function(avg_edge_length)
-npe_doc(ds_avg_edge_length)
-npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int32, dense_int64)
-npe_begin_code()
-
-  assert_valid_tet_or_tri_mesh(v, f);
-  return igl::avg_edge_length(v, f);
-
-npe_end_code()
-
-
+}

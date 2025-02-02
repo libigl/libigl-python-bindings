@@ -1,79 +1,50 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 KarlLeell
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-// TODO: __example
-//difficult to test
-
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-#include <pybind11/stl.h>
-
-
-
-
-
+#include "default_types.h"
 #include <igl/circulation.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/vector.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_circulation = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Return list of faces around the end point of an edge. Assumes
-  data-structures are built from an edge-manifold **closed** mesh.
+namespace pyigl
+{
+  auto circulation(
+    const int e,
+    const bool ccw,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const nb::DRef<const Eigen::VectorXI> &EMAP,
+    const nb::DRef<const Eigen::MatrixXI> &EF,
+    const nb::DRef<const Eigen::MatrixXI> &EI)
+  {
+    std::vector<int> Nv, Nf;
+    igl::circulation(e, ccw, F, EMAP, EF, EI, Nv, Nf);
+    return std::make_tuple(Nv, Nf);
+  }
+}
 
-Parameters
-----------
-e  index into E of edge to circulate
-ccw  whether to _continue_ in ccw direction of edge (circulate around
-  E(e,1))
-EMAP #F*3 list of indices into E, mapping each directed edge to unique
-  unique edge in E
-EF  #E by 2 list of edge flaps, EF(e,0)=f means e=(i-->j) is the edge of
-  F(f,:) opposite the vth corner, where EI(e,0)=v. Similarly EF(e,1) "
-  e=(j->i)
-EI  #E by 2 list of edge flap corners (see above).
+// Bind the wrapper to the Python module
+void bind_circulation(nb::module_ &m)
+{
+  m.def(
+    "circulation",
+    &pyigl::circulation,
+    "e"_a,
+    "ccw"_a,
+    "F"_a,
+    "EMAP"_a,
+    "EF"_a,
+    "EI"_a,
+    R"(Return lists of "next" vertex indices (Nv) and face indices (Nf) for circulation.
 
-Returns
--------
-Returns list of faces touched by circulation (in cyclically order).
-
-See also
---------
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(circulation)
-npe_doc(ds_circulation)
-
-npe_arg(e, int)
-npe_arg(ccw, bool)
-npe_arg(emap, dense_int32, dense_int64)
-npe_arg(ef, npe_matches(emap))
-npe_arg(ei, npe_matches(emap))
-
-
-npe_begin_code()
-  assert_cols_equals(ef, 2, "ef");
-  assert_cols_equals(ei, 2, "ei");
-  assert_shapes_match(ef, ei, "ef", "ei");
-
-      // TODO: remove __copy
-      Eigen::VectorXi emap_copy = emap.template cast<int>();
-  Eigen::MatrixXi ef_copy = ef.template cast<int>();
-  Eigen::MatrixXi ei_copy = ei.template cast<int>();
-  auto res = igl::circulation(e, ccw, emap_copy, ef_copy, ei_copy);
-  //res is a std::vector
-  return res;
-
-npe_end_code()
-
+    @param[in] e  index of edge to circulate
+    @param[in] ccw  circulate in ccw direction
+    @param[in] F  #F by 3 list of mesh faces
+    @param[in] EMAP #F*3 list of indices mapping each directed edge to a unique edge in E
+    @param[in] EF  #E by 2 list of edge flaps
+    @param[in] EI  #E by 2 list of edge flap corners
+    @return Tuple containing Nv (next vertex indices) and Nf (face indices))"
+  );
+}

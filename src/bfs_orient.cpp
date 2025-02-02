@@ -1,49 +1,38 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/bfs_orient.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_bfs_orient = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
+
+namespace pyigl
+{
+  auto bfs_orient( 
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::MatrixXI FF;
+    Eigen::VectorXI C;
+    igl::bfs_orient(F,FF,C);
+    return std::make_tuple(FF,C);
+  }
+}
+
+// Bind the wrapper to the Python module
+void bind_bfs_orient(nb::module_ &m)
+{
+  m.def(
+    "bfs_orient",
+    &pyigl::bfs_orient,
+    "F"_a,
+    R"(
 Consistently orient faces in orientable patches using BFS.
 
-Parameters
-----------
-f : #F by 3 list of faces
+@param[in] F  #F by 3 list of faces
+@param[out] FF  #F by 3 list of faces (OK if same as F)
+@param[out] C  #F list of component ids)"
+  );
+}
 
-Returns
--------
-A tuple, (ff, c) where:
- * ff is a #F by 3 list of faces which are consistently oriented with
- * c is a #F array of connected component ids
-
-See also
---------
-
-Notes
------
-
-Examples
---------
->>> v, f, _ = igl.readOFF("test.off)
->>> ff, c = igl.bfs_orient(f)
-
-)igl_Qu8mg5v7";
-
-npe_function(bfs_orient)
-npe_doc(ds_bfs_orient)
-npe_arg(f, dense_int32, dense_int64)
-npe_begin_code()
-
-  assert_valid_tri_mesh_faces(f);
-  EigenDenseLike<npe_Matrix_f> ff, c;
-  igl::bfs_orient(f, ff, c);
-  return std::make_tuple(npe::move(ff), npe::move(c));
-
-npe_end_code()

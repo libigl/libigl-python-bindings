@@ -1,74 +1,47 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/read_triangle_mesh.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
+#include <nanobind/stl/tuple.h>
 
-const char *ds_read_triangle_mesh = R"igl_Qu8mg5v7(
-Read mesh from an ascii file with automatic detection of file format.
-Supported: obj, off, stl, wrl, ply, mesh.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-filename : string, path to mesh file
-dtype : data-type of the returned vertices, optional. Default is `float64`.
-        (returned faces always have type int32.)
-
-Returns
--------
-v : array of vertex positions #v by 3
-f : #f list of face indices into vertex positions
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
->>> v, f = read_triangle_mesh("my_model.obj")
-)igl_Qu8mg5v7";
-
-npe_function(read_triangle_mesh)
-    npe_doc(ds_read_triangle_mesh)
-        npe_arg(filename, std::string)
-            npe_default_arg(dtypef, npe::dtype, "float")
-                npe_begin_code()
-
-                    if (dtypef.type() == npe::type_f32)
+namespace pyigl
 {
-  EigenDenseF32 v;
-  EigenDenseInt f;
-  bool ret = igl::read_triangle_mesh(filename, v, f);
-  if (!ret)
+  auto read_triangle_mesh(
+    const std::filesystem::path & path)
   {
-    throw std::invalid_argument("File '" + filename + "' not found.");
+    Eigen::MatrixXN V;
+    Eigen::MatrixXI F;
+    if(!igl::read_triangle_mesh(path.generic_string(),V,F))
+    {
+      // throw runtime exception
+      throw std::runtime_error("Failed to read mesh from: " + path.generic_string());
+    }
+    return std::make_tuple(V,F);
   }
-  return std::make_tuple(npe::move(v), npe::move(f));
-}
-else if (dtypef.type() == npe::type_f64)
-{
-  EigenDenseF64 v;
-  EigenDenseInt f;
-  bool ret = igl::read_triangle_mesh(filename, v, f);
-  if (!ret)
-  {
-    throw std::invalid_argument("File '" + filename + "' not found.");
-  }
-  return std::make_tuple(npe::move(v), npe::move(f));
-}
-else
-{
-  throw pybind11::type_error("Only float32 and float64 dtypes are supported.");
 }
 
-npe_end_code()
+// Bind the wrapper to the Python module
+void bind_read_triangle_mesh(nb::module_ &m)
+{
+  m.def(
+    "read_triangle_mesh",
+    &pyigl::read_triangle_mesh, 
+    "filename"_a, 
+R"(Read mesh from an ascii file with automatic detection of file format
+among: mesh, msh obj, off, ply, stl, wrl.
+
+@param[in] filename path to file
+@param[out] V  double matrix #V by 3
+@param[out] F  int matrix #F by 3
+@return true iff success)"
+    );
+}
+
+
+

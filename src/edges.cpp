@@ -1,48 +1,79 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <Eigen/Core>
+#include <Eigen/Sparse>
 #include <igl/edges.h>
+#include "default_types.h"
 
-const char* ds_edges = R"igl_Qu8mg5v7(
-Constructs a list of unique edges represented in a given mesh (v, f)
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-f : #F by dim list of mesh faces (must be triangles or tets)
+namespace pyigl
+{
+  // Binding for edges function with face-based input
+  Eigen::MatrixXI edges_from_faces(
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::MatrixXI E;
+    igl::edges(F, E);
+    return E;
+  }
 
-Returns
--------
-#e by 2 list of edges in no particular order
+  // Binding for edges function with polygon corner indices
+  Eigen::MatrixXI edges_from_polygons(
+    const nb::DRef<const Eigen::VectorXI> &I, 
+    const nb::DRef<const Eigen::VectorXI> &C)
+  {
+    Eigen::MatrixXI E;
+    igl::edges(I, C, E);
+    return E;
+  }
 
-See also
---------
-adjacency_matrix
+  // Binding for edges function with adjacency matrix input
+  Eigen::MatrixXI edges_from_adjacency(
+    const Eigen::SparseMatrix<Integer> &A)
+  {
+    Eigen::MatrixXI E;
+    igl::edges(A, E);
+    return E;
+  }
+}
 
-Notes
------
+// Define bindings for each overload of the edges function
+void bind_edges(nb::module_ &m)
+{
+  m.def(
+    "edges",
+    &pyigl::edges_from_faces,
+    "F"_a,
+    R"(Construct a list of unique edges from a given face matrix.
 
-Examples
---------
->>> V, F, _ = igl.readOFF("test.off)
->>> E = igl.edges(F)
+@param[in] F  #F by (3|4) matrix of mesh face indices
+@return #E by 2 matrix of unique edges
+)"
+  );
 
-)igl_Qu8mg5v7";
+  m.def(
+    "edges",
+    &pyigl::edges_from_polygons,
+    "I"_a, "C"_a,
+    R"(Construct a list of unique edges from a given list of polygon corner indices.
 
-npe_function(edges)
-npe_doc(ds_edges)
-npe_arg(f, dense_int32, dense_int64)
-npe_begin_code()
+@param[in] I  Vectorized list of polygon corner indices
+@param[in] C  #polygons+1 list of cumulative polygon sizes
+@return #E by 2 matrix of unique edges
+)"
+  );
 
-  assert_valid_tet_or_tri_mesh_faces(f);
-  EigenDenseLike<npe_Matrix_f> e;
-  igl::edges(f, e);
-  return npe::move(e);
+  m.def(
+    "edges",
+    &pyigl::edges_from_adjacency,  // Using double for adjacency matrix example
+    "A"_a,
+    R"(Construct a list of unique edges from a given adjacency matrix.
 
-npe_end_code()
+@param[in] A  #V by #V symmetric adjacency matrix
+@return #E by 2 matrix of unique edges
+)"
+  );
+}

@@ -1,70 +1,59 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Alec Jacobson
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/copyleft/cgal/mesh_boolean.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/string.h>
+#include <nanobind/stl/tuple.h>
+#include <string>
+#include <tuple>
 
+namespace nb = nanobind;
+using namespace nb::literals;
 
-const char* ds_mesh_boolean = R"igl_Qu8mg5v7(
-MESH_BOOLEAN Compute boolean csg operations on "solid", consistently oriented
-meshes.
-      
+namespace pyigl
+{
+  auto mesh_boolean(
+    const nb::DRef<const Eigen::MatrixXN> &VA,
+    const nb::DRef<const Eigen::MatrixXI> &FA,
+    const nb::DRef<const Eigen::MatrixXN> &VB,
+    const nb::DRef<const Eigen::MatrixXI> &FB,
+    const std::string &type_str)
+  {
+    Eigen::MatrixXN VC;
+    Eigen::MatrixXI FC;
+    Eigen::VectorXI J;
+    bool success = igl::copyleft::cgal::mesh_boolean(VA, FA, VB, FB, type_str, VC, FC, J);
+    if(!success)
+    {
+      throw std::runtime_error("Mesh boolean failed");
+    }
+    return std::make_tuple( VC, FC, J);
+  }
+}
 
-Parameters
-----------
-VA  : #VA by 3 list of vertex positions of first mesh
-FA  : #FA by 3 list of triangle indices into VA
-VB  : #VB by 3 list of vertex positions of second mesh
-FB  : #FB by 3 list of triangle indices into VB
+// Bind the wrapper to the Python module
+void bind_mesh_boolean(nb::module_ &m)
+{
+  m.def(
+    "mesh_boolean",
+    &pyigl::mesh_boolean,
+    "VA"_a, 
+    "FA"_a, 
+    "VB"_a=Eigen::MatrixXN(), 
+    "FB"_a=Eigen::MatrixXI(), 
+    "type_str"_a,
+    R"(Compute the boolean operation (union, intersection, difference, etc.) between two meshes.
 
-Returns
--------
-VC : #VC by 3 list of vertex positions of boolean result mesh
-FC : #FC by 3 list of triangle indices into VC
-J  : #FC list of indices into [FA;FA.rows()+FB] revealing "birth" facet
-      
-See also
---------
-mesh_boolean_cork, intersect_other, remesh_self_intersections
-)igl_Qu8mg5v7";
-
-npe_function(mesh_boolean)
-npe_doc(ds_mesh_boolean)
-
-npe_arg(va, dense_float, dense_double)
-npe_arg(fa, dense_int32, dense_int64)
-npe_arg(vb, npe_matches(va))
-npe_arg(fb, npe_matches(fa))
-npe_arg(type, std::string)
-
-
-npe_begin_code()
-  Eigen::MatrixXd va_copy = va.template cast<double>();
-  Eigen::MatrixXd vb_copy = vb.template cast<double>();
-  Eigen::MatrixXi fa_copy = fa.template cast<int>();
-  Eigen::MatrixXi fb_copy = fb.template cast<int>();
-
-  Eigen::MatrixXd vc_copy;
-  Eigen::MatrixXi fc_copy;
-  Eigen::VectorXi  j_copy;
-  igl::copyleft::cgal::mesh_boolean(
-    va_copy, 
-    fa_copy,
-    vb_copy,
-    fb_copy,
-    type,
-    vc_copy,
-    fc_copy,
-     j_copy);
-
-  EigenDenseLike<npe_Matrix_va> vc = vc_copy.cast<typename decltype(vc)::Scalar>();
-  EigenDenseLike<npe_Matrix_fa> fc = fc_copy.cast<typename decltype(fc)::Scalar>();
-  EigenDenseLike<npe_Matrix_fa>  j =  j_copy.cast<typename decltype( j)::Scalar>();
-  return std::make_tuple(npe::move(vc), npe::move(fc), npe::move(j));
-npe_end_code()
-
+@param[in] VA #VA by dim matrix of mesh A vertices
+@param[in] FA #FA by simplex_size matrix of mesh A faces
+@param[in] VB #VB by dim matrix of mesh B vertices
+@param[in] FB #FB by simplex_size matrix of mesh B faces
+@param[in] type_str Type of boolean operation: "union", "intersection", "difference", etc.
+@param[out] VC #VC by dim matrix of result vertices
+@param[out] FC #FC by simplex_size matrix of result faces
+@param[out] J #FC list of indices indicating which input face contributed to each result face
+@return Tuple containing:
+  - VC: Result vertices
+  - FC: Result faces
+  - J: Face origin indices)");
+}

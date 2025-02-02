@@ -1,72 +1,66 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
+#include "default_types.h"
 #include <igl/edge_flaps.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <tuple>
+#include <nanobind/stl/tuple.h>
 
-const char *ds_edge_flaps = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Determine "edge flaps": two faces on either side of a unique edge (assumes edge-manifold mesh)
+namespace pyigl
+{
+  // Binding for the first overload of edge_flaps with `uE` and `EMAP` as inputs
+  auto edge_flaps(
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const nb::DRef<const Eigen::MatrixXI> &uE,
+    const nb::DRef<const Eigen::VectorXI> &EMAP)
+  {
+    Eigen::MatrixXI EF, EI;
+    igl::edge_flaps(F, uE, EMAP, EF, EI);
+    return std::make_tuple(EF, EI);
+  }
 
+  // Binding for the second overload of edge_flaps where `uE` and `EMAP` are outputs
+  auto edge_flaps_F(
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::MatrixXI uE, EF, EI;
+    Eigen::VectorXI EMAP;
+    igl::edge_flaps(F, uE, EMAP, EF, EI);
+    return std::make_tuple(uE, EMAP, EF, EI);
+  }
+}
 
-Parameters
-----------
+// Bind the wrapper to the Python module
+void bind_edge_flaps(nb::module_ &m)
+{
+  m.def(
+    "edge_flaps",
+    &pyigl::edge_flaps,
+    "F"_a,
+    "uE"_a,
+    "EMAP"_a,
+    R"(Determine edge flaps with precomputed unique edge map and edge-face adjacency.
 
-F  #F by 3 list of face indices
+    @param[in] F  #F by 3 list of face indices
+    @param[in] uE  #uE by 2 list of unique edge indices
+    @param[in] EMAP #F*3 list of indices mapping each directed edge to unique edge in uE
+    @return Tuple containing EF and EI matrices, where:
+            EF - #E by 2 list of edge flaps
+            EI - #E by 2 list of edge flap corners)");
 
-Returns
--------
+  m.def(
+    "edge_flaps",
+    &pyigl::edge_flaps_F,
+    "F"_a,
+    R"(Determine edge flaps, unique edge map, and edge-face adjacency from face list only.
 
-E  #E by 2 list of edge indices into V.
-EMAP #F*3 list of indices into E, mapping each directed edge to unique
-  unique edge in E
-EF  #E by 2 list of edge flaps, EF(e,0)=f means e=(i-->j) is the edge of
-  F(f,:) opposite the vth corner, where EI(e,0)=v. Similarly EF(e,1) "
-  e=(j->i)
-EI  #E by 2 list of edge flap corners (see above).
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(edge_flaps)
-npe_doc(ds_edge_flaps)
-
-npe_arg(f, dense_int32, dense_int64)
-
-
-npe_begin_code()
-  assert_valid_tri_mesh_faces(f);
-
-  Eigen::MatrixXi f_copy = f.template cast<int>();
-  Eigen::MatrixXi e_copy;
-  Eigen::VectorXi emap_copy;
-  Eigen::MatrixXi ef_copy;
-  Eigen::MatrixXi ei_copy;
-  igl::edge_flaps(f_copy, e_copy, emap_copy, ef_copy, ei_copy);
-
-  EigenDense<npe_Scalar_f> e = e_copy.template cast<npe_Scalar_f>();
-  EigenDense<npe_Scalar_f> emap = emap_copy.template cast<npe_Scalar_f>();
-  EigenDense<npe_Scalar_f> ef = ef_copy.template cast<npe_Scalar_f>();
-  EigenDense<npe_Scalar_f> ei = ei_copy.template cast<npe_Scalar_f>();
-  return std::make_tuple(npe::move(e), npe::move(emap), npe::move(ef), npe::move(ei));
-
-npe_end_code()
-
-
+    @param[in] F  #F by 3 list of face indices
+    @return Tuple containing uE, EMAP, EF, and EI where:
+            uE - #uE by 2 list of unique edge indices
+            EMAP - #F*3 list mapping each directed edge to unique edge in uE
+            EF - #E by 2 list of edge flaps
+            EI - #E by 2 list of edge flap corners)");
+}

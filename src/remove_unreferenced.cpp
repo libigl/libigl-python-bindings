@@ -1,65 +1,41 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 KarlLeell
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-// TODO: __example
-
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/remove_unreferenced.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/vector.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_remove_unreferenced = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Remove unreferenced vertices from V, updating F accordingly
+namespace pyigl
+{
+  auto remove_unreferenced(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::MatrixXN NV;
+    Eigen::MatrixXI NF;
+    Eigen::VectorXI I,J;
+    igl::remove_unreferenced(V, F, NV, NF, I, J);
+    return std::make_tuple(NV, NF, I, J);
+  }
+}
 
-Parameters
-----------
-V  #V by dim list of mesh vertex positions
-F  #F by ss list of simplices (Values of -1 are quitely skipped)
-
-
-Returns
--------
-NV  #NV by dim list of mesh vertex positions
-NF  #NF by ss list of simplices
-IM  #V by 1 list of indices such that: NF = IM(F) and NT = IM(T)
-  and V(find(IM<=size(NV,1)),:) = NV
-J  #RV by 1 list, such that RV = V(J,:)
-
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-
-)igl_Qu8mg5v7";
-
-npe_function(remove_unreferenced)
-npe_doc(ds_remove_unreferenced)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-
-
-npe_begin_code()
-
-  assert_valid_tet_or_tri_mesh_23d(v, f);
-  EigenDenseLike<npe_Matrix_v> nv;
-  EigenDenseLike<npe_Matrix_f> nf;
-  Eigen::Matrix<npe_Scalar_f,Eigen::Dynamic,1> i, j;
-  igl::remove_unreferenced(v, f, nv, nf, i, j);
-  return std::make_tuple(npe::move(nv), npe::move(nf), npe::move(i), npe::move(j));
-
-npe_end_code()
+// Bind the wrapper to the Python module
+void bind_remove_unreferenced(nb::module_ &m)
+{
+  m.def(
+    "remove_unreferenced",
+    &pyigl::remove_unreferenced,
+    "F"_a,
+    "n"_a=0,
+R"(Remove unreferenced vertices from V, updating F accordingly
+@param[in] V  #V by dim list of mesh vertex positions
+@param[in] F  #F by ss list of simplices (Values of -1 are quitely skipped)
+@param[out] NF  #NF by ss list of simplices
+@param[out] I   #V by 1 list of indices such that: NF = IM(F) and NT = IM(T)
+     and V(find(IM<=size(NV,1)),:) = NV
+@param[out] J  #NV by 1 list, such that NV = V(J,:))");
+}
 

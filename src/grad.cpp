@@ -1,60 +1,41 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/grad.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
 
-const char* ds_grad = R"igl_Qu8mg5v7(
-Compute the numerical gradient operator.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-v : #v by 3 list of mesh vertex positions
-f : #f by 3 list of mesh face indices [or a #faces by 4 list of tetrahedral indices]
-uniform : boolean (default false). Use a uniform mesh instead of the vertices v
+namespace pyigl
+{
+  auto grad(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    bool uniform = false)
+  {
+    Eigen::SparseMatrixN G;
+    igl::grad(V, F, G, uniform);
+    return G;
+  }
+}
 
-Returns
--------
-g : #faces * dim by #v gradient operator
-
-See also
---------
-cotmatrix, massmatrix
-
-Notes
------
-Gradient of a scalar function defined on piecewise linear elements (mesh)
-is constant on each triangle [tetrahedron] i,j,k:
-grad(Xijk) = (Xj-Xi) * (Vi - Vk)^R90 / 2A + (Xk-Xi) * (Vj - Vi)^R90 / 2A
-where Xi is the scalar value at vertex i, Vi is the 3D position of vertex
-i, and A is the area of triangle (i,j,k). ^R90 represent a rotation of
-90 degrees.
-
-Examples
---------
-# Mesh in (v, f)
->>> g = grad(v, f)
-)igl_Qu8mg5v7";
-
-npe_function(grad)
-npe_doc(ds_grad)
-npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int32, dense_int64)
-npe_default_arg(uniform, bool, false)
-
-npe_begin_code()
-
-  assert_valid_tet_or_tri_mesh(v, f);
-  EigenSparseLike<npe_Matrix_v> g;
-  igl::grad(v, f, g, uniform);
-  return npe::move(g);
-
-npe_end_code()
-
-
+// Bind the wrapper to the Python module
+void bind_grad(nb::module_ &m)
+{
+  m.def(
+    "grad",
+    &pyigl::grad,
+    "V"_a,
+    "F"_a,
+    "uniform"_a = false,
+    R"(Compute the gradient operator on a triangle mesh.
+    
+    @param[in] V        #V by 3 list of mesh vertex positions
+    @param[in] F        #F by 3 (or #F by 4 for tetrahedrons) list of mesh face indices
+    @param[out] G       #F*dim by #V Gradient operator
+    @param[in] uniform  boolean indicating whether to use a uniform mesh instead of the vertices V
+    @return Sparse gradient operator matrix G)"
+  );
+}

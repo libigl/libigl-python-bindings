@@ -1,44 +1,44 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Alec Jacobson
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/writeMESH.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/filesystem.h>
+#include <string>
 
-const char* ds_writeMESH = R"igl_Qu8mg5v7(
-  /// save a tetrahedral volume mesh to a .mesh file
-  ///
-  /// @tparam Scalar  type for positions and vectors (will be cast as double)
-  /// @tparam Index  type for indices (will be cast to int)
-  /// @param[in] mesh_file_name  path of .mesh file
-  /// @param[in] V  double matrix of vertex positions  #V by 3
-  /// @param[in] T  #T list of tet indices into vertex positions
-  /// @param[in] F  #F list of face indices into vertex positions
-  /// @return true on success, false on errors
-  ///
-  /// \bug Holes and regions are not supported
-)igl_Qu8mg5v7";
+namespace nb = nanobind;
+using namespace nb::literals;
 
-npe_function(writeMESH)
-npe_doc(ds_writeMESH)
-npe_arg(filename, std::string)
-npe_arg(V, dense_double, dense_float)
-npe_arg(T, dense_int32, dense_int64)
-npe_default_arg(F, npe_matches(T), pybind11::array())
+namespace pyigl
+{
+  void writeMESH(
+    const std::filesystem::path &mesh_file_name,
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &T,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    if (!igl::writeMESH(mesh_file_name.generic_string(), V, T, F))
+    {
+      throw std::runtime_error("Failed to write .mesh file: " + mesh_file_name.generic_string());
+    }
+  }
+}
 
-npe_begin_code()
+// Bind the wrapper to the Python module
+void bind_writeMESH(nb::module_ &m)
+{
+  m.def(
+    "writeMESH",
+    &pyigl::writeMESH,
+    "mesh_file_name"_a,
+    "V"_a=Eigen::MatrixXN(),
+    "T"_a=Eigen::MatrixXI(),
+    "F"_a=Eigen::MatrixXI(),
+R"(Save a tetrahedral volume mesh to a .mesh file.
 
-  assert_valid_tet_or_tri_mesh(V,T);
-  return igl::writeMESH(filename, V, T, F);
-
-npe_end_code()
-
-
-
-
-
+@param[in] mesh_file_name  Path to the .mesh file to save
+@param[in] V  #V by 3 matrix of vertex positions
+@param[in] T  #T by 4 matrix of tetrahedral indices
+@param[in] F  #F by 3 matrix of face indices
+@throws std::runtime_error if file writing fails
+)");
+}

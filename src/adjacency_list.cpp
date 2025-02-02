@@ -1,47 +1,38 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
+#include "default_types.h"
 #include <igl/adjacency_list.h>
-#include <pybind11/stl.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/vector.h>
 
-const char* ds_adjacency_list = R"igl_Qu8mg5v7(
-Constructs the graph adjacency list of a given mesh (v, f)
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-f : #f by dim array of fixed dimensional (e.g. triangle (#f by 3),
-    tet (#f by 4), quad (#f by 4), etc...) mesh faces
+namespace pyigl
+{
+  // Wrapper for the first overload of adjacency_list for triangle meshes
+  auto adjacency_list(
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    bool sorted)
+  {
+    std::vector<std::vector<Integer>> A;
+    igl::adjacency_list(F, A, sorted);
+    return A;
+  }
+}
 
-Returns
--------
-list of lists containing at index i the adjacent vertices of vertex i
+// Bind the wrappers to the Python module
+void bind_adjacency_list(nb::module_ &m)
+{
+  // Binding for triangle mesh adjacency_list
+  m.def(
+    "adjacency_list",
+    &pyigl::adjacency_list,
+    "F"_a,
+    "sorted"_a = false,
+    R"(Constructs the graph adjacency list for a given triangle mesh.
 
-See also
---------
-adjacency_matrix
+@param[in] F       #F by dim list of mesh faces
+@param[in] sorted  Boolean flag to sort adjacency counter-clockwise
+@return            List of adjacent vertices for each vertex)");
 
-Notes
------
-
-Examples
---------
-# Mesh in (v, f)
->>> a = mesh_adjacency_list(f)
-)igl_Qu8mg5v7";
-
-npe_function(adjacency_list)
-npe_doc(ds_adjacency_list)
-npe_arg(f, dense_int32, dense_int64)
-npe_begin_code()
-  assert_valid_tet_or_tri_mesh_faces(f, "f");
-  std::vector<std::vector<npe_Scalar_f>> a;
-  igl::adjacency_list(f, a);
-  return pybind11::detail::type_caster<decltype(a)>::cast(a, pybind11::return_value_policy::move, pybind11::none());
-
-npe_end_code()
+}

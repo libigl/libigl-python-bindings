@@ -1,111 +1,66 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-//TODO: __example
-// TODO: remove __copy
-// copy is necessary since the winding number only supports matrices
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/winding_number.h>
+#include <igl/signed_angle.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
 
-const char *ds_winding_number = R"igl_Qu8mg5v7(
- WINDING_NUMBER Compute the sum of solid angles of a triangle/tetrahedron
-   described by points (vectors) V
-Parameters
-----------
-    V  n by 3 list of vertex positions
-    F  #F by 3 list of triangle indices, minimum index is 0
-    O  no by 3 list of origin positions
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Returns
--------
-    S  no by 1 list of winding numbers
+namespace pyigl
+{
+  // Binding for winding_number over multiple query points
+  auto winding_number(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const nb::DRef<const Eigen::MatrixXN> &O)
+  {
+    Eigen::VectorXN W;
+    // The DerivedF on WindingNumberAABB and WindingNumberTree is 
+    // broken and must be MatrixXi.
+    // Similarly DerivedV is broken and probably has to be MatrixX*.
+    Eigen::MatrixXN V_cpy = V;
+    Eigen::MatrixXi F_cpy = F.cast<int>();
+    igl::winding_number(V_cpy, F_cpy, O, W);
+    return W;
+  }
+  // Binding for winding_number over multiple query points
+  Numeric winding_number_single(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const nb::DRef<const Eigen::VectorXN> &o)
+  {
+    return igl::winding_number(V, F, o.transpose());
+  }
 
-See also
---------
+}
 
+// Bind the wrapper to the Python module
+void bind_winding_number(nb::module_ &m)
+{
+  m.def(
+    "winding_number",
+    &pyigl::winding_number,
+    "V"_a,
+    "F"_a,
+    "O"_a,
+    R"(Computes the generalized winding number at each query point with respect to the mesh.
 
-Notes
------
-None
+    @param[in] V  #V by dim list of mesh vertex positions
+    @param[in] F  #F by dim list of mesh facets as indices into rows of V
+    @param[in] O  #O by dim list of query points
+    @return Vector of winding numbers for each query point)");
+  m.def(
+    "winding_number",
+    &pyigl::winding_number_single,
+    "V"_a,
+    "F"_a,
+    "o"_a,
+    R"(Computes the generalized winding number at each query point with respect to the mesh.
 
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(winding_number)
-npe_doc(ds_winding_number)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_arg(o, npe_matches(v))
-
-
-npe_begin_code()
-  assert_valid_3d_tri_mesh(v, f);
-  assert_cols_match(v, o, "v", "o");
-  Eigen::MatrixXd v_copy = v.template cast<double>();
-  Eigen::MatrixXi f_copy = f.template cast<int>();
-  Eigen::MatrixXd o_copy = o.template cast<double>();
-
-  Eigen::MatrixXd w;
-  igl::winding_number(v_copy, f_copy, o_copy, w);
-  return npe::move(w);
-
-npe_end_code()
-
-
-
-
-const char* ds_winding_number1 = R"igl_Qu8mg5v7(
- Compute winding number of a single point
-
-Parameters
-----------
-    V  n by dim list of vertex positions
-    F  #F by dim list of triangle indices, minimum index is 0
-    p  single origin position
-
-Returns
--------
-  w  winding number of this point
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-
-)igl_Qu8mg5v7";
-
-npe_function(winding_number_for_point)
-npe_doc(ds_winding_number1)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_arg(p, dense_float, dense_double)
-
-
-npe_begin_code()
-  assert_valid_tet_or_tri_mesh(v, f);
-  assert_cols_match(v, f, "v", "f");
-  Eigen::MatrixXd v_copy = v.template cast<double>();
-  Eigen::MatrixXi f_copy = f.template cast<int>();
-  Eigen::MatrixXd p_copy = p.template cast<double>();
-  return igl::winding_number(v_copy, f_copy, p_copy);
-
-npe_end_code()
-
-
+    @param[in] V  #V by dim list of mesh vertex positions
+    @param[in] F  #F by dim list of mesh facets as indices into rows of V
+    @param[in] o  dim-vector of query point
+    @return winding number)");
+}

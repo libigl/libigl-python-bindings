@@ -1,86 +1,46 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/readOFF.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/filesystem.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_read_off = R"igl_Qu8mg5v7(
-Read a mesh from an ascii off file, filling in vertex positions, normals
-and texture coordinates. Mesh may have faces of any number of degree.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-filename : string, path to .off file
-read_normals : bool, determines whether normals are read. If false, returns []
-dtype : data-type of the returned vertices, faces, and normals, optional. Default is `float64`.
-        (returned faces always have type int32.)
-
-Returns
--------
-v : array of vertex positions #v by 3
-f : #f list of face indices into vertex positions
-n : list of vertex normals #v by 3
-
-See also
---------
-read_triangle_mesh, read_obj
-
-Notes
------
-None
-
-Examples
---------
->>> v, f, n, c = read_off("my_model.off")
-)igl_Qu8mg5v7";
-
-npe_function(read_off)
-npe_doc(ds_read_off)
-npe_arg(filename, std::string)
-npe_default_arg(read_normals, bool, true)
-npe_default_arg(dtype, npe::dtype, "float64")
-npe_begin_code()
-
-  if (dtype.type() == npe::type_f32) {
-    EigenDenseF32 v, n;
-    EigenDenseInt f;
-    bool ret;
-    if (read_normals) {
-      ret = igl::readOFF(filename, v, f, n);
+namespace pyigl
+{
+  auto readOFF(const std::filesystem::path filename)
+  {
+    Eigen::MatrixXN V,N;
+    Eigen::MatrixXI F;
+    if(!igl::readOFF(filename.generic_string(),V,F,N))
+    {
+      // throw runtime exception
+      throw std::runtime_error("Failed to read mesh from: " + filename.generic_string() );
     }
-    else {
-      ret = igl::readOFF(filename, v, f);
-    }
-
-    if (!ret) {
-      throw std::invalid_argument("File '" + filename + "' not found.");
-    }
-
-    return std::make_tuple(npe::move(v), npe::move(f), npe::move(n));
-  } else if (dtype.type() == npe::type_f64) {
-    EigenDenseF64 v, n;
-    EigenDenseInt f;
-    bool ret;
-    if (read_normals) {
-      ret = igl::readOFF(filename, v, f, n);
-    }
-    else {
-      ret = igl::readOFF(filename, v, f);
-    }
-
-    if (!ret) {
-      throw std::invalid_argument("File '" + filename + "' not found.");
-    }
-
-    return std::make_tuple(npe::move(v), npe::move(f), npe::move(n));
-  } else {
-    throw pybind11::type_error("Only float32 and float64 dtypes are supported.");
+    return std::make_tuple(V,F,N);
   }
+}
 
-npe_end_code()
+// Bind the wrapper to the Python module
+void bind_readOFF(nb::module_ &m)
+{
+  m.def(
+    "readOFF",
+    &pyigl::readOFF, 
+    "filename"_a, 
+R"(Read mesh from an ascii .off file
+
+@param[in] filename path to file
+@param[out] V  double matrix #V by 3
+@param[out] F  int matrix #F by 3
+@param[out] N,C  double matrix #V by 3 normals or colors
+@return true iff success)"
+    );
+}
+
+
+
+

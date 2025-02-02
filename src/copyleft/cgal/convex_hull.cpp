@@ -1,35 +1,32 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Alec Jacobson
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <npe.h>
-#include <typedefs.h>
-
+#include "default_types.h"
 #include <igl/copyleft/cgal/convex_hull.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <tuple>
 
-const char* ds_convex_hull = R"igl_Qu8mg5v7(
-Given a set of points (V), compute the convex hull as a triangle mesh (F)
-       
-Parameters
-----------
-V :  #V by 3 list of input points
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Returns
--------
-F  #F by 3 list of triangle indices into V
-)igl_Qu8mg5v7";
+namespace pyigl
+{
+  // Second overload: convex_hull with only output F
+  auto convex_hull(const nb::DRef<const Eigen::MatrixXN> &V)
+  {
+    Eigen::MatrixXI F;
+    igl::copyleft::cgal::convex_hull(V, F);
+    return F;
+  }
+}
 
-npe_function(convex_hull)
-npe_doc(ds_convex_hull)
+// Bind the wrapper to the Python module
+void bind_convex_hull(nb::module_ &m)
+{
+  m.def(
+    "convex_hull",
+    &pyigl::convex_hull,
+    "V"_a,
+    R"(Compute the convex hull of a set of points, returning only the triangular faces of the hull.
 
-npe_arg(v, dense_float, dense_double)
-npe_begin_code()
-
-  EigenDenseInt g;
-  igl::copyleft::cgal::convex_hull(v, g);
-  return npe::move(g);
-
-npe_end_code()
+    @param[in] V  #V by 3 matrix of input points
+    @return F: #F by 3 matrix of triangle indices into V)");
+}

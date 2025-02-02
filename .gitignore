@@ -39,3 +39,4 @@ junit
 .*.swo
 *~
 dist/
+igl/*

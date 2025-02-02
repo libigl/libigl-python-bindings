@@ -1,53 +1,91 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/doublearea.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <limits>
 
-const char* ds_doublearea = R"igl_Qu8mg5v7(
-Computes twice the area for each input triangle[quad]
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-v : #v by dim array of mesh vertex positions
-f : #f by simplex_size array of mesh faces (must be triangles or quads)
+namespace pyigl
+{
+  // Wrapper for doublearea function
+  auto doublearea_VF(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::VectorXN dblA;
+    igl::doublearea(V, F, dblA);
+    return dblA;
+  }
+  auto doublearea_ABC(
+    const nb::DRef<const Eigen::MatrixXN> &A,
+    const nb::DRef<const Eigen::MatrixXN> &B,
+    const nb::DRef<const Eigen::MatrixXN> &C)
+  {
+    Eigen::VectorXN dblA;
+    igl::doublearea(A, B, C, dblA);
+    return dblA;
+  }
+  auto doublearea_l(
+    const nb::DRef<const Eigen::MatrixXN> &l,
+    const Numeric nan_replacement)
+  {
+    Eigen::VectorXN dblA;
+    igl::doublearea(l, nan_replacement, dblA);
+    return dblA;
+  }
+}
 
-Returns
--------
-d_area : #f list of triangle[quad] double areas (SIGNED only for 2D input)
+// Bind the wrapper to the Python module
+void bind_doublearea(nb::module_ &m)
+{
+  m.def(
+    "doublearea",
+    &pyigl::doublearea_VF,
+    "V"_a=Eigen::MatrixXN(),
+    "F"_a=Eigen::MatrixXI(),
+R"(Computes twice the area for each input triangle or quad.
 
-See also
---------
-None
+@param[in] V  eigen matrix #V by 3
+@param[in] F  #F by (3|4) list of mesh face indices into rows of V
+@param[out] dblA #F list of triangle double areas
+  )"
+    );
+  m.def(
+    "doublearea",
+    &pyigl::doublearea_ABC,
+    "A"_a=Eigen::MatrixXN(),
+    "B"_a=Eigen::MatrixXN(),
+    "C"_a=Eigen::MatrixXN(),
+R"(Computes twice the area for each input triangle or quad.
 
-Notes
------
-Known bug: For dim==3 complexity is O(#V + #F)!! Not just O(#F). This is a big deal if you have 1million unreferenced vertices and 1 face
+@param[in] A #F by dim list of triangle corner positions
+@param[in] B #F by dim list of triangle corner positions
+@param[in] C #F by dim list of triangle corner positions
+@param[out] dblA #F list of triangle double areas
+  )"
+    );
+  m.def(
+    "doublearea",
+    &pyigl::doublearea_l,
+    "l"_a=Eigen::MatrixXN(),
+    "nan_replacement"_a=std::numeric_limits<Numeric>::quiet_NaN(),
+R"(Computes twice the area for each input triangle or quad.
 
-Examples
---------
-# Mesh in (v, f)
->>> dbl_area = doublearea(v, f)
-)igl_Qu8mg5v7";
-
-npe_function(doublearea)
-npe_doc(ds_doublearea)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-
-npe_begin_code()
-
-  assert_valid_tet_or_tri_mesh_23d(v, f);
-  EigenDenseLike<npe_Matrix_v> d_area;
-  igl::doublearea(v, f, d_area);
-  return npe::move(d_area);
-
-npe_end_code()
+@param[in] l  #F by dim list of edge lengths using for triangles, columns correspond to edges 23,31,12
+@param[in] nan_replacement  what value should be used for triangles whose given
+   edge lengths do not obey the triangle inequality. These may be very
+   wrong (e.g., [100 1 1]) or may be nearly degenerate triangles whose
+   floating point side length computation leads to breach of the triangle
+   inequality. One may wish to set this parameter to 0 if side lengths l
+   are _known_ to come from a valid embedding (e.g., some mesh (V,F)). In
+   that case, the only circumstance the triangle inequality is broken is
+   when the triangle is nearly degenerate and floating point error
+   dominates: hence replacing with zero is reasonable.
+@param[out] dblA #F list of triangle double areas
+  )"
+    );
+}
 

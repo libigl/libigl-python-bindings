@@ -1,108 +1,70 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-//TODO: __example
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/loop.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
 
-const char *ds_loop_mat = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-  LOOP Given the triangle mesh [V, F], where n_verts = V.rows(), computes
-  newV and a sparse matrix S s.t. [newV, newF] is the subdivided mesh where
-  newV = S*V.
+namespace pyigl
+{
+  // Wrapper for the first overload of loop that computes S and newF
+  auto loop_matrix(
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    int n_)
+  {
+    const auto n = n_? n_ : F.maxCoeff() + 1;
+    Eigen::SparseMatrix<Numeric> S;
+    Eigen::MatrixXI NF;
+    igl::loop(n, F, S, NF);
+    return std::make_tuple(S, NF);
+  }
 
-Parameters
-----------
-n_verts  an integer (number of mesh vertices)
-F  an m by 3 matrix of integers of triangle faces
+  // Wrapper for the second overload of loop that returns NV and NF
+  auto loop(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    int number_of_subdivs)
+  {
+    Eigen::MatrixXN NV;
+    Eigen::MatrixXI NF;
+    igl::loop(V, F, NV, NF, number_of_subdivs);
+    return std::make_tuple(NV, NF);
+  }
 
-Returns
--------
+}
 
-S  a sparse matrix (will become the subdivision matrix)
-newF  a matrix containing the new faces
+// Bind the wrapper to the Python module
+void bind_loop(nb::module_ &m)
+{
+  m.def(
+    "loop_matrix",
+    &pyigl::loop_matrix,
+    "F"_a,
+    "n"_a = 0,
+    R"(Subdivide a mesh without moving vertices. Returns the subdivision matrix and new faces.
 
-See also
---------
+@param[in] n_verts Number of mesh vertices
+@param[in] F       #F by 3 matrix of triangle faces
+@return A tuple containing:
+        - S: Sparse subdivision matrix
+        - NF: Matrix of new faces)");
 
+  m.def(
+    "loop",
+    &pyigl::loop,
+    "V"_a,
+    "F"_a,
+    "number_of_subdivs"_a = 1,
+    R"(Subdivide a mesh without moving vertices using loop subdivision. Returns new vertices and faces.
 
-Notes
------
-None
+@param[in] V               #V by dim matrix of mesh vertices
+@param[in] F               #F by 3 matrix of triangle faces
+@param[in] number_of_subdivs Number of subdivisions (default is 1)
+@return A tuple containing:
+        - NV: New vertex positions with original vertices at the top
+        - NF: Matrix of new face indices)");
 
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(loop_subdivision_matrix)
-npe_doc(ds_loop_mat)
-
-npe_arg(n_verts, int)
-npe_arg(f, dense_int32, dense_int64)
-
-npe_begin_code()
-  assert_valid_tri_mesh_faces(f);
-  Eigen::SparseMatrix<double> S;
-  EigenDenseLike<npe_Matrix_f> nf;
-  igl::loop(n_verts, f, S, nf);
-  return std::make_tuple(npe::move(S), npe::move(nf));
-npe_end_code()
-
-
-
-
-
-const char *ds_loop = R"igl_Qu8mg5v7(
-
-  LOOP Given the triangle mesh [V, F], where n_verts = V.rows(), computes
-  newV and a sparse matrix S s.t. [newV, newF] is the subdivided mesh where
-  newV = S*V.
-
-Parameters
-----------
-V an n by 3 matrix of vertices
-F an m by 3 matrix of integers of triangle faces
-number_of_subdivs an integer that specifies how many subdivision steps to do
-
-Returns
--------
-
-NV a matrix containing the new vertices
-NF a matrix containing the new faces
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-)igl_Qu8mg5v7";
-
-npe_function(loop)
-npe_doc(ds_loop)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_default_arg(number_of_subdivs, int, 1)
-
-npe_begin_code()
-  assert_valid_3d_tri_mesh(v, f);
-
-  EigenDenseLike<npe_Matrix_v> nv;
-  EigenDenseLike<npe_Matrix_f> nf;
-
-  igl::loop(v, f, nv, nf, number_of_subdivs);
-  return std::make_tuple(npe::move(nv), npe::move(nf));
-npe_end_code()
+}

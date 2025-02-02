@@ -1,96 +1,113 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-//TODO: __example remove __copy
-
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
-
-
-
-
-
+#include "default_types.h"
 #include <igl/min_quad_with_fixed.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
 
-const char *ds_min_quad_with_fixed = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-MIN_QUAD_WITH_FIXED Minimize a quadratic energy of the form
-trace( 0.5*Z'*A*Z + Z'*B + constant )
-subject to
-Z(known,:) = Y, and
-Aeq*Z = Beq
+namespace pyigl
+{
+  auto min_quad_with_fixed(
+    const Eigen::SparseMatrixN &A,
+    const nb::DRef<const Eigen::MatrixXN> &B,
+    const nb::DRef<const Eigen::VectorXI> &known,
+    const nb::DRef<const Eigen::MatrixXN> &Y,
+    const Eigen::SparseMatrixN &Aeq,
+    const nb::DRef<const Eigen::MatrixXN> &Beq,
+    const bool pd)
+  {
+    Eigen::MatrixXN Z;
+    bool success = igl::min_quad_with_fixed(A, B, known, Y, Aeq, Beq, pd, Z);
+    
+    if (!success)
+    {
+      throw std::runtime_error("min_quad_with_fixed: Optimization failed.");
+    }
+    
+    return Z;
+  }
 
-Parameters
-----------
-A  n by n matrix of quadratic coefficients
-B  n by 1 column of linear coefficients
-known list of indices to known rows in Z
-Y  list of fixed values corresponding to known rows in Z
-Aeq  m by n list of linear equality constraint coefficients
-Beq  m by 1 list of linear equality constraint constant values
-is_A_pd  flag specifying whether A(unknown,unknown) is positive definite
+  void min_quad_with_fixed_precompute(
+    const Eigen::SparseMatrixN &A,
+    const nb::DRef<const Eigen::VectorXI>  &known,
+    const Eigen::SparseMatrixN &Aeq,
+    const bool pd,
+    igl::min_quad_with_fixed_data<Numeric> &data)
+  {
+    if(!igl::min_quad_with_fixed_precompute(A, known, Aeq, pd, data))
+    {
+      throw std::runtime_error("min_quad_with_fixed: Precomputation failed.");
+    }
+  }
 
+  auto min_quad_with_fixed_solve(
+    const igl::min_quad_with_fixed_data<Numeric> &data,
+    const nb::DRef<const Eigen::MatrixXN> &B,
+    const nb::DRef<const Eigen::MatrixXN> &Y,
+    const nb::DRef<const Eigen::MatrixXN> &Beq)
+  {
+    Eigen::MatrixXN Z;
+    if(!igl::min_quad_with_fixed_solve(data, B, Y, Beq, Z))
+    {
+      throw std::runtime_error("min_quad_with_fixed: Optimization failed.");
+    }
+    return Z;
+  }
 
-Returns
--------
-Z  n by k solution
+}
 
-See also
---------
+// Bind the wrapper to the Python module
+void bind_min_quad_with_fixed(nb::module_ &m)
+{
+  nb::class_<igl::min_quad_with_fixed_data<Numeric>>(m, "min_quad_with_fixed_data")
+    .def(nb::init<>())
+    ;
 
+  m.def("min_quad_with_fixed_solve", 
+      &pyigl::min_quad_with_fixed_solve,
+      "data"_a,
+      "B"_a=Eigen::MatrixXN(),
+      "Y"_a=Eigen::MatrixXN(),
+      "Beq"_a=Eigen::MatrixXN(),
+      R"(Solve the precomputed convex quadratic optimization problem.)")
+    ;
+  m.def("min_quad_with_fixed_precompute", 
+      &pyigl::min_quad_with_fixed_precompute,
+      "A"_a          = Eigen::SparseMatrixN(),
+      "known"_a      = Eigen::VectorXI()     ,
+      "Aeq"_a        = Eigen::SparseMatrixN(),
+      "pd"_a         = true                  ,
+      "data"_a,
+      R"(Precompute convex quadratic optimization problem.)")
+    ;
 
-Notes
------
-None
+  m.def(
+    "min_quad_with_fixed",
+    &pyigl::min_quad_with_fixed,
+    "A"_a          = Eigen::SparseMatrixN(),
+    "B"_a          = Eigen::MatrixXN()     ,
+    "known"_a      = Eigen::VectorXI()     ,
+    "Y"_a          = Eigen::MatrixXN()     ,
+    "Aeq"_a        = Eigen::SparseMatrixN(),
+    "Beq"_a        = Eigen::MatrixXN()     ,
+    "pd"_a         = true                  ,
+R"(Minimize a convex quadratic energy subject to fixed values and linear equality constraints.
 
-Examples
---------
+The function minimizes trace(0.5 * Z' * A * Z + Z' * B) subject to:
+    Z(known,:) = Y, and
+    Aeq * Z = Beq
 
-
-)igl_Qu8mg5v7";
-
-npe_function(min_quad_with_fixed)
-npe_doc(ds_min_quad_with_fixed)
-//TODO missing npe_dense_like
-npe_arg(A, sparse_float, sparse_double)
-// npe_arg(B, npe_dense_like(A))
-npe_arg(B, dense_float, dense_double)
-npe_arg(known, dense_int32, dense_int64)
-npe_arg(Y, npe_matches(B))
-npe_arg(Aeq, npe_matches(A))
-npe_arg(Beq, npe_matches(B))
-npe_arg(is_A_pd, bool)
-
-
-npe_begin_code()
-
-  assert_nonzero_rows(A, "A");
-  if(Aeq.size() > 0)
-    assert_cols_match(A, Aeq, "A", "Aeq");
-  assert_rows_match(A, B, "A", "B");
-  assert_cols_match(B, Y, "B", "Y");
-  if (Beq.size() > 0)
-    assert_cols_match(B, Beq, "B", "Beq");
-  assert_rows_match(Aeq, Beq, "Aeq", "Beq");
-
-  Eigen::SparseMatrix<double> A_copy = A.template cast<double>();
-  Eigen::SparseMatrix<double> Aeq_copy = Aeq.template cast<double>();
-
-  Eigen::MatrixXd B_copy = B.template cast<double>();
-  Eigen::MatrixXd Y_copy = Y.template cast<double>();
-  Eigen::MatrixXd Beq_copy = Beq.template cast<double>();
-
-  Eigen::MatrixXd sol;
-
-  bool ok = igl::min_quad_with_fixed(A_copy, B_copy, known, Y_copy, Aeq_copy, Beq_copy, is_A_pd, sol);
-  // Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> sol_row_major = sol;
-  EigenDenseLike<npe_Matrix_B> sol_row_major = sol.template cast < typename npe_Matrix_B::Scalar >();
-  return std::make_pair(ok, npe::move(sol_row_major));
-
-npe_end_code()
+@param[in] A  n by n matrix of quadratic coefficients
+@param[in] B  n by k matrix of linear coefficients
+@param[in] known  list of indices to known rows in Z
+@param[in] Y  n by k matrix of fixed values corresponding to known rows in Z
+@param[in] Aeq  m by n matrix of linear equality constraint coefficients
+@param[in] Beq  m by k matrix of linear equality constraint target values
+@param[in] pd  flag specifying whether A(unknown,unknown) is positive definite
+@param[out] Z  solution matrix that minimizes the objective under constraints
+@return Z solution matrix
+)");
+}

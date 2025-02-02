@@ -1,56 +1,75 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/cotmatrix.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_cotmatrix = R"igl_Qu8mg5v7(
-Constructs the cotangent stiffness matrix (discrete laplacian) for a given mesh
-(v, f).
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-v : #v by dim list of mesh vertex positions
-f : #f by simplex_size list of mesh faces (must be triangles)
+namespace pyigl
+{
+  auto cotmatrix(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::SparseMatrixN L;
+    igl::cotmatrix(V,F,L);
+    return L;
+  }
 
-Returns
--------
-l : #v by #v cotangent matrix, each row i corresponding to v(i, :)
+  auto cotmatrix_polygon(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::VectorXI> &I,
+    const nb::DRef<const Eigen::VectorXI> &C)
+  {
+    Eigen::SparseMatrixN L,M,P;
+    igl::cotmatrix(V,I,C,L,M,P);
+    return std::make_tuple(L,M,P);
+  }
+}
 
-See also
---------
-adjacency_matrix
+// Bind the wrapper to the Python module
+void bind_cotmatrix(nb::module_ &m)
+{
+  m.def(
+    "cotmatrix",
+    &pyigl::cotmatrix, 
+    "V"_a, 
+    "F"_a,
+R"(Constructs the cotangent stiffness matrix (discrete laplacian) for a given
+mesh (V,F).
 
-Notes
------
-This Laplacian uses the convention that diagonal entries are
-**minus** the sum of off-diagonal entries. The diagonal entries are
-therefore in general negative and the matrix is **negative** semi-definite
-(immediately, -L is **positive** semi-definite)
+  @tparam DerivedV  derived type of eigen matrix for V (e.g. derived from
+    MatrixXd)
+  @tparam DerivedF  derived type of eigen matrix for F (e.g. derived from
+    MatrixXi)
+  @tparam Scalar  scalar type for eigen sparse matrix (e.g. double)
+  @param[in] V  #V by dim list of mesh vertex positions
+  @param[in] F  #F by simplex_size list of mesh elements (triangles or tetrahedra)
+  @param[out] L  #V by #V cotangent matrix, each row i corresponding to V(i,:))");
 
-Examples
---------
-# Mesh in (v, f)
->>> l = cotmatrix(v, f)
-)igl_Qu8mg5v7";
+  m.def(
+    "cotmatrix",
+    &pyigl::cotmatrix_polygon,
+    "V"_a, 
+    "I"_a,
+    "C"_a,
+R"(Cotangent Laplacian (and mass matrix) for polygon meshes according to
+"Polygon Laplacian Made Simple" [Bunge et al.\ 2020]
 
-npe_function(cotmatrix)
-npe_doc(ds_cotmatrix)
-npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int32, dense_int64)
-npe_begin_code()
+@param[in] V  #V by 3 list of mesh vertex positions
+@param[in] I  #I vectorized list of polygon corner indices into rows of some matrix V
+@param[in] C  #polygons+1 list of cumulative polygon sizes so that C(i+1)-C(i) = size of
+    the ith polygon, and so I(C(i)) through I(C(i+1)-1) are the indices of
+    the ith polygon
+@param[out] L  #V by #V polygon Laplacian made simple matrix
+@param[out] M  #V by #V mass matrix
+@param[out] P  #V+#polygons by #V prolongation operator)"
+    );
+}
 
-  assert_valid_tet_or_tri_mesh_23d(v, f);
-  EigenSparseLike<npe_Matrix_v> l;
-  igl::cotmatrix(v, f, l);
-  return npe::move(l);
-
-npe_end_code()
 
 

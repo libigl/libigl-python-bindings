@@ -1,62 +1,54 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 KarlLeell
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/cotmatrix_entries.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
 
-const char* ds_cotmatrix_entries = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-COTMATRIX_ENTRIES compute the cotangents of each angle in mesh (V,F)
+namespace pyigl
+{
+  Eigen::MatrixXN cotmatrix_entries_VF(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::MatrixXN C;
+    igl::cotmatrix_entries(V,F,C);
+    return C;
+  }
+  Eigen::MatrixXN cotmatrix_entries_l(
+    const nb::DRef<const Eigen::MatrixXN> &l)
+  {
+    Eigen::MatrixXN C;
+    igl::cotmatrix_entries(l,C);
+    return C;
+  }
+}
 
-Parameters
-----------
-V  #V by dim list of rest domain positions
-F  #F by {3|4} list of {triangle|tetrahedra} indices into V
+void bind_cotmatrix_entries(nb::module_ &m)
+{
+  m.def(
+    "cotmatrix_entries",
+    &pyigl::cotmatrix_entries_VF,
+    "V"_a,
+    "F"_a,
+R"(Compute the cotangent contributions for each angle in a mesh.
 
+@param[in] V  #V by dim matrix of vertex positions
+@param[in] F  #F by {3|4} matrix of {triangle|tetrahedra} indices into V (optional)
 
-Returns
--------
-  C  #F by 3 list of 1/2*cotangents corresponding angles
-    for triangles, columns correspond to edges [1,2],[2,0],[0,1]
-OR
-  C  #F by 6 list of 1/6*cotangents of dihedral angles*edge lengths
-    for tets, columns along edges [1,2],[2,0],[0,1],[3,0],[3,1],[3,2]
+@return C  #F by {3|6} matrix of cotangent contributions
+    - For triangles, columns correspond to edges [1,2], [2,0], [0,1]
+    - For tets, columns correspond to edges [1,2], [2,0], [0,1], [3,0], [3,1], [3,2])");
+  m.def(
+    "cotmatrix_entries",
+    &pyigl::cotmatrix_entries_l,
+    "l"_a,
+R"(Compute the cotangent contributions for each angle in a mesh.
 
-
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-
-
-)igl_Qu8mg5v7";
-
-npe_function(cotmatrix_entries)
-npe_doc(ds_cotmatrix_entries)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-
-
-npe_begin_code()
-
-  assert_valid_tet_or_tri_mesh_23d(v, f);
-  EigenDenseLike<npe_Matrix_v> c;
-  igl::cotmatrix_entries(v, f, c);
-  return npe::move(c);
-
-npe_end_code()
-
-
+@param[in] l  #F by 3 matrix of triangle edge lengths (optional, alternative to F)
+@return C  #F by {3|6} matrix of cotangent contributions
+    - For triangles, columns correspond to edges [1,2], [2,0], [0,1]
+    - For tets, columns correspond to edges [1,2], [2,0], [0,1], [3,0], [3,1], [3,2])");
+}

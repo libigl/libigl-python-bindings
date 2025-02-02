@@ -1,58 +1,42 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Alec Jacobson
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <npe.h>
-#include <typedefs.h>
-
-
-
-
-
-
+#include "default_types.h"
 #include <igl/writeDMAT.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/vector.h>
+#include <nanobind/stl/filesystem.h>
 
-const char* ds_write_dmat = R"igl_Qu8mg5v7(
-Write a matrix from an ascii/binary dmat file, a simple ascii matrix file type, defined as follows. The first line is always:
-<#columns> <#rows>
-Then the coefficients of the matrix are given separated by whitespace with columns running fastest.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-filename : string, path to .dmat file
-W : m × n matrix
-ascii : whether to use ascii format {true}
+namespace pyigl
+{
+  // Wrapper for writeDMAT with Eigen matrix input
+  bool writeDMAT(
+    const std::filesystem::path &file_name,
+    const nb::DRef<const Eigen::MatrixXN> &W, 
+    const bool ascii)
+  {
+    if (!igl::writeDMAT(file_name.generic_string(), W, ascii))
+    {
+      throw std::runtime_error("writeDMAT: Failed to write DMAT file.");
+    }
+    return true;
+  }
+}
 
-Returns
--------
-ret : whether writing was successful
+// Bind the wrappers to the Python module
+void bind_writeDMAT(nb::module_ &m)
+{
+  m.def(
+    "writeDMAT",
+    &pyigl::writeDMAT,
+    "file_name"_a,
+    "W"_a,
+    "ascii"_a = true,
+    R"(Write a matrix to a .dmat file in ASCII or binary format.
 
-See also
---------
-read_dmat
-
-Notes
------
-None
-
-Examples
---------
->>> write_dmat("my_model.dmat",W,ascii = false)
-)igl_Qu8mg5v7";
-
-npe_function(write_dmat)
-npe_doc(ds_write_dmat)
-npe_arg(filename, std::string)
-npe_arg(w, dense_double, dense_float, dense_int32, dense_int64)
-npe_default_arg(ascii, bool, true)
-npe_begin_code()
-
-return igl::writeDMAT(filename, w, ascii);
-
-npe_end_code()
-
-
-
+    @param[in] file_name  path to .dmat file
+    @param[in] W  Eigen matrix containing coefficients to write
+    @param[in] ascii  flag for ASCII format (default: true)
+    @return True if the operation is successful)");
+}

@@ -1,60 +1,72 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 KarlLeell
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-// TODO: __miss
-
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/per_face_normals.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_per_face_normals = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Compute face normals via vertex position list, face list
+namespace pyigl
+{
+  // Wrapper for per_face_normals function
+  auto per_face_normals_VF(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const nb::DRef<const Eigen::RowVectorXN> &Z)
+  {
+    Eigen::MatrixXN N;
+    igl::per_face_normals(V,F,Z,N);
+    return N;
+  }
+  // Wrapper for per_face_normals function
+  auto per_face_normals_VIC(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::VectorXI> &I,
+    const nb::DRef<const Eigen::VectorXI> &C)
+  {
+    Eigen::MatrixXN N;
+    Eigen::MatrixXN VV;
+    Eigen::MatrixXI FF;
+    Eigen::VectorXI J;
+    igl::per_face_normals(V,I,C,N,VV,FF,J);
+    return std::make_tuple(N,VV,FF,J);
+  }
+}
 
-Parameters
-----------
-V  #V by 3 eigen Matrix of mesh vertex 3D positions
-F  #F by 3 eigen Matrix of face (triangle) indices
-Z  3 vector normal given to faces with degenerate normal.
+// Bind the wrapper to the Python module
+void bind_per_face_normals(nb::module_ &m)
+{
+  m.def(
+    "per_face_normals",
+    &pyigl::per_face_normals_VF,
+    "V"_a, 
+    "F"_a,
+    "Z"_a=Eigen::RowVectorXN(),
+R"(Compute face normals via vertex position list, face list
 
-Returns
--------
-N  #F by 3 eigen Matrix of mesh face (triangle) 3D normals
+@param[in] V  #V by 3 eigen Matrix of mesh vertex 3D positions
+@param[in] F  #F by 3 eigen Matrix of face (triangle) indices
+@param[in] Z  3 vector normal given to faces with degenerate normal.
+@param[out] N  #F by 3 eigen Matrix of mesh face (triangle) 3D normals)"
+    );
+  m.def(
+    "per_face_normals",
+    &pyigl::per_face_normals_VIC,
+    "V"_a, 
+    "I"_a,
+    "C"_a,
+R"(Compute face normals via vertex position list, polygon stream
 
-See also
---------
-
-
-Notes
------
-None
-
-Examples
---------
-Give degenerate faces (1/3,1/3,1/3)^0.5
-per_face_normals(V,F,Vector3d(1,1,1).normalized(),N);
-
-)igl_Qu8mg5v7";
-
-npe_function(per_face_normals)
-npe_doc(ds_per_face_normals)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_arg(z, npe_matches(v))
-
-
-npe_begin_code()
-
-  assert_valid_3d_tri_mesh(v, f);
-  EigenDenseLike<npe_Matrix_v> n;
-  igl::per_face_normals(v, f, z, n);
-  return npe::move(n);
-
-npe_end_code()
-
+@param[in] V  #V by 3 eigen Matrix of mesh vertex 3D positions
+@param[in] I  #I vectorized list of polygon corner indices into rows of some matrix V
+@param[in] C  #polygons+1 list of cumulative polygon sizes so that C(i+1)-C(i) = size of
+    the ith polygon, and so I(C(i)) through I(C(i+1)-1) are the indices of
+    the ith polygon
+@param[out] N  #F by 3 eigen Matrix of mesh face (triangle) 3D normals
+@param[out] VV  #I+#polygons by 3 list of auxiliary triangle mesh vertex positions
+@param[out] FF  #I by 3 list of triangle indices into rows of VV
+@param[out] J  #I list of indices into original polygons)"
+    );
+}

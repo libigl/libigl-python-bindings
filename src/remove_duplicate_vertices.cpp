@@ -1,76 +1,71 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 KarlLeell
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
+#include "default_types.h"
 #include <igl/remove_duplicate_vertices.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/tuple.h>
 
-const char* ds_remove_duplicate_vertices = R"igl_Qu8mg5v7(
+namespace nb = nanobind;
+using namespace nb::literals;
 
-REMOVE_DUPLICATE_VERTICES Remove duplicate vertices upto a uniqueness
-  tolerance (epsilon)
+namespace pyigl
+{
+  // Binding for remove_duplicate_vertices without face remapping
+  auto remove_duplicate_vertices(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const double epsilon)
+  {
+    Eigen::MatrixXN SV;
+    Eigen::VectorXI SVI, SVJ;
+    igl::remove_duplicate_vertices(V, epsilon, SV, SVI, SVJ);
+    return std::make_tuple(SV, SVI, SVJ);
+  }
 
-Parameters
-----------
-V  #V by dim list of vertex positions
-F  #F by 3 list of triangle indices
-epsilon  uniqueness tolerance (significant digit), can probably think of
-  this as a tolerance on L1 distance
+  // Binding for remove_duplicate_vertices with face remapping
+  auto remove_duplicate_vertices_F(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const double epsilon)
+  {
+    Eigen::MatrixXN SV;
+    Eigen::VectorXI SVI, SVJ;
+    Eigen::MatrixXI SF;
+    igl::remove_duplicate_vertices(V, F, epsilon, SV, SVI, SVJ, SF);
+    return std::make_tuple(SV, SVI, SVJ, SF);
+  }
+}
 
+// Bind the wrapper to the Python module
+void bind_remove_duplicate_vertices(nb::module_ &m)
+{
+  m.def(
+    "remove_duplicate_vertices",
+    &pyigl::remove_duplicate_vertices,
+    "V"_a,
+    "epsilon"_a,
+    R"(Remove duplicate vertices up to a uniqueness tolerance (epsilon).
 
-Returns
--------
-SV  #SV by dim new list of vertex positions
-SVI #V by 1 list of indices so SV = V(SVI,:) 
-SVJ #SV by 1 list of indices so V = SV(SVJ,:)
-SF  #SF by dim new list of faces so SF = F(SVJ,:)
+    @param[in] V  #V by dim list of vertex positions
+    @param[in] epsilon  Uniqueness tolerance used coordinate-wise
+    @return Tuple containing:
+            - SV: #SV by dim new list of unique vertex positions
+            - SVI: #SV list of indices so SV = V(SVI,:)
+            - SVJ: #V list of indices so V = SV(SVJ,:))");
 
-See also
---------
+  m.def(
+    "remove_duplicate_vertices",
+    &pyigl::remove_duplicate_vertices_F,
+    "V"_a,
+    "F"_a,
+    "epsilon"_a,
+    R"(Remove duplicate vertices and remap faces to new indices.
 
-
-Notes
------
-None
-
-Examples
---------
-% Mesh in (V,F)
-[SV,SVI,SVJ,SF] = remove_duplicate_vertices(V,F,1e-7);
-% remap faces
-SF = SVJ(F);
-  
-
-)igl_Qu8mg5v7";
-
-npe_function(remove_duplicate_vertices)
-npe_doc(ds_remove_duplicate_vertices)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_arg(epsilon, double)
-
-
-npe_begin_code()
-
-  // TODO: remove __copy
-  // I believe we can prevent this. The libigl function uses "DerivedV rv"
-  //    which calls Eigen::Map(Eigen::Matrix<>)::Map() and DNE
-  assert_nonzero_rows(v, "v");
-  Eigen::MatrixXd v_copy = v.template cast<double>();
-  Eigen::MatrixXd sv;
-  Eigen::Matrix<npe_Scalar_f,Eigen::Dynamic,1> svi, svj;
-  EigenDenseLike<npe_Matrix_f> sf;
-  igl::remove_duplicate_vertices(v_copy, f, epsilon, sv, svi, svj, sf);
-  EigenDenseFloat sv_row_major = sv;
-  return std::make_tuple(npe::move(sv_row_major), npe::move(svi), npe::move(svj), npe::move(sf));
-
-npe_end_code()
-
-
+    @param[in] V  #V by dim list of vertex positions
+    @param[in] F  #F by dim list of face indices
+    @param[in] return_SVJ  If true, return the SVJ mapping indices
+    @return Tuple containing:
+            - SV: #SV by dim new list of unique vertex positions
+            - SVI: #SV list of indices so SV = V(SVI,:)
+            - SVJ: #V list of indices so V = SV(SVJ,:)
+            - SF: #F by dim list of remapped face indices into SV)");
+}

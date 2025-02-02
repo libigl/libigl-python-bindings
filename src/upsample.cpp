@@ -1,59 +1,70 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-//TODO: __example
-//TODO: __miss upsample that retuns a sparse matrix and inplace
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
-
+#include "default_types.h"
 #include <igl/upsample.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
 
+namespace nb = nanobind;
+using namespace nb::literals;
 
-const char* ds_upsample = R"igl_Qu8mg5v7(
-  Subdivide a mesh without moving vertices: loop subdivision but odd
-   vertices stay put and even vertices are just edge midpoints
-Parameters
-----------
-     V  #V by dim  mesh vertices
-     F  #F by 3  mesh triangles
+namespace pyigl
+{
+  // Wrapper for the first overload of upsample that computes S and newF
+  auto upsample_matrix(
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    int n_)
+  {
+    const auto n = n_? n_ : F.maxCoeff() + 1;
+    Eigen::SparseMatrix<Numeric> S;
+    Eigen::MatrixXI NF;
+    igl::upsample(n, F, S, NF);
+    return std::make_tuple(S, NF);
+  }
 
-Returns
--------
-     NV new vertex positions, V is guaranteed to be at top
-     NF new list of face indices
+  // Wrapper for the second overload of upsample that returns NV and NF
+  auto upsample(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    int number_of_subdivs)
+  {
+    Eigen::MatrixXN NV;
+    Eigen::MatrixXI NF;
+    igl::upsample(V, F, NV, NF, number_of_subdivs);
+    return std::make_tuple(NV, NF);
+  }
 
-See also
---------
+}
 
+// Bind the wrapper to the Python module
+void bind_upsample(nb::module_ &m)
+{
+  m.def(
+    "upsample_matrix",
+    &pyigl::upsample_matrix,
+    "F"_a,
+    "n"_a = 0,
+    R"(Subdivide a mesh without moving vertices. Returns the subdivision matrix and new faces.
 
-Notes
------
-- assumes (V,F) is edge-manifold.
+@param[in] n_verts Number of mesh vertices
+@param[in] F       #F by 3 matrix of triangle faces
+@return A tuple containing:
+        - S: Sparse subdivision matrix
+        - NF: Matrix of new faces)");
 
-Examples
---------
+  m.def(
+    "upsample",
+    &pyigl::upsample,
+    "V"_a,
+    "F"_a,
+    "number_of_subdivs"_a = 1,
+    R"(Subdivide a mesh without moving vertices using loop subdivision. Returns new vertices and faces.
 
-)igl_Qu8mg5v7";
+@param[in] V               #V by dim matrix of mesh vertices
+@param[in] F               #F by 3 matrix of triangle faces
+@param[in] number_of_subdivs Number of subdivisions (default is 1)
+@return A tuple containing:
+        - NV: New vertex positions with original vertices at the top
+        - NF: Matrix of new face indices)");
 
-npe_function(upsample)
-npe_doc(ds_upsample)
-
-npe_arg(v, dense_float, dense_double)
-npe_arg(f, dense_int32, dense_int64)
-npe_default_arg(number_of_subdivs, int, 1)
-
-
-npe_begin_code()
-
-  assert_valid_23d_tri_mesh(v, f);
-  EigenDenseLike<npe_Matrix_v> nv;
-  EigenDenseLike<npe_Matrix_f> nf;
-  igl::upsample(v, f, nv, nf, number_of_subdivs);
-  return std::make_tuple(npe::move(nv), npe::move(nf));
-
-npe_end_code()
+}

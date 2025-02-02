@@ -1,70 +1,66 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Teseo Schneider
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/readMSH.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/string.h>
+#include <nanobind/stl/filesystem.h>
+#include <nanobind/stl/tuple.h>
+#include <nanobind/stl/vector.h>
+#include <string>
 
-const char *ds_read_msh = R"igl_Qu8mg5v7(
-Read a mesh (e.g., tet mesh) from a gmsh .msh file
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-filename  path to .msh file
-dtype : data-type of the returned vertices, optional. Default is `float64`.
-        (returned faces always have type int32.)
+namespace pyigl
+{
+  auto readMSH(const std::filesystem::path& msh_file_name)
+  {
+    Eigen::MatrixXN V;
+    Eigen::MatrixXI Tri;
+    Eigen::MatrixXI Tet;
+    Eigen::VectorXI TriTag;
+    Eigen::VectorXI TetTag;
+    std::vector<std::string> XFields;
+    std::vector<Eigen::MatrixXN> XF;
+    std::vector<std::string> EFields;
+    std::vector<Eigen::MatrixXN> TriF;
+    std::vector<Eigen::MatrixXN> TetF;
 
-Returns
--------
+    if (!igl::readMSH(msh_file_name.generic_string(), V, Tri, Tet, TriTag, TetTag, XFields, XF, EFields, TriF, TetF))
+    {
+      throw std::runtime_error("Failed to read .msh file: " + msh_file_name.generic_string());
+    }
 
-V  #V by 3 list of 3D mesh vertex positions
-T  #T by ss list of 3D ss-element indices into V (e.g., ss=4 for tets)
-
-See also
---------
-
-Notes
------
-None
-
-Examples
---------
-
-
-)igl_Qu8mg5v7";
-
-npe_function(read_msh)
-npe_doc(ds_read_msh)
-
-npe_arg(filename, std::string)
-npe_default_arg(dtypef, npe::dtype, "float")
-
-npe_begin_code()
-  Eigen::MatrixXd v;
-  Eigen::MatrixXi t;
-
-  //NOTE: readMSH only support vertices as matrix of doubles. We instead cast the output accordingly.
-  bool ret = igl::readMSH(filename, v, t);
-  if (!ret) {
-    throw std::invalid_argument("File '" + filename + "' not found.");
+    return std::make_tuple(V, Tri, Tet, TriTag, TetTag, XFields, XF, EFields, TriF, TetF);
   }
-  
-  EigenDenseInt t_row_maj = t.template cast<typename EigenDenseInt::Scalar>();
+}
 
-  if (dtypef.type() == npe::type_f32) {
-    EigenDenseF32 v_row_maj = v.template cast <typename EigenDenseF32::Scalar>();
-    return std::make_tuple(npe::move(v_row_maj ), npe::move(t_row_maj));
-  } else if (dtypef.type() == npe::type_f64) {
-    EigenDenseF64 v_row_maj = v.template cast <typename EigenDenseF64::Scalar>();
-    return std::make_tuple(npe::move(v_row_maj ), npe::move(t_row_maj));
-  }
-  
-  throw pybind11::type_error("Only float32 and float64 dtypes are supported.");
+// Bind the wrapper to the Python module
+void bind_readMSH(nb::module_ &m)
+{
+  m.def(
+    "readMSH",
+    &pyigl::readMSH,
+    "msh_file_name"_a,
+R"(read triangle surface mesh and tetrahedral volume mesh from .msh file
 
-npe_end_code()
-
+@param[in] msh - file name
+@param[out] X  eigen double matrix of vertex positions  #X by 3
+@param[out] Tri  #Tri eigen integer matrix of triangular faces indices into vertex positions
+@param[out] Tet  #Tet eigen integer matrix of tetrahedral indices into vertex positions
+@param[out] TriTag #Tri eigen integer vector of tags associated with surface faces
+@param[out] TetTag #Tet eigen integer vector of tags associated with volume elements
+@param[out] XFields #XFields list of strings with field names associated with nodes
+@param[out] XF      #XFields list of eigen double matrices, fields associated with nodes 
+@param[out] EFields #EFields list of strings with field names associated with elements
+@param[out] TriF    #EFields list of eigen double matrices, fields associated with surface elements
+@param[out] TetF    #EFields list of eigen double matrices, fields associated with volume elements
+@return true on success
+\bug only version 2.2 of .msh file is supported (gmsh 3.X)
+\bug only triangle surface elements and tetrahedral volumetric elements are supported
+\bug only 3D information is supported
+\bug only the 1st tag per element is returned (physical) 
+\bug same element fields are expected to be associated with surface elements and volumetric elements
+)");
+}
 

@@ -1,59 +1,63 @@
-// This file is part of libigl, a simple c++ geometry processing library.
-//
-// Copyright (C) 2023 Sebastian Koch
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License
-// v. 2.0. If a copy of the MPL was not distributed with this file, You can
-// obtain one at http://mozilla.org/MPL/2.0/.
-#include <common.h>
-#include <npe.h>
-#include <typedefs.h>
+#include "default_types.h"
 #include <igl/writeOBJ.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/stl/filesystem.h>
+#include <limits>
 
-const char* ds_write_obj = R"igl_Qu8mg5v7(
-Write a mesh in an ascii obj file.
+namespace nb = nanobind;
+using namespace nb::literals;
 
-Parameters
-----------
-filename : path to outputfile
-v : array of vertex positions #v by 3
-f : #f list of face indices into vertex positions
+namespace pyigl
+{
+  void writeOBJ(
+    const std::filesystem::path & filename,
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const nb::DRef<const Eigen::MatrixXN> &CN,
+    const nb::DRef<const Eigen::MatrixXI> &FN,
+    const nb::DRef<const Eigen::MatrixXN> &TC,
+    const nb::DRef<const Eigen::MatrixXI> &FTC)
+  {
+    if(!igl::writeOBJ(filename.generic_string(),V,F,CN,FN,TC,FTC))
+    {
+      // throw runtime exception
+      throw std::runtime_error("Failed to write mesh to: " + filename.generic_string());
+    }
+  }
+}
 
-Returns
--------
-ret : bool if output was successful
+// Bind the wrapper to the Python module
+void bind_writeOBJ(nb::module_ &m)
+{
+  m.def(
+    "writeOBJ",
+    &pyigl::writeOBJ, 
+    "filename"_a,
+    "V"_a, 
+    "F"_a, 
+    "CN"_a = Eigen::MatrixXN(),
+    "FN"_a = Eigen::MatrixXI(),
+    "TC"_a = Eigen::MatrixXN(),
+    "FTC"_a = Eigen::MatrixXI(),
+R"(Write a mesh in an ascii obj file
 
-See also
---------
-read_obj
+@param[in] str  path to outputfile
+@param[in] V  #V by 3 mesh vertex positions
+@param[in] F  #F by 3|4 mesh indices into V
+@param[in] CN #CN by 3 normal vectors
+@param[in] FN  #F by 3|4 corner normal indices into CN
+@param[in] TC  #TC by 2|3 texture coordinates
+@param[in] FTC #F by 3|4 corner texture coord indices into TC
+@return true on success, false on error
 
-Notes
------
-None
+\bug Horrifyingly, this does not have the same order of parameters as
+readOBJ.
 
-Examples
---------
-# Mesh in (v, f)
->>> success = write_obj(v, f)
-)igl_Qu8mg5v7";
-
-npe_function(write_obj)
-npe_doc(ds_write_obj)
-npe_arg(filename, std::string)
-npe_arg(v, dense_double, dense_float)
-npe_arg(f, dense_int32, dense_int64)
-//npe_default_arg(cn, npe_matches(v), pybind11::array()) TODO: NPE Support none arrays as option
-//npe_default_arg(fn, npe_matches(f), pybind11::array())
-//npe_default_arg(tc, npe_matches(v), pybind11::array())
-//npe_default_arg(ftc, npe_matches(f), pybind11::array())
-npe_begin_code()
-
-  assert_valid_tet_or_tri_mesh(v, f);
-  //return igl::writeOBJ(filename, v, f, cn, fn, tc, ftc);
-  return igl::writeOBJ(filename, v, f);
-
-npe_end_code()
-
+\see readOBJ)"
+    );
+}
 
 
 
