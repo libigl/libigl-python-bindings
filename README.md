@@ -2,10 +2,10 @@
 [![PyPI version](https://badge.fury.io/py/libigl.svg)](https://pypi.org/project/libigl/)
 [![buildwheels](https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml/badge.svg)](https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml?query=branch%3Amain)
 
-
-This repository contains the source code for the libigl Python bindings. These bindings are fully compatible with NumPy and SciPy and offer a convenient interface similar to functions in those libraries.
-
-These bindings are still under active development and should still be considered alpha quality. We encourage users to post issues so we can improve the bindings!
+This repository contains the source code for the libigl Python bindings written
+using [nanobind](https://nanobind.readthedocs.io/en/latest/). Functions allow
+NumPy arrays as input and output for dense matrices and vectors and SciPy sparse
+matrices for sparse matrices. 
 
 ## Installation
 
@@ -13,14 +13,11 @@ These bindings are still under active development and should still be considered
 python -m pip install libigl
 ```
 
-If you wish to install the current development code, you can compile the library from scratch. Clone this repo and issue
-
-```
-python -m pip install ./
-```
-
-
 ## [Help/Documentation](https://libigl.github.io/libigl-python-bindings/)
+
+| :warning: WARNING           |
+|:----------------------------|
+| This documentation is perennially out of date and will likely be removed/changed. |
 
 * A tutorial on how to use the bindings can be found [here](https://libigl.github.io/libigl-python-bindings/tutorials/)
 * A function reference can be found [here](https://libigl.github.io/libigl-python-bindings/igl_docs/)
@@ -50,9 +47,36 @@ According to the [scikit-build-core documentation](https://scikit-build-core.rea
 python -m pip install --no-build-isolation --config-settings=editable.rebuild=true -Cbuild-dir=build -ve.
 ```
 
+### Adding a missing binding
+
+Bindings are fairly mechanical to write. For example, suppose we didn't have a
+binding for the c++ function `igl::moments`. The first step would be to look at
+the corresponding `.h` header file in the C++ libigl library:
+[moments.h](https://github.com/libigl/libigl/blob/main/include/igl/moments.h).
+
+Then we would create the [src/moments.cpp](src/moments.cpp) file in this project
+which uses `Eigen::MatrixXN` for numeric types and `Eigen::MatrixXI` for integer
+types. Typically this requires a simple wrapper around the function matching
+its signature to these types and some boilerplate `void bind_moments(...` code which adds the function to the python module.
+
+Simply adding this `.cpp` file will be enough to add the bindings on the next
+build.
+
+If submitting a pull request with a new binding, please also add an execution
+test in `tests/test_all.py` to ensure the binding can at least be called as
+expected.
+
+
 ## Testing cibuildwheel locally
 
 Install whichever version of Python from the [official website](https://www.python.org/downloads/) and then run:
 
     /Library/Frameworks/Python.framework/Versions/[version]/bin/python -m pip install cibuildwheel
     CIBW_BUILD="cp311-*" python -m cibuildwheel --output-dir wheelhouse --platform macos
+
+## Acknowledgements
+
+The original python bindings were generated and maintained by @teseoch,
+@KarlLeell, @fwilliams, @skoch9, @danielepanozzo.
+
+The modern python bindings (since 2.5.4.dev0) can largely be blamed on @alecjacobson.
