@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_wheels:
-    name: Build ${{ matrix.cpversionj}} wheels on ${{ matrix.os }}
+    name: Build ${{ matrix.cpversion }} wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
