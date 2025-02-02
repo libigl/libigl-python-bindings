@@ -10,11 +10,11 @@ def test_version():
     version = igl.__version__
     pass
 
+import igl.triangle
 import igl.copyleft
 import igl.copyleft.tetgen
 #import igl.copyleft.cgal
 #import igl.embree
-import igl.triangle
 #
 #
 ##def rand_sparse(n,density):
@@ -513,30 +513,30 @@ import igl.triangle
 #    hits = ei.intersectRay(origin,direction)
 #    hits = ei.intersectRay(origin,direction,tnear=0,tfar=1)
 #    I,C = igl.embree.reorient_facets_raycast(V,F)
-#
-#def test_tetgen():
-#    # octahedron
-#    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
-#    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
-#    V,T,F,_,_,_,_,_,_ = igl.copyleft.tetgen.tetrahedralize(V,F,flags="Q")
-#
-#def test_triangle():
-#    V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype=np.float64)
-#    E = np.array([[0,1],[1,2],[2,3],[3,0]],dtype=np.int64)
-#    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qc")
-#    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Q")
-#    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qqa0.1")
-#    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
-#    F = np.array([[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
-#    scaf_data = igl.triangle.SCAFData()
-#    b = np.array([0,1,2],dtype=np.int64)
-#    bc = np.array([[0,0],[1,0],[0,1]],dtype=np.float64)
-#    V_init = np.array([[0,0],[1,0],[0,1],[0.1,0.1]],dtype=np.float64)
-#    soft_p = 0;
-#    igl.triangle.scaf_precompute(V,F,V_init,igl.ARAP,b,bc,soft_p,scaf_data)
-#    L,rhs = igl.triangle.scaf_system(scaf_data)
-#    U = igl.triangle.scaf_solve(1,scaf_data)
-#
+
+def test_tetgen():
+    # octahedron
+    V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
+    F = np.array([[0,1,2], [0,2,4], [0,4,5], [0,5,1], [1,3,2], [1,5,3], [2,3,4], [3,5,4]],dtype=np.int64)
+    V,T,F,_,_,_,_,_,_ = igl.copyleft.tetgen.tetrahedralize(V,F,flags="Q")
+
+def test_triangle():
+    V = np.array([[0,0],[1,0],[1,1],[0,1]],dtype=np.float64)
+    E = np.array([[0,1],[1,2],[2,3],[3,0]],dtype=np.int64)
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qc")
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Q")
+    V,F,_,_,_ = igl.triangle.triangulate(V,E,flags="Qqa0.1")
+    V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
+    F = np.array([[1,3,0],[3,2,0],[2,3,1]],dtype=np.int64)
+    scaf_data = igl.triangle.SCAFData()
+    b = np.array([0,1,2],dtype=np.int64)
+    bc = np.array([[0,0],[1,0],[0,1]],dtype=np.float64)
+    V_init = np.array([[0,0],[1,0],[0,1],[0.1,0.1]],dtype=np.float64)
+    soft_p = 0;
+    igl.triangle.scaf_precompute(V,F,V_init,igl.ARAP,b,bc,soft_p,scaf_data)
+    L,rhs = igl.triangle.scaf_system(scaf_data)
+    U = igl.triangle.scaf_solve(1,scaf_data)
+
 #def test_misc():
 #    V,F = igl.icosahedron()
 #    BV,BF = igl.bounding_box(V,pad=1.0)

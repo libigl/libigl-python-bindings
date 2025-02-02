@@ -95,10 +95,10 @@ function(pyigl_include prefix name)
     endif()
     file(GLOB sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/*.cpp")
 
-    # Just compile a single file
-    list(FILTER sources EXCLUDE REGEX ".*/module\\.cpp$")
-    list(GET sources 0 sources)
-    list(APPEND sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/module.cpp")
+    ## Just compile a single file
+    #list(FILTER sources EXCLUDE REGEX ".*/module\\.cpp$")
+    #list(GET sources 0 sources)
+    #list(APPEND sources "${CMAKE_CURRENT_SOURCE_DIR}/src/${subpath}/module.cpp")
 
     message(STATUS "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
     message(STATUS "${prefix} ${name} sources: ${sources}")
