@@ -75,6 +75,18 @@ Install whichever version of Python from the [official website](https://www.pyth
     /Library/Frameworks/Python.framework/Versions/[version]/bin/python -m pip install cibuildwheel
     CIBW_BUILD="cp311-*" python -m cibuildwheel --output-dir wheelhouse --platform macos
 
+## Downloading all the artifacts
+
+A successful [.github/workflows/wheels.yml](.github/workflows/wheels.yml) run will a lot of `.whl` files. To download these all at once, you can use the following command:
+
+    mkdir wheelhouse
+    cd wheelhouse
+    gh run download [runid]
+
+Then these can be uploaded to pypi using:
+
+    python -m twine upload --repository testpypi wheelhouse/*/*.whl wheelhouse/*/*.tar.gz
+
 ## Acknowledgements
 
 The original python bindings were generated and maintained by
