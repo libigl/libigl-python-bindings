@@ -27,6 +27,8 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
+message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
 # Enable FetchContent to download dependencies at configure time
 include(FetchContent)
 
@@ -40,8 +42,8 @@ FetchContent_MakeAvailable(nanobind)
 
 # Download and set up libigl
 option(LIBIGL_COPYLEFT_CORE        "Build target igl_copyleft::core"       ON)
-option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       OFF)
-option(LIBIGL_EMBREE               "Build target igl::embree"              OFF)
+option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       ON)
+option(LIBIGL_EMBREE               "Build target igl::embree"              ON)
 option(LIBIGL_COPYLEFT_TETGEN      "Build target igl_copyleft::tetgen"     ON)
 option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
 FetchContent_Declare(
