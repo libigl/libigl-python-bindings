@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: true
 
     - name: Build SDist
       run: pipx run build --sdist
@@ -23,7 +25,7 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: artifact-sdist
+        name: dist-sdist
         path: dist/*.tar.gz
 
           #build_wheels:
@@ -33,7 +35,7 @@ jobs:
           #    fail-fast: false
           #    matrix:
           #      os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-14]
-          #      cpversion: [cp38, cp39, cp310, cp311, cp312, cp313]
+          #      cpversion: [cp38, cp39, cp310, cp311, cp312 ]
           #      # github actions cp38 on macos-14 runners are cross compiling or
           #      # something and confusing the stub generation. Just skip it for now.
           #      # Maybe it'd be friendlier to disable the stub generation for this
