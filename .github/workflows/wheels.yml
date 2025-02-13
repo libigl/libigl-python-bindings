@@ -34,19 +34,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-14]
-        # cp313 seemed to produce the same wheel name as cp312. Skip unless
-        # necessary.
-        cpversion: [cp38, cp39, cp310, cp311, cp312]
-        # github actions cp38 on macos-14 runners are cross compiling or
-        # something and confusing the stub generation. Just skip it for now.
-        # Maybe it'd be friendlier to disable the stub generation for this
-        # combination.
-        exclude:
-          - os: macos-14
-            cpversion: cp38
-
-
+        os: [ ubuntu-24.04, macos-15 ]
+        arch: [ x86_64 ]
+        include:
+          - os: ubuntu-24.04-arm
+            arch: aarch64
+          - os: macos-15
+            arch: arm64
+          - os: windows-2025
+            arch: amd64
     steps:
       - uses: actions/checkout@v4
 
@@ -60,8 +56,13 @@ jobs:
       - name: Build wheels
         # why do I need to specify this cpversion here?
         env:
-          CIBW_ARCHS: "auto64"
-          CIBW_BUILD: "${{ matrix.cpversion }}-*"
+          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
+          OMPL_BUILD_ARCH: ${{ matrix.arch }}
+          # NOTE: Many combinations of OS, arch, and Python version can be built
+          # depending on your patience. For example:
+          CIBW_BUILD: cp3{10,11,12,13}-macosx_{x86_64,arm64} cp3{10,11,12,13}-manylinux_${{ matrix.arch }} cp3{10,11,12,13}-amd64
+          CIBW_BUILD_VERBOSITY: 1
+          CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET="14.0"
           # why isn't auto64 working?
           CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux* cp*-win32"  
         run: python -m cibuildwheel --output-dir wheelhouse
