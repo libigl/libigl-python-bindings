@@ -10,63 +10,79 @@ on:
 
 jobs:
   build_sdist:
-    name: Build SDist
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-
-    - name: Build SDist
-      run: pipx run build --sdist
-
-    - name: Check metadata
-      run: pipx run twine check dist/*
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: dist-sdist
-        path: dist/*.tar.gz
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - run: pipx run build --sdist
+      - run: pipx run twine check dist/* || exit 1  # Ensure failure on twine check errors
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-sdist
+          path: dist/*.tar.gz
 
   build_wheels:
-    name: Build ${{ matrix.cpversion }} wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-14]
-        # cp313 seemed to produce the same wheel name as cp312. Skip unless
-        # necessary.
-        cpversion: [cp38, cp39, cp310, cp311, cp312]
-        # github actions cp38 on macos-14 runners are cross compiling or
-        # something and confusing the stub generation. Just skip it for now.
-        # Maybe it'd be friendlier to disable the stub generation for this
-        # combination.
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-14, macos-13, windows-latest]  # Use specific versions for clarity
+        arch: [x86_64, arm64]
+        pybuilds: [cp38, cp39, cp310, cp311, cp312] # Define pybuilds at the top level
         exclude:
-          - os: macos-14
-            cpversion: cp38
-
+          - os: ubuntu-24.04-arm  # No need to specify arch, it's already implicit
+            arch: x86_64  # Exclude x86_64 on ARM
+          - os: macos-14   # Exclude macOS 14 (Sonoma)
+            arch: x86_64   # Exclude x86_64 explicitly
+          - os: macos-14 # Exclude cp38
+            pybuilds: cp38
+          - os: macos-13  # Exclude macOS 13 (Ventura) - arm64
+            arch: arm64   # Exclude arm64 on macOS 13
+          - os: macos-13
+            pybuilds: cp38
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==2.22.0
-
-      - name: Build wheels
-        # why do I need to specify this cpversion here?
+      - run: pip install cibuildwheel==2.22.0
+      - run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_ARCHS: "auto64"
-          CIBW_BUILD: "${{ matrix.cpversion }}-*"
-          # why isn't auto64 working?
-          CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux* cp*-win32"  
-        run: python -m cibuildwheel --output-dir wheelhouse
-
-      - uses: actions/upload-artifact@v4
+          CIBW_BUILD: "${{ matrix.pybuilds }}-*"  # Use matrix.pybuilds and matrix.arch
+          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
+          CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux* cp*-win32"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        continue-on-error: true  # Important: Continue if upload fails
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          # Include pybuilds in the artifact name
+          name: wheels-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.pybuilds }}-${{ github.run_id }}
           path: ./wheelhouse/*.whl
+          if-no-files-found: error  # Fail if no wheels are found
+          compression-level: 6
+          overwrite: false
+          include-hidden-files: false
+
+  release_artifacts:
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    needs: build_wheels
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+          merge-multiple: true
+      - run: ls -R ./artifacts
+      - uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: "./artifacts/**/*"
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: pypa/gh-action-pypi-publish@v1.12.4
+        with:
+          packages-dir: ./artifacts
