@@ -58,7 +58,7 @@ jobs:
         continue-on-error: true  # Important: Continue if upload fails
         with:
           # Include pybuilds in the artifact name
-          name: wheels-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.pybuilds }}-${{ github.run_id }}
+          name: wheels-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.pybuilds }}
           path: ./wheelhouse/*.whl
           if-no-files-found: error  # Fail if no wheels are found
           compression-level: 6
