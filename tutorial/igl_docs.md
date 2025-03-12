@@ -1505,7 +1505,23 @@ IS_DELAUNAY Determine if each edge in the mesh (V,F) is Delaunay.
 ### is_edge_manifold
 **`is_edge_manifold(f: array) -> bool`**
 
-See is_edge_manifold for the documentation.
+Check if the mesh is edge-manifold (every edge is incident one one face (boundary) or two oppositely oriented faces).
+
+| | |
+|-|-|
+|Parameters| F: \#F by 3 list of triangle indices |
+|Returns| True iff all edges are manifold |
+
+### is_vertex_manifold
+**`is_vertex_manifold(f: array) -> bool`**
+
+Check if a mesh is vertex-manifold. This only checks whether the faces incident on each vertex form exactly one connected component. Vertices incident on non-manifold edges are not consider non-manifold by this function (see is_edge_manifold). Unreferenced verties are considered non-manifold (zero components).
+
+| | |
+|-|-|
+|Parameters| F  \#F by 3 list of triangle indices |
+|Returns| B \#V list indicate whether each vertex is locally manifold.<br>The mesh is vertex manifold if `all(B) == True`. |
+
 ### is_intrinsic_delaunay
 **`is_intrinsic_delaunay(l: array, f: array)`**
 
