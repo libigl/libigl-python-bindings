@@ -9,7 +9,7 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  auto sparse_shape( const Eigen::Map<const Eigen::SparseMatrix<Integer>> &A)
+  auto sparse_shape( const Eigen::SparseMatrix<Integer> &A)
   {
     Eigen::Matrix<Integer,2,1> dims(A.rows(), A.cols());
     return dims;

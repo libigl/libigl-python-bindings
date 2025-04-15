@@ -9,18 +9,18 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  auto sparse_noop( const Eigen::SparseMatrix<Integer> &A)
+  auto sparse_map_noop( const Eigen::Map<const Eigen::SparseMatrix<Integer>> &A)
   {
     return A;
   }
 }
 
 // Bind the wrapper to the Python module
-void bind_sparse_noop(nb::module_ &m)
+void bind_sparse_map_noop(nb::module_ &m)
 {
   m.def(
-    "sparse_noop",
-    &pyigl::sparse_noop,
+    "sparse_map_noop",
+    &pyigl::sparse_map_noop,
     "A"_a,
 R"("Returns input A)");
 }

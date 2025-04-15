@@ -9,19 +9,21 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  auto sparse_noop( const Eigen::SparseMatrix<Integer> &A)
+  auto sparse_map_shape( const Eigen::Map<const Eigen::SparseMatrix<Integer>> &A)
   {
-    return A;
+    Eigen::Matrix<Integer,2,1> dims(A.rows(), A.cols());
+    return dims;
   }
 }
 
 // Bind the wrapper to the Python module
-void bind_sparse_noop(nb::module_ &m)
+void bind_sparse_map_shape(nb::module_ &m)
 {
   m.def(
-    "sparse_noop",
-    &pyigl::sparse_noop,
+    "sparse_map_shape",
+    &pyigl::sparse_map_shape,
     "A"_a,
-R"("Returns input A)");
+R"("Returns shape of A as 2-vector)");
 }
+
 
