@@ -36,7 +36,7 @@ include(FetchContent)
 FetchContent_Declare(
   nanobind
   GIT_REPOSITORY https://github.com/wjakob/nanobind.git
-  GIT_TAG        v2.2.0
+  GIT_TAG        d698692936bae1c4963e5c42f41fd88e9095b1c0
 )
 FetchContent_MakeAvailable(nanobind)
 
