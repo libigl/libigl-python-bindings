@@ -45,8 +45,10 @@ According to the [scikit-build-core documentation](https://scikit-build-core.rea
  2. Then use this very long command:
 
 ```
-python -m pip install --no-build-isolation --config-settings=editable.rebuild=true -Cbuild-dir=build -ve.
+CMAKE_BUILD_PARALLEL_LEVEL=10  python -m pip install --no-build-isolation --config-settings=editable.rebuild=true -Cbuild-dir=build -ve.
 ```
+
+The `CMAKE_BUILD_PARALLEL_LEVEL=10` will invoke with 10 parallel build threads.
 
 ### Adding a missing binding
 
