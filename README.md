@@ -72,7 +72,10 @@ expected.
 
 Install whichever version of Python from the [official website](https://www.python.org/downloads/) and then run:
 
-    /Library/Frameworks/Python.framework/Versions/[version]/bin/python -m pip install cibuildwheel
+    
+    /Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11 -m venv venv-official-3.11
+    source venv-official-3.11/bin/activate
+    python -m pip install cibuildwheel
     CIBW_BUILD="cp311-*" python -m cibuildwheel --output-dir wheelhouse --platform macos
 
 ## Downloading all the artifacts
