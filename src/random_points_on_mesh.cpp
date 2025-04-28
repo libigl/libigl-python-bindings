@@ -1,8 +1,10 @@
 #include "default_types.h"
 #include <igl/random_points_on_mesh.h>
+#include <igl/generate_default_urbg.h>
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/dense.h>
 #include <nanobind/stl/tuple.h>
+#include <nanobind/stl/optional.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
@@ -13,11 +15,13 @@ namespace pyigl
   auto random_points_on_mesh(
     const Integer n,
     const nb::DRef<const Eigen::MatrixXN> &V,
-    const nb::DRef<const Eigen::MatrixXI> &F)
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const std::optional<int> seed)
   {
+    std::mt19937 urbg = seed.has_value() ? std::mt19937(*seed) : igl::generate_default_urbg();
     Eigen::VectorXI FI;
     Eigen::MatrixXN B,X;
-    igl::random_points_on_mesh(n, V, F,  B, FI, X);
+    igl::random_points_on_mesh(n, V, F,  B, FI, X, urbg);
     return std::make_tuple(B, FI, X);
   }
 }
@@ -32,6 +36,7 @@ void bind_random_points_on_mesh(nb::module_ &m)
     "n"_a,
     "V"_a,
     "F"_a,
+    "seed"_a = nb::none(),
     R"(
  Randomly sample a mesh (V,F) n times.
 

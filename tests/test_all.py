@@ -327,6 +327,19 @@ def test_sample():
     I = igl.knn(X,X,1,point_indices,CH,CN,W)
     B,FI,P = igl.blue_noise(V,F,0.5)
 
+    # Test equal seed yields same result
+    B1,I1,X1 = igl.random_points_on_mesh(10,V,F, 1)
+    B1_,I1_,X1_ = igl.random_points_on_mesh(10,V,F, 1)
+    assert np.all(B1 == B1_)
+    assert np.all(I1 == I1_)
+    assert np.all(X1 == X1_)
+    # Test different seed yields different result
+    B2,I2,X2 = igl.random_points_on_mesh(10,V,F,2)
+    assert not np.all(B1 == B2)
+    assert not np.all(I1 == I2)
+    assert not np.all(X1 == X2)
+
+
 def test_curvature():
     V,F = igl.icosahedron()
     K = igl.gaussian_curvature(V,F)
