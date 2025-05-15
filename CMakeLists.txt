@@ -125,7 +125,10 @@ function(pyigl_include prefix name)
     file(WRITE "${generated_dir}/BINDING_INVOCATIONS.in" "${BINDING_INVOCATIONS}")
 
     set(target_name "pyigl${prefix_lc}_${name}")
-    nanobind_add_module(${target_name} ${sources})
+    nanobind_add_module(
+      ${target_name}
+      STABLE_ABI
+      ${sources})
 
     # important for scikit-build
     install(TARGETS ${target_name} LIBRARY DESTINATION  "igl/${subpath}")
