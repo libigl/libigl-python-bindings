@@ -61,7 +61,9 @@ void bind_remesh_self_intersections(nb::module_ &m)
       - VV: remeshed vertex positions
       - FF: remeshed face indices
       - IF: intersecting face pairs
-      - J: birth triangle indices)");
-
+      - J: birth triangle indices
+      - IM if stitch_all = true   #VV list from 0 to #VV-1
+           elseif stitch_all = false  #VV list of indices into VV of unique vertices.
+      )");
 }
 
