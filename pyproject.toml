@@ -14,7 +14,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "libigl"
-version = "2.5.4dev"
+version = "2.6.0"
 description = "libigl: A simple C++ geometry processing library"
 readme = "README.md"
 requires-python = ">=3.8"

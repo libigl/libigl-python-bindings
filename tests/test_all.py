@@ -313,6 +313,7 @@ def test_boundary_loop():
     F = F[1:-1,:]
     L_all = igl.boundary_loop_all(F)
     L = igl.boundary_loop(F)
+    UV = igl.map_vertices_to_circle(V,L)
 
 def test_voxel():
     V,_,_ = single_tet()
@@ -538,6 +539,7 @@ def test_misc():
     BV,BF = igl.bounding_box(V,pad=1.0)
     R,C,B = igl.circumradius(V,F)
     R = igl.inradius(V,F)
+    K = igl.internal_angles(V,F)
     _,E,EMAP,_,_ = igl.unique_edge_map(F)
     L = igl.crouzeix_raviart_cotmatrix(V,F,E,EMAP)
     M = igl.crouzeix_raviart_massmatrix(V,F,E,EMAP)
@@ -549,5 +551,8 @@ def test_misc():
     L = igl.edge_lengths(V,T)
     A = igl.face_areas(V,T)
     theta, cos_theta = igl.dihedral_angles_intrinsic(L,A)
+    D = igl.all_pairs_distances(V,V,squared=False)
+    D = igl.all_pairs_distances(V,V,squared=True)
+
 
 
