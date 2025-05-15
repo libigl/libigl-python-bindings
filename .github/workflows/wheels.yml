@@ -41,6 +41,7 @@ jobs:
             arch: arm64   # Exclude arm64 on macOS 13
           - os: macos-13
             pybuilds: cp38
+
     name: >
       ${{ matrix.pybuilds }} ${{ matrix.os }} ${{ matrix.arch }}
 
