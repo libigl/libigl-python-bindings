@@ -25,7 +25,7 @@ void bind_internal_angles(nb::module_ &m)
         "F"_a,
         R"(Compute internal angles for all tets of a given tet mesh (V,T).
 @param[in] V  #V by dim eigen Matrix of mesh vertex nD positions
-@param[in] T  #F by poly-size eigen Matrix of face (triangle) indices
+@param[in] F  #F by poly-size eigen Matrix of face (triangle) indices
 @param[out] K  #F by poly-size eigen Matrix of internal angles
     for triangles, columns correspond to edges [1,2],[2,0],[0,1])");
 }
