@@ -48,22 +48,9 @@ jobs:
         with:
           python-version: '3.13'
       - run: pip install cibuildwheel==2.23.0
-      
-      ################################################################
-      # Set up envvars to build the correct wheel (stable ABI or not)
-      ################################################################
-      - name: Prepare cibuildwheel environment (UNIX)
-        if: ${{ runner.os != 'Windows' }}
-        run: |
-          echo "CIBW_BUILD=${{ matrix.pybuilds }}-*" >> $GITHUB_ENV
-
-      - name: Prepare cibuildwheel environment (Windows)
-        if: ${{ runner.os == 'Windows' }}
-        run: |
-          echo "CIBW_BUILD=${{ matrix.pybuilds }}-*" >> $env:GITHUB_ENV
-
       - run: python -m cibuildwheel --output-dir wheelhouse
         env:
+          CIBW_BUILD: "${{ matrix.pybuilds }}-*"  # Use matrix.pybuilds and matrix.arch
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux* cp*-win32"
       - name: Upload Artifact
