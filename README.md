@@ -1,6 +1,5 @@
 # libigl Python Bindings
 [![PyPI version](https://badge.fury.io/py/libigl.svg)](https://pypi.org/project/libigl/)
-[![buildwheels](https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml/badge.svg)](https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml?query=branch%3Amain)
 
 This repository contains the source code for the python bindings for the C++
 [libigl](https://github.com/libigl/libigl) library written using
