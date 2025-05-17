@@ -14,13 +14,9 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
 # <20 for embree
 set(CMAKE_CXX_STANDARD 17)
 
-if (CMAKE_VERSION VERSION_LESS 3.18)
-  set(DEV_MODULE Development)
-else()
-  set(DEV_MODULE Development.Module)
-endif()
-
-find_package(Python 3.8 COMPONENTS Interpreter ${DEV_MODULE} REQUIRED)
+find_package(Python 3.8
+  REQUIRED COMPONENTS Interpreter Development.Module
+  OPTIONAL_COMPONENTS Development.SABIModule)
 
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
@@ -125,7 +121,10 @@ function(pyigl_include prefix name)
     file(WRITE "${generated_dir}/BINDING_INVOCATIONS.in" "${BINDING_INVOCATIONS}")
 
     set(target_name "pyigl${prefix_lc}_${name}")
-    nanobind_add_module(${target_name} ${sources})
+    nanobind_add_module(
+      ${target_name} 
+      STABLE_ABI
+      ${sources})
 
     # important for scikit-build
     install(TARGETS ${target_name} LIBRARY DESTINATION  "igl/${subpath}")

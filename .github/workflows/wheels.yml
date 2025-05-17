@@ -42,6 +42,9 @@ jobs:
           - os: macos-13
             pybuilds: cp38
 
+    name: >
+      ${{ matrix.pybuilds }} ${{ matrix.os }} ${{ matrix.arch }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
