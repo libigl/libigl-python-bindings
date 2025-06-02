@@ -491,6 +491,8 @@ def test_cgal():
     point_indices, CH,CN,W = igl.octree(X)
     I = igl.knn(X,X,20,point_indices,CH,CN,W)
     A,T = igl.copyleft.cgal.point_areas(X,I,N)
+
+    R = igl.copyleft.cgal.oriented_bounding_box(VC)
     
 def test_embree():
     # octahedron
@@ -553,6 +555,9 @@ def test_misc():
     theta, cos_theta = igl.dihedral_angles_intrinsic(L,A)
     D = igl.all_pairs_distances(V,V,squared=False)
     D = igl.all_pairs_distances(V,V,squared=True)
+    R = igl.oriented_bounding_box(V)
+    R = igl.oriented_bounding_box(V,n=100,minimize_type=igl.ORIENTED_BOUNDING_BOX_MINIMIZE_SURFACE_AREA)
+
 
 
 

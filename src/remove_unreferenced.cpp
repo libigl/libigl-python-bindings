@@ -33,6 +33,7 @@ void bind_remove_unreferenced(nb::module_ &m)
 R"(Remove unreferenced vertices from V, updating F accordingly
 @param[in] V  #V by dim list of mesh vertex positions
 @param[in] F  #F by ss list of simplices (Values of -1 are quitely skipped)
+@param[out] NV  #NV by dim list of simplices
 @param[out] NF  #NF by ss list of simplices
 @param[out] I   #V by 1 list of indices such that: NF = IM(F) and NT = IM(T)
      and V(find(IM<=size(NV,1)),:) = NV
