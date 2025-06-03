@@ -261,6 +261,10 @@ def test_volume():
     F = np.array([[2,1,3]],dtype=np.int64)
     NV,NF,I,J = igl.remove_unreferenced(V,F)
 
+def test_offset_surface():
+    V,F = triangulated_square()
+    v, f, _, _, _ = igl.offset_surface(V, F, -0.1, 1, igl.SIGNED_DISTANCE_TYPE_DEFAULT)
+
 def test_oriented_facets():
     V,F,T = single_tet()
     E = igl.oriented_facets(F)
