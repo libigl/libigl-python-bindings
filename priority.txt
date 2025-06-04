@@ -7,13 +7,11 @@ euler_characteristic.cpp
 grad_intrinsic.cpp
 hessian.cpp
 hessian_energy.cpp
-internal_angles.cpp
 is_delaunay.cpp
 is_intrinsic_delaunay.cpp
 is_irregular_vertex.cpp
 iterative_closest_point.cpp
 lbs_matrix.cpp
-map_vertices_to_circle.cpp
 marching_tets.cpp
 mvc.cpp
 offset_surface.cpp
@@ -35,7 +33,6 @@ sparse_voxel_grid.cpp
 tet_tet_adjacency.cpp
 
 active_set.cpp
-all_pairs_distances.cpp
 ambient_occlusion.cpp
 arap_linear_block.cpp
 arap_rhs.cpp

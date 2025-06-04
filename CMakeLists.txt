@@ -14,13 +14,9 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
 # <20 for embree
 set(CMAKE_CXX_STANDARD 17)
 
-if (CMAKE_VERSION VERSION_LESS 3.18)
-  set(DEV_MODULE Development)
-else()
-  set(DEV_MODULE Development.Module)
-endif()
-
-find_package(Python 3.8 COMPONENTS Interpreter ${DEV_MODULE} REQUIRED)
+find_package(Python 3.8
+  REQUIRED COMPONENTS Interpreter Development.Module
+  OPTIONAL_COMPONENTS Development.SABIModule)
 
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
@@ -36,7 +32,7 @@ include(FetchContent)
 FetchContent_Declare(
   nanobind
   GIT_REPOSITORY https://github.com/wjakob/nanobind.git
-  GIT_TAG        v2.2.0
+  GIT_TAG        v2.7.0
 )
 FetchContent_MakeAvailable(nanobind)
 
@@ -49,7 +45,7 @@ option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG 788871103938ce92112714d11ea491e8e6b4d972
+  GIT_TAG cf9ed7f492209590c42dc7247281dfdfb6618487
 )
 FetchContent_MakeAvailable(libigl)
 
@@ -125,7 +121,10 @@ function(pyigl_include prefix name)
     file(WRITE "${generated_dir}/BINDING_INVOCATIONS.in" "${BINDING_INVOCATIONS}")
 
     set(target_name "pyigl${prefix_lc}_${name}")
-    nanobind_add_module(${target_name} ${sources})
+    nanobind_add_module(
+      ${target_name} 
+      STABLE_ABI
+      ${sources})
 
     # important for scikit-build
     install(TARGETS ${target_name} LIBRARY DESTINATION  "igl/${subpath}")

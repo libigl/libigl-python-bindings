@@ -261,6 +261,10 @@ def test_volume():
     F = np.array([[2,1,3]],dtype=np.int64)
     NV,NF,I,J = igl.remove_unreferenced(V,F)
 
+def test_offset_surface():
+    V,F = triangulated_square()
+    v, f, _, _, _ = igl.offset_surface(V, F, -0.1, 1, igl.SIGNED_DISTANCE_TYPE_DEFAULT)
+
 def test_oriented_facets():
     V,F,T = single_tet()
     E = igl.oriented_facets(F)
@@ -313,6 +317,7 @@ def test_boundary_loop():
     F = F[1:-1,:]
     L_all = igl.boundary_loop_all(F)
     L = igl.boundary_loop(F)
+    UV = igl.map_vertices_to_circle(V,L)
 
 def test_voxel():
     V,_,_ = single_tet()
@@ -503,6 +508,8 @@ def test_cgal():
     point_indices, CH,CN,W = igl.octree(X)
     I = igl.knn(X,X,20,point_indices,CH,CN,W)
     A,T = igl.copyleft.cgal.point_areas(X,I,N)
+
+    R = igl.copyleft.cgal.oriented_bounding_box(VC)
     
 def test_embree():
     # octahedron
@@ -551,6 +558,7 @@ def test_misc():
     BV,BF = igl.bounding_box(V,pad=1.0)
     R,C,B = igl.circumradius(V,F)
     R = igl.inradius(V,F)
+    K = igl.internal_angles(V,F)
     _,E,EMAP,_,_ = igl.unique_edge_map(F)
     L = igl.crouzeix_raviart_cotmatrix(V,F,E,EMAP)
     M = igl.crouzeix_raviart_massmatrix(V,F,E,EMAP)
@@ -562,5 +570,11 @@ def test_misc():
     L = igl.edge_lengths(V,T)
     A = igl.face_areas(V,T)
     theta, cos_theta = igl.dihedral_angles_intrinsic(L,A)
+    D = igl.all_pairs_distances(V,V,squared=False)
+    D = igl.all_pairs_distances(V,V,squared=True)
+    R = igl.oriented_bounding_box(V)
+    R = igl.oriented_bounding_box(V,n=100,minimize_type=igl.ORIENTED_BOUNDING_BOX_MINIMIZE_SURFACE_AREA)
+
+
 
 
