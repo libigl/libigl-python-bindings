@@ -160,9 +160,8 @@ def test_harmonic():
 
 def test_harmonic_integrated_from_laplacian_and_mass():
     V, F = triangulated_square()
-    lin = igl.edge_lengths(V, F)
-    L = igl.cotmatrix_intrinsic(lin, F)
-    M = igl.massmatrix_intrinsic(lin, F)
+    L = igl.cotmatrix(V, F)
+    M = igl.massmatrix(V, F, igl.MASSMATRIX_TYPE_VORONOI)
     Q = igl.harmonic_integrated_from_laplacian_and_mass(L, M, k=1)
     Q = igl.harmonic_integrated_from_laplacian_and_mass(L, M, k=2)
     
