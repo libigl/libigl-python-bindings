@@ -10,23 +10,25 @@ namespace nb = nanobind;
 using namespace nb::literals;
 
 namespace pyigl {
-auto offset_surface(const nb::DRef<const Eigen::MatrixXN> &V,
-                    const nb::DRef<const Eigen::MatrixXI> &F,
-                    const Numeric isolevel, const Integer s,
-                    const igl::SignedDistanceType signed_distance_type) {
-
-  Eigen::MatrixXN SV;
-  Eigen::MatrixXI SF;
-  Eigen::MatrixXN GV;
-
-  Eigen::VectorXI side;
-  Eigen::MatrixXN so;
-
-  igl::offset_surface(V, F, isolevel, s, signed_distance_type, SV, SF, GV, side,
-                      so);
-
-  return std::make_tuple(SV, SF, GV, side, so);
-}
+  auto offset_surface(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F,
+    const Numeric isolevel, 
+    const Integer s,
+    const igl::SignedDistanceType signed_distance_type) 
+  {
+    Eigen::MatrixXN SV;
+    Eigen::MatrixXI SF;
+    Eigen::MatrixXN GV;
+  
+    Eigen::VectorXI side;
+    Eigen::MatrixXN so;
+    igl::offset_surface(
+      V, F, isolevel, s, signed_distance_type, SV, SF, GV, side,
+      so);
+  
+    return std::make_tuple(SV, SF, GV, side, so);
+  }
 } // namespace pyigl
 
 // Bind the wrapper to the Python module

@@ -575,6 +575,18 @@ def test_misc():
     R = igl.oriented_bounding_box(V)
     R = igl.oriented_bounding_box(V,n=100,minimize_type=igl.ORIENTED_BOUNDING_BOX_MINIMIZE_SURFACE_AREA)
 
+def test_octree():
 
+    def sdf_sphere(Q):
+        return np.linalg.norm(Q,axis=1) - 0.5
+    def udf_sphere(Q):
+        return np.abs(sdf_sphere(Q))
 
-
+    origin = np.array([-1,-1,-1],dtype=np.float64)
+    h0 = 2.0
+    max_depth = 4
+    ijk = igl.lipschitz_octree(origin,h0,max_depth,udf_sphere)
+    h = h0 / (2**max_depth)
+    unique_ijk, J, unique_corners = igl.unique_sparse_voxel_corners(origin,h0,max_depth,ijk)
+    unique_S = sdf_sphere(unique_corners)
+    V,F = igl.marching_cubes(unique_S,unique_corners,J,0.0)
