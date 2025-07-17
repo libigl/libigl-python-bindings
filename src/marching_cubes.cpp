@@ -77,7 +77,7 @@ EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.i
     "S"_a, 
     "GV"_a,
     "GI"_a,
-    "isovalue"_a=0,
+    "isovalue"_a=0.0,
 R"(Performs marching cubes reconstruction on a grid defined by values, and
 points, and generates a mesh defined by vertices and faces
 
