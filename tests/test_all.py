@@ -157,6 +157,13 @@ def test_harmonic():
     W = igl.bbw(V,F,b,bc)
     W = igl.harmonic(V,F,b,bc,k=1)
     W = igl.harmonic(V,F,b,bc,k=2)
+
+def test_harmonic_integrated_from_laplacian_and_mass():
+    V, F = triangulated_square()
+    L = igl.cotmatrix(V, F)
+    M = igl.massmatrix(V, F, igl.MASSMATRIX_TYPE_VORONOI)
+    Q = igl.harmonic_integrated_from_laplacian_and_mass(L, M, k=1)
+    Q = igl.harmonic_integrated_from_laplacian_and_mass(L, M, k=2)
     
 def test_tets():
     V,F,T = single_tet()
