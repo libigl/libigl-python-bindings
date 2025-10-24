@@ -12,9 +12,9 @@ namespace pyigl
     // Wrapper for igl::edges_to_path
     auto edges_to_path(const nb::DRef<const Eigen::MatrixXI> &E)
     {
-    Eigen::VectorXI I, J, K;
-    igl::edges_to_path(E, I, J, K);
-    return std::make_tuple(I, J, K);
+        Eigen::VectorXI I, J, K;
+        igl::edges_to_path(E, I, J, K);
+        return std::make_tuple(I, J, K);
     }
 }
 
