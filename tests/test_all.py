@@ -164,7 +164,12 @@ def test_harmonic_integrated_from_laplacian_and_mass():
     M = igl.massmatrix(V, F, igl.MASSMATRIX_TYPE_VORONOI)
     Q = igl.harmonic_integrated_from_laplacian_and_mass(L, M, k=1)
     Q = igl.harmonic_integrated_from_laplacian_and_mass(L, M, k=2)
-    
+
+def test_edge_to_paths():
+    V,F = triangulated_square()
+    E, D, G = igl.boundary_facets(F)
+    _,_,_ = igl.edge_to_paths(E)
+
 def test_tets():
     V,F,T = single_tet()
     F,J,K = igl.boundary_facets(T)
