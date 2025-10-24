@@ -12,8 +12,18 @@ namespace pyigl
     // Wrapper for igl::edges_to_path
     auto edges_to_path(const nb::DRef<const Eigen::MatrixXI> &E)
     {
-        Eigen::VectorXI I, J, K;
-        igl::edges_to_path(E, I, J, K);
+        // libigl's implementation internally maps to an int-backed buffer,
+        // so ensure the input scalar type is 32-bit int to avoid Map pointer mismatches.
+        using MatXI32 = Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Options>;
+        using VecXI32 = Eigen::Matrix<int, Eigen::Dynamic, 1>;
+
+        MatXI32 Ei = E.template cast<int>();
+        VecXI32 Ii, Ji, Ki;
+        igl::edges_to_path(Ei, Ii, Ji, Ki);
+
+        Eigen::VectorXI I = Ii.template cast<Integer>();
+        Eigen::VectorXI J = Ji.template cast<Integer>();
+        Eigen::VectorXI K = Ki.template cast<Integer>();
         return std::make_tuple(I, J, K);
     }
 }
