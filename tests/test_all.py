@@ -165,10 +165,10 @@ def test_harmonic_integrated_from_laplacian_and_mass():
     Q = igl.harmonic_integrated_from_laplacian_and_mass(L, M, k=1)
     Q = igl.harmonic_integrated_from_laplacian_and_mass(L, M, k=2)
 
-def test_edge_to_paths():
+def test_edges_to_path():
     V,F = triangulated_square()
     E, D, G = igl.boundary_facets(F)
-    _,_,_ = igl.edge_to_paths(E)
+    _,_,_ = igl.edges_to_path(E)
 
 def test_tets():
     V,F,T = single_tet()
