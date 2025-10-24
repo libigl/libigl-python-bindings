@@ -2,45 +2,21 @@
 #include <igl/edges_to_path.h>
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/dense.h>
-#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
 
 namespace pyigl
 {
-  // Wrapper for the harmonic function
-  auto harmonic(
-    const nb::DRef<const Eigen::MatrixXN> &V,
-    const nb::DRef<const Eigen::MatrixXI> &F,
-    const nb::DRef<const Eigen::VectorXI> &b,
-    const nb::DRef<const Eigen::MatrixXN> &bc,
-    const int k)
-  {
-    Eigen::MatrixXN W;
-    if(!igl::harmonic(V, F, b, bc, k, W))
+    // Wrapper for igl::edges_to_path
+    auto edges_to_path(const nb::DRef<const Eigen::MatrixXI> &E)
     {
-      throw std::runtime_error("Failed to compute harmonic map");
+    Eigen::VectorXI I, J, K;
+    igl::edges_to_path(E, I, J, K);
+    return std::make_tuple(I, J, K);
     }
-    #include "default_types.h"
-    #include <igl/edges_to_path.h>
-    #include <nanobind/nanobind.h>
-    #include <nanobind/eigen/dense.h>
-    #include <nanobind/stl/tuple.h>
-
-    namespace nb = nanobind;
-    using namespace nb::literals;
-
-    namespace pyigl
-    {
-      // Wrapper for igl::edges_to_path
-      auto edges_to_path(const nb::DRef<const Eigen::MatrixXI> &E)
-      {
-        Eigen::VectorXI I, J, K;
-        igl::edges_to_path(E, I, J, K);
-        return std::make_tuple(I, J, K);
-      }
-    }
+}
 
 // Bind the wrapper to the Python module
 void bind_edges_to_path(nb::module_ &m)
