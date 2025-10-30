@@ -30,8 +30,11 @@ void bind_hessian(nb::module_ &m)
     &pyigl::hessian, 
     "V"_a, 
     "F"_a,
-R"(Constructs the Hessian matrix for a given
-mesh (V,F).
+R"(Constructs the finite element Hessian matrix
+   as described in https://arxiv.org/abs/1707.04348,
+   Natural Boundary Conditions for Smoothing in Geometry Processing
+   (Oded Stein, Eitan Grinspun, Max Wardetzky, Alec Jacobson)
+   The interior vertices are NOT set to zero yet.
 
   @tparam DerivedV  derived type of eigen matrix for V (e.g. derived from
     MatrixXd)
@@ -39,7 +42,7 @@ mesh (V,F).
     MatrixXi)
   @tparam Scalar  scalar type for eigen sparse matrix (e.g. double)
   @param[in] V  #V by dim list of mesh vertex positions
-  @param[in] F  #F by simplex_size list of mesh elements (triangles or tetrahedra)
-  @param[out] H  #V by #V Hessian matrix, each row i corresponding to V(i,:))");
+  @param[in] F  #F by 3 list of mesh elements (must be triangles)
+  @param[out] H dim²⋅#V by #V Hessian matrix, each column i corresponding to V(i,:)");
 
 }

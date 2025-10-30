@@ -15,9 +15,9 @@ namespace pyigl
     const nb::DRef<const Eigen::MatrixXN> &V,
     const nb::DRef<const Eigen::MatrixXI> &F)
   {
-    Eigen::SparseMatrixN QH;
-    igl::curved_hessian_energy(V,F,QH);
-    return QH;
+    Eigen::SparseMatrixN Q;
+    igl::curved_hessian_energy(V,F,Q);
+    return Q;
   }
 
 }
@@ -30,8 +30,9 @@ void bind_curved_hessian_energy(nb::module_ &m)
     &pyigl::curved_hessian_energy, 
     "V"_a, 
     "F"_a,
-R"(Constructs the matrix for the curved Hessian energy for a given
-mesh (V,F).
+R"(Computes the curved Hessian energy using the Crouzeix-Raviart discretization.
+   See Oded Stein, Alec Jacobson, Max Wardetzky, Eitan Grinspun, 2020.
+   "A Smoothness Energy without Boundary Distortion for Curved Surfaces"
 
   @tparam DerivedV  derived type of eigen matrix for V (e.g. derived from
     MatrixXd)
@@ -39,7 +40,7 @@ mesh (V,F).
     MatrixXi)
   @tparam Scalar  scalar type for eigen sparse matrix (e.g. double)
   @param[in] V  #V by dim list of mesh vertex positions
-  @param[in] F  #F by simplex_size list of mesh elements (triangles or tetrahedra)
-  @param[out] QH  #V by #V curved Hessian energy matrix, each row i corresponding to V(i,:))");
+  @param[in] F  #F by 3 list of mesh elements (must be triangles)
+  @param[out] Q #V by #V Hessian energy matrix, each row/column i corresponding to V(i,:)");
 
 }
