@@ -109,6 +109,9 @@ def test_operators():
     K = igl.cotmatrix_entries(l=l)
     B1,B2,B3 = igl.local_basis(V,F)
     G = igl.grad(V,F)
+    H = igl.hessian(V, F)
+    QH = igl.hessian_energy(V, F)
+    cQH = igl.curved_hessian_energy(V, F)
 
     M = igl.massmatrix(V,F)
     M = igl.massmatrix(V,F,type=igl.MASSMATRIX_TYPE_BARYCENTRIC)

@@ -1,0 +1,46 @@
+#include "default_types.h"
+#include <igl/curved_hessian_energy.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/ndarray.h>
+#include <nanobind/eigen/dense.h>
+#include <nanobind/eigen/sparse.h>
+#include <nanobind/stl/tuple.h>
+
+namespace nb = nanobind;
+using namespace nb::literals;
+
+namespace pyigl
+{
+  auto curved_hessian_energy(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::SparseMatrixN Q;
+    igl::curved_hessian_energy(V,F,Q);
+    return Q;
+  }
+
+}
+
+// Bind the wrapper to the Python module
+void bind_curved_hessian_energy(nb::module_ &m)
+{
+  m.def(
+    "curved_hessian_energy",
+    &pyigl::curved_hessian_energy, 
+    "V"_a, 
+    "F"_a,
+R"(Computes the curved Hessian energy using the Crouzeix-Raviart discretization.
+   See Oded Stein, Alec Jacobson, Max Wardetzky, Eitan Grinspun, 2020.
+   "A Smoothness Energy without Boundary Distortion for Curved Surfaces"
+
+  @tparam DerivedV  derived type of eigen matrix for V (e.g. derived from
+    MatrixXd)
+  @tparam DerivedF  derived type of eigen matrix for F (e.g. derived from
+    MatrixXi)
+  @tparam Scalar  scalar type for eigen sparse matrix (e.g. double)
+  @param[in] V  #V by dim list of mesh vertex positions
+  @param[in] F  #F by 3 list of mesh elements (must be triangles)
+  @param[out] Q #V by #V Hessian energy matrix, each row/column i corresponding to V(i,:)");
+
+}
