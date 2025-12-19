@@ -10,7 +10,7 @@ project(pyigl)
 
 # For std::filesystem::path (generic_string)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
-# ≥17 for return value optimization 
+# ≥17 for return value optimization
 # <20 for embree
 set(CMAKE_CXX_STANDARD 17)
 
@@ -64,6 +64,15 @@ include(CXXFeatures)
 
 # Generate position independent code by default
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE INTERNAL "")
+
+# Enable AVX2 for x86_64 builds to improve performance
+if((CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64|AMD64") OR (CMAKE_OSX_ARCHITECTURES MATCHES "x86_64"))
+  if(MSVC)
+    add_compile_options(/arch:AVX2)
+  else()
+    add_compile_options(-mavx2)
+  endif()
+endif()
 
 
 
@@ -122,7 +131,7 @@ function(pyigl_include prefix name)
 
     set(target_name "pyigl${prefix_lc}_${name}")
     nanobind_add_module(
-      ${target_name} 
+      ${target_name}
       STABLE_ABI
       ${sources})
 
@@ -142,7 +151,7 @@ function(pyigl_include prefix name)
     file(WRITE "${output_dir}/__init__.py" "from .${target_name} import *\n")
     install(FILES "${output_dir}/__init__.py" DESTINATION "igl/${subpath}")
 
-    set_target_properties(${target_name} PROPERTIES 
+    set_target_properties(${target_name} PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY         "${output_dir}"
         RUNTIME_OUTPUT_DIRECTORY         "${output_dir}"
         LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
@@ -182,6 +191,3 @@ endif()
 if(LIBIGL_RESTRICTED_TRIANGLE)
   pyigl_include("restricted" "triangle")
 endif()
-
-
-
