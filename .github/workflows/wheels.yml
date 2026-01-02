@@ -35,7 +35,7 @@ jobs:
             arch: x86_64  # Exclude x86_64 on ARM
           - os: macos-latest
             arch: x86_64   # Exclude x86_64 explicitly
-          - os: macos-14 # Exclude cp38
+          - os: macos-latest # Exclude cp38
             pybuilds: cp38
           - os: macos-15-intel
             arch: arm64   # Exclude arm64 on macOS 13
