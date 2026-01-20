@@ -566,6 +566,7 @@ def test_triangle():
 def test_misc():
     V,F = igl.icosahedron()
     BV,BF = igl.bounding_box(V,pad=1.0)
+    L = igl.bounding_box_diagonal(V)
     R,C,B = igl.circumradius(V,F)
     R = igl.inradius(V,F)
     K = igl.internal_angles(V,F)
