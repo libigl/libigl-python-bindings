@@ -51,8 +51,13 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install cibuildwheel==2.23.0
-      - run: python -m cibuildwheel --output-dir wheelhouse
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir wheelhouse
         env:
+          CIBW_BEFORE_ALL_LINUX: "yum install -y clang"
+          CIBW_ENVIRONMENT_LINUX: "CC=clang CXX=clang++"
+          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux_2_28"
+          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux_2_28"
           CIBW_BUILD: "${{ matrix.pybuilds }}-*"  # Use matrix.pybuilds and matrix.arch
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux* cp*-win32"
