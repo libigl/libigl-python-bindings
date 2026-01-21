@@ -601,3 +601,24 @@ def test_octree():
     unique_ijk, J, unique_corners = igl.unique_sparse_voxel_corners(origin,h0,max_depth,ijk)
     unique_S = sdf_sphere(unique_corners)
     V,F = igl.marching_cubes(unique_S,unique_corners,J,0.0)
+
+
+def test_boundary_conditions():
+    V, F, T = single_tet()
+    C = V[[0, 1, 2]]
+    P = np.array([0, 1, 2], dtype=int)
+    BE = np.array([[0, 1]], dtype=int)
+    CE = np.array([[0, 1], [1, 2], [2, 0]], dtype=int)
+    CF = np.array([[0, 1, 2]], dtype=int)
+    
+    b1, bc1 = igl.boundary_conditions(V, F, C, P, BE, CE, CF)
+    assert b1.shape[0] == bc1.shape[0]
+    assert bc1.shape[1] == P.shape[0] + BE.shape[0]
+    
+    b2, bc2 = igl.boundary_conditions(V, F, C, P)
+    assert b2.shape[0] == bc2.shape[0]
+    assert bc2.shape[1] == P.shape[0]
+    
+    b3, bc3 = igl.boundary_conditions(V, F, C, BE=BE)
+    assert b3.shape[0] == bc3.shape[0]
+    assert bc3.shape[1] == BE.shape[0]
