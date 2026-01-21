@@ -1,4 +1,3 @@
-from re import I
 import pytest
 import numpy as np
 # scipy sparse matrices
