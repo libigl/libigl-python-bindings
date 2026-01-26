@@ -1,6 +1,7 @@
 name: Wheels
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -27,19 +28,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-14, macos-13, windows-latest]  # Use specific versions for clarity
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-latest, macos-15-intel, windows-latest]  # Use specific versions for clarity
         arch: [x86_64, arm64]
         pybuilds: [cp38, cp39, cp310, cp311, cp312] # Define pybuilds at the top level
         exclude:
           - os: ubuntu-24.04-arm  # No need to specify arch, it's already implicit
             arch: x86_64  # Exclude x86_64 on ARM
-          - os: macos-14   # Exclude macOS 14 (Sonoma)
+          - os: macos-latest
             arch: x86_64   # Exclude x86_64 explicitly
-          - os: macos-14 # Exclude cp38
+          - os: macos-latest # Exclude cp38
             pybuilds: cp38
-          - os: macos-13  # Exclude macOS 13 (Ventura) - arm64
+          - os: macos-15-intel
             arch: arm64   # Exclude arm64 on macOS 13
-          - os: macos-13
+          - os: macos-15-intel
             pybuilds: cp38
 
     name: >
@@ -51,8 +52,13 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install cibuildwheel==2.23.0
-      - run: python -m cibuildwheel --output-dir wheelhouse
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir wheelhouse
         env:
+          CIBW_BEFORE_ALL_LINUX: "yum install -y clang"
+          CIBW_ENVIRONMENT_LINUX: "CC=clang CXX=clang++"
+          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux_2_28"
+          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux_2_28"
           CIBW_BUILD: "${{ matrix.pybuilds }}-*"  # Use matrix.pybuilds and matrix.arch
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux* cp*-win32"
