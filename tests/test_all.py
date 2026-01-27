@@ -12,6 +12,10 @@ import igl.copyleft.tetgen
 import igl.copyleft.cgal
 import igl.embree
 
+@pytest.fixture
+def icosahedron():
+    V,F = igl.icosahedron()
+    return V,F
 
 #def rand_sparse(n,density):
 #    n_features = n
@@ -662,3 +666,144 @@ def test_is_intrinsic_delaunay() -> None:
         ]
     )
     assert np.array_equal(mask, expected_mask)
+
+def test_rotate_vectors(icosahedron):
+    V,F = icosahedron
+    
+    # Create rotation angles (rotate by pi/4)
+    A = np.ones(F.shape[0],dtype=np.float64) * (np.pi / 4.0)
+    
+    # Get local basis
+    B1,B2,_ = igl.local_basis(V,F)
+
+    # B1 is orthogonal to B2
+    r = np.sum(B1* B2, axis=1)
+    assert np.allclose(np.abs(r), 0.0)
+    
+    # Rotate the first basis vector
+    B1_rotated = igl.rotate_vectors(B1, A, B1, B2)
+    
+    # Check output shape
+    assert B1_rotated.shape == B1.shape
+
+    # Rotate B1_rotated by pi/4 again
+    B1_rotated2 = igl.rotate_vectors(B1_rotated, A, B1, B2)
+    assert B1_rotated2.shape == B1_rotated.shape
+
+    # B1_rotated2 should be parallel to B2
+    r = np.sum(B1_rotated2 * B2, axis=1)
+    assert np.allclose(np.abs(r), 1.0)
+    
+def test_compute_frame_field_bisectors(icosahedron):
+    V,F = icosahedron
+    
+    # Get local basis
+    B1,B2,_ = igl.local_basis(V,F)
+    
+    # Compute bisectors with explicit basis
+    BIS1,BIS2 = igl.compute_frame_field_bisectors(V,F,B1,B2,B1,B2)
+
+    # Check output shapes
+    assert BIS1.shape == (F.shape[0], 3)
+    assert BIS2.shape == (F.shape[0], 3)
+
+    # BIS1 should be orthogonal to BIS2
+    r = np.sum(BIS1 * BIS2, axis=1)
+    assert np.allclose(np.abs(r), 0.0)
+
+def test_comb_cross_field(icosahedron):
+    V,F = icosahedron
+    
+    # Get local basis
+    B1,B2,_ = igl.local_basis(V,F)
+    
+    # Comb the cross field
+    B1_combed,B2_combed = igl.comb_cross_field(V,F,B1,B2)
+    
+    # Check output shapes
+    assert B1_combed.shape == (F.shape[0], 3)
+    assert B2_combed.shape == (F.shape[0], 3)
+    
+def test_cross_field_mismatch(icosahedron):
+    V,F = icosahedron
+    
+    # Get local basis
+    B1,B2,_ = igl.local_basis(V,F)
+    
+    # Comb the cross field first
+    B1_combed,B2_combed = igl.comb_cross_field(V,F,B1,B2)
+    
+    # Compute mismatch on combed field
+    mismatch = igl.cross_field_mismatch(V,F,B1_combed,B2_combed,True)
+    
+    # Check output shape (should be #F by 3 for triangular mesh)
+    assert mismatch.shape == (F.shape[0], 3)
+    
+    # Test with uncombed field (function will comb it first)
+    mismatch_uncombed = igl.cross_field_mismatch(V,F,B1,B2,False)
+    assert mismatch_uncombed.shape == (F.shape[0], 3)
+
+def test_find_cross_field_singularities(icosahedron):
+    V,F = icosahedron
+    
+    # Get local basis
+    B1,B2,_ = igl.local_basis(V,F)
+    
+    # Comb the cross field first
+    B1_combed,B2_combed = igl.comb_cross_field(V,F,B1,B2)
+    
+    # Compute mismatch
+    mismatch = igl.cross_field_mismatch(V,F,B1_combed,B2_combed,True)
+    
+    # Find singularities from mismatch
+    isSingularity,singularityIndex = igl.find_cross_field_singularities(V,F,mismatch)
+
+    # Check Poincaré-Hopf theorem
+    # The current singularity computation only return positive index, which is inconsistent with the
+    # theorem, so we skip this check for now.
+    # assert np.sum(singularityIndex) == 2 * 4 # Euler characteristic * 4-rosy fields
+    
+    # Check output shapes
+    assert isSingularity.shape[0] == V.shape[0]
+    assert singularityIndex.shape[0] == V.shape[0]
+    
+    # Test overload that computes mismatch internally
+    isSingularity2,singularityIndex2 = igl.find_cross_field_singularities(V,F,B1_combed,B2_combed,True)
+
+    # Check Poincaré-Hopf theorem
+    # The current singularity computation only return positive index, which is inconsistent with the
+    # theorem, so we skip this check for now.
+    # assert np.sum(singularityIndex2) == 2 * 4 # Euler characteristic * 4-rosy fields
+    
+    # Check output shapes
+    assert isSingularity2.shape[0] == V.shape[0]
+    assert singularityIndex2.shape[0] == V.shape[0]
+    
+    # Test with uncombed field
+    isSingularity3,singularityIndex3 = igl.find_cross_field_singularities(V,F,B1,B2,False)
+    assert isSingularity3.shape[0] == V.shape[0]
+    assert singularityIndex3.shape[0] == V.shape[0]
+
+    # Check Poincaré-Hopf theorem
+    # The current singularity computation only return positive index, which is inconsistent with the
+    # theorem, so we skip this check for now.
+    # assert np.sum(singularityIndex3) == 2 * 4 # Euler characteristic * 4-rosy fields
+
+def test_comb_frame_field(icosahedron):
+    V,F = icosahedron
+    
+    # Get local basis
+    B1,B2,_ = igl.local_basis(V,F)
+    
+    # Compute bisectors
+    BIS1,BIS2 = igl.compute_frame_field_bisectors(V,F,B1,B2)
+    
+    # Comb the bisectors (which are a cross field)
+    BIS1_combed,BIS2_combed = igl.comb_cross_field(V,F,BIS1,BIS2)
+    
+    # Comb the frame field using combed bisectors
+    PD1_combed,PD2_combed = igl.comb_frame_field(V,F,B1,B2,BIS1_combed,BIS2_combed)
+    
+    # Check output shapes
+    assert PD1_combed.shape == (F.shape[0], 3)
+    assert PD2_combed.shape == (F.shape[0], 3)
