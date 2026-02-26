@@ -258,7 +258,25 @@ def test_min_quad():
     data = igl.min_quad_with_fixed_data()
     igl.min_quad_with_fixed_precompute(A,known,Aeq,True,data)
     Z = igl.min_quad_with_fixed_solve(data,B,Y,Beq)
-    
+
+def test_active_set():
+    V,F,T = single_tet()
+    n = V.shape[0]
+    A = -igl.cotmatrix(V,F)
+    B = np.zeros(n,dtype=np.float64)
+    known = np.array([0,1],dtype=np.int64)
+    Y = np.array([0.0,1.0],dtype=np.float64)
+    Aeq = scipy.sparse.csc_matrix((0,n),dtype=np.float64)
+    Beq = np.array([],dtype=np.float64)
+    Aieq = scipy.sparse.csc_matrix((0,n),dtype=np.float64)
+    Bieq = np.array([],dtype=np.float64)
+    lx = np.array([],dtype=np.float64)
+    ux = np.array([],dtype=np.float64)
+    Z = igl.active_set(A,B,known,Y,Aeq,Beq,Aieq,Bieq,lx,ux)
+    assert Z.shape[0] == n
+    assert Z[0] == pytest.approx(0.0)
+    assert Z[1] == pytest.approx(1.0)
+
 def test_volume():
     V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
     T = np.array([[0,1,2,3]],dtype=np.int64)
