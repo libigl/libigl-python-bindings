@@ -36,7 +36,7 @@ libigl_version = importlib.metadata.version('libigl')
 The version of libigl is defined in the [pyproject.toml](./pyproject.toml) file.
 
 
-## Compiling and modifying the bindiings
+## Compiling and modifying the bindings
 
 According to the [scikit-build-core documentation](https://scikit-build-core.readthedocs.io/en/latest/configuration.html#editable-installs), the way to make an editable (incremental) build is to:
 
