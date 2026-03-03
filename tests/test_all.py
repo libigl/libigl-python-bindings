@@ -606,6 +606,67 @@ def test_octree():
     unique_S = sdf_sphere(unique_corners)
     V,F = igl.marching_cubes(unique_S,unique_corners,J,0.0)
 
+def test_is_intrinsic_delaunay() -> None:
+    # vs and fs come from a simple plane from pyvista
+    # mesh = pv.Plane(i_resolution=3, j_resolution=2, i_size=2).triangulate()
+    # fs = mesh._connectivity_array.reshape(-1, 3).astype(np.int32)
+    # vs = mesh.points.astype(np.float64)
+
+    fs = np.array(
+        [
+            [0, 1, 4],
+            [1, 5, 4],
+            [1, 2, 5],
+            [2, 6, 5],
+            [2, 3, 6],
+            [3, 7, 6],
+            [4, 5, 8],
+            [5, 9, 8],
+            [5, 6, 9],
+            [6, 10, 9],
+            [6, 7, 10],
+            [7, 11, 10],
+        ]
+    )
+
+    vs = np.array(
+        [
+            [-1.0, -0.5, 0.0],
+            [-0.33333334, -0.5, 0.0],
+            [0.33333334, -0.5, 0.0],
+            [1.0, -0.5, 0.0],
+            [-1.0, 0.0, 0.0],
+            [-0.33333334, 0.0, 0.0],
+            [0.33333334, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [-1.0, 0.5, 0.0],
+            [-0.33333334, 0.5, 0.0],
+            [0.33333334, 0.5, 0.0],
+            [1.0, 0.5, 0.0],
+        ]
+    )
+
+    lin = igl.edge_lengths(vs, fs)
+    mask = igl.is_intrinsic_delaunay(lin, fs).astype(bool)
+
+    expected_mask = np.array(
+        [
+            [0, 1, 1],
+            [1, 0, 1],
+            [1, 1, 1],
+            [1, 1, 1],
+            [0, 1, 1],
+            [1, 0, 1],
+            [0, 1, 1],
+            [1, 0, 1],
+            [1, 1, 1],
+            [1, 1, 1],
+            [0, 1, 1],
+            [1, 0, 1],
+        ]
+    )
+    assert np.array_equal(mask, expected_mask)
+
 def test_rotate_vectors(icosahedron):
     V,F = icosahedron
     
