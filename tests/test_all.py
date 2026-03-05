@@ -789,6 +789,25 @@ def test_find_cross_field_singularities(icosahedron):
     # theorem, so we skip this check for now.
     # assert np.sum(singularityIndex3) == 2 * 4 # Euler characteristic * 4-rosy fields
 
+def test_centroid():
+    # Icosahedron is centered at origin, so centroid should be near zero
+    V, F = igl.icosahedron()
+
+    # Overload returning both centroid and volume
+    c, vol = igl.centroid(V, F)
+    assert c.shape == (3,)
+    assert c.dtype == np.float64
+    assert isinstance(vol, float)
+    assert np.allclose(c, np.zeros(3), atol=1e-10)
+    assert vol > 0
+
+    # Known geometry: unit tetrahedron centroid should be at (0.25, 0.25, 0.25)
+    V_tet = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]], dtype=np.float64)
+    F_tet = np.array([[2,1,0],[1,3,0],[3,2,0],[2,3,1]], dtype=np.int64)
+    c_tet, vol_tet = igl.centroid(V_tet, F_tet)
+    assert np.allclose(c_tet, [0.25, 0.25, 0.25], atol=1e-10)
+    assert np.isclose(vol_tet, 1.0/6.0, atol=1e-10)
+
 def test_comb_frame_field(icosahedron):
     V,F = icosahedron
     
