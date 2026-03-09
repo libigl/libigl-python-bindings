@@ -1226,7 +1226,7 @@ def test_new_algorithms():
     # uniformly_sample_two_manifold: weight space = vertex positions
     np.random.seed(1)
     W_us = np.random.rand(V.shape[0], 2).astype(np.float64)
-    WS_us = igl.uniformly_sample_two_manifold(W_us, F, 5)
+    WS_us = igl.uniformly_sample_two_manifold(W_us, F, 5, push=0.1)
     assert WS_us.shape == (5, 2)
 
 

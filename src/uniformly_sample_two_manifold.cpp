@@ -27,12 +27,12 @@ void bind_uniformly_sample_two_manifold(nb::module_ &m)
 {
   m.def("uniformly_sample_two_manifold",
     &pyigl::uniformly_sample_two_manifold,
-    "W"_a, "F"_a, "k"_a, "push"_a = 0.0,
+    "W"_a, "F"_a, "k"_a, "push"_a = 0.1,
     R"(Sample a mesh uniformly using furthest-point relaxation in weight space.
 
 @param[in] W  #W by dim positions of mesh in weight space
 @param[in] F  #F by 3 triangle indices
 @param[in] k  number of samples
-@param[in] push  factor to push samples away from hypercube corners
+@param[in] push  factor to push samples away from hypercube corners (must be > 0)
 @return WS  k by dim sample locations in weight space)");
 }
