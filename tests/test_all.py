@@ -1248,3 +1248,128 @@ def test_comb_frame_field(icosahedron):
     # Check output shapes
     assert PD1_combed.shape == (F.shape[0], 3)
     assert PD2_combed.shape == (F.shape[0], 3)
+
+
+def test_new_copyleft_algorithms():
+    # marching_cubes: extract isosurface of a sphere SDF on a regular grid
+    x_res, y_res, z_res = 8, 8, 8
+    x = np.linspace(-1, 1, x_res)
+    y = np.linspace(-1, 1, y_res)
+    z = np.linspace(-1, 1, z_res)
+    # x-fastest ordering: index = ix + iy*x_res + iz*x_res*y_res
+    pts = np.array([[xi, yi, zi] for zi in z for yi in y for xi in x], dtype=np.float64)
+    vals = (np.sqrt(pts[:,0]**2 + pts[:,1]**2 + pts[:,2]**2) - 0.5).astype(np.float64)
+    V_mc, F_mc = igl.copyleft.marching_cubes(vals, pts, x_res, y_res, z_res)
+    assert V_mc.shape[1] == 3
+    assert F_mc.shape[1] == 3
+    assert V_mc.shape[0] > 0
+
+    # quadprog: min 0.5*x^2 + 2*x → x = -2
+    G = np.array([[1.0]], dtype=np.float64)
+    g0 = np.array([2.0], dtype=np.float64)
+    x_qp = igl.copyleft.quadprog(G, g0)
+    assert abs(x_qp[0] + 2.0) < 1e-8
+
+
+def test_new_cgal_algorithms():
+    # simple tetrahedron
+    VA = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]], dtype=np.float64)
+    T = np.array([[0,1,2,3]], dtype=np.int64)
+    FA, _, _ = igl.boundary_facets(T)
+
+    # coplanar: 4 coplanar points vs non-coplanar
+    V_plane = np.array([[0,0,0],[1,0,0],[0,1,0],[1,1,0]], dtype=np.float64)
+    assert igl.copyleft.cgal.coplanar(V_plane) == True
+    assert igl.copyleft.cgal.coplanar(VA) == False
+
+    # delaunay_triangulation: 2D point cloud
+    V2d = np.array([[0,0],[1,0],[0.5,1],[0.25,0.5]], dtype=np.float64)
+    F2d = igl.copyleft.cgal.delaunay_triangulation(V2d)
+    assert F2d.shape[1] == 3
+    assert F2d.dtype == np.int64
+
+    # outer_hull
+    HV, HF, J, flip = igl.copyleft.cgal.outer_hull(VA, FA)
+    assert HV.shape[1] == 3
+    assert HF.shape[1] == 3
+    assert J.shape[0] == HF.shape[0]
+    assert flip.shape[0] == HF.shape[0]
+
+    # extract_cells
+    n_cells, cells = igl.copyleft.cgal.extract_cells(VA, FA)
+    assert cells.shape == (FA.shape[0], 2)
+
+    # peel_outer_hull_layers
+    I_peel, flip_peel, n_peel = igl.copyleft.cgal.peel_outer_hull_layers(VA, FA)
+    assert I_peel.shape[0] == FA.shape[0]
+    assert flip_peel.shape[0] == FA.shape[0]
+
+    # peel_winding_number_layers
+    W_wind, n_wind = igl.copyleft.cgal.peel_winding_number_layers(VA, FA)
+    assert W_wind.shape[0] == VA.shape[0]
+
+
+def test_new_tetgen_algorithms():
+    V_oct = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]], dtype=np.float64)
+    F_oct = np.array([[0,1,2],[0,2,4],[0,4,5],[0,5,1],[1,3,2],[1,5,3],[2,3,4],[3,5,4]], dtype=np.int64)
+
+    # cdt: constrained Delaunay tetrahedralization
+    TV, TT, TF = igl.copyleft.tetgen.cdt(V_oct, F_oct)
+    assert TV.shape[1] == 3
+    assert TT.shape[1] == 4
+    assert TF.shape[1] == 3
+    assert TV.shape[0] >= V_oct.shape[0]
+
+    # CDTParam class
+    param = igl.copyleft.tetgen.CDTParam()
+    param.use_bounding_box = False
+    param.flags = "Y"
+    TV2, TT2, TF2 = igl.copyleft.tetgen.cdt(V_oct, F_oct, param)
+    assert TT2.shape[1] == 4
+
+    # mesh_with_skeleton: surface + one bone
+    C = np.array([[0,0,-0.5],[0,0,0.5]], dtype=np.float64)
+    BE = np.array([[0,1]], dtype=np.int64)
+    P = np.zeros((0,), dtype=np.int64)
+    CE = np.zeros((0,2), dtype=np.int64)
+    VV, TT_sk, FF_sk = igl.copyleft.tetgen.mesh_with_skeleton(V_oct, F_oct, C, P, BE, CE)
+    assert VV.shape[1] == 3
+    assert TT_sk.shape[1] == 4
+    assert FF_sk.shape[1] == 3
+
+
+def test_new_embree_algorithms():
+    V_oct = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]], dtype=np.float64)
+    F_oct = np.array([[0,1,2],[0,2,4],[0,4,5],[0,5,1],[1,3,2],[1,5,3],[2,3,4],[3,5,4]], dtype=np.int64)
+
+    # bone_visible: bone through center along z-axis
+    s = np.array([0.0, 0.0, -0.5])
+    d = np.array([0.0, 0.0,  0.5])
+    flag = igl.embree.bone_visible(V_oct, F_oct, s, d)
+    assert flag.shape == (V_oct.shape[0],)
+    assert flag.dtype == bool
+
+    # line_mesh_intersection: project octahedron vertices onto itself
+    N = igl.per_vertex_normals(V_oct, F_oct)
+    R = igl.embree.line_mesh_intersection(V_oct, N, V_oct, F_oct)
+    assert R.shape == (V_oct.shape[0], 3)
+
+
+def test_new_triangle_algorithms():
+    V2d = np.array([[0,0],[1,0],[1,1],[0,1]], dtype=np.float64)
+    E2d = np.array([[0,1],[1,2],[2,3],[3,0]], dtype=np.int64)
+
+    # triangle.cdt
+    WV, WF, WE, J = igl.triangle.cdt(V2d, E2d)
+    assert WV.shape[1] == 2
+    assert WF.shape[1] == 3
+    assert WE.shape[1] == 2
+    assert J.shape[0] == V2d.shape[0]
+
+    # triangle.refine: triangulate then refine
+    V_tri, F_tri, _, _, _ = igl.triangle.triangulate(V2d, E2d, flags="Qc")
+    E_empty = np.zeros((0,2), dtype=np.int64)
+    V_ref, F_ref = igl.triangle.refine(V_tri, E_empty, F_tri)
+    assert V_ref.shape[1] == 2
+    assert F_ref.shape[1] == 3
+    assert V_ref.shape[0] >= V_tri.shape[0]
