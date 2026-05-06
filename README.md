@@ -89,7 +89,9 @@ A successful [.github/workflows/wheels.yml](.github/workflows/wheels.yml) run wi
 
 Then these can be uploaded to pypi using:
 
-    python -m twine upload --repository testpypi wheelhouse/*/*.whl wheelhouse/*/*.tar.gz
+    for f in wheelhouse/*/*.whl wheelhouse/*/*.tar.gz; do
+        python3 -m twine upload --repository pypi "$f" || echo "Skipping failed upload: $f"
+    done
 
 ## Acknowledgements
 
