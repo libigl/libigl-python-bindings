@@ -42,6 +42,8 @@ option(LIBIGL_COPYLEFT_CGAL        "Build target igl_copyleft::cgal"       ON)
 option(LIBIGL_EMBREE               "Build target igl::embree"              ON)
 option(LIBIGL_COPYLEFT_TETGEN      "Build target igl_copyleft::tetgen"     ON)
 option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
+option(LIBIGL_SPECTRA              "Build igl::spectra bindings"           ON)
+option(LIBIGL_PREDICATES           "Build igl::predicates bindings"        ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
@@ -181,6 +183,12 @@ if(LIBIGL_COPYLEFT_TETGEN)
 endif()
 if(LIBIGL_RESTRICTED_TRIANGLE)
   pyigl_include("restricted" "triangle")
+endif()
+if(LIBIGL_SPECTRA)
+  pyigl_include("" "spectra")
+endif()
+if(LIBIGL_PREDICATES)
+  pyigl_include("" "predicates")
 endif()
 
 

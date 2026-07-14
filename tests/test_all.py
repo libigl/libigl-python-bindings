@@ -11,6 +11,8 @@ import igl.copyleft
 import igl.copyleft.tetgen
 import igl.copyleft.cgal
 import igl.embree
+import igl.spectra
+import igl.predicates
 
 @pytest.fixture
 def icosahedron():
@@ -1373,3 +1375,173 @@ def test_new_triangle_algorithms():
     assert V_ref.shape[1] == 2
     assert F_ref.shape[1] == 3
     assert V_ref.shape[0] >= V_tri.shape[0]
+
+
+def test_lexicographic_triangulation():
+    # Simple square: 4 points in general position
+    P = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]], dtype=np.float64)
+    F = igl.lexicographic_triangulation(P)
+    assert F.shape[1] == 3
+    # 4 points in convex position => 2 triangles
+    assert F.shape[0] == 2
+    # all indices are valid
+    assert F.min() >= 0
+    assert F.max() < P.shape[0]
+
+
+def test_spectra_lscm():
+    V, F = igl.icosahedron()
+    UV = igl.spectra.lscm(V, F)
+    assert UV.shape == (V.shape[0], 2)
+    assert np.all(np.isfinite(UV))
+
+
+def test_spectra_eigs():
+    V, F = igl.icosahedron()
+    L = igl.cotmatrix(V, F)
+    M = igl.massmatrix(V, F)
+    k = 3
+    # smallest-magnitude generalized eigenpairs: L u = s M u
+    U, S = igl.spectra.eigs(L, M, k, igl.spectra.EigsType.EIGS_TYPE_SM)
+    assert U.shape == (V.shape[0], k)
+    assert S.shape == (k,)
+    assert np.all(np.isfinite(U))
+    assert np.all(np.isfinite(S))
+
+
+def test_predicates_orientation_enum():
+    assert igl.predicates.Orientation.POSITIVE.value == 1
+    assert igl.predicates.Orientation.NEGATIVE.value == -1
+    assert igl.predicates.Orientation.COLLINEAR.value == 0
+    # aliases share the same integer value
+    assert igl.predicates.Orientation.INSIDE.value == igl.predicates.Orientation.POSITIVE.value
+    assert igl.predicates.Orientation.OUTSIDE.value == igl.predicates.Orientation.NEGATIVE.value
+
+
+def test_predicates_orient2d():
+    a = np.array([0.0, 0.0])
+    b = np.array([1.0, 0.0])
+    c = np.array([0.0, 1.0])
+    assert igl.predicates.orient2d(a, b, c) == igl.predicates.Orientation.POSITIVE
+    assert igl.predicates.orient2d(a, c, b) == igl.predicates.Orientation.NEGATIVE
+    assert igl.predicates.orient2d(a, b, np.array([2.0, 0.0])) == igl.predicates.Orientation.COLLINEAR
+
+
+def test_predicates_orient3d():
+    a = np.array([0.0, 0.0, 0.0])
+    b = np.array([1.0, 0.0, 0.0])
+    c = np.array([0.0, 1.0, 0.0])
+    d_above = np.array([0.0, 0.0, 1.0])
+    d_below = np.array([0.0, 0.0, -1.0])
+    r_above = igl.predicates.orient3d(a, b, c, d_above)
+    r_below = igl.predicates.orient3d(a, b, c, d_below)
+    assert r_above != r_below
+    # vectorized
+    A = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+    B = np.array([[1.0, 0.0, 0.0], [1.0, 0.0, 0.0]])
+    C = np.array([[0.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
+    D = np.array([[0.0, 0.0, 1.0], [0.0, 0.0, -1.0]])
+    R = igl.predicates.orient3d(A, B, C, D)
+    assert R.shape == (2,)
+
+
+def test_predicates_incircle():
+    a = np.array([1.0, 0.0])
+    b = np.array([0.0, 1.0])
+    c = np.array([-1.0, 0.0])
+    inside = np.array([0.0, 0.0])
+    outside = np.array([2.0, 0.0])
+    assert igl.predicates.incircle(a, b, c, inside).value == 1   # INSIDE == POSITIVE == 1
+    assert igl.predicates.incircle(a, b, c, outside).value == -1  # OUTSIDE == NEGATIVE == -1
+
+
+def test_predicates_insphere():
+    a = np.array([1.0, 0.0, 0.0])
+    b = np.array([-1.0, 0.0, 0.0])
+    c = np.array([0.0, 1.0, 0.0])
+    d = np.array([0.0, 0.0, 1.0])
+    inside = np.array([0.0, 0.0, 0.0])
+    assert igl.predicates.insphere(a, b, c, d, inside).value == 1  # INSIDE == POSITIVE == 1
+
+
+def test_predicates_delaunay_triangulation():
+    P = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]], dtype=np.float64)
+    F = igl.predicates.delaunay_triangulation(P)
+    assert F.shape[1] == 3
+    assert F.shape[0] == 2
+    assert F.min() >= 0
+    assert F.max() < P.shape[0]
+
+
+def test_predicates_lexicographic_triangulation():
+    P = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]], dtype=np.float64)
+    F = igl.predicates.lexicographic_triangulation(P)
+    assert F.shape[1] == 3
+    assert F.shape[0] == 2
+
+
+def test_predicates_ear_clipping():
+    P = np.array([[0.0, 0.0], [1.0, 0.0], [0.5, 1.0]], dtype=np.float64)
+    ok, eF = igl.predicates.ear_clipping(P)
+    assert ok
+    assert eF.shape == (1, 3)
+
+
+def test_predicates_segment_segment_intersect():
+    # crossing segments
+    A = np.array([0.0, 0.0])
+    B = np.array([1.0, 1.0])
+    C = np.array([0.0, 1.0])
+    D = np.array([1.0, 0.0])
+    assert igl.predicates.segment_segment_intersect(A, B, C, D)
+    # non-crossing
+    E = np.array([2.0, 0.0])
+    F_ = np.array([3.0, 1.0])
+    assert not igl.predicates.segment_segment_intersect(A, B, E, F_)
+
+
+def test_predicates_triangle_triangle_intersect():
+    a1 = np.array([0.0, 0.0, 0.0])
+    a2 = np.array([1.0, 0.0, 0.0])
+    a3 = np.array([0.0, 1.0, 0.0])
+    b1 = np.array([0.5, 0.0, -0.5])
+    b2 = np.array([0.5, 0.0, 0.5])
+    b3 = np.array([0.5, 1.0, 0.0])
+    intersects, coplanar = igl.predicates.triangle_triangle_intersect(a1, a2, a3, b1, b2, b3)
+    assert intersects
+    assert not coplanar
+
+
+def test_predicates_find_self_intersections():
+    V, F = igl.icosahedron()
+    # icosahedron has no self-intersections
+    found, IF, CP = igl.predicates.find_self_intersections(V, F)
+    assert not found
+    assert IF.shape[0] == 0
+
+
+def test_predicates_find_intersections():
+    V, F = igl.icosahedron()
+    # test same mesh against itself — should find intersections
+    found, IF, CP = igl.predicates.find_intersections(V, F, V, F)
+    # Should find adjacent triangle "intersections" (shared edges/verts)
+    assert IF.shape[1] == 2
+
+
+def test_predicates_point_inside_convex_polygon():
+    P = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]], dtype=np.float64)
+    inside = np.array([0.5, 0.5])
+    outside = np.array([2.0, 2.0])
+    assert igl.predicates.point_inside_convex_polygon(P, inside)
+    assert not igl.predicates.point_inside_convex_polygon(P, outside)
+
+
+def test_predicates_polygons_to_triangles():
+    V = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0],
+                  [0.0, 1.0, 0.0], [2.0, 0.0, 0.0], [2.0, 1.0, 0.0]], dtype=np.float64)
+    I = np.array([0, 1, 2, 3, 1, 4, 5, 2], dtype=np.int64)
+    C = np.array([0, 4, 8], dtype=np.int64)
+    F, J = igl.predicates.polygons_to_triangles(V, I, C)
+    assert F.shape[1] == 3
+    assert F.shape[0] == 4  # two quads -> 4 triangles
+    assert J.shape[0] == F.shape[0]
