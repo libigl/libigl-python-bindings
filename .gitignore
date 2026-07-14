@@ -18,7 +18,7 @@ __pycache__
 igl.egg-info
 libigl.egg-info
 *.code-workspace
-out.obj
+out.*
 test.off
 .vscode
 
@@ -41,3 +41,4 @@ junit
 dist/
 igl/*
 CLAUDE.md
+wheelhouse/

@@ -36,7 +36,7 @@ libigl_version = importlib.metadata.version('libigl')
 The version of libigl is defined in the [pyproject.toml](./pyproject.toml) file.
 
 
-## Compiling and modifying the bindiings
+## Compiling and modifying the bindings
 
 According to the [scikit-build-core documentation](https://scikit-build-core.readthedocs.io/en/latest/configuration.html#editable-installs), the way to make an editable (incremental) build is to:
 
@@ -68,6 +68,20 @@ If submitting a pull request with a new binding, please also add an execution
 test in `tests/test_all.py` to ensure the binding can at least be called as
 expected.
 
+
+### Packaging a wheel from an existing build
+
+If you already have a compiled build directory, you can package it into a
+`.whl` without recompiling and install that wheel into other virtual
+environments on the same machine:
+
+```
+python -m pip wheel --no-build-isolation --no-deps -Cbuild-dir=build -w wheelhouse .
+pip install wheelhouse/libigl-*.whl
+```
+
+The `--no-deps` flag skips bundling numpy/scipy (the target environment must
+have them already). No compiler or CMake is required in the target environment.
 
 ## Testing cibuildwheel locally
 
