@@ -1545,3 +1545,22 @@ def test_predicates_polygons_to_triangles():
     assert F.shape[1] == 3
     assert F.shape[0] == 4  # two quads -> 4 triangles
     assert J.shape[0] == F.shape[0]
+
+def test_resolve_duplicated_faces():
+    # One unique face + one face paired with its opposite -> the pair cancels
+    # [0,1,2] has no duplicate -> kept; [1,2,3] and [1,3,2] are opposites -> removed
+    F = np.array([[0, 1, 2], [1, 2, 3], [1, 3, 2]], dtype=np.int64)
+    F2, J = igl.resolve_duplicated_faces(F)
+    assert F2.shape == (1, 3)
+    assert J.shape == (1,)
+    assert J[0] == 0  # only the unique face survives
+
+def test_ambient_occlusion():
+    # Single triangle; query its centroid from above
+    V = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.5, 1.0, 0.0]], dtype=np.float64)
+    F = np.array([[0, 1, 2]], dtype=np.int64)
+    P = np.array([[0.5, 0.33, 0.1]], dtype=np.float64)
+    N = np.array([[0.0, 0.0, 1.0]], dtype=np.float64)
+    S = igl.ambient_occlusion(V, F, P, N, 100)
+    assert S.shape == (1,)
+    assert 0.0 <= S[0] <= 1.0
