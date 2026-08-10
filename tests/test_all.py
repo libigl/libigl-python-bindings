@@ -1754,3 +1754,40 @@ def test_predicates_spline_winding_number():
     assert W.shape == (2,)
     assert np.isclose(abs(W[0]), 1.0, atol=1e-9)
     assert np.isclose(W[1], 0.0, atol=1e-9)
+
+
+# --------------------------------------------------------------------------
+# resolve_duplicated_faces
+# --------------------------------------------------------------------------
+
+def test_resolve_duplicated_faces():
+    # A mesh with no duplicated faces is returned unchanged.
+    F = np.array([[0, 1, 2], [2, 3, 0]], dtype=np.int64)
+    F2, J = igl.resolve_duplicated_faces(F)
+    assert np.array_equal(F2, F)
+    assert list(J.ravel()) == [0, 1]
+
+    # A pair of oppositely-oriented copies of the same face cancels out, while a
+    # distinct unique face is kept (rule 1).
+    F = np.array([[0, 1, 2],   # unique face, kept
+                  [2, 1, 3],   # face B, +
+                  [3, 1, 2]],  # face B reversed, - -> cancels with the above
+                 dtype=np.int64)
+    F2, J = igl.resolve_duplicated_faces(F)
+    assert set(map(tuple, F2.tolist())) == {(0, 1, 2)}
+    assert list(J.ravel()) == [0]
+
+    # Two positive copies and one negative copy: keep a single positive face
+    # (rule 2). J indexes back into the input.
+    F = np.array([[0, 1, 2], [0, 1, 2], [1, 0, 2]], dtype=np.int64)
+    F2, J = igl.resolve_duplicated_faces(F)
+    assert F2.shape[0] == 1
+    assert tuple(F2[0]) == (0, 1, 2)
+    assert F.shape[1] == F2.shape[1]
+    assert np.array_equal(F[J.ravel()], F2)
+
+    # Non-orientable triangle (three identical copies, |pos-neg| > 1): all of its
+    # copies are dropped, unrelated faces survive (rule 4).
+    F = np.array([[0, 1, 2], [0, 1, 2], [0, 1, 2], [3, 4, 5]], dtype=np.int64)
+    F2, J = igl.resolve_duplicated_faces(F)
+    assert set(map(tuple, F2.tolist())) == {(3, 4, 5)}

@@ -21,13 +21,13 @@ namespace pyigl
 // Bind the wrappers to the Python module
 void bind_vertex_components(nb::module_ &m)
 {
-  // Binding for vertex_components with adjacency matrix and counts
+  // Binding for vertex_components from a mesh's face list
   m.def(
     "vertex_components",
     &pyigl::vertex_components,
     "F"_a,
-    R"(Compute the connected components of a graph using an adjacency matrix, returning component IDs and counts.
+    R"(Compute the connected component ids of each vertex of a mesh given its faces.
 
-@param[in] F       Matrix of triangle indices
-@return            Vector C of component IDs per vertex)");
+@param[in] F  #F by 3 matrix of triangle (face) indices
+@return       Vector C of per-vertex connected-component ids)");
 }

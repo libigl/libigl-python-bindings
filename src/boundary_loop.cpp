@@ -16,7 +16,7 @@ namespace pyigl
     igl::boundary_loop(F, loops);
     return loops;
   }
-  // Wrapper for boundary_loop that returns all loops as a vector of vectors
+  // Wrapper for boundary_loop that returns only the longest loop as a vector
   auto boundary_loop(const nb::DRef<const Eigen::MatrixXI> &F)
   {
     Eigen::VectorXI longest;
