@@ -8,7 +8,7 @@ using namespace nb::literals;
 
 namespace pyigl
 {
-  igl::predicates::Orientation insphere(
+  igl::Orientation insphere(
     const Eigen::Vector3d &pa,
     const Eigen::Vector3d &pb,
     const Eigen::Vector3d &pc,

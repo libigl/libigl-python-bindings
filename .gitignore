@@ -5,6 +5,7 @@ external
 bin
 bin_rel
 build
+build-full
 
 tutorial/data
 tutorial/.ipynb_*
