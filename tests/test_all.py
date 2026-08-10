@@ -13,6 +13,7 @@ import igl.copyleft.cgal
 import igl.embree
 import igl.spectra
 import igl.predicates
+import igl.cycodebase
 
 @pytest.fixture
 def icosahedron():
@@ -1545,3 +1546,211 @@ def test_predicates_polygons_to_triangles():
     assert F.shape[1] == 3
     assert F.shape[0] == 4  # two quads -> 4 triangles
     assert J.shape[0] == F.shape[0]
+
+
+# --------------------------------------------------------------------------
+# Cubic Bézier curves (igl core)
+# --------------------------------------------------------------------------
+
+def test_cubic():
+    C = np.array([[0.0, 0.0], [1.0, 1.0], [2.0, -1.0], [3.0, 0.0]])
+    P = igl.cubic(C, 0.5)
+    assert P.shape == (1, 2)
+    # (C0 + 3 C1 + 3 C2 + C3) / 8
+    assert np.allclose(P[0], [1.5, 0.0], atol=1e-12)
+    # endpoints
+    assert np.allclose(igl.cubic(C, 0.0)[0], C[0], atol=1e-12)
+    assert np.allclose(igl.cubic(C, 1.0)[0], C[3], atol=1e-12)
+
+
+def test_cubic_is_flat():
+    curved = np.array([[0.0, 0.0], [1.0, 1.0], [2.0, -1.0], [3.0, 0.0]])
+    assert igl.cubic_is_flat(curved, 1e-2) == False
+    nearly = np.array([[0.0, 0.0], [1.0, 0.1], [2.0, -0.1], [3.0, 0.0]])
+    assert igl.cubic_is_flat(nearly, 1e-2) == True
+    assert igl.cubic_is_flat(nearly, 1e-4) == False
+    # degenerate (all identical points) is well behaved
+    degen = np.zeros((4, 2))
+    assert igl.cubic_is_flat(degen, 1.0) == True
+
+
+def test_cubic_split():
+    C = np.array([[0.0, 0.0], [1.0, 1.0], [2.0, -1.0], [3.0, 0.0]])
+    C1, C2 = igl.cubic_split(C, 0.5)
+    assert C1.shape == (4, 2)
+    assert C2.shape == (4, 2)
+    assert np.allclose(C1[0], C[0], atol=1e-12)
+    assert np.allclose(C1[1], [0.5, 0.5], atol=1e-12)
+    assert np.allclose(C1[2], [1.0, 0.25], atol=1e-12)
+    assert np.allclose(C1[3], [1.5, 0.0], atol=1e-12)
+    assert np.allclose(C2[0], [1.5, 0.0], atol=1e-12)
+    assert np.allclose(C2[1], [2.0, -0.25], atol=1e-12)
+    assert np.allclose(C2[2], [2.5, -0.5], atol=1e-12)
+    assert np.allclose(C2[3], C[3], atol=1e-12)
+    # the two halves meet at C(t)
+    assert np.allclose(C1[3], igl.cubic(C, 0.5)[0], atol=1e-12)
+
+
+def test_cubic_monomial_bases():
+    C = np.array([[0.0, 0.0], [1.0, 1.0], [2.0, -1.0], [3.0, 0.0]])
+    M, D, B = igl.cubic_monomial_bases(C)
+    assert M.shape == (4, 2)
+    assert D.shape == (3, 2)
+    assert np.asarray(B).size == 6
+    # C(t) = M[0] + M[1] t + M[2] t^2 + M[3] t^3 ; check against igl.cubic
+    for t in (0.0, 0.25, 0.5, 0.75, 1.0):
+        powers = np.array([1.0, t, t * t, t * t * t])
+        assert np.allclose(powers @ M, igl.cubic(C, t)[0], atol=1e-12)
+
+
+def test_fit_cubic_bezier():
+    # sample a hemicircle
+    th = np.linspace(0.0, np.pi, 101)
+    d = np.column_stack([np.cos(th), np.sin(th)])
+    error = 1e-6
+    cubics = igl.fit_cubic_bezier(d, error)
+    assert isinstance(cubics, list)
+    assert 1 < len(cubics) < 10
+    for c in cubics:
+        assert c.shape == (4, 2)
+    # every sample is within `error` of the fitted spline
+    T = np.linspace(0.0, 1.0, 1000)
+    X = np.vstack([igl.bezier(c, T.reshape(-1, 1)) for c in cubics])
+    for j in range(d.shape[0]):
+        sd = np.min(np.sum((X - d[j]) ** 2, axis=1))
+        assert sd < error
+
+
+# --------------------------------------------------------------------------
+# igl.cycodebase (cubic Bézier root finding and distance queries)
+# --------------------------------------------------------------------------
+
+def test_cycodebase_roots():
+    # t^3 - 6 t^2 + 11 t - 6 = (t-1)(t-2)(t-3)
+    coef = np.array([-6.0, 11.0, -6.0, 1.0])
+    n, R = igl.cycodebase.roots(coef, 0.0, 4.0)
+    assert n == 3
+    assert R.shape == (3,)
+    assert np.allclose(np.sort(R), [1.0, 2.0, 3.0], atol=1e-12)
+    # restricting the interval keeps only the first root, pads with NaN
+    n1, R1 = igl.cycodebase.roots(coef, 0.0, 1.5)
+    assert n1 == 1
+    assert np.isclose(R1[0], 1.0, atol=1e-12)
+    assert np.isnan(R1[1]) and np.isnan(R1[2])
+
+
+def test_cycodebase_box_cubic():
+    C = np.array([[0.0, 0.0], [1.0, 2.0], [2.0, -2.0], [3.0, 0.0]])
+    B1, B2 = igl.cycodebase.box_cubic(C)
+    B1 = np.asarray(B1).ravel()
+    B2 = np.asarray(B2).ravel()
+    assert np.isclose(B1[0], 0.0, atol=1e-12)
+    assert np.isclose(B1[1], -0.57735026918962584, atol=1e-12)
+    assert np.isclose(B2[0], 3.0, atol=1e-12)
+    assert np.isclose(B2[1], 0.57735026918962584, atol=1e-12)
+    # the box must contain the endpoints
+    assert (B1 <= C[0] + 1e-12).all() and (C[0] <= B2 + 1e-12).all()
+    assert (B1 <= C[3] + 1e-12).all() and (C[3] <= B2 + 1e-12).all()
+
+    # indexed overload: two cubics sharing an endpoint
+    P = np.array([[0.0, 0.0], [1.0, 2.0], [2.0, -2.0], [3.0, 0.0],
+                  [4.0, 2.0], [5.0, -2.0], [6.0, 0.0]])
+    Cidx = np.array([[0, 1, 2, 3], [3, 4, 5, 6]], dtype=np.int64)
+    MB1, MB2 = igl.cycodebase.box_cubic(P, Cidx)
+    assert MB1.shape == (2, 2)
+    assert MB2.shape == (2, 2)
+    assert np.allclose(MB1[0], B1, atol=1e-12)
+    assert np.allclose(MB2[0], B2, atol=1e-12)
+
+
+def test_cycodebase_point_cubic_squared_distance():
+    C = np.array([[0.0, 0.0], [1.0, 2.0], [2.0, -2.0], [3.0, 0.0]])
+    Q = np.array([[1.5, 0.0], [2.0, 0.5], [2.5, 1.0]])
+    sqrD, S, K = igl.cycodebase.point_cubic_squared_distance(Q, C)
+    assert sqrD.shape == (3,)
+    assert S.shape == (3,)
+    assert K.shape == (3, 2)
+    assert np.allclose(sqrD, [0.0, 0.5, 1.25], atol=1e-12)
+    assert np.allclose(S, [0.5, 0.5, 1.0], atol=1e-12)
+    assert np.allclose(K, [[1.5, 0.0], [1.5, 0.0], [3.0, 0.0]], atol=1e-12)
+
+
+def _unit_square_spline():
+    """A closed spline made of four straight cubic Bézier edges of the unit
+    square, traversed counter-clockwise."""
+    corners = [np.array([0.0, 0.0]), np.array([1.0, 0.0]),
+               np.array([1.0, 1.0]), np.array([0.0, 1.0])]
+    P = []
+    C = []
+    for i in range(4):
+        a = corners[i]
+        b = corners[(i + 1) % 4]
+        base = len(P)
+        P.append(a)
+        P.append(a + (b - a) / 3.0)
+        P.append(a + 2.0 * (b - a) / 3.0)
+        # last edge closes back onto the very first control point
+        if i < 3:
+            C.append([base, base + 1, base + 2, base + 3])
+        else:
+            C.append([base, base + 1, base + 2, 0])
+    return np.array(P), np.array(C, dtype=np.int64)
+
+
+def test_cycodebase_spline_eytzinger_aabb_and_distance():
+    P, C = _unit_square_spline()
+    B1, B2, leaf = igl.cycodebase.spline_eytzinger_aabb(P, C)
+    assert B1.shape[1] == 2
+    assert B2.shape == B1.shape
+    assert leaf.shape[0] == B1.shape[0]
+
+    Q = np.array([[0.5, 0.5],   # center, 0.5 from every edge
+                  [0.5, 0.0]])  # exactly on the bottom edge
+    sqrD, I, S, K = igl.cycodebase.point_spline_squared_distance(Q, P, C)
+    assert sqrD.shape == (2,)
+    assert I.shape == (2,)
+    assert S.shape == (2,)
+    assert K.shape == (2, 2)
+    assert np.isclose(sqrD[0], 0.25, atol=1e-12)
+    assert np.isclose(sqrD[1], 0.0, atol=1e-12)
+
+
+# --------------------------------------------------------------------------
+# New predicates for cubic Bézier curves / splines
+# --------------------------------------------------------------------------
+
+def test_predicates_cubic_winding_number():
+    C = np.array([[0.0, 0.0], [1.0, 1.0], [2.0, -1.0], [3.0, 0.0]])
+    assert np.isclose(
+        igl.predicates.cubic_winding_number(C, np.array([1.1, 1.1])),
+        0.29147615882815, atol=1e-12)
+    assert np.isclose(
+        igl.predicates.cubic_winding_number(C, np.array([1.45, 0.0])),
+        -0.5, atol=1e-12)
+    # degenerate: all control points identical -> zero
+    assert igl.predicates.cubic_winding_number(np.zeros((4, 2)),
+                                               np.array([1.2, 1.0])) == 0.0
+
+
+def test_predicates_point_in_convex_hull():
+    a = np.array([0.0, 0.0])
+    b = np.array([1.0, 1.0])
+    c = np.array([2.0, -1.0])
+    d = np.array([3.0, 0.0])
+    Or = igl.predicates.Orientation
+    assert igl.predicates.point_in_convex_hull(np.array([1.5, 0.0]), a, b, c, d) == Or.POSITIVE
+    assert igl.predicates.point_in_convex_hull(np.array([-1.0, 0.0]), a, b, c, d) == Or.NEGATIVE
+    assert igl.predicates.point_in_convex_hull(np.array([0.0, 0.0]), a, b, c, d) == Or.COLLINEAR
+    assert igl.predicates.point_in_convex_hull(np.array([1.0, -0.4]), a, b, c, d) == Or.POSITIVE
+    assert igl.predicates.point_in_convex_hull(np.array([2.0, 0.6]), a, b, c, d) == Or.NEGATIVE
+
+
+def test_predicates_spline_winding_number():
+    P, C = _unit_square_spline()
+    B1, B2, leaf = igl.cycodebase.spline_eytzinger_aabb(P, C)
+    Q = np.array([[0.5, 0.5],   # inside the CCW loop
+                  [2.0, 2.0]])  # outside
+    W = igl.predicates.spline_winding_number(P, C, B1, B2, leaf, Q)
+    assert W.shape == (2,)
+    assert np.isclose(abs(W[0]), 1.0, atol=1e-9)
+    assert np.isclose(W[1], 0.0, atol=1e-9)
