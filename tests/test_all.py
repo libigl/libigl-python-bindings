@@ -1791,3 +1791,21 @@ def test_resolve_duplicated_faces():
     F = np.array([[0, 1, 2], [0, 1, 2], [0, 1, 2], [3, 4, 5]], dtype=np.int64)
     F2, J = igl.resolve_duplicated_faces(F)
     assert set(map(tuple, F2.tolist())) == {(3, 4, 5)}
+
+
+def test_ambient_occlusion():
+    # Core (embree-free) ambient occlusion available directly on `igl`.
+    V, F = igl.icosahedron()
+    N = igl.per_vertex_normals(V, F)
+    P = V + 1e-4 * N
+
+    S = igl.ambient_occlusion(V, F, P, N, 256)
+    assert S.shape == (V.shape[0],)
+    assert np.all(S >= 0.0) and np.all(S <= 1.0)
+
+    # A convex mesh sampled along outward normals occludes nothing.
+    assert S.mean() < 0.05
+    # Flipping the normals inward makes the same points substantially occluded.
+    S_in = igl.ambient_occlusion(V, F, P, -N, 256)
+    assert S_in.mean() > 0.1
+    assert S_in.mean() > S.mean()
