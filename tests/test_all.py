@@ -1791,3 +1791,24 @@ def test_resolve_duplicated_faces():
     F = np.array([[0, 1, 2], [0, 1, 2], [0, 1, 2], [3, 4, 5]], dtype=np.int64)
     F2, J = igl.resolve_duplicated_faces(F)
     assert set(map(tuple, F2.tolist())) == {(3, 4, 5)}
+
+
+def test_vertex_components_from_adjacency_matrix():
+    # Two disconnected components: a triangle {0,1,2} and an edge {3,4}.
+    edges = [(0, 1), (1, 2), (0, 2), (3, 4)]
+    n = 5
+    rows, cols = [], []
+    for i, j in edges:
+        rows += [i, j]
+        cols += [j, i]
+    A = scipy.sparse.csr_matrix(
+        (np.ones(len(rows)), (rows, cols)), shape=(n, n)).astype(np.int64)
+    c, counts = igl.vertex_components_from_adjacency_matrix(A)
+    assert c.shape[0] == n
+    # vertices in the same component share an id; different components differ
+    assert c[0] == c[1] == c[2]
+    assert c[3] == c[4]
+    assert c[0] != c[3]
+    # counts is per-component and sums to the number of vertices
+    assert counts.sum() == n
+    assert sorted(counts.ravel().tolist()) == [2, 3]
