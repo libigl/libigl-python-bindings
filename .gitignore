@@ -7,9 +7,9 @@ bin_rel
 build
 build-full
 
-tutorial/data
-tutorial/.ipynb_*
-tutorial-old/.ipynb_*
+# Generated documentation (api pages are produced by website/generate_api.py)
+website/docs/api/
+website/site/
 
 test.obj
 pyigl.cpython*

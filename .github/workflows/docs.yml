@@ -1,0 +1,58 @@
+name: docs
+
+# Build the Python-bindings documentation site. The API reference is generated
+# from the installed package's .pyi stubs, so it always matches the bindings.
+# On pushes to main a preview is deployed to this repo's gh-pages; the canonical
+# home is the unified libigl.github.io site, which can consume the same generator.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - 'website/**'
+      - '.github/workflows/docs.yml'
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install the bindings and docs tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install libigl
+          python -m pip install -r website/requirements.txt
+
+      - name: Fetch libigl headers and Doxygen index (for C++ cross-links)
+        run: |
+          git clone --depth 1 https://github.com/libigl/libigl.git _libigl
+          curl -sSL https://libigl.github.io/dox/files.html -o _dox_files.html || true
+
+      - name: Generate the API reference
+        run: |
+          python website/generate_api.py \
+            --package "$(python -c 'import igl, os; print(os.path.dirname(igl.__file__))')" \
+            --igl-include _libigl/include \
+            --dox-index _dox_files.html \
+            --out website/docs/api
+
+      - name: Build the site
+        run: cd website && python -m mkdocs build --strict
+
+      - name: Deploy preview to gh-pages
+        if: github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: website/site

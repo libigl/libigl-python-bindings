@@ -1,0 +1,73 @@
+site_name: libigl Python bindings
+site_url: 'https://libigl.github.io/libigl-python-bindings/'
+repo_name: 'libigl/libigl-python-bindings'
+repo_url: 'https://github.com/libigl/libigl-python-bindings'
+site_description: "Python bindings for libigl, a simple geometry processing library"
+docs_dir: 'docs'
+remote_branch: 'gh-pages'
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: 'light blue'
+      accent: 'blue'
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: 'light blue'
+      accent: 'blue'
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - footnotes
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Installation: install.md
+  - API Reference:
+    - Overview: api/index.md
+    - igl (core): api/igl.md
+    - igl.predicates: api/igl_predicates.md
+    - igl.cycodebase: api/igl_cycodebase.md
+    - igl.copyleft: api/igl_copyleft.md
+    - igl.copyleft.cgal: api/igl_copyleft_cgal.md
+    - igl.copyleft.tetgen: api/igl_copyleft_tetgen.md
+    - igl.embree: api/igl_embree.md
+    - igl.triangle: api/igl_triangle.md
+    - igl.spectra: api/igl_spectra.md
+  - Contributing: contributing.md
