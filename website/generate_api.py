@@ -299,7 +299,7 @@ def cpp_chip(name: str, linkable: dict) -> str:
     emit a 404 (see build of `linkable` in main)."""
     page = linkable.get(name)
     if page:
-        return f"[:material-language-cpp: C++ reference]({DOX_BASE}/{page}){{ .cpp-xref }}\n"
+        return f"[C++ reference]({DOX_BASE}/{page}){{ .cpp-xref }}\n"
     return ""
 
 
