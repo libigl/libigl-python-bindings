@@ -1811,6 +1811,50 @@ def test_resolve_duplicated_faces():
     assert set(map(tuple, F2.tolist())) == {(3, 4, 5)}
 
 
+def test_fast_winding_number():
+    # Unit-sphere mesh from a subdivided icosahedron.
+    V, F = igl.icosahedron()
+    for _ in range(3):
+        V, F = igl.upsample(V, F)
+    V = V / np.linalg.norm(V, axis=1, keepdims=True)
+
+    Q = np.array([[0.0, 0.0, 0.0],   # inside  -> ~1
+                  [0.5, 0.0, 0.0],   # inside  -> ~1
+                  [2.0, 0.0, 0.0],   # outside -> ~0
+                  [0.0, 0.0, 3.0]])  # outside -> ~0
+
+    def inside_outside(W):
+        assert W.shape == (Q.shape[0],)
+        assert W[0] > 0.9 and W[1] > 0.9
+        assert abs(W[2]) < 0.1 and abs(W[3]) < 0.1
+
+    # Mesh one-shot
+    Wm = igl.fast_winding_number(V, F, Q)
+    inside_outside(Wm)
+
+    # Point cloud: vertices as oriented points with voronoi areas
+    N = V.copy()  # outward unit normals on a unit sphere
+    A = np.asarray(igl.massmatrix(V, F, igl.MASSMATRIX_TYPE_VORONOI).diagonal()).ravel()
+
+    # Point-cloud one-shot
+    Wp = igl.fast_winding_number(V, N, A, Q)
+    inside_outside(Wp)
+
+    # Reusable triangle-soup BVH: same answer as the one-shot, reusable across
+    # multiple query sets without rebuilding.
+    bvh = igl.FastWindingNumberBVH()
+    bvh.init(V, F, 2)
+    Wb = bvh.winding_number(Q)
+    inside_outside(Wb)
+    assert np.allclose(Wb, bvh.winding_number(Q))
+
+    # Point-cloud octree precompute + cached evaluation matches the one-shot.
+    point_indices, CH, CN, W = igl.octree(V)
+    CM, R, EC = igl.fast_winding_number_precompute(V, N, A, point_indices, CH, 2)
+    Wc = igl.fast_winding_number(V, N, A, point_indices, CH, CM, R, EC, Q)
+    assert np.allclose(Wc, Wp, atol=1e-6)
+
+
 def test_ambient_occlusion():
     # Core (embree-free) ambient occlusion available directly on `igl`.
     V, F = igl.icosahedron()
