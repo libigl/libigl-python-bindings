@@ -20,6 +20,7 @@ import argparse
 import ast
 import os
 import re
+from collections import Counter
 from pathlib import Path
 
 DOX_BASE = "https://libigl.github.io/dox"
@@ -280,20 +281,31 @@ def collect(stub: Path):
     return functions, classes
 
 
-def cpp_chip(name: str, headers: set[str]) -> str:
+def dox_filename(name: str) -> str:
+    """Doxygen file-reference page filename for igl/<name>.h.
+
+    Doxygen mangles the output name by turning '.h' into '_8h' and doubling
+    every underscore; case is preserved (e.g. marching_cubes.h ->
+    marching__cubes_8h.html, AABB.h -> AABB_8h.html)."""
+    return f"{name.replace('_', '__')}_8h.html"
+
+
+def cpp_chip(name: str, linkable: dict) -> str:
     """A standalone C++ cross-link line placed under a heading.
 
     Kept out of the heading itself so it does not leak into the table of
-    contents (both the entry text and the heading's anchor slug).
-    """
-    if name in headers:
-        return f"[:material-language-cpp: C++ reference]({DOX_BASE}/{name}_8h.html){{ .cpp-xref }}\n"
+    contents. `linkable` maps a Python function/class name to its verified
+    Doxygen page filename; only names present there are linked, so we never
+    emit a 404 (see build of `linkable` in main)."""
+    page = linkable.get(name)
+    if page:
+        return f"[:material-language-cpp: C++ reference]({DOX_BASE}/{page}){{ .cpp-xref }}\n"
     return ""
 
 
-def emit_function(name, defs, headers) -> str:
+def emit_function(name, defs, linkable) -> str:
     out = [f"### {name}\n"]
-    chip = cpp_chip(name, headers)
+    chip = cpp_chip(name, linkable)
     if chip:
         out.append(chip)
     seen = set()
@@ -307,9 +319,9 @@ def emit_function(name, defs, headers) -> str:
     return "\n".join(out)
 
 
-def emit_class(node, methods, doc, headers) -> str:
+def emit_class(node, methods, doc, linkable) -> str:
     out = [f"### {node.name}\n"]
-    chip = cpp_chip(node.name, headers)
+    chip = cpp_chip(node.name, linkable)
     if chip:
         out.append(chip)
     if doc:
@@ -327,6 +339,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", default="igl", help="path to the igl package dir")
     ap.add_argument("--igl-include", default="", help="path to libigl include/ dir")
+    ap.add_argument("--dox-index", default="",
+                    help="Doxygen files.html (or any page listing) for the "
+                         "target /dox/ site; links are validated against it so "
+                         "none 404. Omit to link by header-name heuristic only.")
     ap.add_argument("--out", default="website/docs/api")
     args = ap.parse_args()
 
@@ -335,11 +351,30 @@ def main():
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
-    headers = set()
+    # Cross-link a function to its C++ Doxygen page only when its header basename
+    # is unique across the whole libigl tree — duplicated names (e.g.
+    # marching_cubes exists in both igl/ and igl/copyleft/) get disambiguated by
+    # Doxygen into non-derivable page names, so we skip them.
+    unique = set()
     if args.igl_include:
-        inc = Path(args.igl_include)
-        for h in inc.glob("igl/*.h"):  # core headers -> derivable dox file pages
-            headers.add(h.stem)
+        counts = Counter(h.stem for h in Path(args.igl_include).glob("igl/**/*.h"))
+        unique = {stem for stem, c in counts.items() if c == 1}
+
+    # When a Doxygen index is supplied, additionally require that the derived
+    # page actually exists there. This keeps the preview free of 404s even when
+    # the deployed /dox/ lags the bindings' libigl version (new/renamed headers).
+    dox_pages = None
+    if args.dox_index:
+        dox_pages = set(re.findall(r"[A-Za-z0-9_]+_8h\.html",
+                                   Path(args.dox_index).read_text()))
+
+    linkable = {}
+    for name in unique:
+        page = dox_filename(name)
+        if dox_pages is None or page in dox_pages:
+            linkable[name] = page
+    print(f"  cross-linkable functions: {len(linkable)}"
+          + (f" (validated against {len(dox_pages)} dox pages)" if dox_pages else ""))
 
     stubs = sorted(package.rglob("pyigl_*.pyi"))
     index_rows = []
@@ -350,9 +385,9 @@ def main():
         page = [f"# {title}\n"]
         page.append(f"Python API reference for `{module}`.\n")
         for name in sorted(functions):
-            page.append(emit_function(name, functions[name], headers))
+            page.append(emit_function(name, functions[name], linkable))
         for node, methods, doc in sorted(classes, key=lambda c: c[0].name):
-            page.append(emit_class(node, methods, doc, headers))
+            page.append(emit_class(node, methods, doc, linkable))
         fname = module.replace(".", "_") + ".md"
         (out / fname).write_text("\n".join(page))
         n = len(functions) + len(classes)
