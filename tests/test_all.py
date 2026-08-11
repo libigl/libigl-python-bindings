@@ -261,7 +261,25 @@ def test_min_quad():
     data = igl.min_quad_with_fixed_data()
     igl.min_quad_with_fixed_precompute(A,known,Aeq,True,data)
     Z = igl.min_quad_with_fixed_solve(data,B,Y,Beq)
-    
+
+def test_active_set():
+    V,F,T = single_tet()
+    n = V.shape[0]
+    A = -igl.cotmatrix(V,F)
+    B = np.zeros(n,dtype=np.float64)
+    known = np.array([0,1],dtype=np.int64)
+    Y = np.array([0.0,1.0],dtype=np.float64)
+    Aeq = scipy.sparse.csc_matrix((0,n),dtype=np.float64)
+    Beq = np.array([],dtype=np.float64)
+    Aieq = scipy.sparse.csc_matrix((0,n),dtype=np.float64)
+    Bieq = np.array([],dtype=np.float64)
+    lx = np.array([],dtype=np.float64)
+    ux = np.array([],dtype=np.float64)
+    Z = igl.active_set(A,B,known,Y,Aeq,Beq,Aieq,Bieq,lx,ux)
+    assert Z.shape[0] == n
+    assert Z[0] == pytest.approx(0.0)
+    assert Z[1] == pytest.approx(1.0)
+
 def test_volume():
     V = np.array([[0,0,0],[1,0,0],[0,1,0],[0,0,1]],dtype=np.float64)
     T = np.array([[0,1,2,3]],dtype=np.int64)
@@ -1819,3 +1837,85 @@ def test_boundary_conditions():
     assert bc.shape[1] == BE.shape[0]  # one weight column per bone
     assert set(b.ravel().tolist()) == {0, 1, 2}
     assert np.allclose(bc, 1.0)
+
+def test_fast_winding_number():
+    # Unit-sphere mesh from a subdivided icosahedron.
+    V, F = igl.icosahedron()
+    for _ in range(3):
+        V, F = igl.upsample(V, F)
+    V = V / np.linalg.norm(V, axis=1, keepdims=True)
+
+    Q = np.array([[0.0, 0.0, 0.0],   # inside  -> ~1
+                  [0.5, 0.0, 0.0],   # inside  -> ~1
+                  [2.0, 0.0, 0.0],   # outside -> ~0
+                  [0.0, 0.0, 3.0]])  # outside -> ~0
+
+    def inside_outside(W):
+        assert W.shape == (Q.shape[0],)
+        assert W[0] > 0.9 and W[1] > 0.9
+        assert abs(W[2]) < 0.1 and abs(W[3]) < 0.1
+
+    # Mesh one-shot
+    Wm = igl.fast_winding_number(V, F, Q)
+    inside_outside(Wm)
+
+    # Point cloud: vertices as oriented points with voronoi areas
+    N = V.copy()  # outward unit normals on a unit sphere
+    A = np.asarray(igl.massmatrix(V, F, igl.MASSMATRIX_TYPE_VORONOI).diagonal()).ravel()
+
+    # Point-cloud one-shot
+    Wp = igl.fast_winding_number(V, N, A, Q)
+    inside_outside(Wp)
+
+    # Reusable triangle-soup BVH: same answer as the one-shot, reusable across
+    # multiple query sets without rebuilding.
+    bvh = igl.FastWindingNumberBVH()
+    bvh.init(V, F, 2)
+    Wb = bvh.winding_number(Q)
+    inside_outside(Wb)
+    assert np.allclose(Wb, bvh.winding_number(Q))
+
+    # Point-cloud octree precompute + cached evaluation matches the one-shot.
+    point_indices, CH, CN, W = igl.octree(V)
+    CM, R, EC = igl.fast_winding_number_precompute(V, N, A, point_indices, CH, 2)
+    Wc = igl.fast_winding_number(V, N, A, point_indices, CH, CM, R, EC, Q)
+    assert np.allclose(Wc, Wp, atol=1e-6)
+
+
+def test_ambient_occlusion():
+    # Core (embree-free) ambient occlusion available directly on `igl`.
+    V, F = igl.icosahedron()
+    N = igl.per_vertex_normals(V, F)
+    P = V + 1e-4 * N
+
+    S = igl.ambient_occlusion(V, F, P, N, 256)
+    assert S.shape == (V.shape[0],)
+    assert np.all(S >= 0.0) and np.all(S <= 1.0)
+
+    # A convex mesh sampled along outward normals occludes nothing.
+    assert S.mean() < 0.05
+    # Flipping the normals inward makes the same points substantially occluded.
+    S_in = igl.ambient_occlusion(V, F, P, -N, 256)
+    assert S_in.mean() > 0.1
+    assert S_in.mean() > S.mean()
+
+
+def test_vertex_components_from_adjacency_matrix():
+    # Two disconnected components: a triangle {0,1,2} and an edge {3,4}.
+    edges = [(0, 1), (1, 2), (0, 2), (3, 4)]
+    n = 5
+    rows, cols = [], []
+    for i, j in edges:
+        rows += [i, j]
+        cols += [j, i]
+    A = scipy.sparse.csr_matrix(
+        (np.ones(len(rows)), (rows, cols)), shape=(n, n)).astype(np.int64)
+    c, counts = igl.vertex_components_from_adjacency_matrix(A)
+    assert c.shape[0] == n
+    # vertices in the same component share an id; different components differ
+    assert c[0] == c[1] == c[2]
+    assert c[3] == c[4]
+    assert c[0] != c[3]
+    # counts is per-component and sums to the number of vertices
+    assert counts.sum() == n
+    assert sorted(counts.ravel().tolist()) == [2, 3]
