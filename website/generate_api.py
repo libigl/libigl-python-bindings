@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import ast
 import os
+import re
 from pathlib import Path
 
 DOX_BASE = "https://libigl.github.io/dox"
@@ -112,6 +113,13 @@ def render_signature(fn: ast.FunctionDef) -> str:
     return f"{fn.name}({', '.join(parts)}){ret}"
 
 
+def _esc(text: str) -> str:
+    """Escape a leading '#' so libigl's '#V'/'#E'/'#F' ("number of") notation
+    isn't parsed as a Markdown heading (python-markdown accepts space-less
+    '#heading'), which would otherwise pollute the table of contents."""
+    return re.sub(r"^(\s*)(#+)", r"\1\\\2", text)
+
+
 def format_docstring(doc: str) -> str:
     """Turn a doxygen-style docstring into Material markdown.
 
@@ -142,19 +150,19 @@ def format_docstring(doc: str) -> str:
                 bucket[-1] += " " + stripped
 
     out = []
-    text = "\n".join(desc).strip()
+    text = "\n".join(_esc(l) for l in desc).strip()
     if text:
         out.append(text + "\n")
     if params:
         out.append("**Parameters**\n")
         for p in params:
             name, _, rest = p.partition(" ")
-            out.append(f"- `{name}` — {rest.strip()}")
+            out.append(f"- `{name}` — {_esc(rest.strip())}")
         out.append("")
     if returns:
         out.append("**Returns**\n")
         for r in returns:
-            out.append(f"- {r.strip()}")
+            out.append(f"- {_esc(r.strip())}")
         out.append("")
     return "\n".join(out) + "\n"
 
@@ -272,14 +280,22 @@ def collect(stub: Path):
     return functions, classes
 
 
-def cpp_link(name: str, headers: set[str]) -> str:
+def cpp_chip(name: str, headers: set[str]) -> str:
+    """A standalone C++ cross-link line placed under a heading.
+
+    Kept out of the heading itself so it does not leak into the table of
+    contents (both the entry text and the heading's anchor slug).
+    """
     if name in headers:
-        return f"  [:material-language-cpp: C++]({DOX_BASE}/{name}_8h.html){{ .cpp-xref }}"
+        return f"[:material-language-cpp: C++ reference]({DOX_BASE}/{name}_8h.html){{ .cpp-xref }}\n"
     return ""
 
 
 def emit_function(name, defs, headers) -> str:
-    out = [f"### {name}{cpp_link(name, headers)}\n"]
+    out = [f"### {name}\n"]
+    chip = cpp_chip(name, headers)
+    if chip:
+        out.append(chip)
     seen = set()
     for fn in defs:
         sig = render_signature(fn)
@@ -292,7 +308,10 @@ def emit_function(name, defs, headers) -> str:
 
 
 def emit_class(node, methods, doc, headers) -> str:
-    out = [f"### class {node.name}\n"]
+    out = [f"### {node.name}\n"]
+    chip = cpp_chip(node.name, headers)
+    if chip:
+        out.append(chip)
     if doc:
         out.append(format_docstring(doc))
     for m in methods:
