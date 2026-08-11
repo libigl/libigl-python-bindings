@@ -1,0 +1,2 @@
+# Dependencies for building the Python-bindings documentation site.
+mkdocs-material
