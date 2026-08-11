@@ -1811,6 +1811,33 @@ def test_resolve_duplicated_faces():
     assert set(map(tuple, F2.tolist())) == {(3, 4, 5)}
 
 
+def test_boundary_conditions():
+    V, F, T = single_tet()
+
+    # Point handles located exactly at every vertex: each handle fixes its own
+    # vertex, so bc is the identity (column j is 1 at handle j, 0 elsewhere).
+    C = V.copy()
+    P = np.arange(V.shape[0], dtype=np.int64)
+    b, bc = igl.boundary_conditions(V, F, C, P)
+    assert b.shape[0] == bc.shape[0]
+    assert bc.shape[1] == P.shape[0]
+    order = np.argsort(b.ravel())
+    assert np.array_equal(b.ravel()[order], P)
+    assert np.allclose(bc[order], np.eye(P.shape[0]))
+
+    # Bone edge with an interior sample: a strip whose middle-bottom vertex (1)
+    # lies exactly on the bone between the two handles at vertices 0 and 2. All
+    # three bottom vertices become boundary samples of the single bone (weight 1).
+    Vb = np.array([[0.0, 0.0, 0.0], [0.5, 0.0, 0.0], [1.0, 0.0, 0.0],
+                   [0.0, 1.0, 0.0], [0.5, 1.0, 0.0], [1.0, 1.0, 0.0]])
+    Fb = np.array([[0, 1, 3], [1, 4, 3], [1, 2, 4], [2, 5, 4]], dtype=np.int64)
+    Cb = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]])
+    BE = np.array([[0, 1]], dtype=np.int64)
+    b, bc = igl.boundary_conditions(Vb, Fb, Cb, BE=BE)
+    assert bc.shape[1] == BE.shape[0]  # one weight column per bone
+    assert set(b.ravel().tolist()) == {0, 1, 2}
+    assert np.allclose(bc, 1.0)
+
 def test_fast_winding_number():
     # Unit-sphere mesh from a subdivided icosahedron.
     V, F = igl.icosahedron()
