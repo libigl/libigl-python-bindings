@@ -10,29 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://libigl.github.io/libigl-python-bindings/">
+        <link rel="canonical" href="https://libigl.github.io/libigl-python-bindings/api/igl_cycodebase/">
       
       
+        <link rel="prev" href="../igl_predicates/">
       
-        <link rel="next" href="install/">
+      
+        <link rel="next" href="../igl_copyleft/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>libigl Python bindings</title>
+        <title>igl.cycodebase - libigl Python bindings</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#libigl-python-bindings" class="md-skip">
+        <a href="#iglcycodebase" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="libigl Python bindings" class="md-header__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
+    <a href="../.." title="libigl Python bindings" class="md-header__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              igl.cycodebase
             
           </span>
         </div>
@@ -221,11 +223,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -244,7 +244,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="install/" class="md-tabs__link">
+      <a href="../../install/" class="md-tabs__link">
         
   
   
@@ -261,11 +261,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -283,7 +285,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="contributing/" class="md-tabs__link">
+      <a href="../../contributing/" class="md-tabs__link">
         
   
   
@@ -318,7 +320,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="libigl Python bindings" class="md-nav__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
+    <a href="../.." title="libigl Python bindings" class="md-nav__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -345,37 +347,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -391,48 +366,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to go next
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modules
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -444,7 +377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="install/" class="md-nav__link">
+      <a href="../../install/" class="md-nav__link">
         
   
   
@@ -468,24 +401,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -503,7 +441,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -521,7 +459,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -549,7 +487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl/" class="md-nav__link">
+      <a href="../igl/" class="md-nav__link">
         
   
   
@@ -577,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_predicates/" class="md-nav__link">
+      <a href="../igl_predicates/" class="md-nav__link">
         
   
   
@@ -602,10 +540,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="api/igl_cycodebase/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.cycodebase
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -621,6 +586,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#box_cubic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        box_cubic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point_cubic_squared_distance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        point_cubic_squared_distance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point_spline_squared_distance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        point_spline_squared_distance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        roots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spline_eytzinger_aabb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spline_eytzinger_aabb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -633,7 +673,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_copyleft/" class="md-nav__link">
+      <a href="../igl_copyleft/" class="md-nav__link">
         
   
   
@@ -661,7 +701,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_copyleft_cgal/" class="md-nav__link">
+      <a href="../igl_copyleft_cgal/" class="md-nav__link">
         
   
   
@@ -689,7 +729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_copyleft_tetgen/" class="md-nav__link">
+      <a href="../igl_copyleft_tetgen/" class="md-nav__link">
         
   
   
@@ -717,7 +757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_embree/" class="md-nav__link">
+      <a href="../igl_embree/" class="md-nav__link">
         
   
   
@@ -745,7 +785,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_triangle/" class="md-nav__link">
+      <a href="../igl_triangle/" class="md-nav__link">
         
   
   
@@ -773,7 +813,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_spectra/" class="md-nav__link">
+      <a href="../igl_spectra/" class="md-nav__link">
         
   
   
@@ -808,7 +848,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         
   
   
@@ -855,10 +895,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
+  <a href="#box_cubic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to go next
+        box_cubic
       
     </span>
   </a>
@@ -866,10 +906,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#modules" class="md-nav__link">
+  <a href="#point_cubic_squared_distance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modules
+        point_cubic_squared_distance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point_spline_squared_distance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        point_spline_squared_distance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        roots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spline_eytzinger_aabb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spline_eytzinger_aabb
       
     </span>
   </a>
@@ -896,77 +969,86 @@
   
 
 
-<h1 id="libigl-python-bindings">libigl Python bindings<a class="headerlink" href="#libigl-python-bindings" title="Permanent link">&para;</a></h1>
-<p><a href="https://pypi.org/project/libigl/"><img alt="PyPI version" src="https://badge.fury.io/py/libigl.svg" /></a>
-<a href="https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml?query=branch%3Amain"><img alt="build wheels" src="https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml/badge.svg" /></a></p>
-<p>Python bindings for <a href="https://libigl.github.io">libigl</a> — a simple C++ geometry
-processing library. The bindings are NumPy-native: meshes are plain arrays
-(<code>V</code> an <code>#V by 3</code> float array of vertices, <code>F</code> an <code>#F by 3</code> int array of faces),
-and every function returns NumPy arrays or SciPy sparse matrices.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>libigl
+<h1 id="iglcycodebase">igl.cycodebase<a class="headerlink" href="#iglcycodebase" title="Permanent link">&para;</a></h1>
+<p>Python API reference for <code>igl.cycodebase</code>.</p>
+<h3 id="box_cubic">box_cubic<a class="headerlink" href="#box_cubic" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">box_cubic</span><span class="p">(</span><span class="n">C</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">igl</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">V</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">read_triangle_mesh</span><span class="p">(</span><span class="s2">&quot;bunny.obj&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">L</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">cotmatrix</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>                 <span class="c1"># sparse cotangent Laplacian</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">N</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">per_vertex_normals</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>        <span class="c1"># per-vertex normals</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">K</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">gaussian_curvature</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>        <span class="c1"># discrete Gaussian curvature</span>
-</code></pre></div>
-<h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
+<p>Compute the min/max box corners tightly containing a cubic Bézier curve.</p>
+<p><strong>Parameters</strong></p>
 <ul>
-<li><strong><a href="api/">API Reference</a></strong> — every bound function and class, grouped by
-  module, generated directly from the installed package. Functions that also
-  exist in C++ link straight to the <a href="https://libigl.github.io/dox/">C++ Doxygen reference</a>.</li>
-<li><strong><a href="install/">Installation</a></strong> — pip, optional modules, and building from
-  source.</li>
+<li><code>C</code> — 4 by dim matrix of control points defining the cubic Bézier curve</li>
 </ul>
-<h2 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h2>
-<p>The core functionality lives in <code>igl</code>. Additional functionality that depends on
-third-party libraries is grouped into submodules:</p>
-<table>
-<thead>
-<tr>
-<th>Module</th>
-<th>Contents</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>igl</code></td>
-<td>core geometry processing (Laplacians, curvature, distances, parametrization, deformation, …)</td>
-</tr>
-<tr>
-<td><code>igl.predicates</code></td>
-<td>exact geometric predicates (orientation, incircle, winding numbers)</td>
-</tr>
-<tr>
-<td><code>igl.cycodebase</code></td>
-<td>cubic Bézier / spline distance and root-finding</td>
-</tr>
-<tr>
-<td><code>igl.copyleft</code>, <code>igl.copyleft.cgal</code>, <code>igl.copyleft.tetgen</code></td>
-<td>GPL-licensed functionality (booleans, meshing)</td>
-</tr>
-<tr>
-<td><code>igl.embree</code></td>
-<td>Embree-accelerated ray casting and ambient occlusion</td>
-</tr>
-<tr>
-<td><code>igl.triangle</code></td>
-<td>Triangle-based 2D meshing</td>
-</tr>
-<tr>
-<td><code>igl.spectra</code></td>
-<td>Spectra-based sparse eigensolves</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>These bindings are under active development. If a function you need is
-missing, please <a href="https://github.com/libigl/libigl-python-bindings/issues">open an issue</a>.</p>
-</div>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple (B1, B2) where B1  1 by dim min corner of the bounding box B2  1 by dim max corner of the bounding box</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">box_cubic</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">C</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]]</span>
+</code></pre></div>
+<p>Compute bounding boxes for a collection of indexed cubic Bézier curves.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>P</code> — #P by dim matrix of control point locations</li>
+<li><code>C</code> — #C by 4 matrix of indices into P defining the cubics</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple (B1, B2) where B1  #C by dim matrix of min corners of the bounding boxes B2  #C by dim matrix of max corners of the bounding boxes</li>
+</ul>
+<h3 id="point_cubic_squared_distance">point_cubic_squared_distance<a class="headerlink" href="#point_cubic_squared_distance" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">point_cubic_squared_distance</span><span class="p">(</span><span class="n">Q</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">C</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]]</span>
+</code></pre></div>
+<p>Squared distance from each query point to a cubic Bézier curve.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>Q</code> — #Q by dim matrix of query points</li>
+<li><code>C</code> — 4 by dim matrix of control points for the cubic Bézier curve</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple (sqrD, S, K) where sqrD  #Q vector of smallest squared distances S     #Q vector of parameters of the closest points on the curve K     #Q by dim matrix of closest points on the curve</li>
+</ul>
+<h3 id="point_spline_squared_distance">point_spline_squared_distance<a class="headerlink" href="#point_spline_squared_distance" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">point_spline_squared_distance</span><span class="p">(</span><span class="n">Q</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">P</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">C</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]]</span>
+</code></pre></div>
+<p>Squared distance from each query point to a spline of cubic Bézier curves.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>Q</code> — #Q by dim matrix of query points</li>
+<li><code>P</code> — #P by dim matrix of spline control points</li>
+<li><code>C</code> — #C by 4 matrix of indices into P defining the cubic Bézier curves</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple (sqrD, I, S, K) where sqrD  #Q vector of smallest squared distances I     #Q vector of indices of the closest cubic (row of C) S     #Q vector of parameters of the closest points on that cubic K     #Q by dim matrix of closest points on the spline</li>
+</ul>
+<h3 id="roots">roots<a class="headerlink" href="#roots" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">roots</span><span class="p">(</span><span class="n">coef</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">xmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">xmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Find the real roots of a polynomial within an interval [xmin, xmax].</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>coef</code> — #coef list of monomial coefficients (low to high order); the polynomial degree is len(coef)-1</li>
+<li><code>xmin</code> — lower bound of the search interval</li>
+<li><code>xmax</code> — upper bound of the search interval</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple (n, R) where n  number of roots found in [xmin, xmax] R  degree-length vector whose first n entries are the roots (ascending); the remaining entries are NaN</li>
+</ul>
+<h3 id="spline_eytzinger_aabb">spline_eytzinger_aabb<a class="headerlink" href="#spline_eytzinger_aabb" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">spline_eytzinger_aabb</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">C</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Compute an Eytzinger-layout AABB tree for a spline of cubic Bézier curves.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>P</code> — #P by dim matrix of spline control points</li>
+<li><code>C</code> — #C by 4 matrix of indices into P defining the cubic Bézier curves</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple (B1, B2, leaf) where B1    #B by dim matrix of AABB min box corners B2    #B by dim matrix of AABB max box corners leaf  #B vector of AABB leaf node indices/flags</li>
+</ul>
 
 
 
@@ -1022,10 +1104,10 @@ missing, please <a href="https://github.com/libigl/libigl-python-bindings/issues
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.tabs", "navigation.top", "search.highlight", "content.code.copy", "toc.follow"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.top", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
       

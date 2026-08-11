@@ -1,0 +1,1496 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python bindings for libigl, a simple geometry processing library">
+      
+      
+      
+        <link rel="canonical" href="https://libigl.github.io/libigl-python-bindings/api/igl_copyleft_cgal/">
+      
+      
+        <link rel="prev" href="../igl_copyleft/">
+      
+      
+        <link rel="next" href="../igl_copyleft_tetgen/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>igl.copyleft.cgal - libigl Python bindings</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#iglcopyleftcgal" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="libigl Python bindings" class="md-header__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            libigl Python bindings
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              igl.copyleft.cgal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/libigl/libigl-python-bindings" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    libigl/libigl-python-bindings
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../install/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contributing/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contributing
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="libigl Python bindings" class="md-nav__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    libigl Python bindings
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/libigl/libigl-python-bindings" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    libigl/libigl-python-bindings
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl (core)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl_predicates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.predicates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl_cycodebase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.cycodebase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl_copyleft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.copyleft
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.copyleft.cgal
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.copyleft.cgal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#convex_hull" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        convex_hull
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coplanar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        coplanar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delaunay_triangulation-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delaunay_triangulation C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extract_cells" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_cells
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fast_winding_number-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fast_winding_number C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intersect_other" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        intersect_other
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intersect_with_half_space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        intersect_with_half_space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mesh_boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mesh_boolean
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oriented_bounding_box-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        oriented_bounding_box C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outer_hull" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        outer_hull
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peel_outer_hull_layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        peel_outer_hull_layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peel_winding_number_layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        peel_winding_number_layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point_areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        point_areas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remesh_self_intersections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remesh_self_intersections
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trim_with_solid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trim_with_solid
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl_copyleft_tetgen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.copyleft.tetgen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl_embree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.embree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl_triangle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.triangle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../igl_spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.spectra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#convex_hull" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        convex_hull
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coplanar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        coplanar
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delaunay_triangulation-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delaunay_triangulation C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extract_cells" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_cells
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fast_winding_number-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fast_winding_number C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intersect_other" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        intersect_other
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intersect_with_half_space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        intersect_with_half_space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mesh_boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mesh_boolean
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oriented_bounding_box-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        oriented_bounding_box C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outer_hull" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        outer_hull
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peel_outer_hull_layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        peel_outer_hull_layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#peel_winding_number_layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        peel_winding_number_layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#point_areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        point_areas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remesh_self_intersections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remesh_self_intersections
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trim_with_solid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trim_with_solid
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="iglcopyleftcgal">igl.copyleft.cgal<a class="headerlink" href="#iglcopyleftcgal" title="Permanent link">&para;</a></h1>
+<p>Python API reference for <code>igl.copyleft.cgal</code>.</p>
+<h3 id="convex_hull">convex_hull<a class="headerlink" href="#convex_hull" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">convex_hull</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+</code></pre></div>
+<p>Compute the convex hull of a set of points, returning only the triangular faces of the hull.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 matrix of input points</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>F: #F by 3 matrix of triangle indices into V</li>
+</ul>
+<h3 id="coplanar">coplanar<a class="headerlink" href="#coplanar" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">coplanar</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span>
+</code></pre></div>
+<p>Test whether all points lie on the same plane.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 list of 3D vertex positions</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>true if all points are coplanar</li>
+</ul>
+<h3 id="delaunay_triangulation-c">delaunay_triangulation  <a class="cpp-xref" href="https://libigl.github.io/dox/delaunay_triangulation_8h.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10.5 15.97.41 2.44c-.26.14-.68.27-1.24.39-.57.13-1.24.2-2.01.2-2.21-.04-3.87-.7-4.98-1.96Q1 15.135 1 12.21c.05-2.31.72-4.08 2-5.32C4.32 5.64 5.96 5 7.94 5c.75 0 1.4.07 1.94.19s.94.25 1.2.4l-.58 2.49-1.06-.34c-.4-.1-.86-.15-1.39-.15-1.16-.01-2.12.36-2.87 1.1-.76.73-1.15 1.85-1.18 3.34 0 1.36.37 2.42 1.08 3.2.71.77 1.71 1.17 2.99 1.18l1.33-.12c.43-.08.79-.19 1.1-.32M11 11h2V9h2v2h2v2h-2v2h-2v-2h-2zm7 0h2V9h2v2h2v2h-2v2h-2v-2h-2z"/></svg></span> C++</a><a class="headerlink" href="#delaunay_triangulation-c" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">delaunay_triangulation</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+</code></pre></div>
+<p>Compute the Delaunay triangulation of a 2D point set using CGAL.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 2 list of 2D vertex positions</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>F  #F by 3 triangle indices into V</li>
+</ul>
+<h3 id="extract_cells">extract_cells<a class="headerlink" href="#extract_cells" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">extract_cells</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">F</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]]</span>
+</code></pre></div>
+<p>Extract connected 3D cells partitioned by a triangle mesh.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 array of vertices</li>
+<li><code>F</code> — #F by 3 array of triangle indices</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>tuple (num_cells, cells): - num_cells  number of cells (cell 0 is the infinite outer cell) - cells  #F by 2 array of cell indices; cells[i,0] is the cell on the positive side of face i, cells[i,1] is on the negative side</li>
+</ul>
+<h3 id="fast_winding_number-c">fast_winding_number  <a class="cpp-xref" href="https://libigl.github.io/dox/fast_winding_number_8h.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10.5 15.97.41 2.44c-.26.14-.68.27-1.24.39-.57.13-1.24.2-2.01.2-2.21-.04-3.87-.7-4.98-1.96Q1 15.135 1 12.21c.05-2.31.72-4.08 2-5.32C4.32 5.64 5.96 5 7.94 5c.75 0 1.4.07 1.94.19s.94.25 1.2.4l-.58 2.49-1.06-.34c-.4-.1-.86-.15-1.39-.15-1.16-.01-2.12.36-2.87 1.1-.76.73-1.15 1.85-1.18 3.34 0 1.36.37 2.42 1.08 3.2.71.77 1.71 1.17 2.99 1.18l1.33-.12c.43-.08.79-.19 1.1-.32M11 11h2V9h2v2h2v2h-2v2h-2v-2h-2zm7 0h2V9h2v2h2v2h-2v2h-2v-2h-2z"/></svg></span> C++</a><a class="headerlink" href="#fast_winding_number-c" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">fast_winding_number</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">N</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">Q</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">expansion_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+</code></pre></div>
+<p>Evaluate the fast winding number for point data with adjustable accuracy.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>P</code> — #P by 3 list of point locations</li>
+<li><code>N</code> — #P by 3 list of point normals</li>
+<li><code>Q</code> — #Q by 3 list of query points for the winding number</li>
+<li><code>expansion_order</code> — Order of the Taylor expansion (0, 1, or 2)</li>
+<li><code>beta</code> — Barnes-Hut style accuracy parameter (recommended: 2)</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Vector of winding number values for each query point</li>
+</ul>
+<h3 id="intersect_other">intersect_other<a class="headerlink" href="#intersect_other" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">intersect_other</span><span class="p">(</span><span class="n">VA</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">FA</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">VB</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">FB</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">detect_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">first_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stitch_all</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">slow_and_more_precise_rounding</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Detect intersecting faces between two triangle meshes, providing detailed output.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>VA</code> — #V by 3 list of vertices for first mesh</li>
+<li><code>FA</code> — #F by 3 list of faces for first mesh</li>
+<li><code>VB</code> — #V by 3 list of vertices for second mesh</li>
+<li><code>FB</code> — #F by 3 list of faces for second mesh</li>
+<li><code>detect_only</code> — only detect intersections, do not resolve</li>
+<li><code>first_only</code> — only return first intersection</li>
+<li><code>stitch_all</code> — stitch all intersections</li>
+<li><code>slow_and_more_precise_rounding</code> — use slow and more precise rounding</li>
+<li><code>cutoff</code> — maximum number of intersections to resolve</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple containing: - success: bool indicating if the operation succeeded - IF: # intersecting face pairs - VVAB: list of intersection vertex positions - FFAB: list of triangle indices into VVAB - JAB: list of indices into [FA;FB] denoting the birth triangle - IMAB: indices stitching duplicates from intersections</li>
+</ul>
+<h3 id="intersect_with_half_space">intersect_with_half_space<a class="headerlink" href="#intersect_with_half_space" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">intersect_with_half_space</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">F</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">p</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">n</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Intersect a PWN mesh with a half-space using a point and normal.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 list of mesh vertex positions</li>
+<li><code>F</code> — #F by 3 list of triangle indices</li>
+<li><code>p</code> — 3D point on plane</li>
+<li><code>n</code> — 3D normal vector</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple containing: - success: bool, true if successful - VC: vertices of resulting mesh - FC: face indices of resulting mesh - J: birth facet indices</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">intersect_with_half_space</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">F</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">equ</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Intersect a PWN mesh with a half-space using the plane equation.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 list of mesh vertex positions</li>
+<li><code>F</code> — #F by 3 list of triangle indices</li>
+<li><code>equ</code> — Plane equation coefficients (a, b, c, d)</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple containing: - success: bool, true if successful - VC: vertices of resulting mesh - FC: face indices of resulting mesh - J: birth facet indices</li>
+</ul>
+<h3 id="mesh_boolean">mesh_boolean<a class="headerlink" href="#mesh_boolean" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">mesh_boolean</span><span class="p">(</span><span class="n">VA</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">FA</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">VB</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">FB</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">type_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">Ellipsis</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Compute the boolean operation (union, intersection, difference, etc.) between two meshes.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>VA</code> — #VA by dim matrix of mesh A vertices</li>
+<li><code>FA</code> — #FA by simplex_size matrix of mesh A faces</li>
+<li><code>VB</code> — #VB by dim matrix of mesh B vertices</li>
+<li><code>FB</code> — #FB by simplex_size matrix of mesh B faces</li>
+<li><code>type_str</code> — Type of boolean operation: "union", "intersection", "difference", etc.</li>
+<li><code>VC</code> — #VC by dim matrix of result vertices</li>
+<li><code>FC</code> — #FC by simplex_size matrix of result faces</li>
+<li><code>J</code> — #FC list of indices indicating which input face contributed to each result face</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple containing: - VC: Result vertices - FC: Result faces - J: Face origin indices</li>
+</ul>
+<h3 id="oriented_bounding_box-c">oriented_bounding_box  <a class="cpp-xref" href="https://libigl.github.io/dox/oriented_bounding_box_8h.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10.5 15.97.41 2.44c-.26.14-.68.27-1.24.39-.57.13-1.24.2-2.01.2-2.21-.04-3.87-.7-4.98-1.96Q1 15.135 1 12.21c.05-2.31.72-4.08 2-5.32C4.32 5.64 5.96 5 7.94 5c.75 0 1.4.07 1.94.19s.94.25 1.2.4l-.58 2.49-1.06-.34c-.4-.1-.86-.15-1.39-.15-1.16-.01-2.12.36-2.87 1.1-.76.73-1.15 1.85-1.18 3.34 0 1.36.37 2.42 1.08 3.2.71.77 1.71 1.17 2.99 1.18l1.33-.12c.43-.08.79-.19 1.1-.32M11 11h2V9h2v2h2v2h-2v2h-2v-2h-2zm7 0h2V9h2v2h2v2h-2v2h-2v-2h-2z"/></svg></span> C++</a><a class="headerlink" href="#oriented_bounding_box-c" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">oriented_bounding_box</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+</code></pre></div>
+<p>Given a set of points compute the rotation transformation of them such
+that their axis-aligned bounding box is as small as possible.</p>
+<p>igl::oriented_bounding_box is often faster and better</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>P</code> — #P by 3 list of point locations</li>
+<li><code>R</code> — rotation matrix</li>
+</ul>
+<h3 id="outer_hull">outer_hull<a class="headerlink" href="#outer_hull" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">outer_hull</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">F</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="nb">bool</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Compute the outer hull of a piecewise-constant winding number mesh.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 list of vertex positions</li>
+<li><code>F</code> — #F by 3 list of triangle indices into V</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>tuple (HV, HF, J, flip): - HV    #HV by 3 output vertex positions - HF    #HF by 3 output triangle indices into HV - J     #HF list of indices into F (birth faces) - flip  #HF list of bools, true if facet was flipped</li>
+</ul>
+<h3 id="peel_outer_hull_layers">peel_outer_hull_layers<a class="headerlink" href="#peel_outer_hull_layers" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">peel_outer_hull_layers</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">F</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="nb">bool</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span>
+</code></pre></div>
+<p>Successively peel outer hull layers from a mesh, useful for boolean operations.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 list of vertex positions</li>
+<li><code>F</code> — #F by 3 list of triangle indices into V</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>tuple (I, flip, num_peels): - I         #F list of which peel layer each facet belongs to - flip      #F list of bools, true if facet orientation was flipped during peeling - num_peels number of peel layers</li>
+</ul>
+<h3 id="peel_winding_number_layers">peel_winding_number_layers<a class="headerlink" href="#peel_winding_number_layers" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">peel_winding_number_layers</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">F</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span>
+</code></pre></div>
+<p>Peel winding number layers from a mesh.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 list of vertex positions</li>
+<li><code>F</code> — #F by 3 list of triangle indices into V</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>tuple (W, num_layers): - W          #V list of integer winding numbers per vertex - num_layers number of winding number layers</li>
+</ul>
+<h3 id="point_areas">point_areas<a class="headerlink" href="#point_areas" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">point_areas</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">I</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">N</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]]</span>
+</code></pre></div>
+<p>Given a 3D set of points P, each with a list of k-nearest-neighbours,
+estimate the geodesic voronoi area associated with each point.</p>
+<p>The k nearest neighbours may be known from running igl::knn_octree on
+the output data from igl::octree. We reccomend using a k value
+between 15 and 20 inclusive for accurate area estimation.</p>
+<p>N is used filter the neighbours, to ensure area estimation only occurs
+using neighbors that are on the same side of the surface (ie for thin
+sheets), as well as to solve the orientation ambiguity of the tangent
+plane normal.</p>
+<p>\note This function <em>should</em> be implemented by pre-filtering I, rather
+than filtering in this function using N. In this case, the function
+would only take P and I as input.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>P</code> — #P by 3 list of point locations</li>
+<li><code>I</code> — #P by k list of k-nearest-neighbor indices into P</li>
+<li><code>N</code> — #P by 3 list of point normals</li>
+<li><code>A</code> — #P list of estimated areas</li>
+<li><code>T</code> — #P by 3 list of tangent plane normals for each point</li>
+</ul>
+<h3 id="remesh_self_intersections">remesh_self_intersections<a class="headerlink" href="#remesh_self_intersections" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">remesh_self_intersections</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">F</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">detect_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">first_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stitch_all</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">slow_and_more_precise_rounding</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Resolve self-intersections in a mesh, without returning unique vertex indices (IM).</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 list of vertex positions</li>
+<li><code>F</code> — #F by 3 list of face indices</li>
+<li><code>detect_only</code> — only detect intersections, do not resolve</li>
+<li><code>first_only</code> — only return first intersection</li>
+<li><code>stitch_all</code> — stitch all intersections</li>
+<li><code>slow_and_more_precise_rounding</code> — use slow and more precise rounding</li>
+<li><code>cutoff</code> — maximum number of intersections to resolve</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple containing: - VV: remeshed vertex positions - FF: remeshed face indices - IF: intersecting face pairs - J: birth triangle indices - IM if stitch_all = true   #VV list from 0 to #VV-1 elseif stitch_all = false  #VV list of indices into VV of unique vertices.</li>
+</ul>
+<h3 id="trim_with_solid">trim_with_solid<a class="headerlink" href="#trim_with_solid" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">trim_with_solid</span><span class="p">(</span><span class="n">VA</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">FA</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">VB</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">FB</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="nb">bool</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Trim a mesh with another solid mesh, determining which faces lie inside or outside.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>VA</code> — Vertex positions of mesh A</li>
+<li><code>FA</code> — Triangle indices of mesh A</li>
+<li><code>VB</code> — Vertex positions of mesh B (solid)</li>
+<li><code>FB</code> — Triangle indices of mesh B</li>
+<li><code>V</code> — Output vertex positions</li>
+<li><code>F</code> — Output triangle indices</li>
+<li><code>D</code> — Boolean vector indicating if each face is inside B</li>
+<li><code>J</code> — Indices into FA showing parent triangle</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.top", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

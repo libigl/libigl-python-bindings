@@ -10,29 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://libigl.github.io/libigl-python-bindings/">
+        <link rel="canonical" href="https://libigl.github.io/libigl-python-bindings/api/igl_spectra/">
       
       
+        <link rel="prev" href="../igl_triangle/">
       
-        <link rel="next" href="install/">
+      
+        <link rel="next" href="../../contributing/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>libigl Python bindings</title>
+        <title>igl.spectra - libigl Python bindings</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#libigl-python-bindings" class="md-skip">
+        <a href="#iglspectra" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="libigl Python bindings" class="md-header__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
+    <a href="../.." title="libigl Python bindings" class="md-header__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              igl.spectra
             
           </span>
         </div>
@@ -221,11 +223,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -244,7 +244,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="install/" class="md-tabs__link">
+      <a href="../../install/" class="md-tabs__link">
         
   
   
@@ -261,11 +261,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -283,7 +285,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="contributing/" class="md-tabs__link">
+      <a href="../../contributing/" class="md-tabs__link">
         
   
   
@@ -318,7 +320,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="libigl Python bindings" class="md-nav__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
+    <a href="../.." title="libigl Python bindings" class="md-nav__button md-logo" aria-label="libigl Python bindings" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -345,37 +347,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -391,48 +366,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to go next
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modules
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -444,7 +377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="install/" class="md-nav__link">
+      <a href="../../install/" class="md-nav__link">
         
   
   
@@ -468,24 +401,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -503,7 +441,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -521,7 +459,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -549,7 +487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl/" class="md-nav__link">
+      <a href="../igl/" class="md-nav__link">
         
   
   
@@ -577,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_predicates/" class="md-nav__link">
+      <a href="../igl_predicates/" class="md-nav__link">
         
   
   
@@ -605,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_cycodebase/" class="md-nav__link">
+      <a href="../igl_cycodebase/" class="md-nav__link">
         
   
   
@@ -633,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_copyleft/" class="md-nav__link">
+      <a href="../igl_copyleft/" class="md-nav__link">
         
   
   
@@ -661,7 +599,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_copyleft_cgal/" class="md-nav__link">
+      <a href="../igl_copyleft_cgal/" class="md-nav__link">
         
   
   
@@ -689,7 +627,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_copyleft_tetgen/" class="md-nav__link">
+      <a href="../igl_copyleft_tetgen/" class="md-nav__link">
         
   
   
@@ -717,7 +655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_embree/" class="md-nav__link">
+      <a href="../igl_embree/" class="md-nav__link">
         
   
   
@@ -745,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/igl_triangle/" class="md-nav__link">
+      <a href="../igl_triangle/" class="md-nav__link">
         
   
   
@@ -770,10 +708,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="api/igl_spectra/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    igl.spectra
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -789,6 +754,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#eigs-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eigs C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lscm-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lscm C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-eigstype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        class EigsType
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -808,7 +826,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         
   
   
@@ -855,10 +873,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
+  <a href="#eigs-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where to go next
+        eigs C++
       
     </span>
   </a>
@@ -866,10 +884,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#modules" class="md-nav__link">
+  <a href="#lscm-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modules
+        lscm C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-eigstype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        class EigsType
       
     </span>
   </a>
@@ -896,77 +925,63 @@
   
 
 
-<h1 id="libigl-python-bindings">libigl Python bindings<a class="headerlink" href="#libigl-python-bindings" title="Permanent link">&para;</a></h1>
-<p><a href="https://pypi.org/project/libigl/"><img alt="PyPI version" src="https://badge.fury.io/py/libigl.svg" /></a>
-<a href="https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml?query=branch%3Amain"><img alt="build wheels" src="https://github.com/libigl/libigl-python-bindings/actions/workflows/wheels.yml/badge.svg" /></a></p>
-<p>Python bindings for <a href="https://libigl.github.io">libigl</a> — a simple C++ geometry
-processing library. The bindings are NumPy-native: meshes are plain arrays
-(<code>V</code> an <code>#V by 3</code> float array of vertices, <code>F</code> an <code>#F by 3</code> int array of faces),
-and every function returns NumPy arrays or SciPy sparse matrices.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>libigl
+<h1 id="iglspectra">igl.spectra<a class="headerlink" href="#iglspectra" title="Permanent link">&para;</a></h1>
+<p>Python API reference for <code>igl.spectra</code>.</p>
+<h3 id="eigs-c">eigs  <a class="cpp-xref" href="https://libigl.github.io/dox/eigs_8h.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10.5 15.97.41 2.44c-.26.14-.68.27-1.24.39-.57.13-1.24.2-2.01.2-2.21-.04-3.87-.7-4.98-1.96Q1 15.135 1 12.21c.05-2.31.72-4.08 2-5.32C4.32 5.64 5.96 5 7.94 5c.75 0 1.4.07 1.94.19s.94.25 1.2.4l-.58 2.49-1.06-.34c-.4-.1-.86-.15-1.39-.15-1.16-.01-2.12.36-2.87 1.1-.76.73-1.15 1.85-1.18 3.34 0 1.36.37 2.42 1.08 3.2.71.77 1.71 1.17 2.99 1.18l1.33-.12c.43-.08.79-.19 1.1-.32M11 11h2V9h2v2h2v2h-2v2h-2v-2h-2zm7 0h2V9h2v2h2v2h-2v2h-2v-2h-2z"/></svg></span> C++</a><a class="headerlink" href="#eigs-c" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">B</span><span class="p">:</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="n">EigsType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">igl</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">V</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">read_triangle_mesh</span><span class="p">(</span><span class="s2">&quot;bunny.obj&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">L</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">cotmatrix</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>                 <span class="c1"># sparse cotangent Laplacian</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">N</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">per_vertex_normals</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>        <span class="c1"># per-vertex normals</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">K</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">gaussian_curvature</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>        <span class="c1"># discrete Gaussian curvature</span>
+<p>Compute the first/last k eigen pairs of the generalized eigenvalue problem:</p>
+<div class="highlight"><pre><span></span><code>A u = s B u
 </code></pre></div>
-<h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
+<p>Solutions are approximate and sorted. Only EIGS_TYPE_SM (smallest magnitude)
+is well supported.</p>
+<p><strong>Parameters</strong></p>
 <ul>
-<li><strong><a href="api/">API Reference</a></strong> — every bound function and class, grouped by
-  module, generated directly from the installed package. Functions that also
-  exist in C++ link straight to the <a href="https://libigl.github.io/dox/">C++ Doxygen reference</a>.</li>
-<li><strong><a href="install/">Installation</a></strong> — pip, optional modules, and building from
-  source.</li>
+<li><code>A</code> — #A by #A symmetric sparse matrix</li>
+<li><code>B</code> — #A by #A symmetric positive-definite sparse matrix</li>
+<li><code>k</code> — number of eigen pairs to compute</li>
+<li><code>type</code> — EigsType.EIGS_TYPE_SM or EigsType.EIGS_TYPE_LM</li>
+<li><code>U</code> — #A by k matrix of sorted eigenvectors (descending)</li>
+<li><code>S</code> — k vector of sorted eigenvalues (descending)</li>
 </ul>
-<h2 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h2>
-<p>The core functionality lives in <code>igl</code>. Additional functionality that depends on
-third-party libraries is grouped into submodules:</p>
-<table>
-<thead>
-<tr>
-<th>Module</th>
-<th>Contents</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>igl</code></td>
-<td>core geometry processing (Laplacians, curvature, distances, parametrization, deformation, …)</td>
-</tr>
-<tr>
-<td><code>igl.predicates</code></td>
-<td>exact geometric predicates (orientation, incircle, winding numbers)</td>
-</tr>
-<tr>
-<td><code>igl.cycodebase</code></td>
-<td>cubic Bézier / spline distance and root-finding</td>
-</tr>
-<tr>
-<td><code>igl.copyleft</code>, <code>igl.copyleft.cgal</code>, <code>igl.copyleft.tetgen</code></td>
-<td>GPL-licensed functionality (booleans, meshing)</td>
-</tr>
-<tr>
-<td><code>igl.embree</code></td>
-<td>Embree-accelerated ray casting and ambient occlusion</td>
-</tr>
-<tr>
-<td><code>igl.triangle</code></td>
-<td>Triangle-based 2D meshing</td>
-</tr>
-<tr>
-<td><code>igl.spectra</code></td>
-<td>Spectra-based sparse eigensolves</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>These bindings are under active development. If a function you need is
-missing, please <a href="https://github.com/libigl/libigl-python-bindings/issues">open an issue</a>.</p>
-</div>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple (U, S)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">B</span><span class="p">:</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">]]</span>
+</code></pre></div>
+<p>Compute k eigen pairs of A u = s B u with a shift: A ← A + sigma * B.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>A</code> — #A by #A symmetric sparse matrix</li>
+<li><code>B</code> — #A by #A symmetric positive-definite sparse matrix</li>
+<li><code>k</code> — number of eigen pairs to compute</li>
+<li><code>sigma</code> — shift to apply to A</li>
+<li><code>U</code> — #A by k matrix of sorted eigenvectors (descending)</li>
+<li><code>S</code> — k vector of sorted eigenvalues (descending)</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Tuple (U, S)</li>
+</ul>
+<h3 id="lscm-c">lscm  <a class="cpp-xref" href="https://libigl.github.io/dox/lscm_8h.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10.5 15.97.41 2.44c-.26.14-.68.27-1.24.39-.57.13-1.24.2-2.01.2-2.21-.04-3.87-.7-4.98-1.96Q1 15.135 1 12.21c.05-2.31.72-4.08 2-5.32C4.32 5.64 5.96 5 7.94 5c.75 0 1.4.07 1.94.19s.94.25 1.2.4l-.58 2.49-1.06-.34c-.4-.1-.86-.15-1.39-.15-1.16-.01-2.12.36-2.87 1.1-.76.73-1.15 1.85-1.18 3.34 0 1.36.37 2.42 1.08 3.2.71.77 1.71 1.17 2.99 1.18l1.33-.12c.43-.08.79-.19 1.1-.32M11 11h2V9h2v2h2v2h-2v2h-2v-2h-2zm7 0h2V9h2v2h2v2h-2v2h-2v-2h-2z"/></svg></span> C++</a><a class="headerlink" href="#lscm-c" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">lscm</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">F</span><span class="p">:</span> <span class="n">int64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">float64</span><span class="p">[</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+</code></pre></div>
+<p>Compute a free-boundary least-squares conformal map parametrization using
+spectral decomposition. Assumes the mesh is a single connected component
+topologically equivalent to a disk.</p>
+<p>Implements "Spectral Conformal Parameterization" [Mullen et al. 2008].</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>V</code> — #V by 3 list of mesh vertex positions</li>
+<li><code>F</code> — #F by 3 list of mesh face indices (triangles)</li>
+<li><code>UV</code> — #V by 2 list of UV coordinates</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>UV coordinates</li>
+</ul>
+<h3 id="class-eigstype">class EigsType<a class="headerlink" href="#class-eigstype" title="Permanent link">&para;</a></h3>
 
 
 
@@ -1022,10 +1037,10 @@ missing, please <a href="https://github.com/libigl/libigl-python-bindings/issues
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.instant", "navigation.tabs", "navigation.top", "search.highlight", "content.code.copy", "toc.follow"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.top", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
       
