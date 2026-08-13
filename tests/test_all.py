@@ -1715,6 +1715,37 @@ def test_cycodebase_spline_eytzinger_aabb_and_distance():
     assert np.isclose(sqrD[1], 0.0, atol=1e-12)
 
 
+def test_cycodebase_point_spline_squared_distance_aabb_reuse():
+    # Build the Eytzinger AABB once, then reuse it across query sets without
+    # rebuilding. Accelerated results must match the unaccelerated overload.
+    P, C = _unit_square_spline()
+    B1, B2, leaf = igl.cycodebase.spline_eytzinger_aabb(P, C)
+
+    Q = np.array([[0.5, 0.5], [0.5, 0.0], [0.2, 0.9], [1.1, 0.3]])
+    ref = igl.cycodebase.point_spline_squared_distance(Q, P, C)
+    fast = igl.cycodebase.point_spline_squared_distance(Q, P, C, B1, B2, leaf)
+    for a, b in zip(ref, fast):
+        assert np.allclose(a, b)
+
+    # Reuse the same tree for a different query set.
+    Q2 = np.array([[0.9, 0.9], [0.5, 0.5]])
+    sqrD2, I2, S2, K2 = igl.cycodebase.point_spline_squared_distance(
+        Q2, P, C, B1, B2, leaf)
+    assert sqrD2.shape == (2,)
+    assert np.isclose(sqrD2[1], 0.25, atol=1e-12)
+
+
+def test_cycodebase_point_cubic_squared_distance_bases_reuse():
+    # Precompute the monomial bases once, then reuse across query sets.
+    C = np.array([[0.0, 0.0], [1.0, 2.0], [2.0, -2.0], [3.0, 0.0]])
+    Q = np.array([[1.5, 0.0], [2.0, 0.5], [2.5, 1.0]])
+    ref = igl.cycodebase.point_cubic_squared_distance(Q, C)
+    M, D, B = igl.cubic_monomial_bases(C)
+    fast = igl.cycodebase.point_cubic_squared_distance(Q, C, D, B)
+    for a, b in zip(ref, fast):
+        assert np.allclose(a, b)
+
+
 # --------------------------------------------------------------------------
 # New predicates for cubic Bézier curves / splines
 # --------------------------------------------------------------------------
