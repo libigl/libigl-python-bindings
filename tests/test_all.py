@@ -625,7 +625,8 @@ def test_octree():
     h = h0 / (2**max_depth)
     unique_ijk, J, unique_corners = igl.unique_sparse_voxel_corners(origin,h0,max_depth,ijk)
     unique_S = sdf_sphere(unique_corners)
-    V,F = igl.marching_cubes(unique_S,unique_corners,J,0.0)
+    V,F,E2V = igl.marching_cubes(unique_S,unique_corners,J,0.0)
+    EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
 
 def test_is_intrinsic_delaunay() -> None:
     # vs and fs come from a simple plane from pyvista
