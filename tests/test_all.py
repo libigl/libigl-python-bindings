@@ -627,7 +627,7 @@ def test_octree():
     unique_S = sdf_sphere(unique_corners)
     V,F,E2V = igl.marching_cubes(unique_S,unique_corners,J,0.0)
     EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64).reshape((-1,3))
-    assert EV.shape[1] == 3
+    assert len(E2V) == EV.shape[0]
     assert np.all(EV[:,2] >= 0)
     assert np.all(EV[:,2] < V.shape[0])
 
