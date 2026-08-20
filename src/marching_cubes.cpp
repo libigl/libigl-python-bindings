@@ -69,7 +69,7 @@ points, and generates a mesh defined by vertices and faces
 @param[out] E2V  map from edge key to index into rows of V
 
 # unpack keys into (i,j,v) index triplets
-EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
+E2V_triplets = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
 )");
 
   m.def(
@@ -91,6 +91,6 @@ points, and generates a mesh defined by vertices and faces
 @param[out] E2V  map from edge key to index into rows of V
 
 # unpack keys into (i,j,v) index triplets
-EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
+E2V_triplets = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
 )");
 }
