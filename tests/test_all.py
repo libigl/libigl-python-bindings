@@ -627,6 +627,8 @@ def test_octree():
     unique_ijk, J, unique_corners = igl.unique_sparse_voxel_corners(origin,h0,max_depth,ijk)
     unique_S = sdf_sphere(unique_corners)
     V,F,E2V = igl.marching_cubes(unique_S,unique_corners,J,0.0)
+    assert V.shape[0] > 0
+    assert F.shape[0] > 0
     EV_list = [[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()]
     EV = np.array(EV_list, dtype=np.int64) if EV_list else np.empty((0,3), dtype=np.int64)
     assert len(E2V) == EV.shape[0]
