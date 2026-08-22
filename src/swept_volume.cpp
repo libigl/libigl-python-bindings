@@ -1,11 +1,10 @@
 #include "default_types.h"
+#include "parse_transforms.h"
 #include <igl/swept_volume.h>
 #include <nanobind/nanobind.h>
 #include <nanobind/eigen/dense.h>
 #include <nanobind/stl/tuple.h>
 #include <nanobind/stl/vector.h>
-#include <Eigen/Geometry>
-#include <stdexcept>
 #include <vector>
 
 namespace nb = nanobind;
@@ -22,24 +21,7 @@ namespace pyigl
     const Integer grid_res,
     const Numeric isolevel)
   {
-    typedef Eigen::Transform<Numeric,3,Eigen::Affine> AffineN3;
-    if(transforms.empty())
-    {
-      throw std::runtime_error("swept_volume: transforms must be non-empty");
-    }
-    std::vector<AffineN3,Eigen::aligned_allocator<AffineN3> > T;
-    T.reserve(transforms.size());
-    for(const auto & M : transforms)
-    {
-      if(M.cols() != 4 || (M.rows() != 3 && M.rows() != 4))
-      {
-        throw std::runtime_error("swept_volume: each transform must be 3×4 or 4×4");
-      }
-      AffineN3 Ti;
-      Ti.matrix().setIdentity();
-      Ti.matrix().topRows(M.rows()) = M;
-      T.emplace_back(Ti);
-    }
+    const AffineN3List T = parse_transforms(transforms,"swept_volume");
     Eigen::MatrixXN SV;
     Eigen::MatrixXI SF;
     igl::swept_volume(V,F,T,sign_type,grid_res,isolevel,SV,SF);

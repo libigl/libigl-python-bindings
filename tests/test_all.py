@@ -1977,3 +1977,65 @@ def test_swept_volume():
         igl.swept_volume(V,F,[])
     with pytest.raises(RuntimeError):
         igl.swept_volume(V,F,[np.eye(3)])
+
+def swept_translation(n=5,dist=2.0):
+    """#n by 4 by 4 list of transforms translating `dist` along x."""
+    T = np.tile(np.eye(4,dtype=np.float64),(n,1,1))
+    T[:,0,3] = np.linspace(0,dist,n)
+    return T
+
+def test_swept_volume_bounding_box():
+    V,F = igl.icosahedron()
+    T = swept_translation()
+    mn,mx = igl.swept_volume_bounding_box(V,T)
+    assert mn.dtype == np.float64
+    assert mx.dtype == np.float64
+    assert mn.shape == (3,)
+    assert mx.shape == (3,)
+    assert np.all(mn <= mx)
+    # Box is the reference pose's box swept 2 units along x
+    assert np.allclose(mn,V.min(axis=0))
+    assert np.allclose(mx,V.max(axis=0)+np.array([2.0,0,0]))
+    # 3x4 transforms give the same box
+    mn2,mx2 = igl.swept_volume_bounding_box(V,[Ti[:3,:] for Ti in T])
+    assert np.allclose(mn,mn2)
+    assert np.allclose(mx,mx2)
+    with pytest.raises(RuntimeError):
+        igl.swept_volume_bounding_box(V,[])
+
+def test_swept_volume_signed_distance():
+    V,F = igl.icosahedron()
+    T = swept_translation()
+    grid_res = 16
+    isolevel = 0.0
+    mn,mx = igl.swept_volume_bounding_box(V,T)
+    h = (mx-mn).max()/(grid_res-1)
+    pad = max(int(np.ceil(isolevel/h)),0)+1
+    GV,res = igl.voxel_grid(np.vstack([mn,mx]),0.0,s=grid_res+2*pad,pad_count=pad)
+    S = igl.swept_volume_signed_distance(
+        V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,GV,res,h,isolevel)
+    assert S.dtype == np.float64
+    assert S.shape == (GV.shape[0],)
+    assert not np.any(np.isnan(S))
+    # Signs straddle the surface
+    assert S.min() < 0 and S.max() > 0
+    # Contouring these values reproduces igl.swept_volume exactly
+    SV,SF,_ = igl.marching_cubes(
+        S-isolevel,GV,int(res[0]),int(res[1]),int(res[2]),0.0)
+    SV2,SF2 = igl.swept_volume(
+        V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,grid_res,isolevel)
+    assert np.allclose(SV,SV2)
+    assert np.array_equal(SF,SF2)
+    # Feeding the result back in as S0 takes a min with itself: idempotent
+    S2 = igl.swept_volume_signed_distance(
+        V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,GV,res,h,isolevel,S)
+    assert np.allclose(S,S2)
+    # isolevel=inf (the default) is exact everywhere, so no NaNs to flood fill
+    Sinf = igl.swept_volume_signed_distance(V,F,T,GV=GV,res=res,h=h)
+    assert not np.any(np.isnan(Sinf))
+    near = np.abs(Sinf) < h
+    assert np.allclose(S[near],Sinf[near])
+    with pytest.raises(RuntimeError):
+        igl.swept_volume_signed_distance(V,F,T,GV=GV,res=res[:2],h=h)
+    with pytest.raises(RuntimeError):
+        igl.swept_volume_signed_distance(V,F,T,GV=GV,res=res,h=h,S0=S[:5])
