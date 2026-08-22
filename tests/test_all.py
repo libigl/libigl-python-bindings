@@ -1950,3 +1950,30 @@ def test_vertex_components_from_adjacency_matrix():
     # counts is per-component and sums to the number of vertices
     assert counts.sum() == n
     assert sorted(counts.ravel().tolist()) == [2, 3]
+
+def test_swept_volume():
+    V,F = igl.icosahedron()
+    # Rigid motion: translate 2 units along x in 5 steps
+    T = np.tile(np.eye(4,dtype=np.float64),(5,1,1))
+    T[:,0,3] = np.linspace(0,2,5)
+    SV,SF = igl.swept_volume(V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,16,0.0)
+    assert SV.dtype == np.float64
+    assert SF.dtype == np.int64
+    assert SV.shape[1] == 3
+    assert SF.shape[1] == 3
+    assert SV.shape[0] > 0
+    assert SF.shape[0] > 0
+    # Swept volume spans the motion (icosahedron has unit-ish radius)
+    assert SV[:,0].min() < -0.5
+    assert SV[:,0].max() > 2.5
+    # A list of 3×4 transforms is accepted and equivalent
+    SV2,SF2 = igl.swept_volume(V,F,[Ti[:3,:] for Ti in T],grid_res=16)
+    assert np.allclose(SV,SV2)
+    assert np.array_equal(SF,SF2)
+    # A positive isolevel dilates the result
+    SV3,SF3 = igl.swept_volume(V,F,T,grid_res=16,isolevel=0.25)
+    assert SV3[:,1].max() > SV[:,1].max()
+    with pytest.raises(RuntimeError):
+        igl.swept_volume(V,F,[])
+    with pytest.raises(RuntimeError):
+        igl.swept_volume(V,F,[np.eye(3)])
