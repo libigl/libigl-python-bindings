@@ -359,6 +359,25 @@ def test_voxel():
     GV,side = igl.voxel_grid(V,s=10)
     GV,side = igl.voxel_grid(V,s=10,offset=0.1,pad_count=2)
 
+def test_voxel_grid_box():
+    V,_,_ = single_tet()
+    min_corner = V.min(axis=0)
+    max_corner = V.max(axis=0)
+    GV,side = igl.voxel_grid(min_corner,max_corner,s=10,pad_count=2)
+    assert GV.dtype == np.float64
+    assert side.dtype == np.int64
+    assert GV.shape == (np.prod(side),3)
+    assert side.shape == (3,)
+    # Enclosing the corners is the same as enclosing the points themselves
+    GV2,side2 = igl.voxel_grid(V,0.0,s=10,pad_count=2)
+    assert np.allclose(GV,GV2)
+    assert np.array_equal(side,side2)
+    # Positional args resolve to the box overload too
+    GV3,side3 = igl.voxel_grid(min_corner,max_corner,10,2)
+    assert np.allclose(GV,GV3)
+    with pytest.raises(RuntimeError):
+        igl.voxel_grid(min_corner[:2],max_corner,s=10)
+
 
 def test_sample():
     V,F = igl.icosahedron()
@@ -2011,7 +2030,7 @@ def test_swept_volume_signed_distance():
     mn,mx = igl.swept_volume_bounding_box(V,T)
     h = (mx-mn).max()/(grid_res-1)
     pad = max(int(np.ceil(isolevel/h)),0)+1
-    GV,res = igl.voxel_grid(np.vstack([mn,mx]),0.0,s=grid_res+2*pad,pad_count=pad)
+    GV,res = igl.voxel_grid(mn,mx,s=grid_res+2*pad,pad_count=pad)
     S = igl.swept_volume_signed_distance(
         V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,GV,res,h,isolevel)
     assert S.dtype == np.float64
