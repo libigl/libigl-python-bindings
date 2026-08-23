@@ -74,24 +74,107 @@ jobs:
           overwrite: false
           include-hidden-files: false
 
+  check_version:
+    name: Check for a version bump
+    # Only a push to main can release; PRs and workflow_dispatch never do.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+      version: ${{ steps.check.outputs.version }}
+      prerelease: ${{ steps.check.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Need history to read pyproject.toml as of the previous commit
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'   # tomllib needs >=3.11
+      - name: Compare pyproject.toml version against the previous commit
+        id: check
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+
+          # Read project.version from pyproject.toml at a given revision
+          # (empty revision = the working tree)
+          read_version() {
+            if [ -z "${1:-}" ]; then cat pyproject.toml; else git show "$1:pyproject.toml"; fi \
+              | python3 -c 'import sys,tomllib; print(tomllib.loads(sys.stdin.read())["project"]["version"])'
+          }
+
+          version=$(read_version)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          # PEP 440 pre-releases (aN/bN/rcN/.devN) are flagged as such on GitHub.
+          # Note `.postN` is deliberately not a pre-release.
+          if printf '%s' "$version" | grep -Eq '(a[0-9]+|b[0-9]+|rc[0-9]+|\.dev[0-9]*)$'; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          # `before` is all-zeros when the branch is first created, and can point
+          # at a vanished commit after a force-push; fall back to the first parent.
+          base="$BEFORE"
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ] \
+             || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            base=$(git rev-parse --verify --quiet HEAD^ || true)
+          fi
+          if [ -z "$base" ]; then
+            echo "No previous commit to compare against; not releasing."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          previous=$(read_version "$base")
+          echo "previous version: $previous"
+          echo "current version:  $version"
+          if [ "$version" = "$previous" ]; then
+            echo "Version unchanged; not releasing."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Belt and braces: PyPI refuses to overwrite an existing version, and a
+          # re-run of this workflow would otherwise try to. Also covers the case
+          # where a bump was published by some other route.
+          if curl -sfL -o /dev/null "https://pypi.org/pypi/libigl/$version/json"; then
+            echo "libigl $version is already on PyPI; not releasing."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Version bumped $previous -> $version; releasing."
+          echo "should_release=true" >> "$GITHUB_OUTPUT"
+
   release_artifacts:
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-    needs: build_wheels
+    name: Publish ${{ needs.check_version.outputs.version }} to PyPI
+    needs: [check_version, build_sdist, build_wheels]
+    if: needs.check_version.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      contents: write
+      id-token: write   # for PyPI trusted publishing
+      contents: write   # to create the tag and GitHub release
     steps:
       - uses: actions/download-artifact@v4
         with:
           path: ./artifacts
           merge-multiple: true
       - run: ls -R ./artifacts
-      - uses: ncipollo/release-action@v1
+      - name: Tag and create a GitHub release
+        uses: ncipollo/release-action@v1
         with:
+          tag: ${{ needs.check_version.outputs.version }}
+          commit: ${{ github.sha }}
+          name: ${{ needs.check_version.outputs.version }}
+          prerelease: ${{ needs.check_version.outputs.prerelease }}
           allowUpdates: true
           artifacts: "./artifacts/**/*"
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: pypa/gh-action-pypi-publish@v1.13.0
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.13.0
         with:
           packages-dir: ./artifacts
+          skip-existing: true
