@@ -60,7 +60,7 @@ option(LIBIGL_CYCODEBASE           "Build igl::cycodebase bindings"        ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG 477e15a3d566a21f415aa5ee62992b12a836b01b
+  GIT_TAG 72217e00bae6a7e041221e187aafbdc793f905d2
 )
 FetchContent_MakeAvailable(libigl)
 
@@ -206,6 +206,5 @@ endif()
 if(LIBIGL_CYCODEBASE)
   pyigl_include("" "cycodebase")
 endif()
-
 
 

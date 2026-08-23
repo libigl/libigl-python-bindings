@@ -424,7 +424,8 @@ def test_implicit():
     S = np.sqrt(((GV - np.array([0.5,0.5,0.5],dtype=np.float64))**2).sum(axis=1))-0.25;
     V,F,E2V = igl.marching_cubes(S,GV,res[0],res[1],res[2])
     # unpack keys into (i,j,v) index triplets
-    EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
+    EV_list = [[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()]
+    EV = np.array(EV_list, dtype=np.int64) if EV_list else np.empty((0,3), dtype=np.int64)
 
     h = igl.avg_edge_length(V,F)
     m0,m1,m2 = igl.moments(V,F)
@@ -625,7 +626,14 @@ def test_octree():
     h = h0 / (2**max_depth)
     unique_ijk, J, unique_corners = igl.unique_sparse_voxel_corners(origin,h0,max_depth,ijk)
     unique_S = sdf_sphere(unique_corners)
-    V,F = igl.marching_cubes(unique_S,unique_corners,J,0.0)
+    V,F,E2V = igl.marching_cubes(unique_S,unique_corners,J,0.0)
+    assert V.shape[0] > 0
+    assert F.shape[0] > 0
+    EV_list = [[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()]
+    EV = np.array(EV_list, dtype=np.int64) if EV_list else np.empty((0,3), dtype=np.int64)
+    assert len(E2V) == EV.shape[0]
+    assert np.all(EV[:,2] >= 0)
+    assert np.all(EV[:,2] < V.shape[0])
 
 def test_is_intrinsic_delaunay() -> None:
     # vs and fs come from a simple plane from pyvista
