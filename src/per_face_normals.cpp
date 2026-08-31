@@ -20,6 +20,15 @@ namespace pyigl
     igl::per_face_normals(V,F,Z,N);
     return N;
   }
+  // Wrapper for per_face_normals_stable function
+  auto per_face_normals_stable(
+    const nb::DRef<const Eigen::MatrixXN> &V,
+    const nb::DRef<const Eigen::MatrixXI> &F)
+  {
+    Eigen::MatrixXN N;
+    igl::per_face_normals_stable(V,F,N);
+    return N;
+  }
   // Wrapper for per_face_normals function
   auto per_face_normals_VIC(
     const nb::DRef<const Eigen::MatrixXN> &V,
@@ -68,5 +77,18 @@ R"(Compute face normals via vertex position list, polygon stream
 @param[out] VV  #I+#polygons by 3 list of auxiliary triangle mesh vertex positions
 @param[out] FF  #I by 3 list of triangle indices into rows of VV
 @param[out] J  #I list of indices into original polygons)"
+    );
+  m.def(
+    "per_face_normals_stable",
+    &pyigl::per_face_normals_stable,
+    "V"_a,
+    "F"_a,
+R"(Special version of per_face_normals where the order of the face indices is
+guaranteed not to affect the output (i.e. cross products are accumulated in a
+consistent order). Degenerate faces are given a zero normal.
+
+@param[in] V  #V by 3 eigen Matrix of mesh vertex 3D positions
+@param[in] F  #F by 3 eigen Matrix of face (triangle) indices
+@param[out] N  #F by 3 eigen Matrix of mesh face (triangle) 3D normals)"
     );
 }

@@ -35,8 +35,9 @@ namespace pyigl
   {
     Eigen::MatrixXN V;
     Eigen::MatrixXI F;
-    igl::marching_cubes(S,GV,GI,isovalue,V,F);
-    return std::make_tuple(V,F);
+    std::unordered_map<std::int64_t,int> E2V;
+    igl::marching_cubes(S,GV,GI,isovalue,V,F,E2V);
+    return std::make_tuple(V,F,E2V);
   }
 }
 
@@ -68,7 +69,7 @@ points, and generates a mesh defined by vertices and faces
 @param[out] E2V  map from edge key to index into rows of V
 
 # unpack keys into (i,j,v) index triplets
-EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
+E2V_triplets = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
 )");
 
   m.def(
@@ -86,5 +87,10 @@ points, and generates a mesh defined by vertices and faces
 @param[in] GI  #GI by 8 list of grid corner indices into rows of GV
 @param[in] isovalue  the isovalue of the surface to reconstruct
 @param[out] V  #V by 3 list of mesh vertex positions
-@param[out] F  #F by 3 list of mesh triangle indices into rows of V)");
+@param[out] F  #F by 3 list of mesh triangle indices into rows of V
+@param[out] E2V  map from edge key to index into rows of V
+
+# unpack keys into (i,j,v) index triplets
+E2V_triplets = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
+)");
 }

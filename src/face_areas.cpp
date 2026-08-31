@@ -17,6 +17,14 @@ namespace pyigl
     igl::face_areas(V, T, A);
     return A;
   }
+
+  auto face_areas_intrinsic(
+    const nb::DRef<const Eigen::MatrixXN>& L)
+  {
+    Eigen::MatrixXN A;
+    igl::face_areas(L, A);
+    return A;
+  }
 }
 
 void bind_face_areas(nb::module_ &m)
@@ -27,6 +35,13 @@ void bind_face_areas(nb::module_ &m)
     R"(Constructs a list of face areas of faces opposite each index in a tet list
 @param[in] V  #V by 3 list of mesh vertex positions
 @param[in] T  #T by 3 list of tet mesh indices into V
+@param[out] A   #T by 4 list of face areas corresponding to faces opposite vertices
+    0,1,2,3)");
+  m.def("face_areas", &pyigl::face_areas_intrinsic,
+    "L"_a,
+    R"(Compute tet-mesh face areas from edge lengths.
+@param[in] L  #T by 6 list of tet-mesh edge lengths corresponding to edges
+    [1,2],[2,0],[0,1],[3,0],[3,1],[3,2]
 @param[out] A   #T by 4 list of face areas corresponding to faces opposite vertices
     0,1,2,3)");
 }
