@@ -1429,6 +1429,133 @@ def test_new_triangle_algorithms():
     assert V_ref.shape[0] >= V_tri.shape[0]
 
 
+def test_polar_svd3x3_and_fit_rotations():
+    # A = R * S with R a known rotation and S SPD; polar decomposition recovers R
+    theta = 0.7
+    c, s = np.cos(theta), np.sin(theta)
+    R = np.array([[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]])
+    # Diagonal (SPD) stretch => the closest rotation to A = R @ S is exactly R
+    S = np.diag([2.0, 1.5, 1.0])
+    A = R @ S
+    Rr = igl.polar_svd3x3(A)
+    assert Rr.shape == (3, 3)
+    # A proper rotation that recovers R
+    np.testing.assert_allclose(Rr @ Rr.T, np.eye(3), atol=1e-5)
+    assert np.isclose(np.linalg.det(Rr), 1.0)
+    np.testing.assert_allclose(Rr, R, atol=1e-5)
+    # Left polar factor A @ Rr.T is symmetric positive-(semi)definite
+    P = A @ Rr.T
+    np.testing.assert_allclose(P, P.T, atol=1e-5)
+
+    # fit_rotations wraps polar_svd3x3 on a single covariance (dim by dim*n, n=1).
+    # It stores each rotation transposed relative to polar_svd3x3 (ARAP convention).
+    Rf = igl.fit_rotations(A)
+    assert Rf.shape == (3, 3)
+    np.testing.assert_allclose(Rf @ Rf.T, np.eye(3), atol=1e-5)
+    assert np.isclose(np.linalg.det(Rf), 1.0)
+    np.testing.assert_allclose(Rf, Rr.T, atol=1e-5)
+
+
+def test_point_simplex_squared_distance():
+    V = np.array([[0.0, 0.0, 0.0],
+                  [1.0, 0.0, 0.0],
+                  [0.0, 1.0, 0.0]], dtype=np.float64)
+    Ele = np.array([[0, 1, 2]], dtype=np.int64)
+    # Point 2 above the interior point (0.25,0.25,0)
+    p = np.array([0.25, 0.25, 2.0])
+    sqr_d, c, b = igl.point_simplex_squared_distance(p, V, Ele, 0)
+    assert np.isclose(sqr_d, 4.0)
+    np.testing.assert_allclose(c, [0.25, 0.25, 0.0], atol=1e-9)
+    assert np.isclose(b.sum(), 1.0)
+    np.testing.assert_allclose(b @ V, c, atol=1e-9)
+
+    # 2D case: point-to-segment
+    V2 = np.array([[0.0, 0.0], [2.0, 0.0]], dtype=np.float64)
+    E2 = np.array([[0, 1]], dtype=np.int64)
+    sqr2, c2, b2 = igl.point_simplex_squared_distance(np.array([1.0, 3.0]), V2, E2, 0)
+    assert np.isclose(sqr2, 9.0)
+    np.testing.assert_allclose(c2, [1.0, 0.0], atol=1e-9)
+
+
+def test_quad_mesh_helpers():
+    # Unit planar square as a single quad
+    V = np.array([[0.0, 0.0, 0.0],
+                  [1.0, 0.0, 0.0],
+                  [1.0, 1.0, 0.0],
+                  [0.0, 1.0, 0.0]], dtype=np.float64)
+    F = np.array([[0, 1, 2, 3]], dtype=np.int64)
+
+    # quad_edges: 4 unique edges of the quad
+    E = igl.quad_edges(F)
+    assert E.shape == (4, 2)
+    edge_set = set(tuple(sorted(e)) for e in E.tolist())
+    assert edge_set == {(0, 1), (1, 2), (2, 3), (0, 3)}
+
+    # quad_planarity: a planar quad has ~zero non-planarity
+    P = igl.quad_planarity(V, F)
+    assert P.shape[0] == 1
+    assert np.isclose(P[0], 0.0, atol=1e-9)
+
+    # planarize_quad_mesh: a non-planar quad becomes more planar
+    Vnp = V.copy()
+    Vnp[2, 2] = 0.5  # lift one corner out of plane
+    P_before = igl.quad_planarity(Vnp, F)[0]
+    Vout = igl.planarize_quad_mesh(Vnp, F, maxIter=100, threshold=1e-4)
+    assert Vout.shape == V.shape
+    P_after = igl.quad_planarity(Vout, F)[0]
+    assert P_after <= P_before + 1e-12
+
+
+def test_ramer_douglas_peucker():
+    # Nearly-collinear first three points collapse; the sharp turn is kept
+    P = np.array([[0.0, 0.0],
+                  [1.0, 0.0001],
+                  [2.0, 0.0],
+                  [2.0, 2.0]], dtype=np.float64)
+    S, J = igl.ramer_douglas_peucker(P, 0.01)
+    # Interior near-collinear vertex (index 1) is dropped
+    assert J.tolist() == [0, 2, 3]
+    np.testing.assert_allclose(S, P[J], atol=1e-12)
+
+
+def test_path_to_edges_and_connect_boundary():
+    # path_to_edges: open path and closed loop
+    I = np.array([0, 1, 2, 3], dtype=np.int64)
+    E = igl.path_to_edges(I)
+    assert E.tolist() == [[0, 1], [1, 2], [2, 3]]
+    E_loop = igl.path_to_edges(np.array([0, 1, 2], dtype=np.int64), make_loop=True)
+    assert E_loop.tolist() == [[0, 1], [1, 2], [2, 0]]
+
+    # connect_boundary_to_infinity on an open mesh (square from two triangles)
+    V = np.array([[0.0, 0.0, 0.0],
+                  [1.0, 0.0, 0.0],
+                  [1.0, 1.0, 0.0],
+                  [0.0, 1.0, 0.0]], dtype=np.float64)
+    F = np.array([[0, 1, 2], [0, 2, 3]], dtype=np.int64)
+    # (V,F) overload appends a single new vertex at infinity
+    VO, FO = igl.connect_boundary_to_infinity(V, F)
+    assert VO.shape[0] == V.shape[0] + 1
+    assert FO.shape[0] == F.shape[0] + 4  # 4 boundary edges connected
+    np.testing.assert_allclose(VO[:V.shape[0]], V)
+    # F-only overload returns the same number of faces
+    FO2 = igl.connect_boundary_to_infinity(F)
+    assert FO2.shape[0] == F.shape[0] + 4
+
+
+def test_smooth_corner_adjacency():
+    # Two triangles sharing an edge; CSR-style corner adjacency
+    V = np.array([[0.0, 0.0, 0.0],
+                  [1.0, 0.0, 0.0],
+                  [1.0, 1.0, 0.0],
+                  [0.0, 1.0, 0.0]], dtype=np.float64)
+    F = np.array([[0, 1, 2], [0, 2, 3]], dtype=np.int64)
+    CI, CC = igl.smooth_corner_adjacency(V, F, 0.35)
+    # CC is a cumulative-sum offset array of length 3*#F + 1
+    assert CC.shape[0] == 3 * F.shape[0] + 1
+    assert CC[0] == 0
+    assert CC[-1] == CI.shape[0]
+    assert np.all(np.diff(CC) >= 0)
+
 def test_remesh_at_points():
     # Single triangle in 3D
     V = np.array([[0.0, 0.0, 0.0],
