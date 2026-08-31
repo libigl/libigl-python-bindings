@@ -142,6 +142,9 @@ def test_normals_and_distances():
     FN,_,_,_ = igl.per_face_normals(V,I,C)
     FN = igl.per_face_normals(V,F)
     FN = igl.per_face_normals(V,F,Z=np.array([0,0,1],dtype=np.float64))
+    FNs = igl.per_face_normals_stable(V,F)
+    assert FNs.shape == FN.shape
+    np.testing.assert_allclose(np.abs((FNs*FN).sum(axis=1)), 1.0, atol=1e-9)
     VN = igl.per_vertex_normals(V,F)
     VN = igl.per_vertex_normals(V,F,      weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_UNIFORM)
     VN = igl.per_vertex_normals(V,F,      weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA)
@@ -625,6 +628,9 @@ def test_misc():
     theta, cos_theta = igl.dihedral_angles(V,T)
     L = igl.edge_lengths(V,T)
     A = igl.face_areas(V,T)
+    # intrinsic overload: face areas from tet edge lengths alone
+    A_intrinsic = igl.face_areas(L)
+    np.testing.assert_allclose(A_intrinsic, A, atol=1e-9)
     theta, cos_theta = igl.dihedral_angles_intrinsic(L,A)
     D = igl.all_pairs_distances(V,V,squared=False)
     D = igl.all_pairs_distances(V,V,squared=True)
@@ -1421,6 +1427,61 @@ def test_new_triangle_algorithms():
     assert V_ref.shape[1] == 2
     assert F_ref.shape[1] == 3
     assert V_ref.shape[0] >= V_tri.shape[0]
+
+
+def test_remesh_at_points():
+    # Single triangle in 3D
+    V = np.array([[0.0, 0.0, 0.0],
+                  [1.0, 0.0, 0.0],
+                  [0.0, 1.0, 0.0]], dtype=np.float64)
+    F = np.array([[0, 1, 2]], dtype=np.int64)
+    # One interior (face) point at the centroid and one on an edge midpoint
+    B = np.array([[1/3, 1/3, 1/3],
+                  [0.5, 0.5, 0.0]], dtype=np.float64)
+    FI = np.array([0, 0], dtype=np.int64)
+    VV, FF, J, K = igl.triangle.remesh_at_points(V, F, B, FI)
+    # Output vertices keep the input as the top rows
+    assert VV.shape[1] == 3
+    assert VV.shape[0] >= V.shape[0]
+    np.testing.assert_allclose(VV[:V.shape[0]], V)
+    # New faces index into VV and map back to original faces via J
+    assert FF.shape[1] == 3
+    assert J.shape[0] == FF.shape[0]
+    assert FF.max() < VV.shape[0]
+    assert J.max() < F.shape[0]
+    # K tracks each sampled point's index into VV
+    assert K.shape[0] == B.shape[0]
+    assert K.max() < VV.shape[0]
+    # The centroid face-point must have been inserted as a real vertex
+    np.testing.assert_allclose(VV[K[0]], B[0] @ V)
+
+
+def test_simplex_simplex_squared_distance():
+    # Two parallel segments in 3D separated by distance 1 along z
+    V1 = np.array([[0.0, 0.0, 0.0],
+                   [1.0, 0.0, 0.0]], dtype=np.float64)
+    V2 = np.array([[0.0, 0.0, 1.0],
+                   [1.0, 0.0, 1.0]], dtype=np.float64)
+    sqrD, B1, B2 = igl.simplex_simplex_squared_distance(V1, V2)
+    assert np.isclose(sqrD, 1.0)
+    # Barycentric coordinates: one per corner of each simplex, summing to 1
+    assert B1.shape[0] == V1.shape[0]
+    assert B2.shape[0] == V2.shape[0]
+    assert np.isclose(B1.sum(), 1.0)
+    assert np.isclose(B2.sum(), 1.0)
+    # Reconstructed closest points should be 1 apart
+    P1 = B1 @ V1
+    P2 = B2 @ V2
+    assert np.isclose(np.linalg.norm(P1 - P2), 1.0)
+
+    # Point-to-triangle: point directly above a triangle's centroid
+    T = np.array([[0.0, 0.0, 0.0],
+                  [1.0, 0.0, 0.0],
+                  [0.0, 1.0, 0.0]], dtype=np.float64)
+    P = np.array([[1/3, 1/3, 2.0]], dtype=np.float64)
+    sqrD2, Bp, Bt = igl.simplex_simplex_squared_distance(P, T)
+    assert np.isclose(sqrD2, 4.0)
+    assert np.isclose(Bt.sum(), 1.0)
 
 
 def test_lexicographic_triangulation():
