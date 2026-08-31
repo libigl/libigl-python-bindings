@@ -362,6 +362,25 @@ def test_voxel():
     GV,side = igl.voxel_grid(V,s=10)
     GV,side = igl.voxel_grid(V,s=10,offset=0.1,pad_count=2)
 
+def test_voxel_grid_box():
+    V,_,_ = single_tet()
+    min_corner = V.min(axis=0)
+    max_corner = V.max(axis=0)
+    GV,side = igl.voxel_grid(min_corner,max_corner,s=10,pad_count=2)
+    assert GV.dtype == np.float64
+    assert side.dtype == np.int64
+    assert GV.shape == (np.prod(side),3)
+    assert side.shape == (3,)
+    # Enclosing the corners is the same as enclosing the points themselves
+    GV2,side2 = igl.voxel_grid(V,0.0,s=10,pad_count=2)
+    assert np.allclose(GV,GV2)
+    assert np.array_equal(side,side2)
+    # Positional args resolve to the box overload too
+    GV3,side3 = igl.voxel_grid(min_corner,max_corner,10,2)
+    assert np.allclose(GV,GV3)
+    with pytest.raises(RuntimeError):
+        igl.voxel_grid(min_corner[:2],max_corner,s=10)
+
 
 def test_sample():
     V,F = igl.icosahedron()
@@ -427,7 +446,8 @@ def test_implicit():
     S = np.sqrt(((GV - np.array([0.5,0.5,0.5],dtype=np.float64))**2).sum(axis=1))-0.25;
     V,F,E2V = igl.marching_cubes(S,GV,res[0],res[1],res[2])
     # unpack keys into (i,j,v) index triplets
-    EV = np.array([[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()], dtype=np.int64)
+    EV_list = [[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()]
+    EV = np.array(EV_list, dtype=np.int64) if EV_list else np.empty((0,3), dtype=np.int64)
 
     h = igl.avg_edge_length(V,F)
     m0,m1,m2 = igl.moments(V,F)
@@ -631,7 +651,14 @@ def test_octree():
     h = h0 / (2**max_depth)
     unique_ijk, J, unique_corners = igl.unique_sparse_voxel_corners(origin,h0,max_depth,ijk)
     unique_S = sdf_sphere(unique_corners)
-    V,F = igl.marching_cubes(unique_S,unique_corners,J,0.0)
+    V,F,E2V = igl.marching_cubes(unique_S,unique_corners,J,0.0)
+    assert V.shape[0] > 0
+    assert F.shape[0] > 0
+    EV_list = [[k & 0xFFFFFFFF, k >> 32, v] for k, v in E2V.items()]
+    EV = np.array(EV_list, dtype=np.int64) if EV_list else np.empty((0,3), dtype=np.int64)
+    assert len(E2V) == EV.shape[0]
+    assert np.all(EV[:,2] >= 0)
+    assert np.all(EV[:,2] < V.shape[0])
 
 def test_is_intrinsic_delaunay() -> None:
     # vs and fs come from a simple plane from pyvista
@@ -2011,3 +2038,92 @@ def test_vertex_components_from_adjacency_matrix():
     # counts is per-component and sums to the number of vertices
     assert counts.sum() == n
     assert sorted(counts.ravel().tolist()) == [2, 3]
+
+def test_swept_volume():
+    V,F = igl.icosahedron()
+    # Rigid motion: translate 2 units along x in 5 steps
+    T = np.tile(np.eye(4,dtype=np.float64),(5,1,1))
+    T[:,0,3] = np.linspace(0,2,5)
+    SV,SF = igl.swept_volume(V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,16,0.0)
+    assert SV.dtype == np.float64
+    assert SF.dtype == np.int64
+    assert SV.shape[1] == 3
+    assert SF.shape[1] == 3
+    assert SV.shape[0] > 0
+    assert SF.shape[0] > 0
+    # Swept volume spans the motion (icosahedron has unit-ish radius)
+    assert SV[:,0].min() < -0.5
+    assert SV[:,0].max() > 2.5
+    # A list of 3×4 transforms is accepted and equivalent
+    SV2,SF2 = igl.swept_volume(V,F,[Ti[:3,:] for Ti in T],grid_res=16)
+    assert np.allclose(SV,SV2)
+    assert np.array_equal(SF,SF2)
+    # A positive isolevel dilates the result
+    SV3,SF3 = igl.swept_volume(V,F,T,grid_res=16,isolevel=0.25)
+    assert SV3[:,1].max() > SV[:,1].max()
+    with pytest.raises(RuntimeError):
+        igl.swept_volume(V,F,[])
+    with pytest.raises(RuntimeError):
+        igl.swept_volume(V,F,[np.eye(3)])
+
+def swept_translation(n=5,dist=2.0):
+    """#n by 4 by 4 list of transforms translating `dist` along x."""
+    T = np.tile(np.eye(4,dtype=np.float64),(n,1,1))
+    T[:,0,3] = np.linspace(0,dist,n)
+    return T
+
+def test_swept_volume_bounding_box():
+    V,F = igl.icosahedron()
+    T = swept_translation()
+    mn,mx = igl.swept_volume_bounding_box(V,T)
+    assert mn.dtype == np.float64
+    assert mx.dtype == np.float64
+    assert mn.shape == (3,)
+    assert mx.shape == (3,)
+    assert np.all(mn <= mx)
+    # Box is the reference pose's box swept 2 units along x
+    assert np.allclose(mn,V.min(axis=0))
+    assert np.allclose(mx,V.max(axis=0)+np.array([2.0,0,0]))
+    # 3x4 transforms give the same box
+    mn2,mx2 = igl.swept_volume_bounding_box(V,[Ti[:3,:] for Ti in T])
+    assert np.allclose(mn,mn2)
+    assert np.allclose(mx,mx2)
+    with pytest.raises(RuntimeError):
+        igl.swept_volume_bounding_box(V,[])
+
+def test_swept_volume_signed_distance():
+    V,F = igl.icosahedron()
+    T = swept_translation()
+    grid_res = 16
+    isolevel = 0.0
+    mn,mx = igl.swept_volume_bounding_box(V,T)
+    h = (mx-mn).max()/(grid_res-1)
+    pad = max(int(np.ceil(isolevel/h)),0)+1
+    GV,res = igl.voxel_grid(mn,mx,s=grid_res+2*pad,pad_count=pad)
+    S = igl.swept_volume_signed_distance(
+        V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,GV,res,h,isolevel)
+    assert S.dtype == np.float64
+    assert S.shape == (GV.shape[0],)
+    assert not np.any(np.isnan(S))
+    # Signs straddle the surface
+    assert S.min() < 0 and S.max() > 0
+    # Contouring these values reproduces igl.swept_volume exactly
+    SV,SF,_ = igl.marching_cubes(
+        S-isolevel,GV,int(res[0]),int(res[1]),int(res[2]),0.0)
+    SV2,SF2 = igl.swept_volume(
+        V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,grid_res,isolevel)
+    assert np.allclose(SV,SV2)
+    assert np.array_equal(SF,SF2)
+    # Feeding the result back in as S0 takes a min with itself: idempotent
+    S2 = igl.swept_volume_signed_distance(
+        V,F,T,igl.SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,GV,res,h,isolevel,S)
+    assert np.allclose(S,S2)
+    # isolevel=inf (the default) is exact everywhere, so no NaNs to flood fill
+    Sinf = igl.swept_volume_signed_distance(V,F,T,GV=GV,res=res,h=h)
+    assert not np.any(np.isnan(Sinf))
+    near = np.abs(Sinf) < h
+    assert np.allclose(S[near],Sinf[near])
+    with pytest.raises(RuntimeError):
+        igl.swept_volume_signed_distance(V,F,T,GV=GV,res=res[:2],h=h)
+    with pytest.raises(RuntimeError):
+        igl.swept_volume_signed_distance(V,F,T,GV=GV,res=res,h=h,S0=S[:5])
