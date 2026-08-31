@@ -60,7 +60,7 @@ option(LIBIGL_CYCODEBASE           "Build igl::cycodebase bindings"        ON)
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  GIT_TAG 477e15a3d566a21f415aa5ee62992b12a836b01b
+  GIT_TAG f68f01c23ac82351e2543ce8c529b6d4c89fdf16
 )
 FetchContent_MakeAvailable(libigl)
 
