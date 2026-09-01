@@ -171,6 +171,9 @@ jobs:
           name: ${{ needs.check_version.outputs.version }}
           prerelease: ${{ needs.check_version.outputs.prerelease }}
           allowUpdates: true
+          # Auto-populate the release body with the merged PRs since the
+          # previous tag (curated highlights live in CHANGELOG.md).
+          generateReleaseNotes: true
           artifacts: "./artifacts/**/*"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to PyPI
