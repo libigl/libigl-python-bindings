@@ -73,6 +73,11 @@ jobs:
           CIBW_BUILD: "${{ matrix.pybuilds }}-*"
           # No CIBW_ARCHS_* override: each runner builds its native architecture.
           CIBW_SKIP: "cp*-manylinux_i686 cp*-musllinux* cp*-win32"
+          # embree only enables its NEON (sse2neon) path when its build detects an
+          # ARM target; on Windows/MSVC-ARM64 that detection falls back to SSE2 and
+          # fails to compile (x86 immintrin.h). Drop embree on win_arm64 (the
+          # igl.embree submodule is simply absent from that wheel).
+          CIBW_ENVIRONMENT_WINDOWS: ${{ matrix.os == 'windows-11-arm' && 'CMAKE_ARGS=-DLIBIGL_EMBREE=OFF' || '' }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         continue-on-error: true  # Important: Continue if upload fails
