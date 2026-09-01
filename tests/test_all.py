@@ -10,10 +10,17 @@ import igl.triangle
 import igl.copyleft
 import igl.copyleft.tetgen
 import igl.copyleft.cgal
-import igl.embree
 import igl.spectra
 import igl.predicates
 import igl.cycodebase
+
+# embree is not built on every platform (e.g. Windows/ARM64, where upstream
+# embree has no MSVC build), so treat it as optional.
+try:
+    import igl.embree
+    HAS_EMBREE = True
+except ImportError:
+    HAS_EMBREE = False
 
 @pytest.fixture
 def icosahedron():
@@ -569,6 +576,7 @@ def test_cgal():
 
     R = igl.copyleft.cgal.oriented_bounding_box(VC)
     
+@pytest.mark.skipif(not HAS_EMBREE, reason="igl.embree not built (e.g. Windows/ARM64)")
 def test_embree():
     # octahedron
     V = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]],dtype=np.float64)
@@ -1392,6 +1400,7 @@ def test_new_tetgen_algorithms():
     assert FF_sk.shape[1] == 3
 
 
+@pytest.mark.skipif(not HAS_EMBREE, reason="igl.embree not built (e.g. Windows/ARM64)")
 def test_new_embree_algorithms():
     V_oct = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]], dtype=np.float64)
     F_oct = np.array([[0,1,2],[0,2,4],[0,4,5],[0,5,1],[1,3,2],[1,5,3],[2,3,4],[3,5,4]], dtype=np.int64)
