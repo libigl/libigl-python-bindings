@@ -580,9 +580,8 @@ def test_copyleft():
     T = np.array([[0,1,2,3]],dtype=np.int64)
     F,_,_ = igl.boundary_facets(T)
     V,F = igl.loop(V,F)
-    
-    dV,dF,J = igl.copyleft.progressive_hulls(V,F)
-    
+    # progressive_hulls moved from igl::copyleft to core (libigl #2558); it is
+    # now igl.progressive_hulls, covered by test_progressive_hulls.
 
 def test_cgal():
     # tetrahedron
