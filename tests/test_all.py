@@ -426,6 +426,53 @@ def test_decimate():
     dV,dF,J,I = igl.decimate(V,F)
     dV,dF,J,I = igl.qslim(V,F)
 
+def test_progressive_hulls():
+    # a closed manifold with headroom to coarsen
+    V,F = igl.upsample(*igl.icosahedron(), 2)   # 162 V, 320 F
+    success, U, G, J = igl.progressive_hulls(V, F, max_m=40)
+    assert success
+    assert U.shape[1] == 3
+    assert G.shape[1] == 3
+    assert G.shape[0] == 40
+    assert G.max() < U.shape[0]
+    assert J.shape[0] == G.shape[0]
+    assert J.max() < F.shape[0]
+    # a progressive hull encloses the input (loose bbox check)
+    assert (U.min(axis=0) <= V.min(axis=0) + 1e-9).all()
+    assert (U.max(axis=0) >= V.max(axis=0) - 1e-9).all()
+    # the intersection-blocking variant also runs
+    success2, U2, G2, J2 = igl.progressive_hulls(V, F, max_m=40, block_intersections=True)
+    assert G2.shape[1] == 3
+
+def test_lazy_cage():
+    V,F = igl.icosahedron()
+    # helper + enum smoke
+    assert igl.lazy_cage_default_grid_size(100) > 0
+    assert igl.LazyCageMetric.LAZY_CAGE_METRIC_SIGMA.value == 0
+
+    # simple overload: default {shortest edge, midpoint} / sigma / dense / signed
+    success, CV, CF, sigma = igl.lazy_cage(V, F, num_faces=50, grid_size=32)
+    assert success
+    assert CV.shape[1] == 3
+    assert CF.shape[1] == 3
+    assert CF.shape[0] == 50           # exactly num_faces when successful
+    assert CF.max() < CV.shape[0]
+    assert sigma > 0.0
+    # the cage encloses the input mesh (loose bbox check)
+    assert (CV.min(axis=0) <= V.min(axis=0) + 1e-9).all()
+    assert (CV.max(axis=0) >= V.max(axis=0) - 1e-9).all()
+
+    # full overload: exercise the enum-driven knobs (unsigned distance here)
+    diag = np.linalg.norm(V.max(axis=0) - V.min(axis=0))
+    success_f, CV_f, CF_f, sigma_f = igl.lazy_cage(
+        V, F, 50, 32, 0.5 * diag,
+        num_iters=12, use_qslim=False,
+        metric=igl.LazyCageMetric.LAZY_CAGE_METRIC_VOLUME,
+        grid_mode=igl.LazyCageGridMode.LAZY_CAGE_GRID_DENSE,
+        distance=igl.LazyCageDistance.LAZY_CAGE_DISTANCE_UNSIGNED)
+    assert CF_f.shape[1] == 3
+    assert success_f
+
 def test_parameterization():
     V,Q,E = igl.quad_grid(3,3);
     V,F = igl.triangulated_grid(3,3);
@@ -533,9 +580,8 @@ def test_copyleft():
     T = np.array([[0,1,2,3]],dtype=np.int64)
     F,_,_ = igl.boundary_facets(T)
     V,F = igl.loop(V,F)
-    
-    dV,dF,J = igl.copyleft.progressive_hulls(V,F)
-    
+    # progressive_hulls moved from igl::copyleft to core (libigl #2558); it is
+    # now igl.progressive_hulls, covered by test_progressive_hulls.
 
 def test_cgal():
     # tetrahedron
