@@ -13,6 +13,21 @@ matrices for sparse matrices.
 python -m pip install libigl
 ```
 
+### Pyodide (WebAssembly)
+
+Wheels for Pyodide 314.0 (Python 3.14, `wasm32`) are built and tested alongside
+the native wheels. In Pyodide, install the development release with:
+
+```python
+import micropip
+await micropip.install("libigl", pre=True)
+import igl
+```
+
+These wheels omit `igl.embree` and `igl.copyleft.cgal`, whose native
+dependencies are not included in the WebAssembly build. Build-time type stub
+generation is also disabled because it requires importing the target modules.
+
 ## Documentation
 
 | :warning: WARNING           |
@@ -84,6 +99,13 @@ The `--no-deps` flag skips bundling numpy/scipy (the target environment must
 have them already). No compiler or CMake is required in the target environment.
 
 ## Testing cibuildwheel locally
+
+To build and test the Pyodide wheel on Linux or macOS, use Python 3.14:
+
+```sh
+python -m pip install cibuildwheel==4.3.5
+python -m cibuildwheel --platform pyodide --output-dir wheelhouse
+```
 
 Install whichever version of Python from the [official website](https://www.python.org/downloads/) and then run:
 

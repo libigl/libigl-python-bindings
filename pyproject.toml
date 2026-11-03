@@ -13,7 +13,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "libigl"
-version = "2.6.4.dev1"
+version = "2.6.4.dev2"
 description = "libigl: A simple C++ geometry processing library"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -64,3 +64,15 @@ test-skip="cp38-macosx_*:arm64"
 # Needed for full C++17 support
 [tool.cibuildwheel.macos.environment]
 MACOSX_DEPLOYMENT_TARGET = "10.15"
+
+[tool.cibuildwheel.pyodide]
+archs = "wasm32"
+build = "cp314-pyodide_wasm32"
+test-command = "python -m pytest {project}/tests"
+
+[tool.cibuildwheel.pyodide.config-settings]
+# WebAssembly wheels use the runtime's Python ABI, not the native abi3 tag.
+"wheel.py-api" = ""
+# Embree requires native SIMD; CGAL needs cross-built GMP/MPFR libraries.
+"cmake.define.LIBIGL_EMBREE" = "OFF"
+"cmake.define.LIBIGL_COPYLEFT_CGAL" = "OFF"

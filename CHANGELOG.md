@@ -11,6 +11,13 @@ version numbers match the [PyPI releases](https://pypi.org/project/libigl/#histo
 > folds in changes first shipped in the tag-less interim 2.6.2 release, i.e. it
 > covers everything since the last tagged release, 2.6.1.
 
+## 2.6.4.dev2 — 2026-11-03
+
+- Build, test, and publish Pyodide 314.0 / Python 3.14 WebAssembly wheels.
+  These include all modules except Embree and CGAL; type stubs are omitted.
+- Use serial libigl loops and accommodate WebAssembly's lack of floating-point
+  exception flags when building for Pyodide.
+
 ## 2.6.3 — 2026-08-31
 
 ### Added

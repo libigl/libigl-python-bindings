@@ -66,6 +66,16 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(libigl)
 
+if(EMSCRIPTEN)
+  # Pyodide's runtime does not provide pthread workers. Avoid libigl's
+  # hardware-concurrency fallback attempting to launch std::threads.
+  target_compile_definitions(igl_core INTERFACE IGL_PARALLEL_FOR_FORCE_SERIAL)
+  # WebAssembly has no floating-point exception flags. libigl's polar_dec
+  # also checks the eigenvalue ratio, so an empty underflow mask preserves
+  # that numerical fallback without requiring an unsupported fenv flag.
+  target_compile_definitions(igl_core INTERFACE FE_UNDERFLOW=0)
+endif()
+
 # set PYIGL_OUTPUT_DIRECTORY to [this dir]/igl
 set(PYIGL_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/igl")
 
@@ -138,9 +148,14 @@ function(pyigl_include prefix name)
     file(WRITE "${generated_dir}/BINDING_INVOCATIONS.in" "${BINDING_INVOCATIONS}")
 
     set(target_name "pyigl${prefix_lc}_${name}")
+    # Pyodide extensions target the runtime's exact Python ABI.
+    set(abi_options STABLE_ABI)
+    if(EMSCRIPTEN)
+      set(abi_options)
+    endif()
     nanobind_add_module(
       ${target_name} 
-      STABLE_ABI
+      ${abi_options}
       ${sources})
 
     # important for scikit-build
@@ -165,15 +180,19 @@ function(pyigl_include prefix name)
         LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
     )
-    set(PYI_OUTPUT "${output_dir}/${target_name}.pyi")
-    nanobind_add_stub(
-      ${target_name}_stub
-      MODULE ${target_name}
-      OUTPUT ${PYI_OUTPUT}
-      PYTHON_PATH $<TARGET_FILE_DIR:${target_name}>
-      DEPENDS ${target_name}
-    )
-    install(FILES "${PYI_OUTPUT}" DESTINATION "igl/${subpath}")
+    # Stub generation imports the extension, which the host Python cannot do
+    # while cross-compiling WebAssembly modules.
+    if(NOT EMSCRIPTEN)
+      set(PYI_OUTPUT "${output_dir}/${target_name}.pyi")
+      nanobind_add_stub(
+        ${target_name}_stub
+        MODULE ${target_name}
+        OUTPUT ${PYI_OUTPUT}
+        PYTHON_PATH $<TARGET_FILE_DIR:${target_name}>
+        DEPENDS ${target_name}
+      )
+      install(FILES "${PYI_OUTPUT}" DESTINATION "igl/${subpath}")
+    endif()
 
     # just to add dependency?
     if("${name}" STREQUAL "core")

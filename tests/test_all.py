@@ -4,12 +4,15 @@ import numpy as np
 import scipy.sparse
 import time
 import warnings
+import sys
 import igl
 
 import igl.triangle
 import igl.copyleft
 import igl.copyleft.tetgen
-import igl.copyleft.cgal
+# CGAL is omitted from Pyodide wheels (GMP/MPFR are native dependencies).
+if sys.platform != "emscripten":
+    import igl.copyleft.cgal
 import igl.spectra
 import igl.predicates
 import igl.cycodebase
@@ -583,6 +586,7 @@ def test_copyleft():
     # progressive_hulls moved from igl::copyleft to core (libigl #2558); it is
     # now igl.progressive_hulls, covered by test_progressive_hulls.
 
+@pytest.mark.skipif(sys.platform == "emscripten", reason="CGAL is not built for Pyodide")
 def test_cgal():
     # tetrahedron
     VA = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]],dtype=np.float64)
@@ -1379,6 +1383,7 @@ def test_new_copyleft_algorithms():
     assert abs(x_qp[0] + 2.0) < 1e-8
 
 
+@pytest.mark.skipif(sys.platform == "emscripten", reason="CGAL is not built for Pyodide")
 def test_new_cgal_algorithms():
     # simple tetrahedron
     VA = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]], dtype=np.float64)

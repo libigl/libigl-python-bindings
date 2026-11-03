@@ -91,6 +91,25 @@ jobs:
           overwrite: false
           include-hidden-files: false
 
+  build_pyodide:
+    name: cp314 Pyodide wasm32
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      # PyPI-compatible pyemscripten tags require cibuildwheel >=4. Native
+      # jobs retain 3.1.4 because they still build Python 3.8 wheels.
+      - run: pip install cibuildwheel==4.3.5
+      - name: Build and test Pyodide wheel
+        run: python -m cibuildwheel --platform pyodide --output-dir wheelhouse
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-pyodide-cp314
+          path: ./wheelhouse/*.whl
+          if-no-files-found: error
+
   check_version:
     name: Check for a version bump
     # Only a push to main can release; PRs and workflow_dispatch never do.
@@ -168,7 +187,7 @@ jobs:
 
   release_artifacts:
     name: Publish ${{ needs.check_version.outputs.version }} to PyPI
-    needs: [check_version, build_sdist, build_wheels]
+    needs: [check_version, build_sdist, build_wheels, build_pyodide]
     if: needs.check_version.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     permissions:
