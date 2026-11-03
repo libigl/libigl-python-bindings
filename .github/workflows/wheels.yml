@@ -213,7 +213,7 @@ jobs:
           artifacts: "./artifacts/**/*"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.13.0
+        uses: pypa/gh-action-pypi-publish@v1.14.3
         with:
           packages-dir: ./artifacts
           skip-existing: true
