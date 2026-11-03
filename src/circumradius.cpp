@@ -23,7 +23,7 @@ namespace pyigl
 void bind_circumradius(nb::module_ &m)
 {
   m.def("circumradius", &pyigl::circumradius,
-    ""_a,
+    "V"_a,
     "F"_a,
     R"(Compute the circumradius of each triangle in a mesh (V,F)
 @param[in] V  #V by dim list of mesh vertex positions

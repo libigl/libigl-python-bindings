@@ -13,7 +13,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "libigl"
-version = "2.6.4.dev2"
+version = "2.6.4.dev3"
 description = "libigl: A simple C++ geometry processing library"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -68,11 +68,15 @@ MACOSX_DEPLOYMENT_TARGET = "10.15"
 [tool.cibuildwheel.pyodide]
 archs = "wasm32"
 build = "cp314-pyodide_wasm32"
+repair-wheel-command = "python {project}/scripts/repair_pyodide_wheel.py {wheel} {dest_dir}"
 test-command = "python -m pytest {project}/tests"
 
 [tool.cibuildwheel.pyodide.config-settings]
 # WebAssembly wheels use the runtime's Python ABI, not the native abi3 tag.
 "wheel.py-api" = ""
-# Embree requires native SIMD; CGAL needs cross-built GMP/MPFR libraries.
-"cmake.define.LIBIGL_EMBREE" = "OFF"
-"cmake.define.LIBIGL_COPYLEFT_CGAL" = "OFF"
+# libigl's Boost recipe requires CMake 3.24; dependencies still use 3.x policies.
+"cmake.version" = ">=3.24,<4"
+
+[tool.cibuildwheel.pyodide.environment]
+# CGAL template instantiations need substantial memory on CI runners.
+CMAKE_BUILD_PARALLEL_LEVEL = "2"

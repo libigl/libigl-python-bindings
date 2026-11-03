@@ -74,12 +74,18 @@ void bind_min_quad_with_fixed(nb::module_ &m)
       "Beq"_a=Eigen::MatrixXN(),
       R"(Solve the precomputed convex quadratic optimization problem.)")
     ;
+  // Keep the positional form and the form with optional inputs plus keyword
+  // data separate, so both signatures are valid Python (and valid type stubs).
+  m.def("min_quad_with_fixed_precompute",
+      &pyigl::min_quad_with_fixed_precompute,
+      "A"_a, "known"_a, "Aeq"_a, "pd"_a, "data"_a);
   m.def("min_quad_with_fixed_precompute", 
       &pyigl::min_quad_with_fixed_precompute,
       "A"_a          = Eigen::SparseMatrixN(),
       "known"_a      = Eigen::VectorXI()     ,
       "Aeq"_a        = Eigen::SparseMatrixN(),
       "pd"_a         = true                  ,
+      nb::kw_only(),
       "data"_a,
       R"(Precompute convex quadratic optimization problem.)")
     ;

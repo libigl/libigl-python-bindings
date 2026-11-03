@@ -24,9 +24,11 @@ await micropip.install("libigl", pre=True)
 import igl
 ```
 
-These wheels omit `igl.embree` and `igl.copyleft.cgal`, whose native
-dependencies are not included in the WebAssembly build. Build-time type stub
-generation is also disabled because it requires importing the target modules.
+These wheels include `igl.embree`, `igl.copyleft.cgal`, and type stubs for all
+modules. Geometry processing runs without worker threads. CGAL uses Boost
+exact arithmetic and its round-to-nearest interval implementation; Embree uses
+WebAssembly SIMD. Stubs are generated from the compiled modules inside Pyodide
+before the wheel is tested and published.
 
 ## Documentation
 
@@ -100,7 +102,8 @@ have them already). No compiler or CMake is required in the target environment.
 
 ## Testing cibuildwheel locally
 
-To build and test the Pyodide wheel on Linux or macOS, use Python 3.14:
+To build and test the Pyodide wheel on Linux or macOS, use Python 3.14 and
+Node.js 24:
 
 ```sh
 python -m pip install cibuildwheel==4.3.5

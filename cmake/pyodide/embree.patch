@@ -1,0 +1,10 @@
+diff --git a/common/cmake/clang.cmake b/common/cmake/clang.cmake
+--- a/common/cmake/clang.cmake
++++ b/common/cmake/clang.cmake
+@@ -117,5 +117,4 @@ ELSE()
+   IF (EMSCRIPTEN)
+-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions")              # enable exceptions
+-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")                  # enable threads
++    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fwasm-exceptions")         # Pyodide exception ABI
+     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msimd128")                 # enable SIMD intrinsics
+   ENDIF()

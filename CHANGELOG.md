@@ -11,6 +11,16 @@ version numbers match the [PyPI releases](https://pypi.org/project/libigl/#histo
 > folds in changes first shipped in the tag-less interim 2.6.2 release, i.e. it
 > covers everything since the last tagged release, 2.6.1.
 
+## 2.6.4.dev3 — 2026-11-03
+
+- Enable CGAL and Embree in Pyodide wheels, including exact geometry operations
+  and SIMD ray tracing without worker threads.
+- Generate and validate type stubs inside Pyodide for all nine extension modules.
+  Fix invalid binding signatures while preserving positional and keyword calls.
+- Test installed stubs, ray hits and misses, and mesh boolean volumes for nearly
+  coincident surfaces in the WebAssembly runtime.
+- Update the PyPI publishing action to 1.14.3 (Dependabot alert #4, PR #319).
+
 ## 2.6.4.dev2 — 2026-11-03
 
 - Build, test, and publish Pyodide 314.0 / Python 3.14 WebAssembly wheels.

@@ -58,6 +58,10 @@ namespace pyigl
 // Bind the wrapper to the Python module
 void bind_swept_volume_signed_distance(nb::module_ &m)
 {
+  m.def("swept_volume_signed_distance", &pyigl::swept_volume_signed_distance,
+    "V"_a, "F"_a, "transforms"_a, "sign_type"_a, "GV"_a, "res"_a, "h"_a,
+    "isolevel"_a = std::numeric_limits<Numeric>::infinity(),
+    "S0"_a = Eigen::VectorXN());
   m.def(
     "swept_volume_signed_distance",
     &pyigl::swept_volume_signed_distance,
@@ -65,6 +69,7 @@ void bind_swept_volume_signed_distance(nb::module_ &m)
     "F"_a,
     "transforms"_a,
     "sign_type"_a = igl::SIGNED_DISTANCE_TYPE_FAST_WINDING_NUMBER,
+    nb::kw_only(),
     "GV"_a,
     "res"_a,
     "h"_a,

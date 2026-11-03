@@ -1,0 +1,9 @@
+diff --git a/include/igl/copyleft/cgal/remesh_intersections.cpp b/include/igl/copyleft/cgal/remesh_intersections.cpp
+--- a/include/igl/copyleft/cgal/remesh_intersections.cpp
++++ b/include/igl/copyleft/cgal/remesh_intersections.cpp
+@@ -76,4 +76,4 @@ IGL_INLINE void igl::copyleft::cgal::remesh_intersections(
+-    typedef typename DerivedF::Index Index;
++    typedef typename DerivedF::Scalar Index;
+     typedef std::pair<Index, Index> Edge;
+     struct EdgeHash {
+         size_t operator()(const Edge& e) const {

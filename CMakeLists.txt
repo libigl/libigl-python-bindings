@@ -28,6 +28,24 @@ message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 # Enable FetchContent to download dependencies at configure time
 include(FetchContent)
 
+if(EMSCRIPTEN)
+  # Embree supports Wasm SIMD, but its default Emscripten flags enable pthreads
+  # and JS exceptions, which are incompatible with the Pyodide runtime.
+  FetchContent_Declare(
+    embree
+    GIT_REPOSITORY https://github.com/embree/embree.git
+    GIT_TAG v4.4.0
+    GIT_SHALLOW TRUE
+    PATCH_COMMAND "${CMAKE_COMMAND}" -DSOURCE_DIR=<SOURCE_DIR>
+      "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/cmake/pyodide/embree.patch"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/pyodide/apply_patch.cmake"
+  )
+  set(EMBREE_MAX_ISA "SSE2" CACHE STRING "Embree ISA for Wasm SIMD")
+  set(FLAGS_SSE2 "-msimd128 -msse -msse2" CACHE STRING "Wasm SSE2 emulation")
+  set(EMBREE_IGNORE_CMAKE_CXX_FLAGS OFF CACHE BOOL "Preserve Pyodide compiler flags")
+  set(EMBREE_CONFIG "threads=1" CACHE STRING "Single-threaded Pyodide runtime")
+endif()
+
 # Download and set up nanobind
 FetchContent_Declare(
   nanobind
@@ -57,12 +75,18 @@ option(LIBIGL_RESTRICTED_TRIANGLE  "Build target igl_restricted::triangle" ON)
 option(LIBIGL_SPECTRA              "Build igl::spectra bindings"           ON)
 option(LIBIGL_PREDICATES           "Build igl::predicates bindings"        ON)
 option(LIBIGL_CYCODEBASE           "Build igl::cycodebase bindings"        ON)
+if(EMSCRIPTEN)
+  set(libigl_patch PATCH_COMMAND "${CMAKE_COMMAND}" -DSOURCE_DIR=<SOURCE_DIR>
+    "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/cmake/pyodide/libigl.patch"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/pyodide/apply_patch.cmake")
+endif()
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
   # libigl main, including igl::lazy_cage and core igl::progressive_hulls (moved
   # to core in libigl PR #2558).
   GIT_TAG c07f8586733378c163aae57f08c9da2ce5352fb9
+  ${libigl_patch}
 )
 FetchContent_MakeAvailable(libigl)
 
@@ -74,6 +98,12 @@ if(EMSCRIPTEN)
   # also checks the eigenvalue ratio, so an empty underflow mask preserves
   # that numerical fallback without requiring an unsupported fenv flag.
   target_compile_definitions(igl_core INTERFACE FE_UNDERFLOW=0)
+  # Wasm cannot change the rounding mode. CGAL's supported alternative widens
+  # interval bounds with nextafter while keeping round-to-nearest arithmetic.
+  if(TARGET igl_copyleft_cgal)
+    target_compile_definitions(igl_copyleft_cgal INTERFACE
+      CGAL_ALWAYS_ROUND_TO_NEAREST CGAL_HAS_NO_THREADS)
+  endif()
 endif()
 
 # set PYIGL_OUTPUT_DIRECTORY to [this dir]/igl
@@ -180,8 +210,8 @@ function(pyigl_include prefix name)
         LIBRARY_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${output_dir}"
     )
-    # Stub generation imports the extension, which the host Python cannot do
-    # while cross-compiling WebAssembly modules.
+    # WebAssembly stubs are generated inside Pyodide by the wheel repair step;
+    # the host Python used by CMake cannot import the target extensions.
     if(NOT EMSCRIPTEN)
       set(PYI_OUTPUT "${output_dir}/${target_name}.pyi")
       nanobind_add_stub(

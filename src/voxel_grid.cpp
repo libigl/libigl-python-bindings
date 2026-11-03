@@ -49,11 +49,14 @@ namespace pyigl
 // Bind the wrappers to the Python module
 void bind_voxel_grid(nb::module_ &m)
 {
+  m.def("voxel_grid", &pyigl::voxel_grid,
+    "V"_a, "offset"_a, "s"_a, "pad_count"_a=0);
   m.def(
     "voxel_grid",
     &pyigl::voxel_grid,
     "V"_a,
     "offset"_a =0.0,
+    nb::kw_only(),
     "s"_a,
     "pad_count"_a=0,
     R"(Constructs a voxel grid with an offset applied to each cell center.

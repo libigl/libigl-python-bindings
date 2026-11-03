@@ -55,12 +55,15 @@ R"(Compute per-vertex normals with optional weighting and face normals.
 @param[in] F  #F by 3 matrix of face indices
 @param[in] weighting Optional string for weighting type ("uniform", "area", "angle", or "default")
 @return N  #V by 3 matrix of vertex normals)");
+  m.def("per_vertex_normals", &pyigl::per_vertex_normals_FN,
+    "V"_a, "F"_a, "weighting"_a, "FN"_a);
   m.def(
     "per_vertex_normals",
     &pyigl::per_vertex_normals_FN,
     "V"_a,
     "F"_a,
     "weighting"_a = igl::PER_VERTEX_NORMALS_WEIGHTING_TYPE_DEFAULT,
+    nb::kw_only(),
     "FN"_a,
 R"(Compute per-vertex normals with optional weighting and face normals.
 

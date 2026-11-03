@@ -34,6 +34,8 @@ namespace pyigl
 // Bind the wrapper to the Python module
 void bind_mesh_boolean(nb::module_ &m)
 {
+  m.def("mesh_boolean", &pyigl::mesh_boolean,
+    "VA"_a, "FA"_a, "VB"_a, "FB"_a, "type_str"_a);
   m.def(
     "mesh_boolean",
     &pyigl::mesh_boolean,
@@ -41,6 +43,7 @@ void bind_mesh_boolean(nb::module_ &m)
     "FA"_a, 
     "VB"_a=Eigen::MatrixXN(), 
     "FB"_a=Eigen::MatrixXI(), 
+    nb::kw_only(),
     "type_str"_a,
     R"(Compute the boolean operation (union, intersection, difference, etc.) between two meshes.
 

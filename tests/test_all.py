@@ -4,15 +4,12 @@ import numpy as np
 import scipy.sparse
 import time
 import warnings
-import sys
 import igl
 
 import igl.triangle
 import igl.copyleft
 import igl.copyleft.tetgen
-# CGAL is omitted from Pyodide wheels (GMP/MPFR are native dependencies).
-if sys.platform != "emscripten":
-    import igl.copyleft.cgal
+import igl.copyleft.cgal
 import igl.spectra
 import igl.predicates
 import igl.cycodebase
@@ -160,6 +157,9 @@ def test_normals_and_distances():
     VN = igl.per_vertex_normals(V,F,      weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_AREA)
     VN = igl.per_vertex_normals(V,F,      weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE)
     VN = igl.per_vertex_normals(V,F,FN=FN,weighting=igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_ANGLE)
+    np.testing.assert_allclose(
+        igl.per_vertex_normals(V,F,igl.PER_VERTEX_NORMALS_WEIGHTING_TYPE_DEFAULT,FN),
+        igl.per_vertex_normals(V,F,FN=FN))
     dblA = igl.doublearea(V,F)
     l = igl.edge_lengths(V,F)
     dblA = igl.doublearea(l=l)
@@ -274,6 +274,9 @@ def test_min_quad():
     data = igl.min_quad_with_fixed_data()
     igl.min_quad_with_fixed_precompute(A,known,Aeq,True,data)
     Z = igl.min_quad_with_fixed_solve(data,B,Y,Beq)
+    keyword_data = igl.min_quad_with_fixed_data()
+    igl.min_quad_with_fixed_precompute(A,known,Aeq,data=keyword_data)
+    np.testing.assert_allclose(Z, igl.min_quad_with_fixed_solve(keyword_data,B,Y,Beq))
 
 def test_active_set():
     V,F,T = single_tet()
@@ -586,7 +589,6 @@ def test_copyleft():
     # progressive_hulls moved from igl::copyleft to core (libigl #2558); it is
     # now igl.progressive_hulls, covered by test_progressive_hulls.
 
-@pytest.mark.skipif(sys.platform == "emscripten", reason="CGAL is not built for Pyodide")
 def test_cgal():
     # tetrahedron
     VA = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]],dtype=np.float64)
@@ -673,7 +675,7 @@ def test_misc():
     V,F = igl.icosahedron()
     BV,BF = igl.bounding_box(V,pad=1.0)
     L = igl.bounding_box_diagonal(V)
-    R,C,B = igl.circumradius(V,F)
+    R,C,B = igl.circumradius(V=V,F=F)
     R = igl.inradius(V,F)
     K = igl.internal_angles(V,F)
     _,E,EMAP,_,_ = igl.unique_edge_map(F)
@@ -1383,7 +1385,6 @@ def test_new_copyleft_algorithms():
     assert abs(x_qp[0] + 2.0) < 1e-8
 
 
-@pytest.mark.skipif(sys.platform == "emscripten", reason="CGAL is not built for Pyodide")
 def test_new_cgal_algorithms():
     # simple tetrahedron
     VA = np.array([[0,0,-1],[2,0,-1],[0,2,-1],[1,1,1]], dtype=np.float64)
