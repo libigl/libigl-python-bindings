@@ -83,9 +83,8 @@ endif()
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  # libigl main, including igl::lazy_cage and core igl::progressive_hulls (moved
-  # to core in libigl PR #2558).
-  GIT_TAG c07f8586733378c163aae57f08c9da2ce5352fb9
+  # Include scalar-generic pseudonormal signed-distance queries.
+  GIT_TAG 0641c7029519a6ad4e66b3823b40055c91115f12
   ${libigl_patch}
 )
 FetchContent_MakeAvailable(libigl)

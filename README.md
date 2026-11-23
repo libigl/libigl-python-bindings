@@ -30,6 +30,22 @@ exact arithmetic and its round-to-nearest interval implementation; Embree uses
 WebAssembly SIMD. Stubs are generated from the compiled modules inside Pyodide
 before the wheel is tested and published.
 
+## Signed-distance precision
+
+`igl.signed_distance(P, V, F, ...)` uses single precision when both `P` and `V`
+are NumPy `float32` arrays. Its distance, closest-point, and normal outputs then
+have dtype `float32`; face indices remain `int64`. Float64 inputs and mixed
+float32/float64 inputs use double precision. Other functions retain their
+existing precision behavior. The fast-winding-number method internally uses
+single precision regardless of the input dtype.
+
+```python
+S, I, C, N = igl.signed_distance(
+    P.astype(np.float32), V.astype(np.float32), F,
+    igl.SIGNED_DISTANCE_TYPE_PSEUDONORMAL,
+)
+```
+
 ## Documentation
 
 | :warning: WARNING           |
