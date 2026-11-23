@@ -84,7 +84,7 @@ FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
   # Include scalar-generic pseudonormal signed-distance queries.
-  GIT_TAG 0641c7029519a6ad4e66b3823b40055c91115f12
+  GIT_TAG 8e59c1897bb33a03d06a79b23c803e299cf890b0
   ${libigl_patch}
 )
 FetchContent_MakeAvailable(libigl)
@@ -256,5 +256,4 @@ endif()
 if(LIBIGL_CYCODEBASE)
   pyigl_include("" "cycodebase")
 endif()
-
 
