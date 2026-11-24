@@ -83,8 +83,8 @@ endif()
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  # Include scalar-generic queries and precision-dependent 3D feature tolerances.
-  GIT_TAG a72d3b843889289d2a8fdab6756d10c1e4714597
+  # Include scalar-generic queries and closest-feature pseudonormal selection.
+  GIT_TAG e810369e42090e66fc805370f9969771e93b431f
   ${libigl_patch}
 )
 FetchContent_MakeAvailable(libigl)
