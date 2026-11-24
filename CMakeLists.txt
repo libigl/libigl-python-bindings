@@ -83,9 +83,8 @@ endif()
 FetchContent_Declare(
   libigl
   GIT_REPOSITORY https://github.com/libigl/libigl.git
-  # libigl main, including igl::lazy_cage and core igl::progressive_hulls (moved
-  # to core in libigl PR #2558).
-  GIT_TAG c07f8586733378c163aae57f08c9da2ce5352fb9
+  # Include scalar-generic queries and closest-feature pseudonormal selection.
+  GIT_TAG e810369e42090e66fc805370f9969771e93b431f
   ${libigl_patch}
 )
 FetchContent_MakeAvailable(libigl)
@@ -257,5 +256,3 @@ endif()
 if(LIBIGL_CYCODEBASE)
   pyigl_include("" "cycodebase")
 endif()
-
-
